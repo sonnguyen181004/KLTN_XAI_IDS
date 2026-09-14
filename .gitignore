@@ -1,0 +1,22 @@
+﻿# Datasets and Large Files (>100MB exceeds GitHub file limit)
+*.parquet
+dataset/CIC-UNSW-NB15/
+dataset/CICID-2018/
+dataset/CICIDS-2017/
+dataset/CICID-2018_processed/*.parquet
+
+# Python & Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# OS and Office Temp Files
+.DS_Store
+Thumbs.db
+~$*.docx
+~$*.pptx
+~$*.xlsx

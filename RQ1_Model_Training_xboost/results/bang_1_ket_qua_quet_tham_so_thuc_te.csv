@@ -1,0 +1,8 @@
+﻿Cấu hình,Thời gian (s),Train F1 (%),Test Acc (%),Test Prec (%) [Sub-1.1],Test F1 (%) [Sub-1.1],FPR Benign (%) [Sub-1.2],Ghi chú
+"Depth=4, LR=0.05",158.63,86.3,97.78,91.04,84.56,6.1148,"Cây nông, học chậm"
+"Depth=6, LR=0.05",150.98,87.59,97.85,91.03,85.27,5.9671,"Cây trung bình, học chậm"
+"Depth=6, LR=0.08",139.49,88.27,97.88,90.83,85.68,5.8824,"Cây trung bình, học chuẩn"
+"Depth=8, LR=0.05",157.72,88.16,97.9,91.47,85.75,5.8319,"Cây sâu, học chậm"
+"Depth=8, LR=0.08",200.38,88.79,97.91,90.84,85.81,5.7481,"Cây sâu, học chuẩn (Ứng viên tối ưu)"
+"Depth=8, LR=0.1",190.08,88.89,97.91,90.99,85.94,5.7124,"Cây sâu, học nhanh"
+"Depth=12, LR=0.08",344.8,89.38,97.92,90.67,85.95,5.5981,Cây rất sâu (Kiểm tra Overfitting)

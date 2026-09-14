@@ -1,0 +1,7 @@
+﻿Chỉ số Đánh giá,Kết quả XGBoost Tối ưu
+Độ chính xác toàn cục (Accuracy),97.91%
+Macro Precision [Sub-RQ 1.1],90.84%
+Macro Recall,83.99%
+Macro F1-score [Sub-RQ 1.1],85.81%
+Tỷ lệ Cảnh báo sai FPR trên Benign [Sub-RQ 1.2],"5.7481% (FP=12071, TN=197929)"
+Thời gian Huấn luyện,2.67 phút (160.33s)
