@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-09-24T14:37:48.787012+00:00",
+  "seed": 42,
+  "max_per_class": 100,
+  "shared_sample_count": 1363,
+  "feature_count": 78,
+  "shap_version": "0.52.0",
+  "mean_additivity_absolute_error": 1.9683963834408533e-06,
+  "max_additivity_absolute_error": 1.1444091796875e-05,
+  "next_step": "Run LIME on rq2_shared_samples.csv, then calculate Top-k overlap and Jaccard."
+}

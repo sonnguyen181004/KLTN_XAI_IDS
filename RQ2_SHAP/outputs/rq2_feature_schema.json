@@ -1,0 +1,317 @@
+{
+  "feature_count": 78,
+  "features": [
+    {
+      "feature": "Dst Port",
+      "feature_key": "dstport"
+    },
+    {
+      "feature": "Protocol",
+      "feature_key": "protocol"
+    },
+    {
+      "feature": "Flow Duration",
+      "feature_key": "flowduration"
+    },
+    {
+      "feature": "Tot Fwd Pkts",
+      "feature_key": "totfwdpkts"
+    },
+    {
+      "feature": "Tot Bwd Pkts",
+      "feature_key": "totbwdpkts"
+    },
+    {
+      "feature": "TotLen Fwd Pkts",
+      "feature_key": "totlenfwdpkts"
+    },
+    {
+      "feature": "TotLen Bwd Pkts",
+      "feature_key": "totlenbwdpkts"
+    },
+    {
+      "feature": "Fwd Pkt Len Max",
+      "feature_key": "fwdpktlenmax"
+    },
+    {
+      "feature": "Fwd Pkt Len Min",
+      "feature_key": "fwdpktlenmin"
+    },
+    {
+      "feature": "Fwd Pkt Len Mean",
+      "feature_key": "fwdpktlenmean"
+    },
+    {
+      "feature": "Fwd Pkt Len Std",
+      "feature_key": "fwdpktlenstd"
+    },
+    {
+      "feature": "Bwd Pkt Len Max",
+      "feature_key": "bwdpktlenmax"
+    },
+    {
+      "feature": "Bwd Pkt Len Min",
+      "feature_key": "bwdpktlenmin"
+    },
+    {
+      "feature": "Bwd Pkt Len Mean",
+      "feature_key": "bwdpktlenmean"
+    },
+    {
+      "feature": "Bwd Pkt Len Std",
+      "feature_key": "bwdpktlenstd"
+    },
+    {
+      "feature": "Flow Byts/s",
+      "feature_key": "flowbytss"
+    },
+    {
+      "feature": "Flow Pkts/s",
+      "feature_key": "flowpktss"
+    },
+    {
+      "feature": "Flow IAT Mean",
+      "feature_key": "flowiatmean"
+    },
+    {
+      "feature": "Flow IAT Std",
+      "feature_key": "flowiatstd"
+    },
+    {
+      "feature": "Flow IAT Max",
+      "feature_key": "flowiatmax"
+    },
+    {
+      "feature": "Flow IAT Min",
+      "feature_key": "flowiatmin"
+    },
+    {
+      "feature": "Fwd IAT Tot",
+      "feature_key": "fwdiattot"
+    },
+    {
+      "feature": "Fwd IAT Mean",
+      "feature_key": "fwdiatmean"
+    },
+    {
+      "feature": "Fwd IAT Std",
+      "feature_key": "fwdiatstd"
+    },
+    {
+      "feature": "Fwd IAT Max",
+      "feature_key": "fwdiatmax"
+    },
+    {
+      "feature": "Fwd IAT Min",
+      "feature_key": "fwdiatmin"
+    },
+    {
+      "feature": "Bwd IAT Tot",
+      "feature_key": "bwdiattot"
+    },
+    {
+      "feature": "Bwd IAT Mean",
+      "feature_key": "bwdiatmean"
+    },
+    {
+      "feature": "Bwd IAT Std",
+      "feature_key": "bwdiatstd"
+    },
+    {
+      "feature": "Bwd IAT Max",
+      "feature_key": "bwdiatmax"
+    },
+    {
+      "feature": "Bwd IAT Min",
+      "feature_key": "bwdiatmin"
+    },
+    {
+      "feature": "Fwd PSH Flags",
+      "feature_key": "fwdpshflags"
+    },
+    {
+      "feature": "Bwd PSH Flags",
+      "feature_key": "bwdpshflags"
+    },
+    {
+      "feature": "Fwd URG Flags",
+      "feature_key": "fwdurgflags"
+    },
+    {
+      "feature": "Bwd URG Flags",
+      "feature_key": "bwdurgflags"
+    },
+    {
+      "feature": "Fwd Header Len",
+      "feature_key": "fwdheaderlen"
+    },
+    {
+      "feature": "Bwd Header Len",
+      "feature_key": "bwdheaderlen"
+    },
+    {
+      "feature": "Fwd Pkts/s",
+      "feature_key": "fwdpktss"
+    },
+    {
+      "feature": "Bwd Pkts/s",
+      "feature_key": "bwdpktss"
+    },
+    {
+      "feature": "Pkt Len Min",
+      "feature_key": "pktlenmin"
+    },
+    {
+      "feature": "Pkt Len Max",
+      "feature_key": "pktlenmax"
+    },
+    {
+      "feature": "Pkt Len Mean",
+      "feature_key": "pktlenmean"
+    },
+    {
+      "feature": "Pkt Len Std",
+      "feature_key": "pktlenstd"
+    },
+    {
+      "feature": "Pkt Len Var",
+      "feature_key": "pktlenvar"
+    },
+    {
+      "feature": "FIN Flag Cnt",
+      "feature_key": "finflagcnt"
+    },
+    {
+      "feature": "SYN Flag Cnt",
+      "feature_key": "synflagcnt"
+    },
+    {
+      "feature": "RST Flag Cnt",
+      "feature_key": "rstflagcnt"
+    },
+    {
+      "feature": "PSH Flag Cnt",
+      "feature_key": "pshflagcnt"
+    },
+    {
+      "feature": "ACK Flag Cnt",
+      "feature_key": "ackflagcnt"
+    },
+    {
+      "feature": "URG Flag Cnt",
+      "feature_key": "urgflagcnt"
+    },
+    {
+      "feature": "CWE Flag Count",
+      "feature_key": "cweflagcount"
+    },
+    {
+      "feature": "ECE Flag Cnt",
+      "feature_key": "eceflagcnt"
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "feature_key": "downupratio"
+    },
+    {
+      "feature": "Pkt Size Avg",
+      "feature_key": "pktsizeavg"
+    },
+    {
+      "feature": "Fwd Seg Size Avg",
+      "feature_key": "fwdsegsizeavg"
+    },
+    {
+      "feature": "Bwd Seg Size Avg",
+      "feature_key": "bwdsegsizeavg"
+    },
+    {
+      "feature": "Fwd Byts/b Avg",
+      "feature_key": "fwdbytsbavg"
+    },
+    {
+      "feature": "Fwd Pkts/b Avg",
+      "feature_key": "fwdpktsbavg"
+    },
+    {
+      "feature": "Fwd Blk Rate Avg",
+      "feature_key": "fwdblkrateavg"
+    },
+    {
+      "feature": "Bwd Byts/b Avg",
+      "feature_key": "bwdbytsbavg"
+    },
+    {
+      "feature": "Bwd Pkts/b Avg",
+      "feature_key": "bwdpktsbavg"
+    },
+    {
+      "feature": "Bwd Blk Rate Avg",
+      "feature_key": "bwdblkrateavg"
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "feature_key": "subflowfwdpkts"
+    },
+    {
+      "feature": "Subflow Fwd Byts",
+      "feature_key": "subflowfwdbyts"
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "feature_key": "subflowbwdpkts"
+    },
+    {
+      "feature": "Subflow Bwd Byts",
+      "feature_key": "subflowbwdbyts"
+    },
+    {
+      "feature": "Init Fwd Win Byts",
+      "feature_key": "initfwdwinbyts"
+    },
+    {
+      "feature": "Init Bwd Win Byts",
+      "feature_key": "initbwdwinbyts"
+    },
+    {
+      "feature": "Fwd Act Data Pkts",
+      "feature_key": "fwdactdatapkts"
+    },
+    {
+      "feature": "Fwd Seg Size Min",
+      "feature_key": "fwdsegsizemin"
+    },
+    {
+      "feature": "Active Mean",
+      "feature_key": "activemean"
+    },
+    {
+      "feature": "Active Std",
+      "feature_key": "activestd"
+    },
+    {
+      "feature": "Active Max",
+      "feature_key": "activemax"
+    },
+    {
+      "feature": "Active Min",
+      "feature_key": "activemin"
+    },
+    {
+      "feature": "Idle Mean",
+      "feature_key": "idlemean"
+    },
+    {
+      "feature": "Idle Std",
+      "feature_key": "idlestd"
+    },
+    {
+      "feature": "Idle Max",
+      "feature_key": "idlemax"
+    },
+    {
+      "feature": "Idle Min",
+      "feature_key": "idlemin"
+    }
+  ]
+}

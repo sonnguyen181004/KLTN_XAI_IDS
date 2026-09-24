@@ -1,5 +1,6 @@
 ﻿# Datasets and Large Files (>100MB exceeds GitHub file limit)
 *.parquet
+*.pkl
 dataset/CIC-UNSW-NB15/
 dataset/CICID-2018/
 dataset/CICIDS-2017/
