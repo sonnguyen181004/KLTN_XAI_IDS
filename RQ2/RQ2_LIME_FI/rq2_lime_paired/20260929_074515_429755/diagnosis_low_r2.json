@@ -1,0 +1,28 @@
+{
+  "trigger_median_r2": 0.0676578714099075,
+  "threshold": 0.3,
+  "results": {
+    "baseline_5000_discretize_true": {
+      "median_r2": 0.061658086797349854,
+      "mean_r2": 0.11262133498175096,
+      "min_r2": 0.023036039114976536,
+      "max_r2": 0.5149156258730437,
+      "n": 60
+    },
+    "num_samples_10000": {
+      "median_r2": 0.04774619984520134,
+      "mean_r2": 0.10151028100551324,
+      "min_r2": 0.010191760130296768,
+      "max_r2": 0.5021735431533066,
+      "n": 60
+    },
+    "discretize_false": {
+      "median_r2": 0.02875032604339589,
+      "mean_r2": 0.1152456929463171,
+      "min_r2": 0.0,
+      "max_r2": 0.997634285750898,
+      "n": 60
+    }
+  },
+  "note": "Chuan doan chi de kiem tra local_r2; KHONG chon cau hinh dua vao do giong SHAP."
+}

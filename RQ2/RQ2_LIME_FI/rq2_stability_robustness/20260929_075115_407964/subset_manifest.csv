@@ -1,0 +1,290 @@
+﻿sample_id,true_label,predicted_label,predicted_probability,is_correct,seed
+5639,Infilteration,Infilteration,0.6767924,True,42
+8334,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99873585,True,42
+12685,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+13941,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.660714,True,42
+14421,DDOS attack-HOIC,DDOS attack-HOIC,0.99942136,True,42
+18565,SSH-Bruteforce,SSH-Bruteforce,0.9995956,True,42
+19068,Brute Force -XSS,Brute Force -XSS,0.9819301,True,42
+20056,Brute Force -XSS,Brute Force -XSS,0.9819301,True,42
+26534,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99931705,True,42
+29876,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99914026,True,42
+30515,Bot,Bot,0.99861693,True,42
+35439,SSH-Bruteforce,SSH-Bruteforce,0.9995956,True,42
+42318,DoS attacks-Hulk,DoS attacks-Hulk,0.99953055,True,42
+42573,Brute Force -Web,Brute Force -Web,0.98756766,True,42
+44912,FTP-BruteForce,FTP-BruteForce,0.9316143,True,42
+45365,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999194,True,42
+46168,SQL Injection,SQL Injection,0.8203404,True,42
+46271,Bot,Bot,0.998621,True,42
+49395,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+50452,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.74610543,True,42
+51441,FTP-BruteForce,FTP-BruteForce,0.7710194,True,42
+58379,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.99245703,True,42
+58919,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991579,True,42
+62914,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99920756,True,42
+65664,SSH-Bruteforce,SSH-Bruteforce,0.9995447,True,42
+65934,Benign,Benign,0.99294186,True,42
+66907,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.70314384,True,42
+68038,Benign,Benign,0.9652591,True,42
+68799,SQL Injection,SQL Injection,0.975567,True,42
+69550,SSH-Bruteforce,SSH-Bruteforce,0.9995957,True,42
+72472,SSH-Bruteforce,SSH-Bruteforce,0.9995931,True,42
+73380,DDOS attack-HOIC,DDOS attack-HOIC,0.99949086,True,42
+73653,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99990237,True,42
+74683,Infilteration,Infilteration,0.6139642,True,42
+76270,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.990442,True,42
+78135,DoS attacks-Slowloris,DoS attacks-Slowloris,0.9994112,True,42
+78982,DDOS attack-HOIC,DDOS attack-HOIC,0.99942124,True,42
+80241,DoS attacks-Hulk,DoS attacks-Hulk,0.99952996,True,42
+86164,Brute Force -Web,Brute Force -Web,0.95672107,True,42
+88694,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8116814,True,42
+89190,Infilteration,Infilteration,0.6363931,True,42
+90525,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991541,True,42
+91374,SSH-Bruteforce,SSH-Bruteforce,0.9995906,True,42
+92086,FTP-BruteForce,FTP-BruteForce,0.86240774,True,42
+99470,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99937916,True,42
+99643,Bot,Bot,0.9988875,True,42
+100422,Bot,Bot,0.998621,True,42
+102666,FTP-BruteForce,FTP-BruteForce,0.67992306,True,42
+107145,DDOS attack-HOIC,DDOS attack-HOIC,0.99941957,True,42
+107842,Benign,Benign,0.99876815,True,42
+108720,Brute Force -XSS,Brute Force -XSS,0.9281647,True,42
+108787,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991721,True,42
+109595,DoS attacks-Hulk,DoS attacks-Hulk,0.99952924,True,42
+110687,FTP-BruteForce,FTP-BruteForce,0.9316143,True,42
+110737,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99915934,True,42
+113592,Bot,Bot,0.9988759,True,42
+120459,SSH-Bruteforce,SSH-Bruteforce,0.9995447,True,42
+131694,SSH-Bruteforce,SSH-Bruteforce,0.99954456,True,42
+132419,Infilteration,Infilteration,0.65391576,True,42
+136157,Benign,Benign,0.9997483,True,42
+139948,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.74610543,True,42
+148681,Infilteration,Infilteration,0.7687906,True,42
+152193,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+155941,SQL Injection,SQL Injection,0.9810612,True,42
+158038,Infilteration,Infilteration,0.6286409,True,42
+163228,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+164952,DoS attacks-Hulk,DoS attacks-Hulk,0.99952996,True,42
+165922,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999175,True,42
+166311,SQL Injection,SQL Injection,0.81440187,True,42
+169666,DoS attacks-Hulk,DoS attacks-Hulk,0.99952984,True,42
+180148,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99914026,True,42
+181160,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+188164,DDOS attack-HOIC,DDOS attack-HOIC,0.99948764,True,42
+192124,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99999833,True,42
+192228,DoS attacks-Hulk,DoS attacks-Hulk,0.99953055,True,42
+193059,Infilteration,Infilteration,0.6142114,True,42
+193789,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99991715,True,42
+197830,DDOS attack-HOIC,DDOS attack-HOIC,0.9994198,True,42
+198436,DoS attacks-Hulk,DoS attacks-Hulk,0.9995297,True,42
+199790,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9355789,True,42
+200184,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.71478945,True,42
+200822,Infilteration,Infilteration,0.6918075,True,42
+201841,Brute Force -Web,Brute Force -Web,0.88776606,True,42
+203296,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+207060,Bot,Bot,0.9988617,True,42
+209974,DoS attacks-Hulk,DoS attacks-Hulk,0.99952924,True,42
+215475,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.59965056,True,42
+217506,DDOS attack-HOIC,DDOS attack-HOIC,0.99941814,True,42
+218003,Bot,Bot,0.9988759,True,42
+219442,Infilteration,Infilteration,0.6761878,True,42
+220146,Brute Force -XSS,Brute Force -XSS,0.9821538,True,42
+222292,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9992077,True,42
+223337,DDOS attack-HOIC,DDOS attack-HOIC,0.9994168,True,42
+225548,Brute Force -XSS,Brute Force -XSS,0.99763215,True,42
+231364,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.7855174,True,42
+232595,DoS attacks-Slowloris,DoS attacks-Slowloris,1.0,True,42
+232970,Bot,Bot,0.998621,True,42
+234429,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99983656,True,42
+236692,SSH-Bruteforce,SSH-Bruteforce,0.9995454,True,42
+237626,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9998497,True,42
+241017,DoS attacks-Hulk,DoS attacks-Hulk,0.99953055,True,42
+241153,Brute Force -XSS,Brute Force -XSS,0.9967679,True,42
+243253,FTP-BruteForce,FTP-BruteForce,0.9316143,True,42
+243512,Brute Force -Web,Brute Force -Web,0.9899782,True,42
+244749,Brute Force -Web,Brute Force -Web,0.98319936,True,42
+245695,Infilteration,Infilteration,0.6700867,True,42
+252162,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.99359894,True,42
+254715,Brute Force -Web,Brute Force -Web,0.961596,True,42
+262338,DDOS attack-HOIC,DDOS attack-HOIC,0.99942064,True,42
+262581,FTP-BruteForce,FTP-BruteForce,0.63205576,True,42
+262898,Brute Force -Web,Brute Force -Web,0.99033827,True,42
+276433,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+277208,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+277814,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+282645,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991579,True,42
+287797,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99920756,True,42
+292965,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9998254,True,42
+293180,Bot,Bot,0.9986168,True,42
+294434,SQL Injection,SQL Injection,0.9841471,True,42
+294469,DoS attacks-Slowloris,DoS attacks-Slowloris,1.0,True,42
+297866,Brute Force -Web,Brute Force -Web,0.98319936,True,42
+298749,DDOS attack-HOIC,DDOS attack-HOIC,0.99941885,True,42
+301061,DDOS attack-HOIC,DDOS attack-HOIC,0.9994198,True,42
+304762,Benign,Benign,0.97299725,True,42
+305787,SSH-Bruteforce,SSH-Bruteforce,0.9995951,True,42
+308733,Infilteration,Infilteration,0.6181526,True,42
+309889,FTP-BruteForce,FTP-BruteForce,0.67992306,True,42
+310457,SSH-Bruteforce,SSH-Bruteforce,0.9995216,True,42
+310997,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.98681307,True,42
+311685,Infilteration,Infilteration,0.87210274,True,42
+312336,Bot,Bot,0.998887,True,42
+313529,Brute Force -XSS,Brute Force -XSS,0.96876645,True,42
+314183,Brute Force -XSS,Brute Force -XSS,0.97995317,True,42
+315063,Brute Force -Web,Brute Force -Web,0.9896006,True,42
+315426,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.68953145,True,42
+317120,Brute Force -XSS,Brute Force -XSS,0.75741893,True,42
+319710,SSH-Bruteforce,SSH-Bruteforce,0.99959105,True,42
+320952,Brute Force -XSS,Brute Force -XSS,0.98186076,True,42
+321790,FTP-BruteForce,FTP-BruteForce,0.58461463,True,42
+323255,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991499,True,42
+328840,Benign,Benign,0.9691822,True,42
+332391,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999031,True,42
+332458,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.98871917,True,42
+333648,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991721,True,42
+335584,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99990094,True,42
+336241,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.59965056,True,42
+336566,Bot,Bot,0.9988759,True,42
+338824,Brute Force -XSS,Brute Force -XSS,0.98399156,True,42
+342541,Bot,Bot,0.998621,True,42
+346512,Brute Force -XSS,Brute Force -XSS,0.9967739,True,42
+348721,Benign,Benign,0.9921645,True,42
+353051,Infilteration,Infilteration,0.6787502,True,42
+353691,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99983025,True,42
+354580,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99920756,True,42
+356787,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99924624,True,42
+358097,SQL Injection,SQL Injection,0.95700216,True,42
+359537,Benign,Benign,0.9753464,True,42
+362368,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99989414,True,42
+363664,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+364235,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99915934,True,42
+365136,Infilteration,Infilteration,0.504111,True,42
+367918,DoS attacks-Hulk,DoS attacks-Hulk,0.9995321,True,42
+369335,DoS attacks-Slowloris,DoS attacks-Slowloris,0.9975668,True,42
+369453,FTP-BruteForce,FTP-BruteForce,0.63205576,True,42
+369784,DoS attacks-Hulk,DoS attacks-Hulk,0.9995296,True,42
+376563,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9992077,True,42
+377864,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9991468,True,42
+378164,DDOS attack-HOIC,DDOS attack-HOIC,0.9994198,True,42
+378382,Bot,Bot,0.998621,True,42
+379791,SQL Injection,SQL Injection,0.92231035,True,42
+383016,FTP-BruteForce,FTP-BruteForce,0.63205576,True,42
+384388,FTP-BruteForce,FTP-BruteForce,0.90882814,True,42
+385336,Brute Force -Web,Brute Force -Web,0.98920983,True,42
+385798,Bot,Bot,0.998621,True,42
+395416,Benign,Benign,0.99859315,True,42
+396967,Bot,Bot,0.9988759,True,42
+398864,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999156,True,42
+410166,DoS attacks-Hulk,DoS attacks-Hulk,0.99948055,True,42
+415297,SQL Injection,SQL Injection,0.97850066,True,42
+415684,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99990237,True,42
+417110,FTP-BruteForce,FTP-BruteForce,0.5865937,True,42
+417537,SSH-Bruteforce,SSH-Bruteforce,0.9995957,True,42
+418917,Infilteration,Infilteration,0.8807378,True,42
+423486,Brute Force -XSS,Brute Force -XSS,0.9985702,True,42
+432325,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.98557657,True,42
+434271,Brute Force -XSS,Brute Force -XSS,0.9963613,True,42
+434619,Bot,Bot,0.9989208,True,42
+435047,Brute Force -Web,Brute Force -Web,0.99037457,True,42
+435789,Bot,Bot,0.9986187,True,42
+437912,DoS attacks-Slowloris,DoS attacks-Slowloris,0.998793,True,42
+438062,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9996605,True,42
+440080,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99920756,True,42
+441377,Infilteration,Infilteration,0.66407305,True,42
+444328,DoS attacks-Hulk,DoS attacks-Hulk,0.99952936,True,42
+447905,SSH-Bruteforce,SSH-Bruteforce,0.9995957,True,42
+450041,DDOS attack-HOIC,DDOS attack-HOIC,0.99942136,True,42
+456153,FTP-BruteForce,FTP-BruteForce,0.58461463,True,42
+462363,Bot,Bot,0.998621,True,42
+464306,FTP-BruteForce,FTP-BruteForce,0.9538616,True,42
+464579,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99767345,True,42
+470203,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.660714,True,42
+474577,Benign,Benign,0.99987483,True,42
+475200,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999076,True,42
+476206,Brute Force -XSS,Brute Force -XSS,0.9819609,True,42
+476835,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.993715,True,42
+477378,DDOS attack-HOIC,DDOS attack-HOIC,0.99949086,True,42
+477859,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9810656,True,42
+478158,Benign,Benign,0.9773936,True,42
+482463,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99900645,True,42
+483707,Brute Force -Web,Brute Force -Web,0.96431524,True,42
+483764,Infilteration,Infilteration,0.6717477,True,42
+484171,Infilteration,Infilteration,0.66974586,True,42
+487123,Infilteration,Infilteration,0.8051663,True,42
+487263,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9899682,True,42
+498379,Brute Force -Web,Brute Force -Web,0.9899199,True,42
+501190,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.994949,True,42
+502062,FTP-BruteForce,FTP-BruteForce,0.70448196,True,42
+502356,Benign,Benign,0.97204757,True,42
+507163,Bot,Bot,0.998621,True,42
+516380,DDOS attack-HOIC,DDOS attack-HOIC,0.99946684,True,42
+517942,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9904957,True,42
+520811,Brute Force -Web,Brute Force -Web,0.9902001,True,42
+521606,Benign,Benign,0.97052675,True,42
+522204,Brute Force -XSS,Brute Force -XSS,0.997877,True,42
+522303,FTP-BruteForce,FTP-BruteForce,0.67992306,True,42
+530029,SSH-Bruteforce,SSH-Bruteforce,0.99959606,True,42
+531043,SSH-Bruteforce,SSH-Bruteforce,0.99959534,True,42
+531260,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8116814,True,42
+532195,Benign,Benign,0.9993311,True,42
+534785,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.7348558,True,42
+535830,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9872709,True,42
+536590,DDOS attack-HOIC,DDOS attack-HOIC,0.99942124,True,42
+537705,Benign,Benign,0.99925715,True,42
+540314,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99976116,True,42
+545107,SSH-Bruteforce,SSH-Bruteforce,0.9995956,True,42
+549022,Brute Force -Web,Brute Force -Web,0.9726557,True,42
+549420,Bot,Bot,0.9989231,True,42
+556032,Brute Force -XSS,Brute Force -XSS,0.9819301,True,42
+556093,DDOS attack-HOIC,DDOS attack-HOIC,0.99941885,True,42
+556787,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.98853195,True,42
+557077,SQL Injection,SQL Injection,0.977962,True,42
+557149,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999076,True,42
+562744,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.59965056,True,42
+574359,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.59965056,True,42
+577574,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.74610543,True,42
+579553,Benign,Benign,0.9883101,True,42
+582796,Benign,Benign,0.9756015,True,42
+588054,Benign,Benign,0.9978643,True,42
+589312,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99999774,True,42
+596381,DoS attacks-Hulk,DoS attacks-Hulk,0.99953055,True,42
+596463,DDOS attack-HOIC,DDOS attack-HOIC,0.99942136,True,42
+598293,Brute Force -XSS,Brute Force -XSS,0.9819609,True,42
+601248,Benign,Benign,0.9123968,True,42
+602468,SSH-Bruteforce,SSH-Bruteforce,0.9995958,True,42
+607340,DoS attacks-Slowloris,DoS attacks-Slowloris,1.0,True,42
+610381,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.9999429,True,42
+610547,DoS attacks-Slowloris,DoS attacks-Slowloris,0.998793,True,42
+611368,DoS attacks-Hulk,DoS attacks-Hulk,0.9986343,True,42
+612632,DDOS attack-HOIC,DDOS attack-HOIC,0.9994734,True,42
+614266,Brute Force -Web,Brute Force -Web,0.9187693,True,42
+615138,DoS attacks-Hulk,DoS attacks-Hulk,0.9993813,True,42
+616668,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.99915934,True,42
+618663,Brute Force -Web,Brute Force -Web,0.9900502,True,42
+620071,FTP-BruteForce,FTP-BruteForce,0.63205576,True,42
+621782,SSH-Bruteforce,SSH-Bruteforce,0.99959534,True,42
+624071,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.7348558,True,42
+624147,SSH-Bruteforce,SSH-Bruteforce,0.9995912,True,42
+626732,DoS attacks-Hulk,DoS attacks-Hulk,0.99952376,True,42
+629710,DoS attacks-Hulk,DoS attacks-Hulk,0.9995321,True,42
+629734,Brute Force -Web,Brute Force -Web,0.9903312,True,42
+630081,Brute Force -XSS,Brute Force -XSS,0.88592446,True,42
+638364,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99990237,True,42
+639271,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9823866,True,42
+639539,DoS attacks-Hulk,DoS attacks-Hulk,0.9995203,True,42
+641423,Brute Force -Web,Brute Force -Web,0.9897736,True,42
+645824,Benign,Benign,0.99453545,True,42
+652230,DDOS attack-HOIC,DDOS attack-HOIC,0.999418,True,42
+659806,FTP-BruteForce,FTP-BruteForce,0.67992306,True,42
+661051,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,0.9992077,True,42
+662079,Brute Force -Web,Brute Force -Web,0.98672885,True,42
+662490,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9926117,True,42
+675226,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,0.8724209,True,42
+675268,DoS attacks-Slowloris,DoS attacks-Slowloris,0.99995804,True,42
+679360,Infilteration,Infilteration,0.8228528,True,42
+681769,DoS attacks-GoldenEye,DoS attacks-GoldenEye,0.99991405,True,42
+689373,FTP-BruteForce,FTP-BruteForce,0.63205576,True,42
+695015,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,0.9924784,True,42
+695843,Brute Force -XSS,Brute Force -XSS,0.9421426,True,42
+697328,DoS attacks-Hulk,DoS attacks-Hulk,0.99953187,True,42

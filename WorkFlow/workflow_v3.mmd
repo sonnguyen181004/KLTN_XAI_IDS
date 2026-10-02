@@ -1,0 +1,29 @@
+flowchart TD
+    A["CSE CIC IDS2018<br/>Dataset"] --> B["Data<br/>Preprocessing"]
+    B --> C["Train Test Split"]
+    C --> D["RQ1 Train<br/>Random Forest<br/>and XGBoost"]
+    D --> E["Evaluate and<br/>Compare Models"]
+    E --> F["Select Optimal<br/>Model"]
+
+    F --> G["RQ2 Select Test<br/>Samples"]
+    G --> H["Run SHAP"]
+    G --> I["Run LIME"]
+    H --> J["Compare SHAP<br/>and LIME"]
+    I --> J
+
+    J --> K["Agreement<br/>Do the Top<br/>Features Match"]
+    J --> L["Domain Validation<br/>Do Features Match<br/>Attack Mechanisms"]
+    J --> M["Faithfulness<br/>Do Features Truly<br/>Affect the Model Decision"]
+
+    K --> N["RQ2<br/>Visualizations<br/>and Report"]
+    L --> N
+    M --> N
+    N --> O["Select Explainer<br/>for Dashboard (SHAP / LIME)"]
+
+    P["RQ3 Real Time<br/>Network Traffic"] --> Q["Feature Extraction"]
+    Q --> R["Prediction<br/>(Optimal Model)"]
+    R --> S["Explanation<br/>(Selected Explainer)"]
+    S --> T["IDS Dashboard<br/>Prediction Alert<br/>and Explanation"]
+
+    F --> R
+    O --> S

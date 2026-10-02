@@ -1,0 +1,79 @@
+﻿true_class,explained_class,n_samples,rank_overall,feature,mean_abs_shap_raw,mean_signed_shap_raw,net_direction,rank_within_direction,is_top5_positive,is_top5_negative,run_scope
+SQL Injection,SQL Injection,17,1,Init Fwd Win Byts,1.4750665952177608,1.0557912903673508,positive,1,True,False,complete_input
+SQL Injection,SQL Injection,17,2,Fwd Pkts/s,1.3586400468998097,1.1945548278882223,positive,2,True,False,complete_input
+SQL Injection,SQL Injection,17,3,Dst Port,1.228938961730284,1.228938961730284,positive,3,True,False,complete_input
+SQL Injection,SQL Injection,17,4,Bwd Pkt Len Std,1.1510298211291872,1.1202414925758015,positive,4,True,False,complete_input
+SQL Injection,SQL Injection,17,5,Fwd IAT Min,1.1097184524816626,0.34180822442559633,positive,5,True,False,complete_input
+SQL Injection,SQL Injection,17,6,Flow IAT Min,1.0471805982729967,0.7832424798432518,positive,6,False,False,complete_input
+SQL Injection,SQL Injection,17,7,Fwd Pkt Len Std,0.9848741161472657,0.966747950981645,positive,7,False,False,complete_input
+SQL Injection,SQL Injection,17,8,Flow IAT Std,0.7167363620417959,0.6131399591617724,positive,8,False,False,complete_input
+SQL Injection,SQL Injection,17,9,Flow Duration,0.6189959818387732,0.5415180292637909,positive,9,False,False,complete_input
+SQL Injection,SQL Injection,17,10,RST Flag Cnt,0.3790588725139113,0.23405808955430984,positive,10,False,False,complete_input
+SQL Injection,SQL Injection,17,11,Fwd Pkt Len Max,0.26820314434521336,0.26820314434521336,positive,11,False,False,complete_input
+SQL Injection,SQL Injection,17,12,Init Bwd Win Byts,0.26534662571023493,0.07148257029407165,positive,12,False,False,complete_input
+SQL Injection,SQL Injection,17,13,TotLen Fwd Pkts,0.20213442997020833,0.1816194386166685,positive,13,False,False,complete_input
+SQL Injection,SQL Injection,17,14,Bwd Pkt Len Max,0.1973151503240361,-0.03941767443628872,negative,1,False,True,complete_input
+SQL Injection,SQL Injection,17,15,Pkt Len Max,0.16613186085048845,0.09630977822577252,positive,14,False,False,complete_input
+SQL Injection,SQL Injection,17,16,Bwd Pkts/s,0.15572052974911296,0.15572052974911296,positive,15,False,False,complete_input
+SQL Injection,SQL Injection,17,17,Bwd IAT Min,0.13463907330023014,0.07871247228125439,positive,16,False,False,complete_input
+SQL Injection,SQL Injection,17,18,Fwd IAT Std,0.0872751617913737,0.01086180580451208,positive,17,False,False,complete_input
+SQL Injection,SQL Injection,17,19,Pkt Len Std,0.08115673497976626,0.06361882843296318,positive,18,False,False,complete_input
+SQL Injection,SQL Injection,17,20,Bwd IAT Mean,0.07977456621387426,0.015008152188623653,positive,19,False,False,complete_input
+SQL Injection,SQL Injection,17,21,Tot Bwd Pkts,0.07816421262481633,0.07262708290534861,positive,20,False,False,complete_input
+SQL Injection,SQL Injection,17,22,Down/Up Ratio,0.07156277995775728,0.06388490011586863,positive,21,False,False,complete_input
+SQL Injection,SQL Injection,17,23,Flow IAT Max,0.0625391809598488,0.04319899342954159,positive,22,False,False,complete_input
+SQL Injection,SQL Injection,17,24,Flow Byts/s,0.04650771658977165,0.035753177013248205,positive,23,False,False,complete_input
+SQL Injection,SQL Injection,17,25,Fwd IAT Tot,0.03912008175735965,0.01587128403651364,positive,24,False,False,complete_input
+SQL Injection,SQL Injection,17,26,ECE Flag Cnt,0.03495444535442135,0.032261630602400095,positive,25,False,False,complete_input
+SQL Injection,SQL Injection,17,27,Fwd IAT Mean,0.03398974174085785,0.030898059334825066,positive,26,False,False,complete_input
+SQL Injection,SQL Injection,17,28,Fwd Act Data Pkts,0.028878819101544863,0.028878819101544863,positive,27,False,False,complete_input
+SQL Injection,SQL Injection,17,29,Flow Pkts/s,0.022460600059917745,0.0026886883630033802,positive,28,False,False,complete_input
+SQL Injection,SQL Injection,17,30,Bwd IAT Std,0.022378529380897388,0.0023271910544923123,positive,29,False,False,complete_input
+SQL Injection,SQL Injection,17,31,Flow IAT Mean,0.015975435793413508,-0.0023970078926889554,negative,2,False,True,complete_input
+SQL Injection,SQL Injection,17,32,Fwd Seg Size Min,0.014826746821841773,0.014826746821841773,positive,30,False,False,complete_input
+SQL Injection,SQL Injection,17,33,Bwd Pkt Len Mean,0.008547038401422255,-0.0008248139912372126,negative,3,False,True,complete_input
+SQL Injection,SQL Injection,17,34,Bwd Header Len,0.006039081743973143,0.006039081743973143,positive,31,False,False,complete_input
+SQL Injection,SQL Injection,17,35,URG Flag Cnt,0.0057605719741652996,-0.0057605719741652996,negative,4,False,True,complete_input
+SQL Injection,SQL Injection,17,36,Bwd IAT Tot,0.005541327669668724,-0.004424368209369919,negative,5,False,True,complete_input
+SQL Injection,SQL Injection,17,37,TotLen Bwd Pkts,0.003974061404519221,-0.003295651637017727,negative,6,False,False,complete_input
+SQL Injection,SQL Injection,17,38,Fwd IAT Max,0.0026927507646820124,0.0026927507646820124,positive,32,False,False,complete_input
+SQL Injection,SQL Injection,17,39,Fwd Header Len,0.002506720703369116,-0.0006180883809814558,negative,7,False,False,complete_input
+SQL Injection,SQL Injection,17,40,Fwd Pkt Len Mean,0.0016834282638121616,-0.0015117505339303,negative,8,False,False,complete_input
+SQL Injection,SQL Injection,17,41,Pkt Size Avg,0.0007560149721993023,0.0005138260945814717,positive,33,False,False,complete_input
+SQL Injection,SQL Injection,17,42,ACK Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,43,Active Max,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,44,Active Mean,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,45,Active Min,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,46,Active Std,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,47,Bwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,48,Bwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,49,Bwd IAT Max,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,50,Bwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,51,Bwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,52,Bwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,53,Bwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,54,Bwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,55,CWE Flag Count,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,56,FIN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,57,Fwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,58,Fwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,59,Fwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,60,Fwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,61,Fwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,62,Fwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,63,Fwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,64,Idle Max,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,65,Idle Mean,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,66,Idle Min,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,67,Idle Std,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,68,PSH Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,69,Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,70,Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,71,Pkt Len Var,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,72,Protocol,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,73,SYN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,74,Subflow Bwd Byts,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,75,Subflow Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,76,Subflow Fwd Byts,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,77,Subflow Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+SQL Injection,SQL Injection,17,78,Tot Fwd Pkts,0.0,0.0,zero,,False,False,complete_input

@@ -1,0 +1,79 @@
+﻿true_class,explained_class,n_samples,rank_overall,feature,mean_abs_shap_raw,mean_signed_shap_raw,net_direction,rank_within_direction,is_top5_positive,is_top5_negative,run_scope
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,1,Fwd Seg Size Min,5.0970200504281,5.0970200504281,positive,1,True,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,2,Flow Duration,1.1406221599589164,1.1004644432655328,positive,2,True,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,3,Flow IAT Max,0.8226671259737539,0.2826817454941979,positive,3,True,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,4,Bwd Pkts/s,0.711642821000014,0.4622706380804265,positive,4,True,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,5,Flow IAT Min,0.3386547134083398,0.11930855068321788,positive,5,True,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,6,Dst Port,0.17373930244177838,0.17373930244177838,positive,6,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,7,Flow Pkts/s,0.15001762388206977,0.11875561154930603,positive,7,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,8,Flow IAT Mean,0.05964271985799589,0.01815607452802682,positive,8,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,9,Fwd Header Len,0.019371303822912318,0.019360143895749464,positive,9,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,10,Fwd Pkts/s,0.012871598901501548,0.005033244078818532,positive,10,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,11,PSH Flag Cnt,0.0004492207268093275,0.0004492207268093275,positive,11,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,12,Init Fwd Win Byts,0.0003478135933488291,0.0003478135933488291,positive,12,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,13,ACK Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,14,Active Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,15,Active Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,16,Active Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,17,Active Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,18,Bwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,19,Bwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,20,Bwd Header Len,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,21,Bwd IAT Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,22,Bwd IAT Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,23,Bwd IAT Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,24,Bwd IAT Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,25,Bwd IAT Tot,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,26,Bwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,27,Bwd Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,28,Bwd Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,29,Bwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,30,Bwd Pkt Len Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,31,Bwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,32,Bwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,33,Bwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,34,CWE Flag Count,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,35,Down/Up Ratio,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,36,ECE Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,37,FIN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,38,Flow Byts/s,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,39,Flow IAT Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,40,Fwd Act Data Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,41,Fwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,42,Fwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,43,Fwd IAT Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,44,Fwd IAT Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,45,Fwd IAT Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,46,Fwd IAT Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,47,Fwd IAT Tot,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,48,Fwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,49,Fwd Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,50,Fwd Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,51,Fwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,52,Fwd Pkt Len Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,53,Fwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,54,Fwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,55,Fwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,56,Idle Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,57,Idle Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,58,Idle Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,59,Idle Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,60,Init Bwd Win Byts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,61,Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,62,Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,63,Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,64,Pkt Len Std,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,65,Pkt Len Var,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,66,Pkt Size Avg,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,67,Protocol,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,68,RST Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,69,SYN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,70,Subflow Bwd Byts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,71,Subflow Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,72,Subflow Fwd Byts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,73,Subflow Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,74,Tot Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,75,Tot Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,76,TotLen Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,77,TotLen Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest,1735,78,URG Flag Cnt,0.0,0.0,zero,,False,False,complete_input

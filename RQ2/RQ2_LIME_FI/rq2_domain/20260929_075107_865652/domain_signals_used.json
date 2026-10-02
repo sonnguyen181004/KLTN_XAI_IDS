@@ -1,0 +1,101 @@
+{
+  "Bot": [
+    "Flow IAT Min",
+    "Flow IAT Mean",
+    "Bwd Pkts/s",
+    "Fwd Pkt Len Min",
+    "Dst Port"
+  ],
+  "Brute Force -Web": [
+    "Dst Port",
+    "Flow Pkts/s",
+    "Flow IAT Min",
+    "Fwd Header Len"
+  ],
+  "Brute Force -XSS": [
+    "Dst Port",
+    "Fwd Pkt Len Max",
+    "Fwd Pkt Len Mean",
+    "Pkt Len Max",
+    "Pkt Len Mean",
+    "Fwd Header Len"
+  ],
+  "DDOS attack-HOIC": [
+    "Flow Pkts/s",
+    "Flow Byts/s",
+    "Flow IAT Mean",
+    "Flow IAT Min",
+    "Pkt Len Mean"
+  ],
+  "DDOS attack-LOIC-UDP": [
+    "Protocol",
+    "Flow Pkts/s",
+    "Pkt Len Std",
+    "Pkt Len Mean",
+    "Flow Duration"
+  ],
+  "DDoS attacks-LOIC-HTTP": [
+    "Protocol",
+    "Dst Port",
+    "Flow Pkts/s",
+    "Fwd Pkts/s",
+    "Flow IAT Min"
+  ],
+  "DoS attacks-GoldenEye": [
+    "Dst Port",
+    "Flow Duration",
+    "Flow IAT Std",
+    "Init Fwd Win Byts"
+  ],
+  "DoS attacks-Hulk": [
+    "Dst Port",
+    "Flow Pkts/s",
+    "Flow IAT Mean",
+    "Fwd Pkt Len Mean"
+  ],
+  "DoS attacks-SlowHTTPTest": [
+    "Flow Duration",
+    "Flow Byts/s",
+    "Flow Pkts/s",
+    "Flow IAT Mean"
+  ],
+  "DoS attacks-Slowloris": [
+    "Flow Duration",
+    "Fwd Pkt Len Min",
+    "Flow IAT Mean",
+    "Bwd Pkts/s"
+  ],
+  "FTP-BruteForce": [
+    "Dst Port",
+    "Protocol",
+    "Fwd PSH Flags",
+    "Flow IAT Min"
+  ],
+  "SSH-Bruteforce": [
+    "Dst Port",
+    "Protocol",
+    "Pkt Len Std",
+    "Flow IAT Min"
+  ],
+  "Infilteration": [
+    "Dst Port",
+    "Protocol",
+    "Flow IAT Min",
+    "Flow IAT Mean",
+    "Init Bwd Win Byts",
+    "Flow Duration"
+  ],
+  "SQL Injection": [
+    "Dst Port",
+    "Fwd Pkt Len Max",
+    "Pkt Len Max",
+    "Flow Duration",
+    "Fwd Header Len"
+  ],
+  "Benign": [
+    "Dst Port",
+    "Pkt Len Std",
+    "Flow IAT Mean",
+    "Flow Duration"
+  ]
+}

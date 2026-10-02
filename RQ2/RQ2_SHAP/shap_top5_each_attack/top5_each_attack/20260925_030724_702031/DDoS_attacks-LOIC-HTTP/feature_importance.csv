@@ -1,0 +1,79 @@
+﻿true_class,explained_class,n_samples,rank_overall,feature,mean_abs_shap_raw,mean_signed_shap_raw,net_direction,rank_within_direction,is_top5_positive,is_top5_negative,run_scope
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,1,Fwd Pkts/s,1.2309993427864427,1.1916641415038314,positive,1,True,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,2,Fwd IAT Std,1.1920754348535438,1.189192456566385,positive,2,True,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,3,Init Fwd Win Byts,0.8945571542123765,0.8880155177513429,positive,3,True,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,4,Bwd Pkt Len Std,0.7363187027694936,0.7164926501548955,positive,4,True,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,5,Flow IAT Min,0.5551957223901631,0.5550236819786687,positive,5,True,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,6,Flow IAT Max,0.5278767672208057,0.5160389906573462,positive,6,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,7,Fwd IAT Tot,0.42156861614353647,0.4179006368004889,positive,7,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,8,Flow Duration,0.3070461800661503,0.28251315942800526,positive,8,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,9,Dst Port,0.25436960882526305,0.25436960882526305,positive,9,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,10,Bwd IAT Std,0.1821733040803879,0.1819527419554509,positive,10,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,11,Bwd Pkt Len Mean,0.11553584231195677,0.11553584231195677,positive,11,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,12,Flow Pkts/s,0.1108120823627521,0.10725009224725444,positive,12,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,13,Bwd IAT Min,0.10821091870044786,0.10422443353577382,positive,13,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,14,Flow IAT Std,0.10576418749014392,0.10474512586536049,positive,14,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,15,TotLen Bwd Pkts,0.1053707308808059,0.1053707308808059,positive,15,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,16,Fwd Pkt Len Std,0.08044389285616968,-0.04345341672793042,negative,1,False,True,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,17,Flow IAT Mean,0.06812062896634469,0.06462810322760867,positive,16,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,18,Fwd IAT Max,0.06697120111794623,0.04084534656760273,positive,17,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,19,Fwd IAT Mean,0.038596522870089675,0.03396796077466476,positive,18,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,20,Flow Byts/s,0.032695434432510474,0.00015782624485946703,positive,19,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,21,Protocol,0.0288651229655782,-0.028746069011633537,negative,2,False,True,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,22,Tot Fwd Pkts,0.02226575145535422,-0.014521528694477055,negative,3,False,True,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,23,Pkt Len Mean,0.020049050466166236,0.020049050466166236,positive,20,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,24,TotLen Fwd Pkts,0.018719453785219227,-0.009411858953151993,negative,4,False,True,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,25,Bwd IAT Mean,0.014374195700541895,0.014374195700541895,positive,21,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,26,Fwd Header Len,0.010629509971279642,0.008176209681507333,positive,22,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,27,Init Bwd Win Byts,0.010257300951249588,-0.005185331620261411,negative,5,False,True,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,28,Idle Mean,0.00854727103384764,0.0002267232572550095,positive,23,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,29,ACK Flag Cnt,0.00706014441658618,-0.0009540164060801993,negative,6,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,30,Fwd IAT Min,0.006276230860361621,-0.005174295821660696,negative,7,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,31,Fwd Act Data Pkts,0.0033639945007682063,-0.001965456055541098,negative,8,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,32,Bwd IAT Tot,0.0028625066826681025,0.002770918228450284,positive,24,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,33,Fwd Pkt Len Max,0.0009629263638347721,-0.0007320734495555117,negative,9,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,34,Fwd Seg Size Min,0.0007293022361549084,0.0007293022361549084,positive,25,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,35,Bwd Pkts/s,0.0005056409560947777,-0.0004225359715756879,negative,10,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,36,Idle Max,0.0003471466093303507,-9.837512829168804e-05,negative,11,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,37,Tot Bwd Pkts,0.0002307616896485575,-1.4240451315605043e-06,negative,12,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,38,URG Flag Cnt,0.0001310470619572822,0.0001310470619572822,positive,26,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,39,Bwd IAT Max,0.00010121166105740466,6.218852956025056e-05,positive,27,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,40,Idle Min,9.9161951695326e-05,-3.545175921832934e-05,negative,13,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,41,Pkt Len Max,9.51214245187146e-05,7.652434093486651e-05,positive,28,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,42,Pkt Len Std,3.41260397473841e-06,2.920218480122395e-06,positive,29,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,43,Fwd Pkt Len Mean,3.293678999845757e-06,3.293678999845757e-06,positive,30,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,44,Pkt Size Avg,2.7295515467277265e-06,2.5008845169688268e-06,positive,31,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,45,Bwd Pkt Len Max,1.7895947576603684e-06,-1.7895947576603684e-06,negative,14,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,46,Active Max,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,47,Active Mean,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,48,Active Min,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,49,Active Std,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,50,Bwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,51,Bwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,52,Bwd Header Len,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,53,Bwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,54,Bwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,55,Bwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,56,Bwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,57,Bwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,58,CWE Flag Count,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,59,Down/Up Ratio,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,60,ECE Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,61,FIN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,62,Fwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,63,Fwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,64,Fwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,65,Fwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,66,Fwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,67,Fwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,68,Fwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,69,Idle Std,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,70,PSH Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,71,Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,72,Pkt Len Var,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,73,RST Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,74,SYN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,75,Subflow Bwd Byts,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,76,Subflow Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,77,Subflow Fwd Byts,0.0,0.0,zero,,False,False,complete_input
+DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP,51354,78,Subflow Fwd Pkts,0.0,0.0,zero,,False,False,complete_input

@@ -1,0 +1,79 @@
+﻿true_class,explained_class,n_samples,rank_overall,feature,mean_abs_shap_raw,mean_signed_shap_raw,net_direction,rank_within_direction,is_top5_positive,is_top5_negative,run_scope
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,1,Tot Fwd Pkts,9.212727293113753,9.064625045467663,positive,1,True,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,2,Fwd IAT Tot,3.4605215919537824,3.4495328656516193,positive,2,True,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,3,Fwd Act Data Pkts,0.8091205169010713,0.8091205169010713,positive,3,True,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,4,Fwd Header Len,0.3752381787393134,0.3752381787393134,positive,4,True,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,5,Flow Duration,0.3734557511839434,0.3692454546824571,positive,5,True,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,6,Flow IAT Std,0.3222536530057668,-0.0722769700768646,negative,1,False,True,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,7,Flow IAT Mean,0.27045137899917027,0.19883956964601457,positive,6,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,8,Flow IAT Min,0.26482363364449296,0.2362913894440139,positive,7,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,9,Fwd IAT Mean,0.22600630898771518,0.13146326525912033,positive,8,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,10,Flow Byts/s,0.1886345299774703,0.143860192494191,positive,9,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,11,Flow Pkts/s,0.18498434298476635,0.10918451825828383,positive,10,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,12,Fwd IAT Std,0.16921090699175126,0.0877709899284753,positive,11,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,13,Flow IAT Max,0.14446197421494547,0.06511510207285469,positive,12,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,14,Fwd IAT Min,0.12390284721249703,0.07862299638450404,positive,13,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,15,Fwd Pkts/s,0.1182124711495065,0.0909869834858752,positive,14,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,16,Bwd Header Len,0.06939311997394342,0.06939311997394342,positive,15,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,17,Pkt Len Min,0.04996863903741573,0.049897758848696,positive,16,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,18,Fwd IAT Max,0.032249646372702834,0.018453904564527397,positive,17,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,19,Tot Bwd Pkts,0.008620018460464831,0.008620018460464831,positive,18,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,20,Bwd Pkts/s,0.003006815845066025,0.003006815845066025,positive,19,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,21,Fwd Pkt Len Mean,0.001929164224175058,-0.001929164224175058,negative,2,False,True,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,22,Init Fwd Win Byts,0.0016181092218743541,0.0016181092218743541,positive,20,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,23,Fwd Pkt Len Min,0.0015541401239531922,0.0015541401239531922,positive,21,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,24,Dst Port,0.0014533459200830646,0.0014533459200830646,positive,22,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,25,Fwd Pkt Len Std,0.0009722949092806656,0.0009722949092806656,positive,23,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,26,Bwd IAT Std,4.0919534849255975e-05,-4.0919534849255975e-05,negative,3,False,True,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,27,ACK Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,28,Active Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,29,Active Mean,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,30,Active Min,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,31,Active Std,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,32,Bwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,33,Bwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,34,Bwd IAT Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,35,Bwd IAT Mean,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,36,Bwd IAT Min,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,37,Bwd IAT Tot,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,38,Bwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,39,Bwd Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,40,Bwd Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,41,Bwd Pkt Len Min,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,42,Bwd Pkt Len Std,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,43,Bwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,44,Bwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,45,Bwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,46,CWE Flag Count,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,47,Down/Up Ratio,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,48,ECE Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,49,FIN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,50,Fwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,51,Fwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,52,Fwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,53,Fwd Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,54,Fwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,55,Fwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,56,Fwd Seg Size Min,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,57,Fwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,58,Idle Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,59,Idle Mean,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,60,Idle Min,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,61,Idle Std,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,62,Init Bwd Win Byts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,63,PSH Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,64,Pkt Len Max,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,65,Pkt Len Mean,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,66,Pkt Len Std,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,67,Pkt Len Var,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,68,Pkt Size Avg,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,69,Protocol,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,70,RST Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,71,SYN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,72,Subflow Bwd Byts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,73,Subflow Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,74,Subflow Fwd Byts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,75,Subflow Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,76,TotLen Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,77,TotLen Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP,346,78,URG Flag Cnt,0.0,0.0,zero,,False,False,complete_input

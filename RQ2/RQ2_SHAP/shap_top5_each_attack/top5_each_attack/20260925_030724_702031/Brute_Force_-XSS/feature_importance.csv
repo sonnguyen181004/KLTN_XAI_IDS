@@ -1,0 +1,79 @@
+﻿true_class,explained_class,n_samples,rank_overall,feature,mean_abs_shap_raw,mean_signed_shap_raw,net_direction,rank_within_direction,is_top5_positive,is_top5_negative,run_scope
+Brute Force -XSS,Brute Force -XSS,46,1,Init Fwd Win Byts,2.519238370916118,2.2400276453598686,positive,1,True,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,2,Fwd Pkts/s,2.048136583164982,1.7457780303514523,positive,2,True,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,3,Pkt Len Std,1.7180905705722778,1.6685297251071618,positive,3,True,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,4,Tot Fwd Pkts,1.6495118929761583,1.6470422742118977,positive,4,True,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,5,Fwd Pkt Len Mean,1.2277217278985872,1.0974499811620817,positive,5,True,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,6,Dst Port,1.107116269028705,1.107116269028705,positive,6,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,7,Pkt Len Mean,0.5884523612001668,0.5884523612001668,positive,7,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,8,Bwd Pkts/s,0.4602437822715096,0.4602437822715096,positive,8,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,9,Flow IAT Min,0.34954764750664646,0.2911082665719416,positive,9,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,10,Bwd Pkt Len Max,0.2325348351960597,0.09958781723095023,positive,10,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,11,Flow IAT Max,0.22287664773023647,0.15954512406302535,positive,11,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,12,Fwd IAT Min,0.21837160732273175,0.17682959426842307,positive,12,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,13,Bwd Pkt Len Mean,0.20197328657883665,0.10906476697520069,positive,13,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,14,Pkt Len Max,0.1988873279289059,-0.07202121696394423,negative,1,False,True,complete_input
+Brute Force -XSS,Brute Force -XSS,46,15,Flow Duration,0.17398520648155524,0.16074086426068906,positive,14,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,16,Pkt Size Avg,0.1715655334941719,0.050083828847045486,positive,15,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,17,Flow IAT Mean,0.11373098349229069,0.11099307750017666,positive,16,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,18,Fwd Pkt Len Std,0.09605178204567535,0.03972677918879882,positive,17,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,19,Flow Pkts/s,0.08556344068568686,0.03043626329821089,positive,18,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,20,Fwd IAT Std,0.07584495510420074,0.051749242793606674,positive,19,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,21,Fwd Header Len,0.07267915014855807,0.0698806012337825,positive,20,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,22,Fwd Act Data Pkts,0.07066175293015398,-0.029303556389134865,negative,2,False,True,complete_input
+Brute Force -XSS,Brute Force -XSS,46,23,Bwd IAT Min,0.06883047180979149,0.008435654413440952,positive,21,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,24,Idle Min,0.06205451917713103,-0.06205451917713103,negative,3,False,True,complete_input
+Brute Force -XSS,Brute Force -XSS,46,25,Flow Byts/s,0.05858355803091241,-0.029249911621698866,negative,4,False,True,complete_input
+Brute Force -XSS,Brute Force -XSS,46,26,TotLen Fwd Pkts,0.05847309157252312,0.02138038222556529,positive,22,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,27,Pkt Len Min,0.038217773013140846,-0.038217773013140846,negative,5,False,True,complete_input
+Brute Force -XSS,Brute Force -XSS,46,28,Fwd IAT Mean,0.034921356168089675,0.027325204993679148,positive,23,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,29,Bwd Pkt Len Std,0.025712811833490497,0.025712811833490497,positive,24,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,30,Init Bwd Win Byts,0.024988286683092945,0.002476463661245678,positive,25,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,31,Flow IAT Std,0.024390034797682387,-0.0032971270696219544,negative,6,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,32,Fwd IAT Max,0.01903738102713681,0.008803673645319499,positive,26,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,33,TotLen Bwd Pkts,0.018405800988978666,0.013006078423527271,positive,27,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,34,Bwd IAT Mean,0.01836045337435992,-0.01836045337435992,negative,7,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,35,Idle Mean,0.017852199931993433,-0.017852199931993433,negative,8,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,36,Active Min,0.016491969399478123,-0.016491969399478123,negative,9,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,37,Bwd IAT Std,0.015445399644744137,0.015384470092375641,positive,28,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,38,Fwd IAT Tot,0.01392225524329621,0.005785995001054328,positive,29,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,39,Bwd Pkt Len Min,0.006950352239705946,-0.006950352239705946,negative,10,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,40,Active Max,0.006230837918575044,0.006230837918575044,positive,30,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,41,Bwd IAT Max,0.006089034419425804,0.006089034419425804,positive,31,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,42,Bwd IAT Tot,0.0054635064392958,0.0011381553283528142,positive,32,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,43,Idle Std,0.00467146941809915,-0.0045869303968451595,negative,11,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,44,Fwd Pkt Len Min,0.0020637716895536237,-0.0020637716895536237,negative,12,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,45,Fwd Pkt Len Max,0.0015276787617830964,-0.001090270797367734,negative,13,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,46,ACK Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,47,Active Mean,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,48,Active Std,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,49,Bwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,50,Bwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,51,Bwd Header Len,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,52,Bwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,53,Bwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,54,Bwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,55,Bwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,56,CWE Flag Count,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,57,Down/Up Ratio,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,58,ECE Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,59,FIN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,60,Fwd Blk Rate Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,61,Fwd Byts/b Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,62,Fwd PSH Flags,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,63,Fwd Pkts/b Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,64,Fwd Seg Size Avg,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,65,Fwd Seg Size Min,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,66,Fwd URG Flags,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,67,Idle Max,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,68,PSH Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,69,Pkt Len Var,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,70,Protocol,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,71,RST Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,72,SYN Flag Cnt,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,73,Subflow Bwd Byts,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,74,Subflow Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,75,Subflow Fwd Byts,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,76,Subflow Fwd Pkts,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,77,Tot Bwd Pkts,0.0,0.0,zero,,False,False,complete_input
+Brute Force -XSS,Brute Force -XSS,46,78,URG Flag Cnt,0.0,0.0,zero,,False,False,complete_input
