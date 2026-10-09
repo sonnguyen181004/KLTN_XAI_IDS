@@ -1,0 +1,74 @@
+{
+  "checks": {
+    "model_loads": true,
+    "test_set_78_features_plus_label": true,
+    "feature_order_matches_model": true,
+    "label_encoder_15_classes": true,
+    "no_nan_inf_in_test": true,
+    "metrics_match_rq1": true,
+    "duplicate_check_recorded": true
+  },
+  "details": {
+    "env_versions": {
+      "python": "3.14.7",
+      "xgboost": "3.4.1",
+      "shap": "0.52.0",
+      "lime": "0.2.0.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pyarrow": "25.0.1"
+    },
+    "test_set_shape": {
+      "rows": 700000,
+      "cols": 79,
+      "n_features": 78
+    },
+    "feature_order_mismatch_sample": null,
+    "label_encoder_classes": [
+      "Benign",
+      "Bot",
+      "Brute Force -Web",
+      "Brute Force -XSS",
+      "DDOS attack-HOIC",
+      "DDOS attack-LOIC-UDP",
+      "DDoS attacks-LOIC-HTTP",
+      "DoS attacks-GoldenEye",
+      "DoS attacks-Hulk",
+      "DoS attacks-SlowHTTPTest",
+      "DoS attacks-Slowloris",
+      "FTP-BruteForce",
+      "Infilteration",
+      "SQL Injection",
+      "SSH-Bruteforce"
+    ],
+    "nan_inf_counts": {
+      "n_nan": 0,
+      "n_inf": 0
+    },
+    "metrics_rerun": {
+      "accuracy_pct": 97.9076,
+      "macro_precision_pct": 90.8358,
+      "macro_recall_pct": 83.995,
+      "macro_f1_pct": 85.8058
+    },
+    "metrics_rq1_reference": {
+      "accuracy_pct": 97.91,
+      "macro_precision_pct": 90.84,
+      "macro_recall_pct": 83.99,
+      "macro_f1_pct": 85.81
+    },
+    "metrics_deltas_pct_points": {
+      "accuracy_pct": 0.0024,
+      "macro_precision_pct": 0.0042,
+      "macro_recall_pct": 0.005,
+      "macro_f1_pct": 0.0042
+    },
+    "train_test_duplicate_rows": {
+      "n_duplicates": 194149,
+      "fraction": 0.277356
+    }
+  },
+  "GATE_PASS": true
+}

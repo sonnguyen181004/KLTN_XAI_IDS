@@ -1,0 +1,10 @@
+2026-10-09 10:11:42,499 [INFO] stage04_shap_per_flow: ================================================================================
+2026-10-09 10:11:42,499 [INFO] stage04_shap_per_flow: GĐ 4: SHAP PER-FLOW TRÊN COHORT
+2026-10-09 10:11:42,499 [INFO] stage04_shap_per_flow: ================================================================================
+2026-10-09 10:11:44,449 [INFO] stage04_shap_per_flow: Nạp 1339 flow_id từ C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\cohort_ids.csv
+2026-10-09 10:11:45,007 [INFO] stage04_shap_per_flow:   ... 200 / 1339 flow xử lý
+2026-10-09 10:11:45,413 [INFO] stage04_shap_per_flow:   ... 800 / 1339 flow xử lý
+2026-10-09 10:11:45,782 [INFO] stage04_shap_per_flow:   ... 1339 / 1339 flow xử lý
+2026-10-09 10:11:46,203 [INFO] stage04_shap_per_flow: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd4_shap_per_flow\shap_per_flow_long.csv (104442 dòng), C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd4_shap_per_flow\shap_per_flow_topk.csv (5356 dòng)
+2026-10-09 10:11:46,203 [INFO] stage04_shap_per_flow: Additivity: max=1.335e-05 mean=1.922e-06 | thời gian TB/flow=0.0005s
+2026-10-09 10:11:46,203 [INFO] stage04_shap_per_flow: GĐ 4 HOÀN TẤT.

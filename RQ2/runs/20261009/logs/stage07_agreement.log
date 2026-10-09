@@ -1,0 +1,100 @@
+2026-10-09 10:23:12,114 [INFO] stage07_agreement: ================================================================================
+2026-10-09 10:23:12,114 [INFO] stage07_agreement: GĐ 7: AGREEMENT SHAP VÀ LIME
+2026-10-09 10:23:12,114 [INFO] stage07_agreement: ================================================================================
+2026-10-09 10:23:14,168 [INFO] stage07_agreement: Xây dựng rank cho 1339 flow (mỗi flow 78 đặc trưng)
+2026-10-09 10:23:18,638 [INFO] stage07_agreement: Đã lưu agreement theo từng flow: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\rq2_1_agreement_per_flow.csv (5356 dòng)
+2026-10-09 10:23:19,564 [INFO] stage07_agreement: Agreement tổng thể:
+ k  n_flows  jaccard_mean  jaccard_ci_lo  jaccard_ci_hi  spearman_mean  spearman_ci_lo  spearman_ci_hi  kendall_tau_mean  kendall_tau_ci_lo  kendall_tau_ci_hi  rbo_mean  rbo_ci_lo  rbo_ci_hi  sign_agreement_mean  sign_agreement_ci_lo  sign_agreement_ci_hi  jaccard_group_mean  jaccard_group_ci_lo  jaccard_group_ci_hi
+ 3     1339      0.162808       0.154444       0.170876      -0.326331       -0.349104       -0.303646         -0.263132          -0.280957          -0.245905  0.296515   0.281995   0.311913             0.947608              0.932802              0.961276            0.296490             0.287003             0.305976
+ 5     1339      0.141369       0.136636       0.146041      -0.366084       -0.381241       -0.350069         -0.285873          -0.297746          -0.274329  0.281204   0.269425   0.292330             0.839501              0.820017              0.860390            0.392475             0.384058             0.401156
+10     1339      0.161680       0.156652       0.166622      -0.383482       -0.393924       -0.373102         -0.280829          -0.288898          -0.273087  0.268836   0.260902   0.276493             0.710428              0.691906              0.729295            0.796750             0.792518             0.801097
+20     1339      0.247623       0.243737       0.251607      -0.325390       -0.335080       -0.315504         -0.231310          -0.238070          -0.224441  0.280889   0.274028   0.287244             0.505429              0.491748              0.517911            1.000000             1.000000             1.000000
+2026-10-09 10:23:27,444 [INFO] stage07_agreement: Đã lưu agreement theo lớp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\rq2_1_agreement_by_class.csv
+2026-10-09 10:23:27,446 [WARNING] stage07_agreement: Các lớp có Spearman trung bình ÂM (đáng chú ý):
+ k                    class  spearman_mean
+ 3                   Benign      -0.356857
+ 3                      Bot      -0.585857
+ 3         Brute Force -Web      -0.509468
+ 3         Brute Force -XSS      -0.766234
+ 3         DDOS attack-HOIC      -0.030000
+ 3     DDOS attack-LOIC-UDP      -0.713143
+ 3   DDoS attacks-LOIC-HTTP      -0.608857
+ 3    DoS attacks-Slowloris      -0.478429
+ 3           FTP-BruteForce      -0.032000
+ 3            Infilteration      -0.663286
+ 3            SQL Injection      -0.360317
+ 3           SSH-Bruteforce      -0.525429
+ 5                   Benign      -0.257390
+ 5                      Bot      -0.636907
+ 5         Brute Force -Web      -0.460148
+ 5         Brute Force -XSS      -0.682876
+ 5         DDOS attack-HOIC      -0.300000
+ 5     DDOS attack-LOIC-UDP      -0.635619
+ 5   DDoS attacks-LOIC-HTTP      -0.617874
+ 5    DoS attacks-GoldenEye      -0.051840
+ 5         DoS attacks-Hulk      -0.235452
+ 5 DoS attacks-SlowHTTPTest      -0.055881
+ 5    DoS attacks-Slowloris      -0.422548
+ 5           FTP-BruteForce      -0.089548
+ 5            Infilteration      -0.553238
+ 5            SQL Injection      -0.396296
+ 5           SSH-Bruteforce      -0.313714
+10                   Benign      -0.244131
+10                      Bot      -0.579966
+10         Brute Force -Web      -0.496408
+10         Brute Force -XSS      -0.569286
+10         DDOS attack-HOIC      -0.476171
+10     DDOS attack-LOIC-UDP      -0.517348
+10   DDoS attacks-LOIC-HTTP      -0.524494
+10    DoS attacks-GoldenEye      -0.216953
+10         DoS attacks-Hulk      -0.395150
+10 DoS attacks-SlowHTTPTest      -0.296129
+10    DoS attacks-Slowloris      -0.330810
+10           FTP-BruteForce      -0.235945
+10            Infilteration      -0.302268
+10            SQL Injection      -0.487198
+10           SSH-Bruteforce      -0.294220
+20                   Benign      -0.208655
+20                      Bot      -0.514558
+20         Brute Force -Web      -0.427279
+20         Brute Force -XSS      -0.413901
+20         DDOS attack-HOIC      -0.548177
+20     DDOS attack-LOIC-UDP      -0.449940
+20   DDoS attacks-LOIC-HTTP      -0.469439
+20    DoS attacks-GoldenEye      -0.141435
+20         DoS attacks-Hulk      -0.354607
+20 DoS attacks-SlowHTTPTest      -0.271249
+20    DoS attacks-Slowloris      -0.202367
+20           FTP-BruteForce      -0.207819
+20            Infilteration      -0.152819
+20            SQL Injection      -0.340312
+20           SSH-Bruteforce      -0.255697
+2026-10-09 10:23:27,778 [INFO] stage07_agreement: Đường cơ sở ngẫu nhiên:
+ k  random_jaccard_mean  random_jaccard_ci_lo  random_jaccard_ci_hi  observed_jaccard_mean  fold_over_random
+ 3             0.023460              0.000000              0.200000               0.162808          6.939815
+ 5             0.035888              0.000000              0.250000               0.141369          3.939173
+10             0.070774              0.000000              0.176471               0.161680          2.284444
+20             0.149630              0.052632              0.290323               0.247623          1.654901
+2026-10-09 10:23:28,606 [INFO] stage07_agreement: Đã lưu biểu đồ vào C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\figures
+2026-10-09 10:23:28,628 [INFO] stage07_agreement: GĐ 7 HOÀN TẤT.
+2026-10-09 10:25:40,153 [INFO] stage07_agreement: ================================================================================
+2026-10-09 10:25:40,154 [INFO] stage07_agreement: GĐ 7: AGREEMENT SHAP VÀ LIME
+2026-10-09 10:25:40,154 [INFO] stage07_agreement: ================================================================================
+2026-10-09 10:25:42,154 [INFO] stage07_agreement: Xây dựng rank cho 1339 flow (mỗi flow 78 đặc trưng)
+2026-10-09 10:25:47,667 [INFO] stage07_agreement: Đã lưu agreement theo từng flow: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\rq2_1_agreement_per_flow.csv (5356 dòng)
+2026-10-09 10:25:48,878 [INFO] stage07_agreement: Agreement tổng thể:
+ k  n_flows  jaccard_mean  jaccard_ci_lo  jaccard_ci_hi  spearman_topk_union_mean  spearman_topk_union_ci_lo  spearman_topk_union_ci_hi  kendall_tau_topk_union_mean  kendall_tau_topk_union_ci_lo  kendall_tau_topk_union_ci_hi  spearman_full78_mean  spearman_full78_ci_lo  spearman_full78_ci_hi  kendall_full78_mean  kendall_full78_ci_lo  kendall_full78_ci_hi  rbo_mean  rbo_ci_lo  rbo_ci_hi  sign_agreement_mean  sign_agreement_ci_lo  sign_agreement_ci_hi  jaccard_group_mean  jaccard_group_ci_lo  jaccard_group_ci_hi
+ 3     1339      0.162808       0.154444       0.170876                 -0.326331                  -0.349104                  -0.303646                    -0.263132                     -0.280957                     -0.245905              0.283634               0.274411               0.293322             0.205468              0.197142              0.213871  0.296515   0.281113   0.311920             0.947608              0.932802              0.962415            0.296490             0.286706             0.305827
+ 5     1339      0.141369       0.136751       0.146011                 -0.366084                  -0.381797                  -0.351049                    -0.285873                     -0.298374                     -0.273671              0.283634               0.273927               0.293334             0.205468              0.197049              0.213762  0.281204   0.270425   0.292645             0.839501              0.820017              0.858705            0.392475             0.384170             0.401156
+10     1339      0.161680       0.156580       0.166715                 -0.383482                  -0.394348                  -0.372770                    -0.280829                     -0.288755                     -0.273391              0.283634               0.274138               0.293382             0.205468              0.197338              0.213663  0.268836   0.260993   0.276607             0.710428              0.691988              0.729325            0.796750             0.792179             0.801209
+20     1339      0.247623       0.243526       0.251314                 -0.325390                  -0.335314                  -0.315217                    -0.231310                     -0.238423                     -0.224431              0.283634               0.273744               0.293439             0.205468              0.197559              0.213881  0.280889   0.274138   0.287831             0.505429              0.492032              0.518402            1.000000             1.000000             1.000000
+2026-10-09 10:26:04,584 [INFO] stage07_agreement: Đã lưu agreement theo lớp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\rq2_1_agreement_by_class.csv
+2026-10-09 10:26:04,585 [INFO] stage07_agreement: Không có lớp nào có Spearman (full-78) trung bình âm.
+2026-10-09 10:26:05,819 [INFO] stage07_agreement: Đường cơ sở ngẫu nhiên:
+ k  random_jaccard_mean  random_jaccard_ci_lo  random_jaccard_ci_hi  observed_jaccard_mean  fold_over_random
+ 3             0.024060              0.000000              0.200000               0.162808          6.766753
+ 5             0.035884              0.000000              0.250000               0.141369          3.939609
+10             0.071852              0.000000              0.176471               0.161680          2.250167
+20             0.149026              0.052632              0.290323               0.247623          1.661610
+2026-10-09 10:26:07,697 [INFO] stage07_agreement: Đã lưu biểu đồ vào C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd7_agreement\figures
+2026-10-09 10:26:07,708 [INFO] stage07_agreement: GĐ 7 HOÀN TẤT.

@@ -1,0 +1,29 @@
+2026-10-09 10:26:51,541 [INFO] stage08_quality_gate: ================================================================================
+2026-10-09 10:26:51,541 [INFO] stage08_quality_gate: GĐ 8: QUALITY GATE CỦA LIME VÀ R2 SO VỚI ĐỒNG THUẬN
+2026-10-09 10:26:51,541 [INFO] stage08_quality_gate: ================================================================================
+2026-10-09 10:26:51,541 [INFO] stage08_quality_gate: Ngưỡng quality gate (đã chốt ở GĐ5 trước khi xem kết quả cohort): R2 >= 0.30
+2026-10-09 10:26:51,551 [INFO] stage08_quality_gate: Toàn bộ cohort: 1339 flow. Vượt ngưỡng: 1151 (85.96%).
+2026-10-09 10:26:51,563 [INFO] stage08_quality_gate: Tỷ lệ vượt ngưỡng theo lớp:
+pred_class
+Bot                         1.00
+Brute Force -Web            1.00
+Brute Force -XSS            1.00
+DDOS attack-LOIC-UDP        1.00
+DDOS attack-HOIC            1.00
+DDoS attacks-LOIC-HTTP      1.00
+DoS attacks-Hulk            1.00
+SQL Injection               1.00
+DoS attacks-SlowHTTPTest    1.00
+SSH-Bruteforce              1.00
+DoS attacks-GoldenEye       0.95
+FTP-BruteForce              0.87
+Infilteration               0.84
+Benign                      0.23
+DoS attacks-Slowloris       0.23
+2026-10-09 10:26:51,608 [INFO] stage08_quality_gate: Đồng thuận theo mức Local R2 (k=5):
+    r2_bucket  n_flows  mean_jaccard  mean_spearman_full78  mean_sign_agreement
+  thấp (<0.1)      105      0.137566              0.352138             0.984211
+vừa (0.1–0.3)       83      0.199895              0.269377             0.911255
+  cao (>=0.3)     1151      0.137496              0.278413             0.820551
+2026-10-09 10:26:51,608 [WARNING] stage08_quality_gate: Đồng thuận KHÔNG tăng đều theo mức Local R2 — ghi nhận đúng như thấy, không có bằng chứng rõ cho giả thuyết 'R2 thấp gây bất đồng'.
+2026-10-09 10:26:52,148 [INFO] stage08_quality_gate: GĐ 8 HOÀN TẤT.

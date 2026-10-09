@@ -1,0 +1,51 @@
+{
+  "cohort_size": 1339,
+  "cohort_class_distribution": {
+    "DoS attacks-SlowHTTPTest": 100,
+    "SSH-Bruteforce": 100,
+    "Infilteration": 100,
+    "DoS attacks-Hulk": 100,
+    "DDoS attacks-LOIC-HTTP": 100,
+    "DoS attacks-Slowloris": 100,
+    "DDOS attack-HOIC": 100,
+    "FTP-BruteForce": 100,
+    "DoS attacks-GoldenEye": 100,
+    "Bot": 100,
+    "DDOS attack-LOIC-UDP": 100,
+    "Benign": 100,
+    "Brute Force -Web": 86,
+    "Brute Force -XSS": 44,
+    "SQL Injection": 9
+  },
+  "dev_size": 250,
+  "dev_class_distribution": {
+    "Benign": 184,
+    "DDoS attacks-LOIC-HTTP": 23,
+    "DDOS attack-HOIC": 19,
+    "DoS attacks-Hulk": 11,
+    "Bot": 9,
+    "SSH-Bruteforce": 3,
+    "DoS attacks-GoldenEye": 1
+  },
+  "error_cohort_size": 151,
+  "error_cohort_class_distribution": {
+    "DDoS attacks-LOIC-HTTP": 20,
+    "Benign": 20,
+    "Brute Force -Web": 20,
+    "FTP-BruteForce": 20,
+    "DoS attacks-SlowHTTPTest": 20,
+    "Infilteration": 20,
+    "DDOS attack-LOIC-UDP": 13,
+    "SQL Injection": 8,
+    "Bot": 5,
+    "SSH-Bruteforce": 2,
+    "Brute Force -XSS": 2,
+    "DoS attacks-Hulk": 1
+  },
+  "n_error_total_raw_in_test_set": 14647,
+  "no_overlap": true,
+  "max_per_class": 100,
+  "max_per_class_error": 20,
+  "dev_set_size_requested": 250,
+  "seed": 42
+}

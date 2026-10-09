@@ -1,0 +1,96 @@
+seed: 42
+paths:
+  train_set: dataset/CICID-2018_processed/train_set.parquet
+  test_set: dataset/CICID-2018_processed/test_set.parquet
+  model: RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl
+  label_encoder: RQ1_Model_Training_xboost/saved_models/label_encoder.pkl
+  rq1_summary_csv: RQ1_Model_Training_xboost/results/bang_2_ket_qua_chinh_thuc_rq1.csv
+  v1_archive: v1_archive/RQ2_old_20260929
+rq1_reference_metrics:
+  accuracy_pct: 97.91
+  macro_precision_pct: 90.84
+  macro_recall_pct: 83.99
+  macro_f1_pct: 85.81
+tolerance_pct_points: 0.05
+n_classes_expected: 15
+n_features_expected: 78
+cohort:
+  max_per_class: 100
+  dev_set_size: 250
+  max_per_class_error: 20
+topk:
+  values:
+  - 3
+  - 5
+  - 10
+  - 20
+lime:
+  kernel_width_candidates:
+  - 3.312
+  - 6.624
+  - 13.248
+  num_samples_candidates:
+  - 1000
+  - 5000
+  - 10000
+  discretize_continuous_candidates:
+  - true
+  - false
+  num_features: 78
+  local_r2_quality_gate: 0.3
+  stability_seeds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  dev_grid_sample_size: 150
+  background_sample_size: 2000
+  locked_config:
+    kernel_width: 3.312
+    num_samples: 1000
+    discretize_continuous: false
+    num_features: 78
+    background_sample_size: 2000
+    background_seed: 42
+    selection_rule: highest median_r2 on dev-grid-subsample; ties within 1e-3 broken
+      by lowest total_time_sec
+    dev_grid_sample_size: 150
+noise:
+  sigma_fractions:
+  - 0.01
+  - 0.05
+  - 0.1
+faithfulness:
+  k_values:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  baselines:
+  - global_median
+  - benign_median
+  - global_mean
+bootstrap:
+  n_resamples: 2000
+  ci: 0.95
+outputs:
+  require_docx_reports: true
+  language: vietnamese
+  docx_reports:
+  - RQ2_Bao_cao_SHAP_chi_tiet.docx       # trọng số SHAP theo lớp + giải thích từng chỉ số, dễ hiểu
+  - RQ2_Bao_cao_LIME_chi_tiet.docx       # trọng số LIME theo lớp + giải thích từng chỉ số, dễ hiểu
+  - RQ2_Bao_cao_Tong_hop_Final.docx      # báo cáo RQ2 chuẩn chỉnh, theo mạch 5 câu hỏi
+  - RQ2_Kien_thuc_chung_Ly_thuyet.docx   # lý thuyết SHAP/LIME + định nghĩa mọi chỉ số dùng trong RQ2
+  - RQ2_Quy_trinh_Thuc_Hien_Chi_Tiet.docx # từng giai đoạn (GĐ0-13) đã làm gì, làm như thế nào, dễ hiểu

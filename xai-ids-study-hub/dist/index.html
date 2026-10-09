@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Cẩm nang tương tác ôn KLTN: IDS, CICFlowMeter, Random Forest, XGBoost, 14 loại tấn công, SHAP, LIME và SOC." />
+  <title>XAI IDS Study Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="progress"><i id="progressBar"></i></div>
+  <div class="tip" id="tip"></div>
+
+  <aside class="sidebar" aria-label="Điều hướng chương">
+    <a class="brand" href="#top"><span class="brand-mark">X</span><span>XAI IDS<br><small>STUDY HUB</small></span></a>
+    <nav id="nav">
+      <div class="nav-group">NỀN TẢNG</div>
+      <a href="#overview"><b>00</b> Tổng quan</a>
+      <a href="#packet"><b>01</b> Packet → Flow</a>
+      <a href="#features"><b>02</b> CICFlowMeter & feature</a>
+      <div class="nav-group">MÔ HÌNH</div>
+      <a href="#ml"><b>03</b> Cây quyết định</a>
+      <a href="#ensemble"><b>04</b> Bagging & Boosting</a>
+      <a href="#models"><b>05</b> RF, XGBoost, siêu tham số</a>
+      <a href="#metrics"><b>06</b> Metrics & mất cân bằng</a>
+      <div class="nav-group">TẤN CÔNG</div>
+      <a href="#attacks"><b>07</b> Attack Atlas (14 demo)</a>
+      <div class="nav-group">GIẢI THÍCH (XAI)</div>
+      <a href="#shap"><b>08</b> SHAP</a>
+      <a href="#lime"><b>09</b> LIME</a>
+      <a href="#compare"><b>10</b> SHAP vs LIME</a>
+      <a href="#evaluation"><b>11</b> Đánh giá XAI</a>
+      <a href="#fingerprint"><b>12</b> Fingerprint & giới hạn</a>
+      <div class="nav-group">HỆ THỐNG & ÔN THI</div>
+      <a href="#soc"><b>13</b> IDS–SOC</a>
+      <a href="#study"><b>14</b> Ôn thi</a>
+    </nav>
+    <div class="side-foot"><span class="status-dot"></span> Số liệu thật từ RQ1–RQ2</div>
+  </aside>
+
+  <main id="top">
+    <header class="topbar">
+      <button id="menuBtn" aria-label="Mở menu">☰</button>
+      <div class="crumb">CẨM NANG TƯƠNG TÁC / <span id="crumb">TỔNG QUAN</span></div>
+      <div class="top-actions">
+        <button id="detailBtn" class="ghost opt">Mở tất cả chi tiết</button>
+        <button id="printBtn" class="ghost opt">In / PDF</button>
+      </div>
+    </header>
+
+    <!-- 00 -->
+    <section class="hero" id="overview">
+      <div class="eyebrow">EXPLAINABLE INTRUSION DETECTION · KLTN</div>
+      <h1>Hiểu mô hình.<br><span>Hiểu cảnh báo.</span></h1>
+      <p class="hero-copy">Đi từ packet, flow, 78 feature đến Random Forest, XGBoost, 14 loại tấn công, SHAP, LIME và quy trình SOC. Học đến đâu có demo bấm thử ngay đến đó.</p>
+      <div class="hero-actions">
+        <a class="primary" href="#packet">Bắt đầu từ packet <span>→</span></a>
+        <a class="secondary" href="#attacks">Xem demo 14 tấn công</a>
+        <a class="secondary" href="#study">Vào chế độ ôn thi</a>
+      </div>
+      <div class="stat-grid">
+        <article><strong>3,5M</strong><span>network flows</span><small>CSE-CIC-IDS2018 sau xử lý</small></article>
+        <article><strong>78</strong><span>flow features</span><small>Schema đầu vào</small></article>
+        <article><strong>15</strong><span>lớp</span><small>Benign + 14 tấn công</small></article>
+        <article><strong>85,81%</strong><span>Macro F1</span><small>XGBoost · test 700.000 flow</small></article>
+      </div>
+      <h3 style="margin-top:46px">Lộ trình học gợi ý</h3>
+      <div class="path mt">
+        <a href="#packet"><b>BƯỚC 1</b><span>Dữ liệu</span><small>Packet → flow → 78 feature</small></a>
+        <a href="#ml"><b>BƯỚC 2</b><span>Mô hình</span><small>Cây → Bagging → Boosting</small></a>
+        <a href="#metrics"><b>BƯỚC 3</b><span>Đo lường</span><small>Precision, Recall, F1, mất cân bằng</small></a>
+        <a href="#attacks"><b>BƯỚC 4</b><span>Tấn công</span><small>14 loại, mỗi loại một hoạt cảnh</small></a>
+        <a href="#shap"><b>BƯỚC 5</b><span>Giải thích</span><small>SHAP, LIME, so sánh, đánh giá</small></a>
+      </div>
+      <h3 style="margin-top:34px">Cách đọc nhãn trên mỗi demo</h3>
+      <p class="note">Mỗi chương theo 3 lớp: <b>Hiểu nhanh</b> → <b>Demo bấm thử</b> → <b>Chi tiết kỹ thuật</b> (mở rộng khi cần). Nhãn màu cho biết số liệu đến từ đâu:</p>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <!-- 01 -->
+    <section id="packet" class="chapter">
+      <div class="chapter-head"><span>01</span><div><p>DỮ LIỆU MẠNG</p><h2>Từ packet đến flow</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Một lần mở website không tạo ra một kết nối mà tạo ra <b>nhiều flow</b> (DNS, TCP/HTTPS, API, CDN…). Mô hình IDS của dự án không dự đoán từng packet; nó dự đoán <b>từng flow</b> sau khi các packet cùng <b>5-tuple</b> (IP nguồn, IP đích, cổng nguồn, cổng đích, giao thức) được gom lại.</div>
+      <div class="card"><div id="packetDemo"></div></div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · 5-TUPLE, KẾT THÚC FLOW, VÌ SAO KHÔNG DỰ ĐOÁN TỪNG PACKET</summary><div>
+        <p><b>5-tuple</b> xác định một flow hai chiều: gói đi (forward) và gói về (backward) cùng thuộc một flow. Một flow kết thúc khi gặp cờ <code>FIN</code> hoặc <code>RST</code>, hoặc khi vượt <b>timeout</b> không có packet mới (CICFlowMeter dùng flow timeout nên flow rất dài bị cắt thành nhiều flow).</p>
+        <p>Một packet đơn lẻ gần như không mang đủ thông tin hành vi: chỉ cần thấy một gói SYN thì chưa thể phân biệt người dùng thật với quét cổng. Hành vi chỉ hiện ra khi nhìn <b>chuỗi</b> packet: nhịp thời gian, số lượng, kích thước, cờ TCP. Đó là lý do IDS dựa trên flow.</p>
+        <p>Hệ quả: hệ thống là <b>near real time</b>, không phải “chặn từ packet đầu tiên”, vì phải chờ flow đủ dữ liệu để tính feature.</p>
+      </div></details>
+    </section>
+
+    <!-- 02 -->
+    <section id="features" class="chapter tint-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>02</span><div><p>CICFLOWMETER</p><h2>78 feature được tính như thế nào?</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>CICFlowMeter đọc các packet của một flow rồi biến chúng thành các con số: bao lâu, bao nhiêu packet, nhanh hay chậm, khoảng cách giữa các packet, bao nhiêu cờ RST/FIN… Kéo các packet trên timeline để xem feature thay đổi.</div>
+      <div class="card"><div id="featureDemo"></div></div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · IAT, ĐƠN VỊ THỜI GIAN, 82 CỘT → 78 FEATURE</summary><div>
+        <p><b>IAT (Inter-Arrival Time)</b> là khoảng cách thời gian giữa hai packet liên tiếp. <code>Flow IAT Mean</code> là trung bình mọi cặp; <code>Fwd IAT Mean</code> chỉ xét chiều đi.</p>
+        <p><b>Lỗi đơn vị (RQ3):</b> dữ liệu huấn luyện CICIDS2018 lưu thời gian theo <b>micro giây</b>, còn CICFlowMeter bản Python (dùng cho prototype) xuất theo <b>giây</b>. Nếu đưa thẳng vào mô hình, mọi feature thời gian nhỏ hơn thật 1.000.000 lần, mô hình dự đoán sai. Nút “µs ↔ s” ở demo trên mô phỏng chính vấn đề này.</p>
+        <p><b>82 → 78:</b> file <code>flows.csv</code> từ prototype có 82 cột; một số cột định danh (IP, cổng nguồn, timestamp, Flow ID) bị loại, các cột còn lại phải đổi tên và sắp theo đúng schema 78 feature của mô hình (<code>Schema Guard</code>).</p>
+      </div></details>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section id="ml" class="chapter">
+      <div class="chapter-head"><span>03</span><div><p>NỀN TẢNG MÔ HÌNH</p><h2>Cây quyết định, bias và variance</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Mô hình học quy luật từ 78 con số để chọn một trong 15 nhãn. Cây quyết định là viên gạch cơ bản: một chuỗi câu hỏi “feature X lớn hơn ngưỡng T không?”. Một cây đơn giản thì thiếu chính xác (<b>bias</b> cao); một cây quá sâu thì nhớ cả nhiễu (<b>variance</b> cao, overfitting).</div>
+      <div class="grid2">
+        <div class="card"><div id="treeDemo"></div></div>
+        <div class="card"><div id="overfitDemo"></div></div>
+      </div>
+      <div class="grid4 mt">
+        <article class="card"><b>Feature</b><p class="note">Biến đầu vào mô tả một flow (78 biến).</p></article>
+        <article class="card"><b>Label</b><p class="note">Lớp đúng, dùng khi huấn luyện (15 lớp).</p></article>
+        <article class="card"><b>Prediction</b><p class="note">Lớp mô hình chọn khi suy luận.</p></article>
+        <article class="card"><b>Confidence</b><p class="note">Xác suất mô hình gán cho lớp đó.</p></article>
+      </div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · GINI, TRAIN/VAL/TEST, DATA LEAKAGE</summary><div>
+        <p><b>Gini — hiểu đơn giản:</b> cứ hỏi "nếu bốc ngẫu nhiên 2 flow trong node này, chúng có cùng lớp không?" — node mà MỌI flow cùng một lớp (ví dụ toàn Benign) thì "sạch", Gini = 0; node trộn lẫn nhiều lớp thì Gini cao. Công thức: <code>G = 1 − Σ pₖ²</code> (p<sub>k</sub> = tỉ lệ lớp k trong node). Cây quyết định luôn chọn câu hỏi/ngưỡng chia nào làm Gini của hai node con <b>giảm nhiều nhất</b> — tức là chia xong thì mỗi bên "sạch" hơn trước.</p>
+        <p><b>Train / validation / test:</b> train để học, validation để chọn tham số, test để báo cáo cuối. <b>Lưu ý của dự án:</b> test set đã được dùng để chọn cấu hình (không có validation riêng) nên số liệu hơi lạc quan; đây là hạn chế cần nêu.</p>
+        <p><b>Data leakage:</b> khi thông tin của tập test “rò” vào quá trình học (ví dụ chia ngẫu nhiên các flow cùng một phiên tấn công vào cả train và test), kết quả đẹp hơn thực tế. CICIDS2018 có nhiều flow gần giống nhau trong cùng một đợt tấn công nên cần thận trọng khi so sánh với traffic mới.</p>
+      </div></details>
+    </section>
+
+    <!-- 04 -->
+    <section id="ensemble" class="chapter dark-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>04</span><div><p>ENSEMBLE LEARNING</p><h2>Bagging và Boosting khác nhau ở đâu?</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b><b>Bagging</b> (Random Forest): nhiều cây <i>sâu</i> học <i>độc lập</i> rồi bỏ phiếu, giúp giảm <b>variance</b>. <b>Boosting</b> (XGBoost): nhiều cây <i>nông</i> học <i>nối tiếp</i>, mỗi cây sửa lỗi còn lại của các cây trước, giúp giảm <b>bias</b>. Kéo thanh bên dưới để thấy đường dự đoán thay đổi.</div>
+      <div class="card"><div id="ensembleDemo"></div></div>
+      <div class="grid3 mt">
+        <article class="card"><div class="card-label">SO SÁNH</div><h3>Trình tự</h3><p class="note">Bagging: song song, các cây không biết nhau.<br>Boosting: tuần tự, cây sau phụ thuộc cây trước.</p></article>
+        <article class="card"><div class="card-label">SO SÁNH</div><h3>Mục tiêu</h3><p class="note">Bagging: giảm variance của cây sâu.<br>Boosting: giảm bias, sửa phần lỗi còn lại.</p></article>
+        <article class="card"><div class="card-label">SO SÁNH</div><h3>Rủi ro</h3><p class="note">Bagging: khó overfit khi thêm cây.<br>Boosting: có thể overfit nếu quá nhiều cây hoặc learning rate lớn.</p></article>
+      </div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · BOOTSTRAP, OOB, RESIDUAL</summary><div>
+        <p><b>Bootstrap — hiểu đơn giản:</b> để tạo "bộ dữ liệu riêng" cho mỗi cây, Random Forest bốc N mẫu NGẪU NHIÊN CÓ HOÀN LẠI từ N mẫu gốc (giống rút thăm rồi trả lại, có thể trúng trùng). Vì vậy mỗi cây chỉ thấy ~63,2% mẫu GỐC (một số mẫu bị bốc trùng nhiều lần, một số không được bốc); ~36,8% mẫu KHÔNG được bốc gọi là <b>out-of-bag (OOB)</b> — dùng chúng để tự ước lượng lỗi của cây đó mà không cần một tập validation riêng.</p>
+        <p><b>Boosting — hiểu đơn giản:</b> cây sau được huấn luyện để SỬA PHẦN SAI của các cây trước, không học lại từ đầu. Công thức <code>F_m(x) = F_{m−1}(x) + η · f_m(x)</code> nghĩa là: dự đoán mới = dự đoán cũ + (một phần nhỏ, theo tốc độ học η) của cây mới. Cây mới <code>f_m</code> học trên <b>residual</b> (phần dư) — tức là CHÊNH LỆCH giữa nhãn thật và dự đoán hiện tại (y − F_{m−1}(x)) — nói cách khác, cây mới chỉ tập trung sửa đúng phần mà các cây trước còn đoán sai.</p>
+        <p>Demo trên dùng dữ liệu 1 chiều có nhiễu để mọi thứ nhìn thấy được; mô hình thật của dự án làm việc trong không gian 78 chiều.</p>
+      </div></details>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section id="models" class="chapter">
+      <div class="chapter-head"><span>05</span><div><p>MODEL DEEP DIVE</p><h2>Random Forest, XGBoost và siêu tham số</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Random Forest = rừng cây bỏ phiếu. XGBoost = chuỗi cây cộng điểm, có <b>regularization</b> (phạt độ phức tạp). Siêu tham số là các “núm vặn” do người huấn luyện chọn trước, không phải thứ mô hình tự học.</div>
+      <div class="grid2">
+        <article class="card"><div class="card-label">BAGGING MODEL</div><h3>Random Forest</h3>
+          <p>Mỗi cây nhìn một bootstrap sample và chỉ xét một tập con ngẫu nhiên feature ở mỗi lần chia. Lớp có nhiều phiếu nhất thắng.</p>
+          <div class="payload">ŷ = mode { tree₁(x), …, treeₙ(x) }</div>
+        </article>
+        <article class="card"><div class="card-label">BOOSTING MODEL</div><h3>XGBoost</h3>
+          <p>Cây được thêm tuần tự. Với 15 lớp, mỗi vòng xây <b>15 cây (mỗi lớp một cây)</b>; điểm cộng dồn của từng lớp (raw margin) được qua softmax để thành xác suất.</p>
+          <div class="payload">Fₘ(x) = Fₘ₋₁(x) + η · fₘ(x)</div>
+        </article>
+      </div>
+      <div class="card mt"><div id="voteDemo"></div></div>
+      <div class="card mt"><div id="paramLab"></div></div>
+      <div class="card mt"><div id="gainDemo"></div></div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · XGBOOST OBJECTIVE, GAIN, SỐ CÂY THẬT</summary><div>
+        <p><b>Mục tiêu — hiểu đơn giản:</b> XGBoost không chỉ cố đoán đúng (phần <code>Σ l(yᵢ,ŷᵢ)</code> — tổng lỗi dự đoán), mà còn bị "phạt" nếu cây quá phức tạp (phần <code>Σ Ω(f_k)</code> — gọi là <b>regularization</b>). Công thức phạt <code>Ω(f) = γT + ½λ‖w‖²</code>: T là số lá của cây (cây nhiều lá hơn bị phạt nhiều hơn, qua tham số <code>γ</code>), w là điểm số gán cho mỗi lá (điểm lớn cũng bị phạt, qua <code>λ</code>). Mục đích: tránh cây học "quá khớp" (overfit) với dữ liệu huấn luyện.</p>
+        <p><b>Gain — hiểu đơn giản:</b> trước khi quyết định tách một node thành hai, XGBoost tính thử "nếu tách thì mục tiêu ở trên cải thiện bao nhiêu" — con số đó gọi là <b>Gain</b> (công thức đầy đủ: <code>½[G_L²/(H_L+λ) + G_R²/(H_R+λ) − (G_L+G_R)²/(H_L+H_R+λ)] − γ</code>). Nếu Gain ÂM (tách không giúp ích, chỉ làm cây phức tạp hơn vô ích) thì KHÔNG tách — đây chính là vai trò của tham số <code>gamma</code>: gamma lớn hơn thì cây "khó tính" hơn, ít chịu tách, cây đơn giản hơn.</p>
+        <p><b>Số cây thật của dự án:</b> cấu hình <code>n_estimators=100</code>, 15 lớp, <code>multi:softprob</code> ⇒ 100 vòng × 15 = <b>1.500 cây</b>, không phải 100 cây. Khi thuyết trình nên nói “100 vòng boosting”.</p>
+        <p><b>Cấu hình dự án (RQ1):</b> <code>max_depth=8</code>, <code>learning_rate=0.08</code>, <code>tree_method=hist</code>. Tuning 7 cấu hình; depth 12 / lr 0,08 đạt F1 85,95% nhưng bản depth 8 được giữ làm mô hình giải thích.</p>
+      </div></details>
+    </section>
+
+    <!-- 06 -->
+    <section id="metrics" class="chapter tint-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>06</span><div><p>ĐO LƯỜNG</p><h2>Precision, Recall, F1 và dữ liệu mất cân bằng</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b><b>Precision</b>: trong số flow bị báo là tấn công, bao nhiêu đúng? <b>Recall</b>: trong số tấn công thật, bắt được bao nhiêu? <b>F1</b>: trung bình điều hòa của hai số này. Với dữ liệu mất cân bằng, <b>Accuracy cao vẫn có thể vô dụng</b>, nên dự án dùng <b>Macro F1</b> (mỗi lớp đóng góp như nhau).</div>
+      <div class="grid2">
+        <div class="card"><div id="prfDemo"></div></div>
+        <div class="card"><div id="imbDemo"></div></div>
+      </div>
+      <div class="card mt"><div id="cmDemo"></div></div>
+      <div class="card mt"><div id="fprDemo"></div></div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · MACRO vs WEIGHTED, NGƯỠNG, FPR</summary><div>
+        <p><b>Macro F1</b> = trung bình F1 của 15 lớp (85,81%); <b>Weighted F1</b> nặng về lớp lớn (97,32%). Chênh lệch lớn chứng tỏ có lớp nhỏ/khó kéo điểm xuống (SlowHTTPTest, Infilteration, SQL Injection).</p>
+        <p><b>Ngưỡng cảnh báo:</b> hạ ngưỡng ⇒ Recall tăng, báo động giả tăng; nâng ngưỡng ⇒ ngược lại. SOC chọn điểm cân bằng theo khả năng xử lý cảnh báo của analyst.</p>
+        <p><b>Sửa lỗi cần nhớ:</b> con số 5,7481% ghi là “FPR” trong bảng RQ1 thực chất là tỉ lệ <b>bỏ sót</b> (tấn công bị đoán là Benign). Tỉ lệ báo động giả thật = 1.139 / 490.000 ≈ <b>0,2324%</b>. Hãy dùng con số này khi trả lời hội đồng.</p>
+      </div></details>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section id="attacks" class="chapter">
+      <div class="chapter-head"><span>07</span><div><p>ATTACK ATLAS</p><h2>14 loại tấn công, mỗi loại một hoạt cảnh</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Bấm vào một thẻ để xem <b>hoạt cảnh</b> (kẻ tấn công làm gì với server), <b>dấu vết flow</b> (feature thay đổi ra sao so với traffic bình thường) và <b>kết quả thật</b> của mô hình dự án trên loại tấn công đó. Hoạt cảnh là minh họa; số F1, confusion và SHAP là số liệu thật.</div>
+      <div class="filter-row">
+        <input id="attackSearch" placeholder="Tìm attack, cơ chế hoặc feature…" aria-label="Tìm attack" />
+        <div class="seg" id="attackFilters"><button class="on" data-group="all">Tất cả</button><button data-group="ddos">DDoS</button><button data-group="dos">DoS</button><button data-group="brute">Brute force</button><button data-group="web">Web</button><button data-group="other">Khác</button></div>
+      </div>
+      <div id="attackGrid" class="attack-grid"></div>
+      <dialog id="attackDialog"><button class="x" id="closeDialog" aria-label="Đóng">×</button><div id="attackDetail"></div></dialog>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · CÁCH CHỌN LỚP “KHÓ”</summary><div>
+        <p>Ba lớp cần đọc thận trọng nhất: <b>Infilteration</b> (Recall 15,98%, 12.026 flow bị đoán là Benign), <b>SlowHTTPTest</b> (Recall 37,64%, 1.082 flow bị đoán là FTP-BruteForce) và <b>SQL Injection</b> (chỉ 17 flow test, 9 flow trong cohort giải thích). Kết luận thống kê trên các lớp có rất ít mẫu không đủ mạnh.</p>
+      </div></details>
+    </section>
+
+    <!-- 08 -->
+    <section id="shap" class="chapter dark-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>08</span><div><p>EXPLAINABLE AI</p><h2>SHAP: chia công cho từng feature</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Mô hình cho mỗi lớp một điểm (raw margin). SHAP chia điểm đó thành <b>base value + đóng góp của từng feature</b>. Feature dương đẩy điểm lên về lớp đang giải thích, feature âm kéo xuống. Cộng tất cả lại thì ra đúng điểm của mô hình (additivity).</div>
+      <div class="card"><div id="shapDemo"></div></div>
+      <div class="grid2 mt">
+        <div class="card"><div id="additivityDemo"></div></div>
+        <div class="card"><div id="localGlobalDemo"></div></div>
+      </div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · SHAPLEY, TREESHAP, CẤU HÌNH DỰ ÁN</summary><div>
+        <p><b>Giá trị Shapley — hiểu đơn giản</b> (Shapley 1953; Lundberg & Lee 2017): tưởng tượng 78 feature là 78 "người chơi" cùng góp công tạo ra một kết quả chung. Để biết CÔNG BẰNG mỗi người góp bao nhiêu, ta thử thêm từng người vào nhóm theo MỌI THỨ TỰ có thể, đo mức kết quả thay đổi mỗi lần thêm, rồi lấy TRUNG BÌNH — đó là giá trị Shapley của người đó. Với 78 feature, thử hết mọi thứ tự là con số khổng lồ (78! cách) — <b>TreeSHAP</b> là một thuật toán lách qua được việc này bằng cách khai thác cấu trúc CÂY của XGBoost, tính ra kết quả CHÍNH XÁC (không phải ước lượng) trong thời gian hợp lý.</p>
+        <p><b>Cấu hình dự án (run 20261009):</b> <code>shap.TreeExplainer</code>, không gian margin thô (raw); additivity kiểm tra trên mẫu 300 flow của 700.000 flow test set, sai số tối đa <b>5,72e-6</b>; trên cohort 1.339 flow, sai số tối đa <b>1,34e-5</b> — cả hai chỉ là sai số số học dấu phẩy động.</p>
+        <p><b>Đọc dấu:</b> dương/âm chỉ nói feature đẩy điểm lớp lên/xuống, <b>không</b> chứng minh feature gây ra cuộc tấn công. SHAP giải thích mô hình, không giải thích thế giới thật.</p>
+      </div></details>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section id="lime" class="chapter">
+      <div class="chapter-head"><span>09</span><div><p>EXPLAINABLE AI</p><h2>LIME: một đường thẳng bắt chước mô hình</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>LIME không nhìn vào bên trong mô hình. Nó tạo nhiều mẫu <b>gần</b> flow cần giải thích, hỏi mô hình dự đoán từng mẫu, rồi fit một mô hình tuyến tính đơn giản (mẫu gần được tính nặng hơn). Hệ số của mô hình tuyến tính chính là lời giải thích. Nếu đường thẳng bám kém, <b>Local R² thấp</b> và lời giải thích đáng ngờ.</div>
+      <div class="grid2">
+        <div class="card"><div id="limeDemo"></div></div>
+        <div class="card"><div id="r2Demo"></div></div>
+      </div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · KERNEL WIDTH, DISCRETIZE, VÌ SAO R² THẤP</summary><div>
+        <p><b>Cấu hình dự án (chốt ở GĐ5, dò trên tập dev TRƯỚC khi xem cohort):</b> <code>LimeTabularExplainer</code> (Ridge surrogate), <code>kernel_width ≈ 3,312</code> (= 0,5× mặc định 6,624), <code>num_samples = 1000</code>, <code>discretize_continuous = False</code>, nền 2.000 dòng mẫu từ train set. Quy tắc chọn: Local R² trung vị cao nhất trên lưới 18 tổ hợp, hoà thì chọn chi phí thấp hơn — không theo mức giống SHAP.</p>
+        <p><b>Local R² trung vị:</b> 0,258 trên tập dev (250 flow dùng để chọn cấu hình) nhưng <b>0,58 trên cohort đánh giá</b> (1.339 flow), 86% flow cohort đạt R² ≥ 0,3 — cải thiện rõ so với cấu hình mặc định cũ (kernel_width=6,624, discretize=True: trung vị chỉ ≈0,068, 12,3% đạt ngưỡng). Việc tắt <code>discretize_continuous</code> và giảm kernel_width là hai thay đổi giúp R² tăng nhiều nhất.</p>
+        <p>Dù cải thiện, 0,258 trên tập dev vẫn dưới ngưỡng chất lượng (0,3) — đây là <b>giới hạn thực của LIME</b> trên dữ liệu mạng lệch mạnh này, không ép đẹp. Kết luận về LIME trong báo cáo luôn kèm cảnh báo độ tin cậy: <b>không đọc trọng số LIME mà bỏ qua Local R²</b>.</p>
+      </div></details>
+    </section>
+
+    <!-- 10 -->
+    <section id="compare" class="chapter dark-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>10</span><div><p>RQ2 · TRUNG TÂM</p><h2>SHAP và LIME trên cùng một flow</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Hai phương pháp giải thích <b>cùng mô hình, cùng flow, cùng lớp dự đoán</b>. Câu hỏi: chúng có chọn cùng feature không (Jaccard), xếp cùng thứ tự không (Spearman), và có đồng ý về <b>dấu</b> không? Chọn lớp và k bên dưới; bảng dùng một flow thật của cohort ghép cặp (flow có Local R² trung vị của lớp).</div>
+      <div class="card"><div id="compareDemo"></div></div>
+      <div class="grid3 mt">
+        <div class="card"><div id="jaccardDemo"></div></div>
+        <div class="card"><div id="spearmanDemo"></div></div>
+        <div class="card"><div id="signDemo"></div></div>
+      </div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · KẾT QUẢ TỔNG HỢP SUB-RQ 2.1</summary><div>
+        <table><thead><tr><th>k</th><th class="num">Jaccard@k</th><th class="num">Spearman (toàn bộ 78 feature)</th><th class="num">Đồng thuận dấu</th></tr></thead>
+        <tbody><tr><td>3</td><td class="num">0,163</td><td class="num">0,284</td><td class="num">0,948</td></tr><tr><td>5</td><td class="num">0,141</td><td class="num">0,284</td><td class="num">0,840</td></tr><tr><td>10</td><td class="num">0,162</td><td class="num">0,284</td><td class="num">0,710</td></tr></tbody></table>
+        <p>Trên cohort 1.339 flow. Spearman tính trên <b>toàn bộ 78 feature</b> (không chỉ Top-k) nên không đổi theo k — một phiên bản tính chỉ trên tập con Top-k từng cho kết quả ÂM giả do một sai lệch thống kê (selection bias) đã phát hiện và sửa khi chạy lại dự án; số liệu đúng ở trên cho thấy SHAP và LIME <b>đồng thuận dương</b> khi xét toàn cục. Kết luận: hai phương pháp chọn <b>tập feature khá khác nhau</b> (Jaccard thấp dù cao hơn ngẫu nhiên 2,3–6,8 lần), nhưng khi cùng chọn một feature thì <b>thường đồng ý về hướng ảnh hưởng</b> (giảm dần theo k vì các feature xếp hạng thấp dễ nhiễu hơn). <b>Không so trực tiếp độ lớn</b> vì SHAP dùng raw margin còn LIME dùng xác suất.</p>
+      </div></details>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section id="evaluation" class="chapter">
+      <div class="chapter-head"><span>11</span><div><p>RQ2 · BẰNG CHỨNG</p><h2>Đánh giá chất lượng lời giải thích</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Một lời giải thích “đẹp” chưa chắc “đúng”. Dự án kiểm bốn góc: <b>tri thức miền</b> (có khớp tín hiệu chuyên gia mong đợi không), <b>ổn định</b> (chạy lại có ra như cũ không), <b>chịu nhiễu</b> (nhiễu nhỏ có đổi lời giải thích không) và <b>trung thực</b> (thay feature được chọn thì mô hình có thật sự thay đổi không).</div>
+      <div class="seg" id="evalTabs"><button class="on" data-t="domain">Domain Precision@5</button><button data-t="stab">Ổn định (10 seed)</button><button data-t="rob">Chịu nhiễu</button><button data-t="faith">Faithfulness</button></div>
+      <div class="card mt"><div id="evalDemo"></div></div>
+      <details class="deep"><summary>CHI TIẾT KỸ THUẬT · PROTOCOL VÀ CẢNH BÁO</summary><div>
+        <p><b>Domain Precision@5:</b> tỉ lệ Top-5 feature của explainer nằm trong bảng tín hiệu miền kỳ vọng (lập TRƯỚC khi xem Top-5, có 2 bản chặt/rộng). Macro (bản rộng): SHAP 0,243; LIME 0,129 — SHAP cao hơn LIME ở cả bản chặt và rộng, nhưng cả hai còn thấp vì mô hình dựa nhiều vào fingerprint môi trường.</p>
+        <p><b>Ổn định:</b> cohort 1.339 flow; LIME chạy lại <b>10 seed</b> (không phải 8) cho Jaccard@5 trung bình giữa các lần ≈ <b>0,58</b>; SHAP (TreeExplainer) xác định tuyệt đối — 100% flow cho Top-5 giống y hệt khi chạy lại.</p>
+        <p><b>Chịu nhiễu:</b> thêm nhiễu Gaussian lên <b>cả 78 feature</b> (biên độ = % độ lệch chuẩn TOÀN CỤC mỗi feature), đo trên toàn cohort. Jaccard@5 giữa giải thích gốc/nhiễu: SHAP 0,51 → 0,48 → 0,46 (sigma 1/5/10%); LIME 0,35 → 0,25 → 0,18 — SHAP ổn định hơn LIME rõ rệt ở mọi mức. Tỉ lệ model ĐỔI NHÃN dự đoán: 76,3% / 80,2% / 81,0% — cao hơn trực giác vì một số feature (Flow Duration, IAT...) có đuôi phân phối rất dài, "nhiễu 1%" theo độ lệch chuẩn toàn cục có thể là một bước nhảy tuyệt đối rất lớn so với giá trị thật của một flow — hạn chế của cách định nghĩa mức nhiễu, không phải lỗi tính toán.</p>
+        <p><b>Faithfulness:</b> xoá Top-k feature, đặt về giá trị NỀN (trung vị toàn tập — thử cả 3 giá trị nền khác nhau), đo mức giảm XÁC SUẤT lớp dự đoán so với xoá k feature ngẫu nhiên, trên toàn cohort (coverage 100% ở mọi k). SHAP thắng LIME (so từng flow) 64,5% / 78,3% / 86,4% (k=3/5/10), kiểm định Wilcoxon p&lt;0,001 ở cả 3 giá trị nền.</p>
+        <p><b>Khoảng trống còn lại:</b> bảng tri thức miền do nhóm tự tổng hợp từ tài liệu gốc, không phải benchmark chính thức; LIME Top-5-theo-lớp tính trên cohort (≤100 flow/lớp) còn SHAP tính trên toàn 700k test set — khác quy mô; mức nhiễu nên đổi sang % theo giá trị TỪNG FLOW ở lần chạy sau; cohort lỗi (151 flow) quá nhỏ để khẳng định xu hướng.</p>
+      </div></details>
+    </section>
+
+    <!-- 12 -->
+    <section id="fingerprint" class="chapter dark-band band">
+      <div class="inner">
+      <div class="chapter-head"><span>12</span><div><p>ĐỌC KẾT QUẢ CẨN THẬN</p><h2>Fingerprint môi trường và giới hạn của flow-based IDS</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Mô hình có thể đạt F1 gần 100% mà vẫn dựa vào <b>dấu vân tay của bộ dữ liệu</b> (cổng đích, cửa sổ TCP ban đầu…) thay vì hành vi tấn công. Trên traffic thật, các dấu vân tay đó thay đổi nên báo động giả xuất hiện. Ngoài ra, 78 feature không đọc được <b>nội dung (payload)</b> nên SQL Injection / XSS cần WAF hoặc DPI.</div>
+      <div class="grid2">
+        <div class="card"><div id="fpDemo"></div></div>
+        <div class="card"><div id="webDemo"></div></div>
+      </div>
+      <div class="limit-list mt2" style="border-color:#2c3a52">
+        <article style="border-color:#2c3a52"><b>01</b><div><h3>Giải thích không phải nguyên nhân</h3><p style="color:#a5afbf">SHAP/LIME cho biết mô hình đã dùng feature thế nào, không chứng minh feature gây ra cuộc tấn công.</p></div></article>
+        <article style="border-color:#2c3a52"><b>02</b><div><h3>Near real time, không phải packet đầu tiên</h3><p style="color:#a5afbf">Phải chờ flow đủ dữ liệu để tính feature.</p></div></article>
+        <article style="border-color:#2c3a52"><b>03</b><div><h3>Traffic thật có thể lệch dataset</h3><p style="color:#a5afbf">Đơn vị thời gian, schema và fingerprint môi trường làm mô hình báo sai.</p></div></article>
+        <article style="border-color:#2c3a52"><b>04</b><div><h3>Chưa có đánh giá bởi chuyên gia SOC</h3><p style="color:#a5afbf">Domain Precision@5 là đối chiếu bảng tri thức, không phải đánh giá của chuyên gia.</p></div></article>
+      </div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section id="soc" class="chapter soc-section band">
+      <div class="inner">
+      <div class="chapter-head"><span>13</span><div><p>SYSTEM · RQ3</p><h2>IDS–SOC: từ packet đến cảnh báo có lý do</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Một flow đi qua <b>Capture → CICFlowMeter → Schema Guard → XGBoost → TreeSHAP → Alert → SOC</b>. Mỗi bước có thể lỗi; hệ thống phải <b>báo lỗi rõ ràng</b> thay vì âm thầm đưa dữ liệu hỏng vào mô hình. Bật lỗi ở demo bên dưới để thấy pipeline phản ứng.</div>
+      <div class="legend" style="margin-bottom:14px"><span class="badge prototype">Current Prototype: bắt flow → CSV</span><span class="badge proposed">Proposed System: dự đoán, SHAP, dashboard</span><span class="badge unvalidated">Not Yet Validated: độ trễ end-to-end</span></div>
+      <div id="socPipeline"></div>
+      <div class="soc-board mt" id="socBoard"></div>
+      <div class="card mt"><div id="faultDemo"></div></div>
+      <div class="card mt"><div id="investDemo"></div></div>
+      <p class="note">Trạng thái: packet capture → <code>flows.csv</code> (136 flow × 82 cột) đã có prototype. Prediction, API, alert correlation và dashboard là hệ thống đề xuất. Mọi con số trong demo SOC là mô phỏng; web không chặn IP thật.</p>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section id="study" class="chapter">
+      <div class="chapter-head"><span>14</span><div><p>CHẾ ĐỘ ÔN THI</p><h2>Flashcard, quiz và câu hỏi hội đồng</h2></div></div>
+      <div class="quick"><b class="k">HIỂU NHANH</b>Ba cách ôn: lật <b>flashcard</b> thuật ngữ, làm <b>quiz</b> nhanh có giải thích, và đọc <b>ngân hàng câu hỏi</b> mà hội đồng hay hỏi (kèm gợi ý trả lời ngắn và chương liên quan).</div>
+      <div class="grid2">
+        <div class="card"><div id="flashDemo"></div></div>
+        <div class="card"><div id="quizDemo"></div></div>
+      </div>
+      <h3 class="mt2">Ngân hàng câu hỏi hội đồng</h3>
+      <div class="qbank card mt" id="qbank"></div>
+      <h3 class="mt2">Thuật ngữ</h3>
+      <div class="filter-row mt"><input id="glossSearch" placeholder="Tìm thuật ngữ…" aria-label="Tìm thuật ngữ" /></div>
+      <div class="gloss" id="gloss"></div>
+      <div class="card mt2">
+        <div class="demo-head"><h3>Hình từ báo cáo dự án</h3><span class="badge real">Real Project Data</span></div>
+        <div class="seg" id="figTabs"><button class="on" data-f="workflow">Workflow</button><button data-f="confusion">Confusion matrix</button><button data-f="agreement">Agreement</button><button data-f="signed">SHAP vs LIME có dấu</button><button data-f="stability">Stability</button><button data-f="faithfulness">Faithfulness</button></div>
+        <img id="figImg" src="assets/workflow.png" alt="Hình kết quả dự án" style="max-width:100%;margin-top:14px;border-radius:12px;border:1px solid var(--line)" />
+        <div id="figCaption" class="note mt"></div>
+      </div>
+      <footer><span>XAI IDS Study Hub</span><span>Số liệu thật lấy từ RQ1/RQ2 của dự án · demo mô phỏng được gắn nhãn · 2026</span></footer>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/packet.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/metrics.js"></script>
+  <script src="js/attacks.js"></script>
+  <script src="js/xai.js"></script>
+  <script src="js/soc.js"></script>
+  <script src="js/study.js"></script>
+  <script>window.addEventListener('DOMContentLoaded',()=>{HUB.boot()})</script>
+</body>
+</html>

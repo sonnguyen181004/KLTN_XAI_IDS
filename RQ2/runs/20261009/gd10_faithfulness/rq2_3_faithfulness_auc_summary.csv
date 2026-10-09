@@ -1,0 +1,10 @@
+﻿baseline,method,comprehensiveness_auc,sufficiency_auc
+global_median,SHAP,0.8116504,0.6608738
+global_median,LIME,0.4579959,0.23198728
+global_median,Random,0.11051373,0.0970801
+global_mean,SHAP,0.8348277,0.2948411
+global_mean,LIME,0.5174545,0.08292961
+global_mean,Random,0.15332581,0.07736625
+benign_median,SHAP,0.8299311,0.53192854
+benign_median,LIME,0.4790101,0.10635461
+benign_median,Random,0.14155939,0.0840493

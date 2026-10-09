@@ -1,0 +1,12 @@
+2026-10-09 10:40:20,576 [INFO] stage13_build_report_data: ================================================================================
+2026-10-09 10:40:20,577 [INFO] stage13_build_report_data: GĐ 13a: TỔNG HỢP SỐ LIỆU CHO BÁO CÁO
+2026-10-09 10:40:20,577 [INFO] stage13_build_report_data: ================================================================================
+2026-10-09 10:40:20,611 [INFO] stage13_build_report_data: Đã ghi bảng tổng hợp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd13_report\rq2_master_summary.json
+2026-10-09 10:40:20,617 [INFO] stage13_build_report_data: So sánh v1 vs v2:
+                            chỉ số       v1          v2
+               Cohort chính (flow) 1339.000 1339.000000
+                 Cohort lỗi (flow)  151.000  151.000000
+LIME median Local R2 (toàn cohort)    0.068    0.579609
+     LIME % flow vượt gate R2>=0.3   12.300   85.959671
+      Jaccard@5 SHAP-LIME quan sát    0.213    0.141369
+2026-10-09 10:40:20,618 [INFO] stage13_build_report_data: GĐ 13a HOÀN TẤT.

@@ -1,0 +1,8 @@
+2026-10-09 09:59:49,522 [INFO] stage00_prepare_run: ================================================================================
+2026-10-09 09:59:49,522 [INFO] stage00_prepare_run: GĐ 0: CHUẨN BỊ LẦN CHẠY
+2026-10-09 09:59:49,522 [INFO] stage00_prepare_run: ================================================================================
+2026-10-09 09:59:49,522 [INFO] stage00_prepare_run: Xác nhận v1_archive tồn tại: C:\Users\LOQ\Downloads\SELF_KLTN\v1_archive\RQ2_old_20260929
+2026-10-09 09:59:49,523 [INFO] stage00_prepare_run: Đã chụp config.yaml -> C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\config_snapshot_gd0.yaml
+2026-10-09 09:59:49,529 [INFO] stage00_prepare_run: Đã tạo cấu trúc thư mục con cho 13 giai đoạn trong C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009
+2026-10-09 09:59:49,560 [INFO] stage00_prepare_run: run_prepare_info.json: {'run_id': '20261009', 'created_at': '2026-10-09T09:59:49.529240', 'git_commit': '7a18608a337270d78064512864180e2f3711aa1d', 'python_executable': 'C:\\Users\\LOQ\\AppData\\Local\\Programs\\Python\\Python314\\python.exe', 'seed': 42}
+2026-10-09 09:59:49,560 [INFO] stage00_prepare_run: GĐ 0 HOÀN TẤT. Run dir: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009

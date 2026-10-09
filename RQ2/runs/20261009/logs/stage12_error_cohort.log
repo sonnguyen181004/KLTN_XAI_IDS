@@ -1,0 +1,25 @@
+2026-10-09 10:33:58,956 [INFO] stage12_error_cohort: ================================================================================
+2026-10-09 10:33:58,957 [INFO] stage12_error_cohort: GĐ 12: GIẢI THÍCH KHI MODEL DỰ ĐOÁN SAI (COHORT LỖI)
+2026-10-09 10:33:58,957 [INFO] stage12_error_cohort: ================================================================================
+2026-10-09 10:33:59,773 [INFO] stage12_error_cohort: Cohort lỗi: 151 flow
+2026-10-09 10:34:00,431 [INFO] stage12_error_cohort:   ... 0 / 151 flow lỗi
+2026-10-09 10:34:02,395 [INFO] stage12_error_cohort:   ... 30 / 151 flow lỗi
+2026-10-09 10:34:04,358 [INFO] stage12_error_cohort:   ... 60 / 151 flow lỗi
+2026-10-09 10:34:06,283 [INFO] stage12_error_cohort:   ... 90 / 151 flow lỗi
+2026-10-09 10:34:08,237 [INFO] stage12_error_cohort:   ... 120 / 151 flow lỗi
+2026-10-09 10:34:10,171 [INFO] stage12_error_cohort:   ... 150 / 151 flow lỗi
+2026-10-09 10:34:10,539 [INFO] stage12_error_cohort: So sánh cohort lỗi vs cohort đúng:
+{'error_cohort_n_flows': 151, 'error_shap_concentration_mean': 0.8060039240398155, 'correct_cohort_shap_concentration_mean': 0.8755276886019023, 'error_shap_lime_jaccard5_mean': 0.16114790286975716, 'correct_cohort_shap_lime_jaccard5_mean': 0.14136941806844722, 'error_env_fraction_in_top5_mean': 0.2463576158940397, 'caveat': 'Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê.'}
+2026-10-09 10:34:27,978 [INFO] stage12_error_cohort: ================================================================================
+2026-10-09 10:34:27,978 [INFO] stage12_error_cohort: GĐ 12: GIẢI THÍCH KHI MODEL DỰ ĐOÁN SAI (COHORT LỖI)
+2026-10-09 10:34:27,978 [INFO] stage12_error_cohort: ================================================================================
+2026-10-09 10:34:28,764 [INFO] stage12_error_cohort: Cohort lỗi: 151 flow
+2026-10-09 10:34:29,445 [INFO] stage12_error_cohort:   ... 0 / 151 flow lỗi
+2026-10-09 10:34:31,422 [INFO] stage12_error_cohort:   ... 30 / 151 flow lỗi
+2026-10-09 10:34:33,446 [INFO] stage12_error_cohort:   ... 60 / 151 flow lỗi
+2026-10-09 10:34:35,436 [INFO] stage12_error_cohort:   ... 90 / 151 flow lỗi
+2026-10-09 10:34:37,450 [INFO] stage12_error_cohort:   ... 120 / 151 flow lỗi
+2026-10-09 10:34:39,478 [INFO] stage12_error_cohort:   ... 150 / 151 flow lỗi
+2026-10-09 10:34:39,866 [INFO] stage12_error_cohort: So sánh cohort lỗi vs cohort đúng:
+{'error_cohort_n_flows': 151, 'error_shap_concentration_mean': 0.8060039240398155, 'correct_cohort_shap_concentration_mean': 0.8755276886019023, 'error_shap_lime_jaccard5_mean': 0.16114790286975716, 'correct_cohort_shap_lime_jaccard5_mean': 0.14136941806844722, 'error_env_fraction_in_top5_mean': 0.2463576158940397, 'caveat': 'Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê.'}
+2026-10-09 10:34:40,125 [INFO] stage12_error_cohort: GĐ 12 HOÀN TẤT.

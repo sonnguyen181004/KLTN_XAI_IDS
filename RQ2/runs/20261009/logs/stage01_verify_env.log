@@ -1,0 +1,25 @@
+2026-10-09 10:00:33,644 [INFO] stage01_verify_env: ================================================================================
+2026-10-09 10:00:33,645 [INFO] stage01_verify_env: GĐ 1: KIỂM TRA DỮ LIỆU, MODEL VÀ MÔI TRƯỜNG
+2026-10-09 10:00:33,645 [INFO] stage01_verify_env: ================================================================================
+2026-10-09 10:00:33,665 [INFO] stage01_verify_env: Phiên bản môi trường: {'python': '3.14.7', 'xgboost': '3.4.1', 'shap': '0.52.0', 'lime': '0.2.0.1', 'scikit-learn': '1.9.1', 'pandas': '3.0.6', 'numpy': '2.5.3', 'scipy': '1.18.1', 'pyarrow': '25.0.1'}
+2026-10-09 10:00:35,487 [INFO] stage01_verify_env: Nạp model + label encoder trong 1.82s
+2026-10-09 10:00:36,050 [INFO] stage01_verify_env: Nạp test_set.parquet (700000 dòng) trong 0.56s
+2026-10-09 10:00:36,056 [INFO] stage01_verify_env: test_set.parquet: 700000 dòng, 79 cột (78 đặc trưng + Label=True) -> True
+2026-10-09 10:00:36,061 [INFO] stage01_verify_env: Thứ tự đặc trưng khớp model: True
+2026-10-09 10:00:36,061 [INFO] stage01_verify_env: Label encoder: 15 lớp (kỳ vọng 15) -> True
+2026-10-09 10:00:36,204 [INFO] stage01_verify_env: NaN=0, Inf=0 trong X_test -> True
+2026-10-09 10:00:38,187 [INFO] stage01_verify_env: Dự đoán 700000 dòng trong 1.80s
+2026-10-09 10:00:38,278 [INFO] stage01_verify_env: Kết quả chạy lại: {'accuracy_pct': 97.9076, 'macro_precision_pct': 90.8358, 'macro_recall_pct': 83.995, 'macro_f1_pct': 85.8058}
+2026-10-09 10:00:38,279 [INFO] stage01_verify_env: RQ1 tham chiếu: {'accuracy_pct': 97.91, 'macro_precision_pct': 90.84, 'macro_recall_pct': 83.99, 'macro_f1_pct': 85.81} | sai lệch: {'accuracy_pct': 0.0024, 'macro_precision_pct': 0.0042, 'macro_recall_pct': 0.005, 'macro_f1_pct': 0.0042} (ngưỡng 0.05) -> True
+2026-10-09 10:00:49,103 [INFO] stage01_verify_env: Dòng trùng (theo hash 78 đặc trưng) giữa train (2800000 dòng) và test (700000 dòng): 194149 (27.7356%) — 10.82s
+2026-10-09 10:00:49,563 [INFO] stage01_verify_env: Checksums: {'model': '52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2', 'label_encoder': '909df601aaf46699ce243171274ff39af5ccd09c93b0930d9d78d71b8ac79397', 'train_set': 'baa16f4546f39cf7fdf6383453c053c3d9ae8fd33622cdbe2ff817292fc34b32', 'test_set': 'c8df6be5d6bb779b6edf0efcf765470130c5119d321c029f0cec490753cfd366'}
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env: --------------------------------------------------------------------------------
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] model_loads
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] test_set_78_features_plus_label
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] feature_order_matches_model
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] label_encoder_15_classes
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] no_nan_inf_in_test
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] metrics_match_rq1
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env:   [PASS] duplicate_check_recorded
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env: --------------------------------------------------------------------------------
+2026-10-09 10:00:49,758 [INFO] stage01_verify_env: GĐ 1 ĐẠT — có thể tiếp tục GĐ 2.

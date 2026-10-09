@@ -1,0 +1,35 @@
+{
+  "lime_scope_note": "LIME top5-by-class tính trên cohort (<=100 flow/lớp), SHAP top5-by-class tính trên toàn test set — khác quy mô dữ liệu.",
+  "lime_n_flows_per_class": {
+    "Benign": 100,
+    "Bot": 100,
+    "Brute Force -Web": 86,
+    "Brute Force -XSS": 44,
+    "DDOS attack-HOIC": 100,
+    "DDOS attack-LOIC-UDP": 100,
+    "DDoS attacks-LOIC-HTTP": 100,
+    "DoS attacks-GoldenEye": 100,
+    "DoS attacks-Hulk": 100,
+    "DoS attacks-SlowHTTPTest": 100,
+    "DoS attacks-Slowloris": 100,
+    "FTP-BruteForce": 100,
+    "Infilteration": 100,
+    "SQL Injection": 9,
+    "SSH-Bruteforce": 100
+  },
+  "f1_by_scope_method": {
+    "broad": {
+      "LIME": 0.10714285714285714,
+      "SHAP": 0.20054945054945053
+    },
+    "strict": {
+      "LIME": 0.09523809523809525,
+      "SHAP": 0.1904761904761905
+    }
+  },
+  "environment_fingerprint_features": [
+    "Fwd Seg Size Min",
+    "Dst Port",
+    "Init Fwd Win Byts"
+  ]
+}

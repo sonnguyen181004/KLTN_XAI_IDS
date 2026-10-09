@@ -1,0 +1,16 @@
+2026-10-09 10:33:42,929 [INFO] stage11_domain_validation: ================================================================================
+2026-10-09 10:33:42,930 [INFO] stage11_domain_validation: GĐ 11: DOMAIN VALIDATION
+2026-10-09 10:33:42,930 [INFO] stage11_domain_validation: ================================================================================
+2026-10-09 10:33:43,199 [INFO] stage11_domain_validation: Tóm tắt precision/recall/F1 so với tri thức miền:
+ scope method  precision_at_5   recall       f1
+ broad   LIME        0.128571 0.091837 0.107143
+ broad   SHAP        0.242857 0.170918 0.200549
+strict   LIME        0.085714 0.107143 0.095238
+strict   SHAP        0.171429 0.214286 0.190476
+2026-10-09 10:33:43,205 [INFO] stage11_domain_validation: Tỷ lệ đặc trưng 'dấu vân tay môi trường' trong Top-5 trung bình: SHAP=0.29 LIME=0.17
+2026-10-09 10:33:43,210 [INFO] stage11_domain_validation: F1 trung bình theo scope:
+scope      broad    strict
+method                    
+LIME    0.107143  0.095238
+SHAP    0.200549  0.190476
+2026-10-09 10:33:44,036 [INFO] stage11_domain_validation: GĐ 11 HOÀN TẤT.

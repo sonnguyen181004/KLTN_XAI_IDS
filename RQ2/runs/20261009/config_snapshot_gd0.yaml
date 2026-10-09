@@ -1,0 +1,61 @@
+# RQ2 run configuration — master params. All stage scripts read from here, nothing hardcoded.
+# Paths are relative to the git repo root (resolved by lib/common.py via repo_root()).
+
+seed: 42
+
+paths:
+  train_set: "dataset/CICID-2018_processed/train_set.parquet"
+  test_set: "dataset/CICID-2018_processed/test_set.parquet"
+  model: "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl"
+  label_encoder: "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl"
+  rq1_summary_csv: "RQ1_Model_Training_xboost/results/bang_2_ket_qua_chinh_thuc_rq1.csv"
+  v1_archive: "v1_archive/RQ2_old_20260929"
+
+# Reference metrics from RQ1 (bang_2_ket_qua_chinh_thuc_rq1.csv) — GĐ1 must reproduce these
+# on test_set.parquet within tolerance_pct_points, or the run stops.
+rq1_reference_metrics:
+  accuracy_pct: 97.91
+  macro_precision_pct: 90.84
+  macro_recall_pct: 83.99
+  macro_f1_pct: 85.81
+tolerance_pct_points: 0.05
+
+n_classes_expected: 15
+n_features_expected: 78
+
+cohort:
+  max_per_class: 100
+  dev_set_size: 250
+  # dev set sampled from the leftover test rows not in the evaluation cohort
+
+topk:
+  values: [3, 5, 10, 20]
+
+lime:
+  # Candidates explored on the dev set at GĐ5. The CHOSEN config is written back here
+  # (locked_config block) before GĐ6 runs — never changed afterwards for this run.
+  kernel_width_candidates: [3.312, 6.624, 13.248]
+  num_samples_candidates: [1000, 5000, 10000]
+  discretize_continuous_candidates: [true, false]
+  num_features: 78
+  local_r2_quality_gate: 0.3
+  stability_seeds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  locked_config: null   # filled in by stage05_lock_lime_config.py
+
+noise:
+  sigma_fractions: [0.01, 0.05, 0.10]
+
+faithfulness:
+  k_values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  baselines: ["global_median", "benign_median", "global_mean"]
+
+bootstrap:
+  n_resamples: 2000
+  ci: 0.95
+
+outputs:
+  require_docx_reports: true
+  docx_reports:
+    - "RQ2_Bao_cao_SHAP_chi_tiet.docx"
+    - "RQ2_Bao_cao_LIME_chi_tiet.docx"
+    - "RQ2_Bao_cao_Tong_hop_Final.docx"

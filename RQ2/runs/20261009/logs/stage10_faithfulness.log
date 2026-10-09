@@ -1,0 +1,33 @@
+2026-10-09 10:33:22,227 [INFO] stage10_faithfulness: ================================================================================
+2026-10-09 10:33:22,227 [INFO] stage10_faithfulness: GĐ 10: FAITHFULNESS (DELETION/INSERTION)
+2026-10-09 10:33:22,227 [INFO] stage10_faithfulness: ================================================================================
+2026-10-09 10:33:28,608 [INFO] stage10_faithfulness: -- Giá trị nền: global_median --
+2026-10-09 10:33:28,938 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8117 sufficiency_AUC=0.6609
+2026-10-09 10:33:29,208 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.4580 sufficiency_AUC=0.2320
+2026-10-09 10:33:29,502 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1105 sufficiency_AUC=0.0971
+2026-10-09 10:33:29,502 [INFO] stage10_faithfulness: -- Giá trị nền: global_mean --
+2026-10-09 10:33:29,781 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8348 sufficiency_AUC=0.2948
+2026-10-09 10:33:30,052 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.5175 sufficiency_AUC=0.0829
+2026-10-09 10:33:30,330 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1533 sufficiency_AUC=0.0774
+2026-10-09 10:33:30,330 [INFO] stage10_faithfulness: -- Giá trị nền: benign_median --
+2026-10-09 10:33:30,603 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8299 sufficiency_AUC=0.5319
+2026-10-09 10:33:30,895 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.4790 sufficiency_AUC=0.1064
+2026-10-09 10:33:31,169 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1416 sufficiency_AUC=0.0840
+2026-10-09 10:33:32,165 [INFO] stage10_faithfulness: Bảng AUC:
+     baseline method  comprehensiveness_auc  sufficiency_auc
+global_median   SHAP               0.811650         0.660874
+global_median   LIME               0.457996         0.231987
+global_median Random               0.110514         0.097080
+  global_mean   SHAP               0.834828         0.294841
+  global_mean   LIME               0.517455         0.082930
+  global_mean Random               0.153326         0.077366
+benign_median   SHAP               0.829931         0.531929
+benign_median   LIME               0.479010         0.106355
+benign_median Random               0.141559         0.084049
+2026-10-09 10:33:32,196 [INFO] stage10_faithfulness: Win-rate SHAP vs LIME (k=5, comprehensiveness):
+     baseline  k  shap_win_rate_vs_lime  wilcoxon_stat    wilcoxon_p  n_flows
+global_median  5               0.782674        82362.5 1.567315e-144     1339
+  global_mean  5               0.799851        76356.5 1.895563e-152     1339
+benign_median  5               0.779686        90555.0 3.431483e-141     1339
+2026-10-09 10:33:32,217 [INFO] stage10_faithfulness: Kết luận SHAP > LIME (comprehensiveness) ổn định qua mọi giá trị nền: True
+2026-10-09 10:33:33,910 [INFO] stage10_faithfulness: GĐ 10 HOÀN TẤT.

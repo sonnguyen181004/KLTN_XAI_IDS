@@ -1,0 +1,46 @@
+2026-10-09 10:09:39,972 [INFO] stage03_cohorts: ================================================================================
+2026-10-09 10:09:39,972 [INFO] stage03_cohorts: GĐ 3: COHORT GHÉP CẶP, TẬP DEV VÀ COHORT LỖI
+2026-10-09 10:09:39,972 [INFO] stage03_cohorts: ================================================================================
+2026-10-09 10:09:44,767 [INFO] stage03_cohorts: Cohort — lớp Benign                   : chọn 100 / 488861 flow đúng dự đoán
+2026-10-09 10:09:44,769 [INFO] stage03_cohorts: Cohort — lớp Bot                      : chọn 100 / 25157 flow đúng dự đoán
+2026-10-09 10:09:44,770 [INFO] stage03_cohorts: Cohort — lớp Brute Force -Web         : chọn 86 / 86 flow đúng dự đoán
+2026-10-09 10:09:44,770 [INFO] stage03_cohorts: Cohort — lớp Brute Force -XSS         : chọn 44 / 44 flow đúng dự đoán
+2026-10-09 10:09:44,772 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-HOIC         : chọn 100 / 59580 flow đúng dự đoán
+2026-10-09 10:09:44,773 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-LOIC-UDP     : chọn 100 / 333 flow đúng dự đoán
+2026-10-09 10:09:44,775 [INFO] stage03_cohorts: Cohort — lớp DDoS attacks-LOIC-HTTP   : chọn 100 / 51327 flow đúng dự đoán
+2026-10-09 10:09:44,777 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-GoldenEye    : chọn 100 / 3694 flow đúng dự đoán
+2026-10-09 10:09:44,778 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Hulk         : chọn 100 / 38759 flow đúng dự đoán
+2026-10-09 10:09:44,779 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-SlowHTTPTest : chọn 100 / 653 flow đúng dự đoán
+2026-10-09 10:09:44,780 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Slowloris    : chọn 100 / 905 flow đúng dự đoán
+2026-10-09 10:09:44,781 [INFO] stage03_cohorts: Cohort — lớp FTP-BruteForce           : chọn 100 / 3202 flow đúng dự đoán
+2026-10-09 10:09:44,782 [INFO] stage03_cohorts: Cohort — lớp Infilteration            : chọn 100 / 2288 flow đúng dự đoán
+2026-10-09 10:09:44,783 [INFO] stage03_cohorts: Cohort — lớp SQL Injection            : chọn 9 / 9 flow đúng dự đoán
+2026-10-09 10:09:44,784 [INFO] stage03_cohorts: Cohort — lớp SSH-Bruteforce           : chọn 100 / 10455 flow đúng dự đoán
+2026-10-09 10:09:44,794 [INFO] stage03_cohorts: Cohort lỗi: 14647 flow dự đoán sai (trên tổng 700000)
+2026-10-09 10:09:44,825 [INFO] stage03_cohorts: Tập dev: 250 flow. Phân bố lớp: {'Benign': 188, 'DDOS attack-HOIC': 25, 'DDoS attacks-LOIC-HTTP': 14, 'DoS attacks-Hulk': 12, 'Bot': 10, 'Infilteration': 1}
+2026-10-09 10:09:44,825 [INFO] stage03_cohorts: Kiểm tra không giao nhau — cohort&dev=0, cohort&error=0, dev&error=0 -> True
+2026-10-09 10:09:44,842 [INFO] stage03_cohorts: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\cohort_ids.csv (1339), C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\dev_ids.csv (250), C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\error_ids.csv (14647)
+2026-10-09 10:09:44,844 [INFO] stage03_cohorts: GĐ 3 HOÀN TẤT — cohort=1339, dev=250, error=14647, không giao nhau=True
+2026-10-09 10:10:48,353 [INFO] stage03_cohorts: ================================================================================
+2026-10-09 10:10:48,353 [INFO] stage03_cohorts: GĐ 3: COHORT GHÉP CẶP, TẬP DEV VÀ COHORT LỖI
+2026-10-09 10:10:48,354 [INFO] stage03_cohorts: ================================================================================
+2026-10-09 10:10:53,104 [INFO] stage03_cohorts: Cohort — lớp Benign                   : chọn 100 / 488861 flow đúng dự đoán
+2026-10-09 10:10:53,106 [INFO] stage03_cohorts: Cohort — lớp Bot                      : chọn 100 / 25157 flow đúng dự đoán
+2026-10-09 10:10:53,107 [INFO] stage03_cohorts: Cohort — lớp Brute Force -Web         : chọn 86 / 86 flow đúng dự đoán
+2026-10-09 10:10:53,108 [INFO] stage03_cohorts: Cohort — lớp Brute Force -XSS         : chọn 44 / 44 flow đúng dự đoán
+2026-10-09 10:10:53,110 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-HOIC         : chọn 100 / 59580 flow đúng dự đoán
+2026-10-09 10:10:53,111 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-LOIC-UDP     : chọn 100 / 333 flow đúng dự đoán
+2026-10-09 10:10:53,113 [INFO] stage03_cohorts: Cohort — lớp DDoS attacks-LOIC-HTTP   : chọn 100 / 51327 flow đúng dự đoán
+2026-10-09 10:10:53,114 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-GoldenEye    : chọn 100 / 3694 flow đúng dự đoán
+2026-10-09 10:10:53,116 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Hulk         : chọn 100 / 38759 flow đúng dự đoán
+2026-10-09 10:10:53,117 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-SlowHTTPTest : chọn 100 / 653 flow đúng dự đoán
+2026-10-09 10:10:53,118 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Slowloris    : chọn 100 / 905 flow đúng dự đoán
+2026-10-09 10:10:53,119 [INFO] stage03_cohorts: Cohort — lớp FTP-BruteForce           : chọn 100 / 3202 flow đúng dự đoán
+2026-10-09 10:10:53,119 [INFO] stage03_cohorts: Cohort — lớp Infilteration            : chọn 100 / 2288 flow đúng dự đoán
+2026-10-09 10:10:53,120 [INFO] stage03_cohorts: Cohort — lớp SQL Injection            : chọn 9 / 9 flow đúng dự đoán
+2026-10-09 10:10:53,121 [INFO] stage03_cohorts: Cohort — lớp SSH-Bruteforce           : chọn 100 / 10455 flow đúng dự đoán
+2026-10-09 10:10:53,133 [INFO] stage03_cohorts: Cohort lỗi: chọn 151 / 14647 flow dự đoán sai (cap 20/lớp theo nhãn thật)
+2026-10-09 10:10:53,143 [INFO] stage03_cohorts: Tập dev: 250 flow. Phân bố lớp: {'Benign': 184, 'DDoS attacks-LOIC-HTTP': 23, 'DDOS attack-HOIC': 19, 'DoS attacks-Hulk': 11, 'Bot': 9, 'SSH-Bruteforce': 3, 'DoS attacks-GoldenEye': 1}
+2026-10-09 10:10:53,144 [INFO] stage03_cohorts: Kiểm tra không giao nhau — cohort&dev=0, cohort&error=0, dev&error=0 -> True
+2026-10-09 10:10:53,151 [INFO] stage03_cohorts: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\cohort_ids.csv (1339), C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\dev_ids.csv (250), C:\Users\LOQ\Downloads\SELF_KLTN\RQ2\runs\20261009\gd3_cohorts\error_ids.csv (151)
+2026-10-09 10:10:53,153 [INFO] stage03_cohorts: GĐ 3 HOÀN TẤT — cohort=1339, dev=250, error=151, không giao nhau=True

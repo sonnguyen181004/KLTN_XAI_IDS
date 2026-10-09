@@ -1,0 +1,9 @@
+{
+  "error_cohort_n_flows": 151,
+  "error_shap_concentration_mean": 0.8060039240398155,
+  "correct_cohort_shap_concentration_mean": 0.8755276886019023,
+  "error_shap_lime_jaccard5_mean": 0.16114790286975716,
+  "correct_cohort_shap_lime_jaccard5_mean": 0.14136941806844722,
+  "error_env_fraction_in_top5_mean": 0.2463576158940397,
+  "caveat": "Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê."
+}

@@ -1,0 +1,152 @@
+﻿flow_id,true_label,pred_label
+1771,Bot,Benign
+2097,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+3906,Benign,Infilteration
+5966,DDOS attack-LOIC-UDP,Benign
+12970,Brute Force -Web,SQL Injection
+21007,FTP-BruteForce,DoS attacks-SlowHTTPTest
+32605,DoS attacks-SlowHTTPTest,FTP-BruteForce
+49559,Infilteration,Benign
+52991,DoS attacks-SlowHTTPTest,FTP-BruteForce
+58039,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+59485,SQL Injection,Brute Force -Web
+63181,Brute Force -Web,Benign
+66886,Infilteration,Benign
+71068,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+72209,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+74289,SQL Injection,Brute Force -Web
+77993,FTP-BruteForce,DoS attacks-SlowHTTPTest
+81969,Brute Force -Web,Benign
+88665,DoS attacks-SlowHTTPTest,FTP-BruteForce
+89072,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+91364,FTP-BruteForce,DoS attacks-SlowHTTPTest
+94926,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+95532,DoS attacks-SlowHTTPTest,FTP-BruteForce
+97260,DDoS attacks-LOIC-HTTP,Benign
+98675,DoS attacks-SlowHTTPTest,FTP-BruteForce
+106461,Brute Force -Web,Benign
+110222,DoS attacks-SlowHTTPTest,FTP-BruteForce
+118540,Infilteration,Benign
+132776,Benign,Infilteration
+132918,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+136053,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+139193,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+140769,FTP-BruteForce,DoS attacks-SlowHTTPTest
+143251,DoS attacks-SlowHTTPTest,FTP-BruteForce
+150944,FTP-BruteForce,DoS attacks-SlowHTTPTest
+151885,Infilteration,Benign
+153948,Benign,Infilteration
+154647,DoS attacks-SlowHTTPTest,FTP-BruteForce
+158360,SQL Injection,Brute Force -Web
+161608,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+162102,DDoS attacks-LOIC-HTTP,Benign
+176584,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+179232,Benign,Infilteration
+184035,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+200769,Benign,Infilteration
+211181,SQL Injection,Brute Force -Web
+215157,Infilteration,Benign
+215895,FTP-BruteForce,DoS attacks-SlowHTTPTest
+218077,SSH-Bruteforce,FTP-BruteForce
+224390,Infilteration,Benign
+225404,Brute Force -Web,Benign
+228050,DoS attacks-Hulk,DoS attacks-GoldenEye
+232435,Brute Force -Web,Benign
+235209,Brute Force -Web,Benign
+239166,SQL Injection,Brute Force -Web
+240663,Infilteration,Benign
+241533,FTP-BruteForce,DoS attacks-SlowHTTPTest
+243975,Infilteration,Benign
+256104,Infilteration,Benign
+258576,FTP-BruteForce,DoS attacks-SlowHTTPTest
+260305,Brute Force -XSS,Benign
+261999,Infilteration,Benign
+262793,Benign,Infilteration
+265648,SQL Injection,Benign
+270470,Infilteration,Benign
+270879,Benign,Infilteration
+289197,FTP-BruteForce,DoS attacks-SlowHTTPTest
+292102,Brute Force -Web,Benign
+292261,Bot,Benign
+295905,DoS attacks-SlowHTTPTest,FTP-BruteForce
+296097,DoS attacks-SlowHTTPTest,FTP-BruteForce
+304076,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+310877,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+315738,Bot,Benign
+316564,Benign,Infilteration
+318128,FTP-BruteForce,DoS attacks-SlowHTTPTest
+323564,DoS attacks-SlowHTTPTest,FTP-BruteForce
+330543,Benign,Infilteration
+331543,Brute Force -Web,Benign
+332160,DoS attacks-SlowHTTPTest,FTP-BruteForce
+332620,Brute Force -Web,Benign
+347358,Infilteration,Benign
+351886,Brute Force -Web,Benign
+365494,SSH-Bruteforce,Benign
+368106,Infilteration,Benign
+369222,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+371708,Brute Force -Web,Benign
+379235,DoS attacks-SlowHTTPTest,FTP-BruteForce
+384672,Infilteration,Benign
+386717,FTP-BruteForce,DoS attacks-SlowHTTPTest
+388666,Benign,Infilteration
+394927,Brute Force -Web,Benign
+396621,Benign,Infilteration
+404988,SQL Injection,Brute Force -Web
+411296,FTP-BruteForce,DoS attacks-SlowHTTPTest
+412151,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+419587,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+421918,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+422538,FTP-BruteForce,DoS attacks-SlowHTTPTest
+425341,Benign,Infilteration
+432055,DoS attacks-SlowHTTPTest,FTP-BruteForce
+450593,Benign,Infilteration
+456603,FTP-BruteForce,DoS attacks-SlowHTTPTest
+461126,Infilteration,Benign
+474363,Brute Force -Web,Benign
+479750,FTP-BruteForce,DoS attacks-SlowHTTPTest
+488878,Benign,Infilteration
+489164,DoS attacks-SlowHTTPTest,FTP-BruteForce
+496226,Brute Force -XSS,SQL Injection
+504315,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+504577,Infilteration,Benign
+505835,Benign,Infilteration
+514970,SQL Injection,Brute Force -Web
+518402,Benign,Infilteration
+519663,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+525488,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+527307,DoS attacks-SlowHTTPTest,FTP-BruteForce
+539438,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+539629,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+541174,FTP-BruteForce,DoS attacks-SlowHTTPTest
+542775,FTP-BruteForce,DoS attacks-SlowHTTPTest
+546700,Infilteration,Benign
+547236,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+551503,FTP-BruteForce,DoS attacks-SlowHTTPTest
+575393,DoS attacks-SlowHTTPTest,FTP-BruteForce
+578547,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+584169,Benign,Infilteration
+589500,Bot,Benign
+590448,Brute Force -Web,Benign
+595438,Bot,Benign
+599379,DoS attacks-SlowHTTPTest,FTP-BruteForce
+602757,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+602949,Infilteration,Benign
+604866,Benign,Infilteration
+607742,FTP-BruteForce,DoS attacks-SlowHTTPTest
+624217,Brute Force -Web,Benign
+631883,Brute Force -Web,Benign
+632388,Brute Force -Web,Benign
+650449,Benign,Infilteration
+652568,Benign,Infilteration
+654736,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+655409,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+665585,Brute Force -Web,Benign
+668673,FTP-BruteForce,DoS attacks-SlowHTTPTest
+675233,DoS attacks-SlowHTTPTest,FTP-BruteForce
+675762,Infilteration,Benign
+676188,Infilteration,Benign
+685405,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+686310,Brute Force -Web,Benign
+687595,DDoS attacks-LOIC-HTTP,DDOS attack-LOIC-UDP
+693883,DoS attacks-SlowHTTPTest,FTP-BruteForce

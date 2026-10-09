@@ -1,0 +1,19 @@
+{
+  "n_flows": 1339,
+  "flow_ids_match_gd4": true,
+  "total_time_sec": 26.35969352722168,
+  "mean_time_sec_per_flow": 0.0196861042025554,
+  "median_local_r2": 0.5796090543968593,
+  "mean_local_r2": 0.5910833955509458,
+  "frac_r2_pass_gate": 0.859596713965646,
+  "locked_config_used": {
+    "kernel_width": 3.312,
+    "num_samples": 1000,
+    "discretize_continuous": false,
+    "num_features": 78,
+    "background_sample_size": 2000,
+    "background_seed": 42,
+    "selection_rule": "highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec",
+    "dev_grid_sample_size": 150
+  }
+}

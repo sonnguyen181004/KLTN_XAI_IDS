@@ -1,0 +1,14 @@
+2026-10-09 10:20:22,643 [INFO] stage06_lime_per_flow: ================================================================================
+2026-10-09 10:20:22,643 [INFO] stage06_lime_per_flow: GĐ 6: LIME PER-FLOW TRÊN COHORT (CẤU HÌNH ĐÃ KHÓA)
+2026-10-09 10:20:22,643 [INFO] stage06_lime_per_flow: ================================================================================
+2026-10-09 10:20:22,643 [INFO] stage06_lime_per_flow: Cấu hình đã khóa: {'kernel_width': 3.312, 'num_samples': 1000, 'discretize_continuous': False, 'num_features': 78, 'background_sample_size': 2000, 'background_seed': 42, 'selection_rule': 'highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec', 'dev_grid_sample_size': 150}
+2026-10-09 10:20:25,001 [INFO] stage06_lime_per_flow: Xác nhận 1339 flow_id khớp tuyệt đối với GĐ4.
+2026-10-09 10:20:25,153 [INFO] stage06_lime_per_flow:   ... 0 / 1339 flow (0.0s đã trôi qua)
+2026-10-09 10:20:29,088 [INFO] stage06_lime_per_flow:   ... 200 / 1339 flow (4.0s đã trôi qua)
+2026-10-09 10:20:32,816 [INFO] stage06_lime_per_flow:   ... 400 / 1339 flow (7.7s đã trôi qua)
+2026-10-09 10:20:37,071 [INFO] stage06_lime_per_flow:   ... 600 / 1339 flow (11.9s đã trôi qua)
+2026-10-09 10:20:40,950 [INFO] stage06_lime_per_flow:   ... 800 / 1339 flow (15.8s đã trôi qua)
+2026-10-09 10:20:44,830 [INFO] stage06_lime_per_flow:   ... 1000 / 1339 flow (19.7s đã trôi qua)
+2026-10-09 10:20:48,611 [INFO] stage06_lime_per_flow:   ... 1200 / 1339 flow (23.5s đã trôi qua)
+2026-10-09 10:20:51,858 [INFO] stage06_lime_per_flow: Hoàn tất 1339 flow trong 26.4s (0.020s/flow). median_R2=0.5796, frac>=gate=85.96%
+2026-10-09 10:20:51,858 [INFO] stage06_lime_per_flow: GĐ 6 HOÀN TẤT.

@@ -1,0 +1,21 @@
+{
+  "k_values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "baselines": [
+    "global_median",
+    "global_mean",
+    "benign_median"
+  ],
+  "conclusion_shap_more_faithful_all_baselines": true,
+  "note_ood_limitation": "Đặt đặc trưng về giá trị nền có thể tạo ra mẫu ngoài phân phối huấn luyện (out-of-distribution) — xác suất đo được sau khi xóa đặc trưng có thể không phản ánh đúng hành vi model trên dữ liệu thực. Đây là giới hạn đã biết của phương pháp deletion/insertion, không phải lỗi triển khai."
+}

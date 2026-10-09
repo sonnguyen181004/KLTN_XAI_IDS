@@ -1,0 +1,6 @@
+﻿chỉ số,v1,v2
+Cohort chính (flow),1339.0,1339.0
+Cohort lỗi (flow),151.0,151.0
+LIME median Local R2 (toàn cohort),0.068,0.5796090543968593
+LIME % flow vượt gate R2>=0.3,12.3,85.9596713965646
+Jaccard@5 SHAP-LIME quan sát,0.213,0.1413694180684472

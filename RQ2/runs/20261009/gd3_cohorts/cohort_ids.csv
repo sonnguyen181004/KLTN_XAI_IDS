@@ -1,0 +1,1340 @@
+﻿flow_id,true_label,pred_label
+172,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+731,SSH-Bruteforce,SSH-Bruteforce
+787,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+1256,Infilteration,Infilteration
+1582,Brute Force -Web,Brute Force -Web
+3338,DoS attacks-Hulk,DoS attacks-Hulk
+3495,DoS attacks-Hulk,DoS attacks-Hulk
+3770,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+3784,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+4054,Brute Force -Web,Brute Force -Web
+4327,DoS attacks-Slowloris,DoS attacks-Slowloris
+4463,DDOS attack-HOIC,DDOS attack-HOIC
+4725,Brute Force -XSS,Brute Force -XSS
+5100,SSH-Bruteforce,SSH-Bruteforce
+5906,DoS attacks-Hulk,DoS attacks-Hulk
+6234,FTP-BruteForce,FTP-BruteForce
+8793,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+8844,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+9514,DDOS attack-HOIC,DDOS attack-HOIC
+10459,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+11309,Brute Force -Web,Brute Force -Web
+11329,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+11840,DoS attacks-Slowloris,DoS attacks-Slowloris
+11950,DDOS attack-HOIC,DDOS attack-HOIC
+12033,DDOS attack-HOIC,DDOS attack-HOIC
+12163,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+12365,Brute Force -Web,Brute Force -Web
+13242,Infilteration,Infilteration
+13566,DoS attacks-Slowloris,DoS attacks-Slowloris
+13946,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+14215,Bot,Bot
+15658,Brute Force -XSS,Brute Force -XSS
+15924,SSH-Bruteforce,SSH-Bruteforce
+16366,Bot,Bot
+17100,DDOS attack-HOIC,DDOS attack-HOIC
+17227,DoS attacks-Slowloris,DoS attacks-Slowloris
+17228,DDOS attack-HOIC,DDOS attack-HOIC
+17231,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+17866,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+18255,SSH-Bruteforce,SSH-Bruteforce
+18302,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+19068,Brute Force -XSS,Brute Force -XSS
+20056,Brute Force -XSS,Brute Force -XSS
+20734,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+20903,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+20922,Brute Force -Web,Brute Force -Web
+22508,SSH-Bruteforce,SSH-Bruteforce
+22780,FTP-BruteForce,FTP-BruteForce
+24518,DoS attacks-Slowloris,DoS attacks-Slowloris
+25577,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+26103,DoS attacks-Hulk,DoS attacks-Hulk
+26400,Infilteration,Infilteration
+26662,Brute Force -Web,Brute Force -Web
+27402,SSH-Bruteforce,SSH-Bruteforce
+27421,Brute Force -XSS,Brute Force -XSS
+27685,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+28493,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+28878,DoS attacks-Hulk,DoS attacks-Hulk
+29535,Brute Force -Web,Brute Force -Web
+30186,DoS attacks-Slowloris,DoS attacks-Slowloris
+30316,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+30494,Benign,Benign
+30548,Bot,Bot
+30861,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+31235,DoS attacks-Slowloris,DoS attacks-Slowloris
+31263,FTP-BruteForce,FTP-BruteForce
+32293,FTP-BruteForce,FTP-BruteForce
+33069,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+33734,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+34218,DoS attacks-Hulk,DoS attacks-Hulk
+34372,DoS attacks-Hulk,DoS attacks-Hulk
+35169,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+35834,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+35910,SSH-Bruteforce,SSH-Bruteforce
+36718,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+36840,DoS attacks-Slowloris,DoS attacks-Slowloris
+37957,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+38600,DoS attacks-Hulk,DoS attacks-Hulk
+39107,FTP-BruteForce,FTP-BruteForce
+39719,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+40324,Brute Force -XSS,Brute Force -XSS
+40556,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+40715,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+40737,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+42573,Brute Force -Web,Brute Force -Web
+43708,Infilteration,Infilteration
+43950,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+43974,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+44610,Benign,Benign
+45214,FTP-BruteForce,FTP-BruteForce
+46168,SQL Injection,SQL Injection
+46299,Bot,Bot
+47530,Benign,Benign
+47891,SSH-Bruteforce,SSH-Bruteforce
+49274,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+49460,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+49728,Brute Force -Web,Brute Force -Web
+51095,Infilteration,Infilteration
+51763,DoS attacks-Hulk,DoS attacks-Hulk
+51801,DoS attacks-Hulk,DoS attacks-Hulk
+52018,FTP-BruteForce,FTP-BruteForce
+52279,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+53520,Benign,Benign
+53684,DoS attacks-Slowloris,DoS attacks-Slowloris
+54695,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+55668,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+55705,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+56007,DDOS attack-HOIC,DDOS attack-HOIC
+56226,Bot,Bot
+57617,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+58379,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+58667,DDOS attack-HOIC,DDOS attack-HOIC
+59083,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+59199,Bot,Bot
+59482,DoS attacks-Hulk,DoS attacks-Hulk
+60176,Benign,Benign
+60182,Bot,Bot
+60281,Infilteration,Infilteration
+60571,FTP-BruteForce,FTP-BruteForce
+61813,Infilteration,Infilteration
+61835,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+61906,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+62489,DoS attacks-Slowloris,DoS attacks-Slowloris
+62513,Benign,Benign
+63228,Brute Force -Web,Brute Force -Web
+63272,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+64517,Benign,Benign
+65838,SSH-Bruteforce,SSH-Bruteforce
+65934,Benign,Benign
+65936,FTP-BruteForce,FTP-BruteForce
+66016,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+67293,Bot,Bot
+68038,Benign,Benign
+68427,Brute Force -Web,Brute Force -Web
+68687,Bot,Bot
+68799,SQL Injection,SQL Injection
+68943,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+71814,DoS attacks-Hulk,DoS attacks-Hulk
+71892,DoS attacks-Slowloris,DoS attacks-Slowloris
+71950,FTP-BruteForce,FTP-BruteForce
+72271,DoS attacks-Slowloris,DoS attacks-Slowloris
+73232,SSH-Bruteforce,SSH-Bruteforce
+73472,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+73683,Bot,Bot
+73788,DDOS attack-HOIC,DDOS attack-HOIC
+73809,DoS attacks-Slowloris,DoS attacks-Slowloris
+74167,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+75338,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+75549,DoS attacks-Hulk,DoS attacks-Hulk
+75572,FTP-BruteForce,FTP-BruteForce
+76102,DDOS attack-HOIC,DDOS attack-HOIC
+76339,SSH-Bruteforce,SSH-Bruteforce
+76413,DoS attacks-Slowloris,DoS attacks-Slowloris
+76824,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+76830,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+76953,DoS attacks-Hulk,DoS attacks-Hulk
+77078,FTP-BruteForce,FTP-BruteForce
+78286,SSH-Bruteforce,SSH-Bruteforce
+78437,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+78606,FTP-BruteForce,FTP-BruteForce
+78836,SSH-Bruteforce,SSH-Bruteforce
+79267,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+79772,FTP-BruteForce,FTP-BruteForce
+79875,DoS attacks-Hulk,DoS attacks-Hulk
+80453,DoS attacks-Slowloris,DoS attacks-Slowloris
+80517,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+80796,FTP-BruteForce,FTP-BruteForce
+80989,SSH-Bruteforce,SSH-Bruteforce
+82741,DDOS attack-HOIC,DDOS attack-HOIC
+83758,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+84004,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+84451,DDOS attack-HOIC,DDOS attack-HOIC
+84596,Infilteration,Infilteration
+85099,Infilteration,Infilteration
+85863,DoS attacks-Slowloris,DoS attacks-Slowloris
+85907,DDOS attack-HOIC,DDOS attack-HOIC
+86164,Brute Force -Web,Brute Force -Web
+86714,DoS attacks-Hulk,DoS attacks-Hulk
+87301,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+87407,FTP-BruteForce,FTP-BruteForce
+88694,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+88816,Brute Force -Web,Brute Force -Web
+89606,Benign,Benign
+89689,DoS attacks-Slowloris,DoS attacks-Slowloris
+89871,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+90062,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+90422,FTP-BruteForce,FTP-BruteForce
+90591,Infilteration,Infilteration
+90799,DDOS attack-HOIC,DDOS attack-HOIC
+90855,Benign,Benign
+90935,SSH-Bruteforce,SSH-Bruteforce
+91287,DDOS attack-HOIC,DDOS attack-HOIC
+91415,Bot,Bot
+91509,DDOS attack-HOIC,DDOS attack-HOIC
+92264,Brute Force -Web,Brute Force -Web
+92992,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+92995,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+93768,SSH-Bruteforce,SSH-Bruteforce
+93921,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+95197,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+95302,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+95359,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+97056,FTP-BruteForce,FTP-BruteForce
+97201,DDOS attack-HOIC,DDOS attack-HOIC
+97722,Benign,Benign
+97857,DoS attacks-Slowloris,DoS attacks-Slowloris
+99470,DoS attacks-Slowloris,DoS attacks-Slowloris
+99536,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+99758,Bot,Bot
+99906,DDOS attack-HOIC,DDOS attack-HOIC
+100125,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+100178,FTP-BruteForce,FTP-BruteForce
+100769,Brute Force -Web,Brute Force -Web
+101190,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+101923,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+102683,Bot,Bot
+102716,DoS attacks-Slowloris,DoS attacks-Slowloris
+103226,DDOS attack-HOIC,DDOS attack-HOIC
+103531,SSH-Bruteforce,SSH-Bruteforce
+103742,Brute Force -Web,Brute Force -Web
+104432,Infilteration,Infilteration
+104560,DoS attacks-Slowloris,DoS attacks-Slowloris
+104902,Infilteration,Infilteration
+105028,SSH-Bruteforce,SSH-Bruteforce
+107048,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+107435,Bot,Bot
+107842,Benign,Benign
+108152,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+108384,DoS attacks-Hulk,DoS attacks-Hulk
+108720,Brute Force -XSS,Brute Force -XSS
+108966,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+109587,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+111646,SSH-Bruteforce,SSH-Bruteforce
+112373,Benign,Benign
+112569,DoS attacks-Slowloris,DoS attacks-Slowloris
+113993,Bot,Bot
+114902,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+115506,Benign,Benign
+115924,DDOS attack-HOIC,DDOS attack-HOIC
+116628,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+117969,SSH-Bruteforce,SSH-Bruteforce
+118320,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+118636,FTP-BruteForce,FTP-BruteForce
+118743,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+119061,SSH-Bruteforce,SSH-Bruteforce
+119106,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+119747,Bot,Bot
+119755,DoS attacks-Slowloris,DoS attacks-Slowloris
+120795,Infilteration,Infilteration
+120899,DoS attacks-Slowloris,DoS attacks-Slowloris
+121133,FTP-BruteForce,FTP-BruteForce
+121969,DDOS attack-HOIC,DDOS attack-HOIC
+122839,Infilteration,Infilteration
+122949,Bot,Bot
+123798,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+123816,Bot,Bot
+126309,Bot,Bot
+126974,DDOS attack-HOIC,DDOS attack-HOIC
+127729,Benign,Benign
+129405,SSH-Bruteforce,SSH-Bruteforce
+129571,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+131380,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+131385,FTP-BruteForce,FTP-BruteForce
+131703,Brute Force -XSS,Brute Force -XSS
+132105,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+132210,Bot,Bot
+132426,Infilteration,Infilteration
+132588,Benign,Benign
+133267,FTP-BruteForce,FTP-BruteForce
+133827,FTP-BruteForce,FTP-BruteForce
+134961,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+136157,Benign,Benign
+136921,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+137142,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+138072,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+138212,FTP-BruteForce,FTP-BruteForce
+138222,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+139936,DDOS attack-HOIC,DDOS attack-HOIC
+139948,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+140635,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+141029,Benign,Benign
+141904,Bot,Bot
+143100,SSH-Bruteforce,SSH-Bruteforce
+143155,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+144595,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+145596,FTP-BruteForce,FTP-BruteForce
+145690,DoS attacks-Slowloris,DoS attacks-Slowloris
+147870,Brute Force -Web,Brute Force -Web
+148625,SSH-Bruteforce,SSH-Bruteforce
+148650,DoS attacks-Slowloris,DoS attacks-Slowloris
+149080,Brute Force -Web,Brute Force -Web
+149794,Brute Force -Web,Brute Force -Web
+151941,SSH-Bruteforce,SSH-Bruteforce
+152234,FTP-BruteForce,FTP-BruteForce
+155760,DoS attacks-Hulk,DoS attacks-Hulk
+155941,SQL Injection,SQL Injection
+156019,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+156210,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+157284,Brute Force -XSS,Brute Force -XSS
+158232,SSH-Bruteforce,SSH-Bruteforce
+158617,FTP-BruteForce,FTP-BruteForce
+158743,Benign,Benign
+158951,Benign,Benign
+161019,DDOS attack-HOIC,DDOS attack-HOIC
+161881,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+162056,DoS attacks-Slowloris,DoS attacks-Slowloris
+163400,DDOS attack-HOIC,DDOS attack-HOIC
+163756,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+163861,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+164018,DoS attacks-Hulk,DoS attacks-Hulk
+164709,DoS attacks-Hulk,DoS attacks-Hulk
+165405,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+165500,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+165540,SSH-Bruteforce,SSH-Bruteforce
+166311,SQL Injection,SQL Injection
+166844,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+167443,FTP-BruteForce,FTP-BruteForce
+167488,Benign,Benign
+167637,DoS attacks-Hulk,DoS attacks-Hulk
+168257,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+168789,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+169468,FTP-BruteForce,FTP-BruteForce
+169550,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+169732,SSH-Bruteforce,SSH-Bruteforce
+169831,DoS attacks-Hulk,DoS attacks-Hulk
+170336,DoS attacks-Slowloris,DoS attacks-Slowloris
+170901,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+171147,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+171584,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+171621,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+171743,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+172308,DoS attacks-Slowloris,DoS attacks-Slowloris
+173817,FTP-BruteForce,FTP-BruteForce
+174953,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+175955,DDOS attack-HOIC,DDOS attack-HOIC
+176759,DoS attacks-Slowloris,DoS attacks-Slowloris
+178197,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+179253,FTP-BruteForce,FTP-BruteForce
+180812,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+181269,Infilteration,Infilteration
+181436,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+181968,FTP-BruteForce,FTP-BruteForce
+182006,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+182417,Brute Force -Web,Brute Force -Web
+183491,Bot,Bot
+183651,FTP-BruteForce,FTP-BruteForce
+183932,Brute Force -XSS,Brute Force -XSS
+185358,Bot,Bot
+185409,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+185839,SSH-Bruteforce,SSH-Bruteforce
+186477,DoS attacks-Hulk,DoS attacks-Hulk
+186594,DoS attacks-Slowloris,DoS attacks-Slowloris
+186910,Infilteration,Infilteration
+187551,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+187553,Bot,Bot
+187700,Infilteration,Infilteration
+188726,Bot,Bot
+189660,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+189761,Infilteration,Infilteration
+190683,FTP-BruteForce,FTP-BruteForce
+191525,Infilteration,Infilteration
+191740,Bot,Bot
+193450,Benign,Benign
+194251,FTP-BruteForce,FTP-BruteForce
+194338,Bot,Bot
+195169,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+195619,SSH-Bruteforce,SSH-Bruteforce
+195646,Infilteration,Infilteration
+195657,DDOS attack-HOIC,DDOS attack-HOIC
+196247,SSH-Bruteforce,SSH-Bruteforce
+196504,DDOS attack-HOIC,DDOS attack-HOIC
+197064,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+197092,DoS attacks-Slowloris,DoS attacks-Slowloris
+198082,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+198263,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+198286,SSH-Bruteforce,SSH-Bruteforce
+198290,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+198404,SSH-Bruteforce,SSH-Bruteforce
+198423,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+199021,DoS attacks-Hulk,DoS attacks-Hulk
+199216,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+200342,Bot,Bot
+200563,DDOS attack-HOIC,DDOS attack-HOIC
+201487,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+201676,DDOS attack-HOIC,DDOS attack-HOIC
+201682,DoS attacks-Hulk,DoS attacks-Hulk
+201691,Benign,Benign
+201841,Brute Force -Web,Brute Force -Web
+202269,Infilteration,Infilteration
+202275,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+202603,SSH-Bruteforce,SSH-Bruteforce
+203170,DDOS attack-HOIC,DDOS attack-HOIC
+203858,Infilteration,Infilteration
+203979,SSH-Bruteforce,SSH-Bruteforce
+204165,Brute Force -XSS,Brute Force -XSS
+204303,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+204508,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+205256,FTP-BruteForce,FTP-BruteForce
+207419,Bot,Bot
+207651,DDOS attack-HOIC,DDOS attack-HOIC
+208160,FTP-BruteForce,FTP-BruteForce
+208194,Infilteration,Infilteration
+208244,DoS attacks-Hulk,DoS attacks-Hulk
+209641,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+209645,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+210341,FTP-BruteForce,FTP-BruteForce
+210828,DDOS attack-HOIC,DDOS attack-HOIC
+211085,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+211126,Bot,Bot
+211143,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+211580,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+211898,Brute Force -Web,Brute Force -Web
+212280,Infilteration,Infilteration
+213106,FTP-BruteForce,FTP-BruteForce
+214305,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+214884,Bot,Bot
+214964,Brute Force -XSS,Brute Force -XSS
+216718,Bot,Bot
+217333,DDOS attack-HOIC,DDOS attack-HOIC
+218526,Benign,Benign
+218688,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+219324,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+219522,SSH-Bruteforce,SSH-Bruteforce
+219640,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+219904,DDOS attack-HOIC,DDOS attack-HOIC
+220024,FTP-BruteForce,FTP-BruteForce
+220146,Brute Force -XSS,Brute Force -XSS
+220347,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+220435,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+220454,DoS attacks-Slowloris,DoS attacks-Slowloris
+220526,SSH-Bruteforce,SSH-Bruteforce
+222932,SSH-Bruteforce,SSH-Bruteforce
+223359,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+224113,Infilteration,Infilteration
+224475,DDOS attack-HOIC,DDOS attack-HOIC
+225548,Brute Force -XSS,Brute Force -XSS
+226389,Infilteration,Infilteration
+226506,DoS attacks-Hulk,DoS attacks-Hulk
+227301,DoS attacks-Slowloris,DoS attacks-Slowloris
+227974,Benign,Benign
+228216,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+230078,SSH-Bruteforce,SSH-Bruteforce
+231078,Benign,Benign
+231252,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+231326,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+231364,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+231380,Infilteration,Infilteration
+231677,Bot,Bot
+232102,Brute Force -Web,Brute Force -Web
+233659,Bot,Bot
+233807,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+234611,DDOS attack-HOIC,DDOS attack-HOIC
+236167,Infilteration,Infilteration
+240251,DoS attacks-Hulk,DoS attacks-Hulk
+241153,Brute Force -XSS,Brute Force -XSS
+241432,DoS attacks-Slowloris,DoS attacks-Slowloris
+242833,SSH-Bruteforce,SSH-Bruteforce
+243113,FTP-BruteForce,FTP-BruteForce
+243512,Brute Force -Web,Brute Force -Web
+243596,Bot,Bot
+244530,DoS attacks-Slowloris,DoS attacks-Slowloris
+244749,Brute Force -Web,Brute Force -Web
+246629,Brute Force -Web,Brute Force -Web
+247145,SSH-Bruteforce,SSH-Bruteforce
+247300,Infilteration,Infilteration
+247717,Brute Force -Web,Brute Force -Web
+247766,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+247922,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+248218,Benign,Benign
+249823,SSH-Bruteforce,SSH-Bruteforce
+250642,Brute Force -Web,Brute Force -Web
+250894,Infilteration,Infilteration
+252079,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+252600,Brute Force -XSS,Brute Force -XSS
+252615,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+252676,Brute Force -Web,Brute Force -Web
+253046,Brute Force -Web,Brute Force -Web
+253220,FTP-BruteForce,FTP-BruteForce
+253739,SSH-Bruteforce,SSH-Bruteforce
+254715,Brute Force -Web,Brute Force -Web
+254773,Benign,Benign
+255062,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+255750,DoS attacks-Hulk,DoS attacks-Hulk
+256591,Bot,Bot
+256733,Benign,Benign
+258263,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+258480,DoS attacks-Hulk,DoS attacks-Hulk
+258714,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+259033,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+259395,Benign,Benign
+259577,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+259608,Benign,Benign
+260861,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+261666,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+262645,DDOS attack-HOIC,DDOS attack-HOIC
+262879,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+262898,Brute Force -Web,Brute Force -Web
+264156,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+265066,DoS attacks-Hulk,DoS attacks-Hulk
+265532,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+265617,FTP-BruteForce,FTP-BruteForce
+266296,Infilteration,Infilteration
+266960,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+267389,SSH-Bruteforce,SSH-Bruteforce
+267659,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+268530,FTP-BruteForce,FTP-BruteForce
+268682,Infilteration,Infilteration
+270110,DoS attacks-Slowloris,DoS attacks-Slowloris
+270762,DoS attacks-Slowloris,DoS attacks-Slowloris
+271314,Benign,Benign
+271918,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+272154,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+272744,DoS attacks-Hulk,DoS attacks-Hulk
+273296,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+274143,Infilteration,Infilteration
+274707,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+274973,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+275823,SSH-Bruteforce,SSH-Bruteforce
+276244,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+276433,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+277077,FTP-BruteForce,FTP-BruteForce
+278182,Brute Force -Web,Brute Force -Web
+278554,DoS attacks-Slowloris,DoS attacks-Slowloris
+278566,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+278815,DDOS attack-HOIC,DDOS attack-HOIC
+280406,Infilteration,Infilteration
+281266,SSH-Bruteforce,SSH-Bruteforce
+281657,Benign,Benign
+282156,Infilteration,Infilteration
+282433,Infilteration,Infilteration
+283848,Brute Force -Web,Brute Force -Web
+284807,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+285723,DoS attacks-Slowloris,DoS attacks-Slowloris
+285727,DoS attacks-Hulk,DoS attacks-Hulk
+286276,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+286975,Brute Force -XSS,Brute Force -XSS
+287023,FTP-BruteForce,FTP-BruteForce
+287097,Infilteration,Infilteration
+287602,Benign,Benign
+287792,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+288753,Brute Force -XSS,Brute Force -XSS
+289173,DoS attacks-Hulk,DoS attacks-Hulk
+289705,DDOS attack-HOIC,DDOS attack-HOIC
+290027,FTP-BruteForce,FTP-BruteForce
+291049,SSH-Bruteforce,SSH-Bruteforce
+291380,Bot,Bot
+291382,FTP-BruteForce,FTP-BruteForce
+291515,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+292378,SSH-Bruteforce,SSH-Bruteforce
+292477,DDOS attack-HOIC,DDOS attack-HOIC
+292866,DoS attacks-Slowloris,DoS attacks-Slowloris
+293431,Bot,Bot
+294020,FTP-BruteForce,FTP-BruteForce
+294209,DDOS attack-HOIC,DDOS attack-HOIC
+294216,Infilteration,Infilteration
+294377,SSH-Bruteforce,SSH-Bruteforce
+294434,SQL Injection,SQL Injection
+294469,DoS attacks-Slowloris,DoS attacks-Slowloris
+295007,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+295122,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+296407,Infilteration,Infilteration
+296944,Infilteration,Infilteration
+297866,Brute Force -Web,Brute Force -Web
+299658,FTP-BruteForce,FTP-BruteForce
+300675,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+300727,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+302253,Bot,Bot
+302291,Brute Force -Web,Brute Force -Web
+302715,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+302973,DDOS attack-HOIC,DDOS attack-HOIC
+303174,Benign,Benign
+303763,DDOS attack-HOIC,DDOS attack-HOIC
+303913,FTP-BruteForce,FTP-BruteForce
+303943,DDOS attack-HOIC,DDOS attack-HOIC
+304628,DoS attacks-Hulk,DoS attacks-Hulk
+304762,Benign,Benign
+306105,Benign,Benign
+307260,Benign,Benign
+307519,Bot,Bot
+307846,DoS attacks-Hulk,DoS attacks-Hulk
+307982,Brute Force -Web,Brute Force -Web
+308045,DoS attacks-Hulk,DoS attacks-Hulk
+308926,Infilteration,Infilteration
+309132,Bot,Bot
+309397,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+310305,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+310345,Infilteration,Infilteration
+310445,Benign,Benign
+310753,SSH-Bruteforce,SSH-Bruteforce
+310995,Infilteration,Infilteration
+312028,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+312043,Benign,Benign
+312250,Bot,Bot
+312371,Infilteration,Infilteration
+312669,SSH-Bruteforce,SSH-Bruteforce
+312699,Bot,Bot
+312850,SSH-Bruteforce,SSH-Bruteforce
+313225,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+313432,Infilteration,Infilteration
+313529,Brute Force -XSS,Brute Force -XSS
+313667,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+313806,Bot,Bot
+314183,Brute Force -XSS,Brute Force -XSS
+314606,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+315063,Brute Force -Web,Brute Force -Web
+315332,Benign,Benign
+315394,Benign,Benign
+315426,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+317120,Brute Force -XSS,Brute Force -XSS
+317474,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+317767,Bot,Bot
+318492,Brute Force -Web,Brute Force -Web
+318493,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+318844,DoS attacks-Hulk,DoS attacks-Hulk
+318858,FTP-BruteForce,FTP-BruteForce
+319005,Bot,Bot
+319697,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+320533,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+320545,SSH-Bruteforce,SSH-Bruteforce
+320952,Brute Force -XSS,Brute Force -XSS
+321860,FTP-BruteForce,FTP-BruteForce
+322022,DoS attacks-Hulk,DoS attacks-Hulk
+322118,FTP-BruteForce,FTP-BruteForce
+322507,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+323354,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+323475,Bot,Bot
+324075,DDOS attack-HOIC,DDOS attack-HOIC
+324210,Benign,Benign
+325549,Infilteration,Infilteration
+326200,FTP-BruteForce,FTP-BruteForce
+326495,Infilteration,Infilteration
+326555,Bot,Bot
+326858,Benign,Benign
+327099,DDOS attack-HOIC,DDOS attack-HOIC
+327975,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+328840,Benign,Benign
+330518,FTP-BruteForce,FTP-BruteForce
+330643,SSH-Bruteforce,SSH-Bruteforce
+330832,DoS attacks-Hulk,DoS attacks-Hulk
+330903,Bot,Bot
+331276,FTP-BruteForce,FTP-BruteForce
+332442,FTP-BruteForce,FTP-BruteForce
+333222,Benign,Benign
+333345,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+334283,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+334913,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+336026,DoS attacks-Slowloris,DoS attacks-Slowloris
+336997,Bot,Bot
+337311,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+337434,Infilteration,Infilteration
+338422,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+338824,Brute Force -XSS,Brute Force -XSS
+339605,DoS attacks-Hulk,DoS attacks-Hulk
+339667,Brute Force -Web,Brute Force -Web
+340208,Bot,Bot
+340791,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+340909,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+341796,DDOS attack-HOIC,DDOS attack-HOIC
+342884,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+343094,Bot,Bot
+343134,FTP-BruteForce,FTP-BruteForce
+343470,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+343492,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+344132,Bot,Bot
+345045,Bot,Bot
+345049,Bot,Bot
+345958,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+346512,Brute Force -XSS,Brute Force -XSS
+347692,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+348721,Benign,Benign
+349133,DDOS attack-HOIC,DDOS attack-HOIC
+349327,DDOS attack-HOIC,DDOS attack-HOIC
+349529,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+349906,Brute Force -Web,Brute Force -Web
+349978,SSH-Bruteforce,SSH-Bruteforce
+350224,DDOS attack-HOIC,DDOS attack-HOIC
+350502,Benign,Benign
+351416,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+351520,DoS attacks-Hulk,DoS attacks-Hulk
+351567,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+352016,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+352456,DoS attacks-Hulk,DoS attacks-Hulk
+353452,SSH-Bruteforce,SSH-Bruteforce
+354101,DDOS attack-HOIC,DDOS attack-HOIC
+355308,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+355618,DDOS attack-HOIC,DDOS attack-HOIC
+355723,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+356751,Brute Force -Web,Brute Force -Web
+357297,DoS attacks-Hulk,DoS attacks-Hulk
+357531,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+358097,SQL Injection,SQL Injection
+358890,Infilteration,Infilteration
+359048,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+359537,Benign,Benign
+359554,FTP-BruteForce,FTP-BruteForce
+359579,DoS attacks-Slowloris,DoS attacks-Slowloris
+360387,DoS attacks-Slowloris,DoS attacks-Slowloris
+360939,DoS attacks-Slowloris,DoS attacks-Slowloris
+361519,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+361790,SSH-Bruteforce,SSH-Bruteforce
+361814,DoS attacks-Slowloris,DoS attacks-Slowloris
+362368,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+363023,Infilteration,Infilteration
+363090,Bot,Bot
+363223,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+363736,DoS attacks-Slowloris,DoS attacks-Slowloris
+363745,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+364149,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+364474,DoS attacks-Slowloris,DoS attacks-Slowloris
+364494,DDOS attack-HOIC,DDOS attack-HOIC
+364710,DoS attacks-Hulk,DoS attacks-Hulk
+364833,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+365136,Infilteration,Infilteration
+365607,FTP-BruteForce,FTP-BruteForce
+365833,Brute Force -Web,Brute Force -Web
+366290,Brute Force -Web,Brute Force -Web
+367369,FTP-BruteForce,FTP-BruteForce
+368802,Benign,Benign
+371681,DDOS attack-HOIC,DDOS attack-HOIC
+372582,Infilteration,Infilteration
+374398,Brute Force -XSS,Brute Force -XSS
+375921,DoS attacks-Hulk,DoS attacks-Hulk
+376460,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+377181,Bot,Bot
+377200,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+377720,FTP-BruteForce,FTP-BruteForce
+378460,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+378630,Infilteration,Infilteration
+378868,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+378904,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+379042,DoS attacks-Slowloris,DoS attacks-Slowloris
+379049,Bot,Bot
+379113,DoS attacks-Slowloris,DoS attacks-Slowloris
+379409,Bot,Bot
+379791,SQL Injection,SQL Injection
+380316,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+380676,DoS attacks-Slowloris,DoS attacks-Slowloris
+382053,Benign,Benign
+382878,Benign,Benign
+383181,FTP-BruteForce,FTP-BruteForce
+383315,DoS attacks-Slowloris,DoS attacks-Slowloris
+383354,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+383426,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+383599,Brute Force -Web,Brute Force -Web
+383954,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+384456,DoS attacks-Hulk,DoS attacks-Hulk
+385336,Brute Force -Web,Brute Force -Web
+386217,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+386430,DoS attacks-Hulk,DoS attacks-Hulk
+386696,Infilteration,Infilteration
+386793,SSH-Bruteforce,SSH-Bruteforce
+387556,Brute Force -Web,Brute Force -Web
+388408,Benign,Benign
+388482,DDOS attack-HOIC,DDOS attack-HOIC
+390292,Brute Force -XSS,Brute Force -XSS
+390395,DoS attacks-Slowloris,DoS attacks-Slowloris
+392548,Brute Force -Web,Brute Force -Web
+393620,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+395416,Benign,Benign
+396344,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+396893,DDOS attack-HOIC,DDOS attack-HOIC
+397329,Infilteration,Infilteration
+397403,DoS attacks-Slowloris,DoS attacks-Slowloris
+397478,SSH-Bruteforce,SSH-Bruteforce
+397490,Bot,Bot
+398799,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+400457,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+401886,DoS attacks-Slowloris,DoS attacks-Slowloris
+402004,SSH-Bruteforce,SSH-Bruteforce
+402197,Bot,Bot
+402380,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+402677,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+404377,Bot,Bot
+405784,Infilteration,Infilteration
+406035,Bot,Bot
+406095,DDOS attack-HOIC,DDOS attack-HOIC
+406393,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+407392,SSH-Bruteforce,SSH-Bruteforce
+407681,FTP-BruteForce,FTP-BruteForce
+408152,FTP-BruteForce,FTP-BruteForce
+408593,Bot,Bot
+409353,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+409474,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+410021,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+410112,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+410254,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+410740,SSH-Bruteforce,SSH-Bruteforce
+410845,Bot,Bot
+412248,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+414454,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+414918,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+415165,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+415297,SQL Injection,SQL Injection
+415964,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+416934,DDOS attack-HOIC,DDOS attack-HOIC
+416984,Infilteration,Infilteration
+417478,DDOS attack-HOIC,DDOS attack-HOIC
+417634,Brute Force -Web,Brute Force -Web
+417696,Infilteration,Infilteration
+418003,DoS attacks-Slowloris,DoS attacks-Slowloris
+420193,DoS attacks-Slowloris,DoS attacks-Slowloris
+421149,DoS attacks-Slowloris,DoS attacks-Slowloris
+421817,Brute Force -Web,Brute Force -Web
+422128,DDOS attack-HOIC,DDOS attack-HOIC
+422518,SSH-Bruteforce,SSH-Bruteforce
+423486,Brute Force -XSS,Brute Force -XSS
+423710,FTP-BruteForce,FTP-BruteForce
+423824,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+424076,DDOS attack-HOIC,DDOS attack-HOIC
+424233,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+424607,Bot,Bot
+425306,DoS attacks-Slowloris,DoS attacks-Slowloris
+426361,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+426496,FTP-BruteForce,FTP-BruteForce
+427567,Infilteration,Infilteration
+428076,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+428942,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+430855,Brute Force -Web,Brute Force -Web
+430879,FTP-BruteForce,FTP-BruteForce
+431138,DoS attacks-Hulk,DoS attacks-Hulk
+433136,DoS attacks-Hulk,DoS attacks-Hulk
+433298,DoS attacks-Hulk,DoS attacks-Hulk
+434271,Brute Force -XSS,Brute Force -XSS
+435047,Brute Force -Web,Brute Force -Web
+435082,Brute Force -Web,Brute Force -Web
+435265,SSH-Bruteforce,SSH-Bruteforce
+435398,Bot,Bot
+435516,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+435999,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+436016,Infilteration,Infilteration
+436253,Bot,Bot
+437217,FTP-BruteForce,FTP-BruteForce
+437515,DoS attacks-Slowloris,DoS attacks-Slowloris
+437810,Infilteration,Infilteration
+438174,Brute Force -Web,Brute Force -Web
+439451,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+440734,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+440950,DoS attacks-Hulk,DoS attacks-Hulk
+440968,Benign,Benign
+442254,Benign,Benign
+443482,DDOS attack-HOIC,DDOS attack-HOIC
+443627,DoS attacks-Hulk,DoS attacks-Hulk
+443890,DDOS attack-HOIC,DDOS attack-HOIC
+444547,DoS attacks-Slowloris,DoS attacks-Slowloris
+444581,SSH-Bruteforce,SSH-Bruteforce
+445619,Brute Force -Web,Brute Force -Web
+445828,Benign,Benign
+446683,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+448174,Infilteration,Infilteration
+450197,DoS attacks-Slowloris,DoS attacks-Slowloris
+450421,FTP-BruteForce,FTP-BruteForce
+450725,Benign,Benign
+450779,Bot,Bot
+451779,DoS attacks-Slowloris,DoS attacks-Slowloris
+452015,DoS attacks-Slowloris,DoS attacks-Slowloris
+452263,DoS attacks-Hulk,DoS attacks-Hulk
+452893,DoS attacks-Hulk,DoS attacks-Hulk
+453106,DoS attacks-Hulk,DoS attacks-Hulk
+454267,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+454565,Infilteration,Infilteration
+455558,DoS attacks-Hulk,DoS attacks-Hulk
+456521,Infilteration,Infilteration
+457110,Infilteration,Infilteration
+457772,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+458156,Benign,Benign
+458210,Bot,Bot
+458435,DoS attacks-Hulk,DoS attacks-Hulk
+458576,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+459088,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+459692,SSH-Bruteforce,SSH-Bruteforce
+459739,Bot,Bot
+460189,FTP-BruteForce,FTP-BruteForce
+460214,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+460217,SSH-Bruteforce,SSH-Bruteforce
+460443,Brute Force -XSS,Brute Force -XSS
+461083,Infilteration,Infilteration
+462813,Brute Force -Web,Brute Force -Web
+463354,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+463389,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+464264,DDOS attack-HOIC,DDOS attack-HOIC
+464916,DDOS attack-HOIC,DDOS attack-HOIC
+465013,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+465025,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+465061,Brute Force -Web,Brute Force -Web
+465189,DoS attacks-Slowloris,DoS attacks-Slowloris
+465399,FTP-BruteForce,FTP-BruteForce
+465523,Infilteration,Infilteration
+466524,Bot,Bot
+466908,SSH-Bruteforce,SSH-Bruteforce
+467947,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+468844,Benign,Benign
+468943,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+469503,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+470208,Infilteration,Infilteration
+470293,Bot,Bot
+470325,Brute Force -Web,Brute Force -Web
+470562,DoS attacks-Hulk,DoS attacks-Hulk
+471104,Infilteration,Infilteration
+471531,DoS attacks-Slowloris,DoS attacks-Slowloris
+472333,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+472733,Infilteration,Infilteration
+473231,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+473975,SSH-Bruteforce,SSH-Bruteforce
+474070,DoS attacks-Slowloris,DoS attacks-Slowloris
+474577,Benign,Benign
+474715,DDOS attack-HOIC,DDOS attack-HOIC
+475209,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+476206,Brute Force -XSS,Brute Force -XSS
+476336,Brute Force -XSS,Brute Force -XSS
+476676,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+476835,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+477610,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+477734,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+477804,Benign,Benign
+478158,Benign,Benign
+478730,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+480588,Benign,Benign
+481014,SSH-Bruteforce,SSH-Bruteforce
+481737,SSH-Bruteforce,SSH-Bruteforce
+482959,SSH-Bruteforce,SSH-Bruteforce
+483707,Brute Force -Web,Brute Force -Web
+484737,Bot,Bot
+485929,DoS attacks-Slowloris,DoS attacks-Slowloris
+486892,DDOS attack-HOIC,DDOS attack-HOIC
+486934,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+487209,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+487263,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+487387,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+488135,Benign,Benign
+488231,Bot,Bot
+488992,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+489470,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+489800,SSH-Bruteforce,SSH-Bruteforce
+490284,Benign,Benign
+490420,Benign,Benign
+491715,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+491728,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+492002,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+492969,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+493521,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+494286,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+494413,Infilteration,Infilteration
+495591,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+496053,DoS attacks-Hulk,DoS attacks-Hulk
+496791,Bot,Bot
+496970,DoS attacks-Hulk,DoS attacks-Hulk
+497795,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+498379,Brute Force -Web,Brute Force -Web
+498583,Infilteration,Infilteration
+498647,Brute Force -Web,Brute Force -Web
+498915,DoS attacks-Slowloris,DoS attacks-Slowloris
+499022,Bot,Bot
+499151,SSH-Bruteforce,SSH-Bruteforce
+499280,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+499490,DoS attacks-Slowloris,DoS attacks-Slowloris
+500197,Bot,Bot
+500247,DoS attacks-Slowloris,DoS attacks-Slowloris
+500277,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+500639,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+501343,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+501715,DoS attacks-Hulk,DoS attacks-Hulk
+501916,DDOS attack-HOIC,DDOS attack-HOIC
+502356,Benign,Benign
+502711,Infilteration,Infilteration
+503052,Brute Force -XSS,Brute Force -XSS
+504769,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+507562,DDOS attack-HOIC,DDOS attack-HOIC
+507576,FTP-BruteForce,FTP-BruteForce
+509162,Infilteration,Infilteration
+509759,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+509950,DoS attacks-Hulk,DoS attacks-Hulk
+510614,Bot,Bot
+510672,FTP-BruteForce,FTP-BruteForce
+511057,DoS attacks-Hulk,DoS attacks-Hulk
+511838,SSH-Bruteforce,SSH-Bruteforce
+512234,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+512406,Infilteration,Infilteration
+513915,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+513948,FTP-BruteForce,FTP-BruteForce
+514169,FTP-BruteForce,FTP-BruteForce
+514378,Brute Force -Web,Brute Force -Web
+514487,Infilteration,Infilteration
+515246,Benign,Benign
+515335,Infilteration,Infilteration
+515574,DoS attacks-Hulk,DoS attacks-Hulk
+515837,DoS attacks-Hulk,DoS attacks-Hulk
+516812,DoS attacks-Slowloris,DoS attacks-Slowloris
+517291,Brute Force -Web,Brute Force -Web
+517324,DoS attacks-Slowloris,DoS attacks-Slowloris
+517438,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+517938,DDOS attack-HOIC,DDOS attack-HOIC
+518001,Infilteration,Infilteration
+518108,DDOS attack-HOIC,DDOS attack-HOIC
+518911,Infilteration,Infilteration
+519101,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+519731,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+519793,Infilteration,Infilteration
+519990,Brute Force -Web,Brute Force -Web
+520651,Benign,Benign
+520811,Brute Force -Web,Brute Force -Web
+521292,DoS attacks-Slowloris,DoS attacks-Slowloris
+521385,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+521409,Infilteration,Infilteration
+521524,DoS attacks-Slowloris,DoS attacks-Slowloris
+521606,Benign,Benign
+521700,Brute Force -XSS,Brute Force -XSS
+521833,DoS attacks-Slowloris,DoS attacks-Slowloris
+522204,Brute Force -XSS,Brute Force -XSS
+522450,DoS attacks-Hulk,DoS attacks-Hulk
+522606,Infilteration,Infilteration
+522632,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+524341,Brute Force -Web,Brute Force -Web
+524431,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+524740,Bot,Bot
+524824,FTP-BruteForce,FTP-BruteForce
+525152,DoS attacks-Slowloris,DoS attacks-Slowloris
+525166,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+525261,Bot,Bot
+525466,DDOS attack-HOIC,DDOS attack-HOIC
+527604,Brute Force -Web,Brute Force -Web
+527622,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+528023,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+528258,Bot,Bot
+528901,DDOS attack-HOIC,DDOS attack-HOIC
+529044,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+529520,FTP-BruteForce,FTP-BruteForce
+529556,DoS attacks-Hulk,DoS attacks-Hulk
+530909,Benign,Benign
+531225,Brute Force -Web,Brute Force -Web
+531607,FTP-BruteForce,FTP-BruteForce
+531733,DoS attacks-Hulk,DoS attacks-Hulk
+532195,Benign,Benign
+532287,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+532375,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+533025,Benign,Benign
+533710,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+534876,DoS attacks-Slowloris,DoS attacks-Slowloris
+535830,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+535970,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+537128,DDOS attack-HOIC,DDOS attack-HOIC
+537276,DDOS attack-HOIC,DDOS attack-HOIC
+537705,Benign,Benign
+537964,SSH-Bruteforce,SSH-Bruteforce
+537993,Infilteration,Infilteration
+538093,Bot,Bot
+538599,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+539630,DoS attacks-Hulk,DoS attacks-Hulk
+540528,FTP-BruteForce,FTP-BruteForce
+541526,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+541726,DoS attacks-Hulk,DoS attacks-Hulk
+541907,Benign,Benign
+542057,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+542466,Infilteration,Infilteration
+542478,SSH-Bruteforce,SSH-Bruteforce
+542508,Bot,Bot
+542957,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+544187,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+544602,DDOS attack-HOIC,DDOS attack-HOIC
+544810,Bot,Bot
+544974,DoS attacks-Hulk,DoS attacks-Hulk
+545075,Benign,Benign
+545791,Bot,Bot
+546990,DoS attacks-Slowloris,DoS attacks-Slowloris
+547278,Benign,Benign
+547723,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+547988,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+549022,Brute Force -Web,Brute Force -Web
+550193,Bot,Bot
+550265,DDOS attack-HOIC,DDOS attack-HOIC
+550396,Benign,Benign
+552215,DoS attacks-Slowloris,DoS attacks-Slowloris
+554166,DoS attacks-Hulk,DoS attacks-Hulk
+555257,SSH-Bruteforce,SSH-Bruteforce
+555404,SSH-Bruteforce,SSH-Bruteforce
+556016,DoS attacks-Slowloris,DoS attacks-Slowloris
+556032,Brute Force -XSS,Brute Force -XSS
+557077,SQL Injection,SQL Injection
+557127,Benign,Benign
+557149,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+557389,SSH-Bruteforce,SSH-Bruteforce
+557903,DoS attacks-Slowloris,DoS attacks-Slowloris
+558168,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+558395,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+559195,DDOS attack-HOIC,DDOS attack-HOIC
+559359,SSH-Bruteforce,SSH-Bruteforce
+559418,Brute Force -XSS,Brute Force -XSS
+559553,DoS attacks-Hulk,DoS attacks-Hulk
+559606,DoS attacks-Hulk,DoS attacks-Hulk
+559993,DoS attacks-Hulk,DoS attacks-Hulk
+560536,Bot,Bot
+561213,Bot,Bot
+561935,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+562873,DoS attacks-Slowloris,DoS attacks-Slowloris
+563135,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+563562,Benign,Benign
+563636,DDOS attack-HOIC,DDOS attack-HOIC
+564150,DoS attacks-Hulk,DoS attacks-Hulk
+564226,DDOS attack-HOIC,DDOS attack-HOIC
+564802,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+565427,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+566199,FTP-BruteForce,FTP-BruteForce
+566348,DoS attacks-Slowloris,DoS attacks-Slowloris
+567518,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+567714,Brute Force -Web,Brute Force -Web
+567877,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+568399,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+568838,SSH-Bruteforce,SSH-Bruteforce
+570118,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+571598,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+571642,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+572379,Brute Force -XSS,Brute Force -XSS
+573111,DoS attacks-Hulk,DoS attacks-Hulk
+573424,Brute Force -XSS,Brute Force -XSS
+573771,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+573880,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+574170,DoS attacks-Hulk,DoS attacks-Hulk
+576116,Benign,Benign
+576152,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+577200,Brute Force -Web,Brute Force -Web
+577695,SSH-Bruteforce,SSH-Bruteforce
+578079,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+578698,DDOS attack-HOIC,DDOS attack-HOIC
+579553,Benign,Benign
+579853,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+579978,Infilteration,Infilteration
+581136,DoS attacks-Slowloris,DoS attacks-Slowloris
+581490,DDOS attack-HOIC,DDOS attack-HOIC
+582425,Infilteration,Infilteration
+582433,FTP-BruteForce,FTP-BruteForce
+582648,DoS attacks-Slowloris,DoS attacks-Slowloris
+582796,Benign,Benign
+583069,Benign,Benign
+583318,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+583369,SSH-Bruteforce,SSH-Bruteforce
+584457,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+584834,SSH-Bruteforce,SSH-Bruteforce
+585332,SSH-Bruteforce,SSH-Bruteforce
+585380,FTP-BruteForce,FTP-BruteForce
+586218,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+588010,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+588054,Benign,Benign
+588844,DDOS attack-HOIC,DDOS attack-HOIC
+589312,DoS attacks-Slowloris,DoS attacks-Slowloris
+589510,Benign,Benign
+589863,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+590538,Bot,Bot
+590726,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+591248,FTP-BruteForce,FTP-BruteForce
+592051,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+592647,FTP-BruteForce,FTP-BruteForce
+593418,DDOS attack-HOIC,DDOS attack-HOIC
+593460,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+593561,FTP-BruteForce,FTP-BruteForce
+593630,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+593714,Bot,Bot
+594014,Infilteration,Infilteration
+595185,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+598293,Brute Force -XSS,Brute Force -XSS
+599120,DoS attacks-Hulk,DoS attacks-Hulk
+599229,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+599616,DoS attacks-Hulk,DoS attacks-Hulk
+599680,FTP-BruteForce,FTP-BruteForce
+599997,SSH-Bruteforce,SSH-Bruteforce
+601076,Benign,Benign
+601248,Benign,Benign
+601870,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+602139,FTP-BruteForce,FTP-BruteForce
+603609,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+604009,FTP-BruteForce,FTP-BruteForce
+604303,DoS attacks-Hulk,DoS attacks-Hulk
+604387,DoS attacks-Hulk,DoS attacks-Hulk
+604539,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+605097,DDOS attack-HOIC,DDOS attack-HOIC
+608011,DDOS attack-HOIC,DDOS attack-HOIC
+611192,DoS attacks-Hulk,DoS attacks-Hulk
+611363,DoS attacks-Slowloris,DoS attacks-Slowloris
+612695,Brute Force -Web,Brute Force -Web
+613099,DoS attacks-Hulk,DoS attacks-Hulk
+613326,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+613991,SSH-Bruteforce,SSH-Bruteforce
+614266,Brute Force -Web,Brute Force -Web
+614472,Brute Force -Web,Brute Force -Web
+615058,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+615305,Infilteration,Infilteration
+617223,FTP-BruteForce,FTP-BruteForce
+618278,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+618502,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+618663,Brute Force -Web,Brute Force -Web
+619868,SSH-Bruteforce,SSH-Bruteforce
+619955,Infilteration,Infilteration
+621179,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+621479,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+621707,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+621721,Benign,Benign
+622745,FTP-BruteForce,FTP-BruteForce
+623338,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+623373,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+624337,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+625380,Benign,Benign
+625897,Brute Force -Web,Brute Force -Web
+626041,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+626359,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+626557,Bot,Bot
+626936,Infilteration,Infilteration
+627642,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+628503,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+628867,Benign,Benign
+629734,Brute Force -Web,Brute Force -Web
+629869,Bot,Bot
+630081,Brute Force -XSS,Brute Force -XSS
+630267,Infilteration,Infilteration
+630346,DoS attacks-Hulk,DoS attacks-Hulk
+630869,DoS attacks-Slowloris,DoS attacks-Slowloris
+632131,DoS attacks-Slowloris,DoS attacks-Slowloris
+634085,Benign,Benign
+634574,DoS attacks-Hulk,DoS attacks-Hulk
+634683,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+635547,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+636981,DoS attacks-Slowloris,DoS attacks-Slowloris
+637590,SSH-Bruteforce,SSH-Bruteforce
+638042,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+639924,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+640704,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+641203,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+641423,Brute Force -Web,Brute Force -Web
+643020,Bot,Bot
+644030,DoS attacks-Slowloris,DoS attacks-Slowloris
+644516,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+645490,DoS attacks-Slowloris,DoS attacks-Slowloris
+645824,Benign,Benign
+645970,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+647108,DoS attacks-Hulk,DoS attacks-Hulk
+647221,DDOS attack-HOIC,DDOS attack-HOIC
+648394,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+648518,DDOS attack-HOIC,DDOS attack-HOIC
+648720,DDOS attack-HOIC,DDOS attack-HOIC
+648799,Benign,Benign
+649611,FTP-BruteForce,FTP-BruteForce
+650282,Infilteration,Infilteration
+651601,SSH-Bruteforce,SSH-Bruteforce
+651743,Brute Force -XSS,Brute Force -XSS
+652157,DoS attacks-Hulk,DoS attacks-Hulk
+652478,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+652768,DDOS attack-HOIC,DDOS attack-HOIC
+652891,Bot,Bot
+653069,DDOS attack-HOIC,DDOS attack-HOIC
+653140,DDOS attack-HOIC,DDOS attack-HOIC
+654204,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+654211,FTP-BruteForce,FTP-BruteForce
+654258,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+654276,Brute Force -Web,Brute Force -Web
+654496,FTP-BruteForce,FTP-BruteForce
+654659,DoS attacks-Slowloris,DoS attacks-Slowloris
+654908,FTP-BruteForce,FTP-BruteForce
+655627,Infilteration,Infilteration
+656860,SSH-Bruteforce,SSH-Bruteforce
+658282,Benign,Benign
+658852,SSH-Bruteforce,SSH-Bruteforce
+661309,SSH-Bruteforce,SSH-Bruteforce
+661657,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+662079,Brute Force -Web,Brute Force -Web
+662125,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+662490,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+663020,Brute Force -Web,Brute Force -Web
+663131,FTP-BruteForce,FTP-BruteForce
+665093,Bot,Bot
+665181,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+665520,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+665609,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+665639,Brute Force -Web,Brute Force -Web
+667343,DoS attacks-Hulk,DoS attacks-Hulk
+667959,Bot,Bot
+668300,Bot,Bot
+668437,DDOS attack-HOIC,DDOS attack-HOIC
+668596,Infilteration,Infilteration
+668972,DoS attacks-Slowloris,DoS attacks-Slowloris
+669816,Brute Force -XSS,Brute Force -XSS
+671747,DDOS attack-HOIC,DDOS attack-HOIC
+671863,DoS attacks-Hulk,DoS attacks-Hulk
+672527,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+672743,DoS attacks-Hulk,DoS attacks-Hulk
+673338,DoS attacks-Hulk,DoS attacks-Hulk
+674573,Bot,Bot
+675570,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+675775,DDOS attack-HOIC,DDOS attack-HOIC
+675840,Infilteration,Infilteration
+675988,DoS attacks-Slowloris,DoS attacks-Slowloris
+676095,Brute Force -Web,Brute Force -Web
+676164,FTP-BruteForce,FTP-BruteForce
+676553,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+677383,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+677402,Infilteration,Infilteration
+677410,Benign,Benign
+677440,DDOS attack-HOIC,DDOS attack-HOIC
+677546,FTP-BruteForce,FTP-BruteForce
+677734,DoS attacks-Hulk,DoS attacks-Hulk
+678287,DoS attacks-Hulk,DoS attacks-Hulk
+678955,DoS attacks-Slowloris,DoS attacks-Slowloris
+679069,DDOS attack-HOIC,DDOS attack-HOIC
+679619,Benign,Benign
+680342,DDOS attack-HOIC,DDOS attack-HOIC
+681271,Infilteration,Infilteration
+681491,DoS attacks-Slowloris,DoS attacks-Slowloris
+681628,SSH-Bruteforce,SSH-Bruteforce
+681904,SSH-Bruteforce,SSH-Bruteforce
+683028,Benign,Benign
+683559,DoS attacks-Hulk,DoS attacks-Hulk
+685076,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+685101,DoS attacks-Hulk,DoS attacks-Hulk
+685591,Brute Force -Web,Brute Force -Web
+685888,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+686965,DoS attacks-Hulk,DoS attacks-Hulk
+687272,DoS attacks-Hulk,DoS attacks-Hulk
+687709,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+688091,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+688116,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+688353,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+688491,DoS attacks-Hulk,DoS attacks-Hulk
+690668,Bot,Bot
+690954,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+691115,Infilteration,Infilteration
+691430,Brute Force -Web,Brute Force -Web
+691842,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+692199,SSH-Bruteforce,SSH-Bruteforce
+692563,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+692621,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+692937,DoS attacks-Slowloris,DoS attacks-Slowloris
+692939,Infilteration,Infilteration
+693701,SSH-Bruteforce,SSH-Bruteforce
+693916,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+695058,Brute Force -XSS,Brute Force -XSS
+695638,SSH-Bruteforce,SSH-Bruteforce
+695843,Brute Force -XSS,Brute Force -XSS
+696696,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+697064,DDOS attack-HOIC,DDOS attack-HOIC
+697275,SSH-Bruteforce,SSH-Bruteforce
+697769,Brute Force -Web,Brute Force -Web
+698426,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+698783,DoS attacks-GoldenEye,DoS attacks-GoldenEye

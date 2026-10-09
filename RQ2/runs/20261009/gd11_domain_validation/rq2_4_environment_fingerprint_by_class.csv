@@ -1,0 +1,29 @@
+﻿class,method,n_env_features_in_top5,frac_env_in_top5
+DDOS attack-HOIC,SHAP,2,0.4
+DDOS attack-HOIC,LIME,1,0.2
+DDOS attack-LOIC-UDP,SHAP,0,0.0
+DDOS attack-LOIC-UDP,LIME,0,0.0
+DDoS attacks-LOIC-HTTP,SHAP,1,0.2
+DDoS attacks-LOIC-HTTP,LIME,0,0.0
+DoS attacks-GoldenEye,SHAP,1,0.2
+DoS attacks-GoldenEye,LIME,1,0.2
+DoS attacks-Hulk,SHAP,2,0.4
+DoS attacks-Hulk,LIME,1,0.2
+DoS attacks-SlowHTTPTest,SHAP,1,0.2
+DoS attacks-SlowHTTPTest,LIME,2,0.4
+DoS attacks-Slowloris,SHAP,2,0.4
+DoS attacks-Slowloris,LIME,2,0.4
+Bot,SHAP,1,0.2
+Bot,LIME,0,0.0
+FTP-BruteForce,SHAP,1,0.2
+FTP-BruteForce,LIME,2,0.4
+SSH-Bruteforce,SHAP,2,0.4
+SSH-Bruteforce,LIME,1,0.2
+Brute Force -Web,SHAP,2,0.4
+Brute Force -Web,LIME,0,0.0
+Brute Force -XSS,SHAP,1,0.2
+Brute Force -XSS,LIME,0,0.0
+SQL Injection,SHAP,1,0.2
+SQL Injection,LIME,0,0.0
+Infilteration,SHAP,3,0.6
+Infilteration,LIME,2,0.4

@@ -1,0 +1,11 @@
+{
+  "n_flows": 1339,
+  "ks": [
+    3,
+    5,
+    10,
+    20
+  ],
+  "n_features": 78,
+  "negative_spearman_full78_classes": []
+}

@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "git_commit": "7a18608a337270d78064512864180e2f3711aa1d",
+  "machine": "LAPTOP-7NSNNTEA",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_executable": "C:\\Users\\LOQ\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+  "timestamp": "2026-10-09T10:00:49.669925",
+  "env_versions": {
+    "python": "3.14.7",
+    "xgboost": "3.4.1",
+    "shap": "0.52.0",
+    "lime": "0.2.0.1",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pyarrow": "25.0.1"
+  }
+}

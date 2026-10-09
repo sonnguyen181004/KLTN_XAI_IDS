@@ -1,0 +1,5 @@
+2026-10-09 11:10:44,032 [INFO] stage09b_noise_per_flow_for_hub: GĐ 9b: robustness per-flow/per-class cho study hub
+2026-10-09 11:11:17,331 [INFO] stage09b_noise_per_flow_for_hub: sigma=1% xong
+2026-10-09 11:11:44,246 [INFO] stage09b_noise_per_flow_for_hub: sigma=5% xong
+2026-10-09 11:12:11,512 [INFO] stage09b_noise_per_flow_for_hub: sigma=10% xong
+2026-10-09 11:12:11,558 [INFO] stage09b_noise_per_flow_for_hub: Đã lưu per-flow và per-class noise cho hub.
