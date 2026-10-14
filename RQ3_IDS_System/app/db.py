@@ -267,6 +267,49 @@ def get_alerts(
     return result
 
 
+def get_flows(
+    conn, since: str | None = None, until: str | None = None,
+    label: str | None = None, limit: int = 200,
+) -> list[dict]:
+    """Bước 12 (bổ sung) — `GET /flows`: danh sách MỌI flow đã xử lý, kể cả Benign
+    (Benign không tạo Alert nên không xuất hiện ở `get_alerts()` — bạn cần thấy cả
+    traffic bình thường, không chỉ cảnh báo, để biết hệ thống có đang hoạt động và
+    tỉ lệ Benign/tấn công thực tế). LEFT JOIN Prediction vì về lý thuyết 1 flow lỗi
+    ở tầng chuẩn hóa (422) thì có FlowRecord... thực ra flow lỗi 422 KHÔNG được ghi
+    vào FlowRecord (xem main.py — chỉ insert_flow sau khi normalize_flow thành
+    công), nên LEFT JOIN ở đây chỉ để phòng hờ, không phải vì có flow thiếu dự đoán
+    trong vận hành bình thường."""
+    query = """
+        SELECT f.flow_id, f.received_at, f.source, f.label_true,
+               p.predicted_label, p.predicted_at
+        FROM FlowRecord f
+        LEFT JOIN Prediction p ON f.flow_id = p.flow_id
+        WHERE 1=1
+    """
+    params: list = []
+    if since is not None:
+        query += " AND f.received_at >= ?"
+        params.append(since)
+    if until is not None:
+        query += " AND f.received_at <= ?"
+        params.append(until)
+    if label is not None:
+        query += " AND p.predicted_label = ?"
+        params.append(label)
+    query += " ORDER BY f.received_at DESC LIMIT ?"
+    params.append(limit)
+
+    rows = conn.execute(query, params).fetchall()
+    return [
+        {
+            "flow_id": flow_id, "received_at": received_at, "source": source,
+            "label_true": label_true, "predicted_label": predicted_label,
+            "is_alert": predicted_label is not None and predicted_label != "Benign",
+        }
+        for flow_id, received_at, source, label_true, predicted_label, predicted_at in rows
+    ]
+
+
 def insert_timing(conn, flow_id: str, step: str, duration_ms: float, recorded_at: str) -> None:
     conn.execute(
         "INSERT INTO Timing (flow_id, step, duration_ms, recorded_at) VALUES (?, ?, ?, ?)",

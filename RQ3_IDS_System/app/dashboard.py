@@ -204,6 +204,40 @@ with tab_pcap:
 st.divider()
 
 # ---------------------------------------------------------------------------
+# GET /flows — TẤT CẢ flow đã xử lý, kể cả Benign (Benign không tạo Alert nên
+# không có ở bảng cảnh báo bên dưới — theo yêu cầu thực tế khi test: cần thấy cả
+# traffic bình thường để biết hệ thống có đang hoạt động).
+# ---------------------------------------------------------------------------
+st.subheader("Tất cả flow đã xử lý (kể cả Benign)")
+try:
+    r = requests.get(f"{API_URL}/flows", params={"limit": 200}, timeout=10)
+    r.raise_for_status()
+    flows = r.json()["flows"]
+except requests.exceptions.RequestException as e:
+    st.error(f"GET /flows lỗi: {e}")
+    flows = []
+
+if not flows:
+    st.info("Chưa có flow nào được xử lý.")
+else:
+    n_benign = sum(1 for f in flows if f["predicted_label"] == "Benign")
+    n_alert = sum(1 for f in flows if f["is_alert"])
+    st.caption(f"{len(flows)} flow gần nhất — {n_benign} Benign, {n_alert} tạo cảnh báo (khác Benign).")
+    flows_df = pd.DataFrame([
+        {
+            "flow_id": f["flow_id"][:8] + "…",
+            "received_at": f["received_at"],
+            "predicted_label": f["predicted_label"] or "(đang xử lý)",
+            "is_alert": f["is_alert"],
+            "nhãn thật (nếu biết)": f["label_true"] or "",
+        }
+        for f in flows
+    ])
+    st.dataframe(flows_df, width="stretch", hide_index=True)
+
+st.divider()
+
+# ---------------------------------------------------------------------------
 # Bộ lọc + GET /alerts — bảng cảnh báo
 # ---------------------------------------------------------------------------
 st.subheader("Danh sách cảnh báo")

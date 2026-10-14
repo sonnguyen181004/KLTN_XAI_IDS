@@ -274,6 +274,24 @@ def list_alerts(
     return {"count": len(alerts), "alerts": alerts}
 
 
+@app.get("/flows")
+def list_flows(
+    since: Optional[str] = None, until: Optional[str] = None,
+    label: Optional[str] = None, limit: int = 200,
+):
+    """Bổ sung ngoài 4 điểm gọi gốc trong tài liệu kiến trúc (POST /predict, POST
+    /explain, GET /alerts, GET /health) — theo yêu cầu thực tế khi test: `GET
+    /alerts` CHỈ trả Alert (nhãn khác Benign), nên flow Benign (bình thường,
+    không tấn công) không bao giờ xuất hiện ở đó. Dashboard cần thấy CẢ traffic
+    bình thường để biết hệ thống có đang hoạt động, không chỉ thấy mỗi cảnh báo."""
+    conn = db.get_connection(DB_PATH)
+    try:
+        flows = db.get_flows(conn, since=since, until=until, label=label, limit=limit)
+    finally:
+        conn.close()
+    return {"count": len(flows), "flows": flows}
+
+
 @app.get("/explain_queue_status")
 def explain_queue_status():
     """Chỉ để quan sát/debug: xem hàng đợi giải thích đang ở trạng thái nào."""
