@@ -142,4 +142,18 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   1. **Tự nhất quán**: tổng xác suất 15 lớp = 0,99999994 (≈1.0), lớp xác suất cao nhất khớp `predicted_label` — [PASS].
   2. **So với Tập B** (241 flow, đã biết đáp án): độ chính xác tổng 212/241 = **88,0%**. Theo lớp: hầu hết 94,7–100%, nhưng **Infilteration chỉ 15,8%** (3/19), Brute Force-Web 63,2%, SQL Injection 69,2% — ba con số này **khớp đúng** với 3 lớp "khó" đã ghi nhận sẵn trong tài liệu kiến trúc (Infilteration Recall ~16% trên toàn test set) → một dấu hiệu nhất quán tốt, không phải trùng hợp.
   3. **So với `pred_label` có sẵn trong cohort_ids.csv của RQ2** (50 flow lấy ngẫu nhiên từ Tập A, seed 42): **khớp y hệt 50/50 = 100%** — xác nhận hàm dự đoán mới không có lỗi nạp model/sai thứ tự cột so với pipeline RQ2 gốc (kiểm tra sớm, thu nhỏ của thí nghiệm E5).
+- Commit: `2cae3b1`.
+
+### Bước 6 — FastAPI: `POST /predict`, `GET /health` ✅
+- **Mục đích**: ghép tầng 2 (chuẩn hóa) + tầng 3 (dự đoán) + ghi DB thành 1 dịch vụ web thật, gọi được qua HTTP thay vì chỉ gọi hàm Python trực tiếp — lần đầu hệ thống "chạy được" theo đúng nghĩa.
+- Cài `fastapi`, `uvicorn`, `requests`. Tạo `app/main.py` (`POST /predict`, `GET /health`) và `scripts/stage06_test_api.py`.
+- **3 lỗi thật gặp phải khi test — ghi lại để không lặp lại:**
+  1. **Deadlock subprocess**: ban đầu bắt log server qua `subprocess.PIPE` nhưng không đọc liên tục → ống dẫn đầy làm uvicorn bị treo khi ghi log, server "giả treo" không trả lời request nào. **Sửa**: ghi log server ra file trên đĩa (`data/stage06_server.log`) thay vì PIPE.
+  2. **`sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread`**: dùng 1 connection SQLite chung mở lúc khởi động, nhưng FastAPI chạy mỗi request sync trong 1 thread riêng của thread pool → SQLite (mặc định `check_same_thread=True`) chặn. **Sửa**: thêm `db.get_connection()`, mở 1 connection MỚI cho MỖI request, đóng lại sau khi xong.
+  3. **`sqlite3.IntegrityError: FOREIGN KEY constraint failed`**: ghi `Timing` (có khóa ngoại tới `FlowRecord.flow_id`) TRƯỚC KHI ghi `FlowRecord` → vi phạm khóa ngoại. **Sửa**: đổi thứ tự, ghi `FlowRecord` trước, `Timing` sau.
+- **Kết quả chạy thật (sau khi sửa cả 3 lỗi) — log đầy đủ, mọi [PASS]:**
+  - `GET /health` → 200, `model_loaded=True`.
+  - 3 flow thật từ Tập B qua `POST /predict` → cả 3 trả 200, nhãn đúng, `timing_ms` ví dụ dòng 0: normalize=4,5ms, predict=13,3ms, total=75,6ms.
+  - Flow thiếu cột `Idle Min` → 422, đúng lý do, đúng tên cột.
+  - Mở lại file DB: cả 3 flow có đủ `FlowRecord`, `Prediction`, 3 dòng `Timing`; bảng `DataError` có 2 dòng (đúng số lỗi đã tạo ra trong lúc test).
 - Commit: (sắp tới).

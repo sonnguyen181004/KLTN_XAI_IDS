@@ -9,6 +9,7 @@ dataset/CICID-2018_processed/*.parquet
 # RQ3 IDS System — dữ liệu sinh ra lúc chạy, không commit
 RQ3_IDS_System/data/*.db
 RQ3_IDS_System/data/*.csv
+RQ3_IDS_System/data/*.log
 
 # Python & Environments
 __pycache__/

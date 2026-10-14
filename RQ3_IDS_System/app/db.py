@@ -86,6 +86,20 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     return conn
 
 
+def get_connection(db_path: str | Path) -> sqlite3.Connection:
+    """Mở 1 connection MỚI tới DB đã có sẵn bảng (không chạy lại CREATE TABLE).
+
+    QUAN TRỌNG: sqlite3.Connection KHÔNG được dùng xuyên thread (mặc định
+    check_same_thread=True). FastAPI chạy mỗi request sync trong 1 thread riêng
+    từ thread pool, nên app/main.py phải gọi hàm này để mở 1 connection RIÊNG
+    cho MỖI request rồi đóng lại — không dùng chung 1 connection toàn cục.
+    """
+    db_path = Path(db_path)
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+
 def list_tables(conn: sqlite3.Connection) -> list[str]:
     cur = conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
     return [r[0] for r in cur.fetchall()]
@@ -94,3 +108,52 @@ def list_tables(conn: sqlite3.Connection) -> list[str]:
 def table_columns(conn: sqlite3.Connection, table: str) -> list[str]:
     cur = conn.execute(f"PRAGMA table_info({table})")
     return [r[1] for r in cur.fetchall()]
+
+
+# ---------------------------------------------------------------------------
+# Hàm ghi dữ liệu — dùng chung bởi app/main.py (API) và các script test.
+# ---------------------------------------------------------------------------
+
+def insert_flow(conn, flow_id: str, received_at: str, source: str, features: dict, label_true: str | None) -> None:
+    conn.execute(
+        "INSERT OR REPLACE INTO FlowRecord (flow_id, received_at, source, features_json, label_true) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (flow_id, received_at, source, json.dumps(features), label_true),
+    )
+    conn.commit()
+
+
+def insert_error(conn, flow_id: str, occurred_at: str, error_code: int, reason: str, raw_input: dict) -> None:
+    conn.execute(
+        "INSERT INTO DataError (flow_id, occurred_at, error_code, reason, raw_input_json) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (flow_id, occurred_at, error_code, reason, json.dumps(raw_input)),
+    )
+    conn.commit()
+
+
+def insert_prediction(conn, flow_id: str, predicted_label: str, probabilities: dict,
+                       model_version: str, predicted_at: str) -> None:
+    conn.execute(
+        "INSERT OR REPLACE INTO Prediction (flow_id, predicted_label, probabilities_json, model_version, predicted_at) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (flow_id, predicted_label, json.dumps(probabilities), model_version, predicted_at),
+    )
+    conn.commit()
+
+
+def insert_alert(conn, alert_id: str, flow_id: str, group_key: str, predicted_label: str, created_at: str) -> None:
+    conn.execute(
+        "INSERT OR REPLACE INTO AlertRecord (alert_id, flow_id, group_key, predicted_label, status, created_at) "
+        "VALUES (?, ?, ?, ?, 'new', ?)",
+        (alert_id, flow_id, group_key, predicted_label, created_at),
+    )
+    conn.commit()
+
+
+def insert_timing(conn, flow_id: str, step: str, duration_ms: float, recorded_at: str) -> None:
+    conn.execute(
+        "INSERT INTO Timing (flow_id, step, duration_ms, recorded_at) VALUES (?, ?, ?, ?)",
+        (flow_id, step, duration_ms, recorded_at),
+    )
+    conn.commit()
