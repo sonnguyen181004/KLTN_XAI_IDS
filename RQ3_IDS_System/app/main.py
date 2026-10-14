@@ -4,6 +4,7 @@ Chạy thử: uvicorn app.main:app --reload --port 8000  (chạy từ thư mục
 """
 from __future__ import annotations
 
+import json
 import sys
 import time
 import uuid
@@ -20,6 +21,7 @@ import db  # noqa: E402
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
 from predict import Detector  # noqa: E402
 from explain_shap import ShapExplainer  # noqa: E402
+from reliability import ReliabilityScorer  # noqa: E402
 from explain_queue import ExplainQueue  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -42,11 +44,28 @@ shap_explainer = ShapExplainer(detector.model, detector.class_names)
 DB_PATH = REPO_ROOT / cfg["paths"]["sqlite_db"]
 db.init_db(DB_PATH)  # chạy 1 lần lúc khởi động để chắc chắn đủ bảng
 
+# Bước 8 — thống kê train tính sẵn 1 lần (median toàn cục + số mẫu/lớp), xem
+# scripts/stage08_compute_train_stats.py. Phải chạy script đó trước khi bật server.
+TRAIN_STATS_PATH = RQ3_ROOT / "data" / "train_stats.json"
+with open(TRAIN_STATS_PATH, encoding="utf-8") as f:
+    train_stats = json.load(f)
+
+reliability_scorer = ReliabilityScorer(
+    detector=detector,
+    global_median=train_stats["global_median"],
+    train_samples_per_class=train_stats["train_samples_per_class"],
+    env_fingerprint_features=cfg["environment_fingerprint_features"],
+    env_fingerprint_flag_threshold=cfg["environment_fingerprint_flag_threshold"],
+    rare_class_min_train_samples=cfg["rare_class_min_train_samples"],
+    faithfulness_k=cfg["faithfulness_proxy"]["k"],
+)
+
 # Hàng đợi giải thích bất đồng bộ (đúng kiến trúc bước "Vào hàng đợi" — xem app/explain_queue.py).
 # /predict KHÔNG gọi SHAP trực tiếp nữa; chỉ đưa việc vào đây rồi trả lời ngay.
 explain_queue = ExplainQueue(
     maxsize=cfg["api"]["max_explain_queue"],
     shap_explainer=shap_explainer,
+    reliability_scorer=reliability_scorer,
     db_module=db,
     db_path=DB_PATH,
 )

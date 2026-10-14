@@ -126,6 +126,24 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
 3. `RQ3_IDS_System/scripts/stageE1_latency.py`, `stageE5_consistency.py` — 2 thí nghiệm M2.
 4. Test toàn bộ bằng Tập A + Tập B, không cần máy ảo.
 
+## 6.1. Các bước còn lại (Bước 9 → 16) — danh sách để không quên
+
+Viết ra hết TRƯỚC khi làm, để không quên việc gì giữa các lần làm việc. Đánh dấu ✅ và
+dời xuống mục 7 (có chi tiết đầy đủ) ngay khi xong, y như các bước 1–8 đã làm.
+
+| Bước | Nội dung | Tầng/Khối liên quan | Input cần có |
+|---|---|---|---|
+| **9** | `POST /explain` — LIME theo yêu cầu (`method=lime`), dùng đúng cấu hình đã khóa ở RQ2 (`config.yaml: lime.*`: kernel_width=3,312, num_samples=1000, discretize_continuous=false, nền 2.000 dòng, seed 42). Ghi `lime_top5_json` + `agreement_jaccard5` (Jaccard\@5 so với Top-5 SHAP đã có) vào `Reliability`. Trả lỗi `404` nếu không có alert, `429` nếu hàng đợi đầy. | Tầng 4 (Làn B4) | Cần `alert_id` đã tồn tại (từ `/predict`) |
+| **10** | "Tra bảng có sẵn (đắt)": nạp `rq2_master_summary.json` 1 lần lúc khởi động, tra `stability_lookup` + `robustness_lookup_json` theo **lớp dự đoán** (không tính lại mỗi flow — xem `gd9_stability`, `gd9_noise` trong file đó). Ghi vào 2 cột đã có sẵn trong `Reliability` nhưng chưa ai điền. | Tầng 4 | `rq2_master_summary.json` (đã có sẵn, đường dẫn trong `config.yaml: paths.rq2_master_summary`) |
+| **11** | Tầng 5 — luật quyết định nhánh A/B: không có cờ nào (env_fingerprint_flag=0 và rare_class_flag=0) → nhánh A; có ít nhất 1 cờ → nhánh B. Ghi `branch` + `branch_reason` vào `Reliability`. **Lưu ý đã chốt ở tài liệu kiến trúc (mục "Đồng bộ với phần cũ")**: CHỈ dựa vào 2 cờ lưu ý này, KHÔNG dùng ngưỡng từ tập dev 250 flow của RQ2 (184/250 là Benign, không đại diện), KHÔNG dùng Agreement làm ngưỡng chính (Jaccard\@5 trung bình RQ2 chỉ 0,141). | Tầng 5 (Khối 6) | Cần Bước 8 (cờ) đã xong — ✅ |
+| **12** | `GET /alerts` — danh sách Alert kèm trạng thái giải thích, lọc theo thời gian/nhãn/nhánh (theo đúng bảng API trong tài liệu kiến trúc). | Tầng 6 | Cần Bước 11 (branch) để lọc theo nhánh |
+| **13** | Streamlit Dashboard — 1 trang: bảng cảnh báo, biểu đồ SHAP/LIME có dấu (2 tab), bảng độ tin cậy, nhãn nhánh A/B, `GET /health`. | Tầng 6 (Khối 7) | Cần `/alerts`, `/explain` đã có |
+| **14** | Docker Compose — gói API + Dashboard thành 2 service, chạy bằng `docker compose up` (đúng mô hình vật lý: Monitor chạy Docker Compose, bắt gói chạy NGOÀI container). | Tầng 6 | Cần 13 xong |
+| **15** | `scripts/stageE1_latency.py` — M2: bơm Tập A qua `/predict` + `/explain` **qua API thật**, đo median/p95 từng khâu (normalize, predict, SHAP, LIME, reliability), so với RQ2 (SHAP~19ms, LIME~148ms). | M2 (E1) | Cần `/explain` (Bước 9) xong để đo được khâu LIME |
+| **16** | `scripts/stageE5_consistency.py` — M2: Tập A qua API → so nhãn + Top-5 SHAP với kết quả gốc RQ2 (khớp 100% thì xác nhận hệ thống không lỗi). | M2 (E5) | Không phụ thuộc bước nào ở trên, có thể làm sớm hơn nếu muốn |
+
+Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor trên VirtualBox host-only) và **M5** (E2 lệch phân bố, E3 báo động giả, E4 cờ môi trường — đo trên traffic thật từ M4).
+
 ## 7. Tiến độ (cập nhật sau mỗi bước)
 
 ### Bước 1 — `config.yaml` ✅
@@ -247,4 +265,33 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - **Kết quả dự đoán: 25/25 = Benign** — đúng 100%, hợp lý vì đây chỉ là traffic bình thường, không có tấn công nào.
   - Xác nhận toàn bộ chuỗi **gói tin thật → CICFlowMeter thật → feeder (đổi tên cột + đơn vị) → API → model → DB** chạy đúng, không có bước nào còn là giả lập.
 - Việc còn lại để có M4 đầy đủ: traffic TẤN CÔNG thật (cần máy Attacker + Victim, mạng host-only cô lập) để xem hệ thống có phát hiện và cảnh báo đúng không — quy trình kỹ thuật (feeder, mapping cột, flush) đã kiểm chứng xong ở đây, M4 chỉ còn là việc dựng máy ảo + tạo traffic tấn công, không cần sửa code gì thêm.
+
+### Bước 8 — Đánh giá độ tin cậy + gắn cờ (tầng 4b) ✅
+- **Mục đích**: sau khi test traffic thật (M3) xong, quay lại đúng thứ tự kiến trúc — làm tiếp phần "tính tại chỗ, rẻ, mỗi flow" của tầng 4 (khác với "tra bảng có sẵn từ RQ2", để ở bước 10): (1) faithfulness proxy — xóa Top-5 đặc trưng SHAP về giá trị nền rồi hỏi lại model, xem xác suất tụt bao nhiêu (xóa trúng phần model thực sự dựa vào thì tụt nhiều); (2) cờ môi trường — đếm bao nhiêu trong Top-5 SHAP là đặc trưng "cờ cảnh báo" (`Dst Port`, `Fwd Seg Size Min`, `Init Fwd Win Byts`), đủ ngưỡng thì gắn cờ nghi ngờ; (3) cờ lớp hiếm — lớp dự đoán có ít hơn 100 mẫu train thì gắn cờ (để người dùng biết độ tin cậy thấp hơn).
+- **⚠️ Nhắc lại overclaim** (đã nêu từ đầu, giữ nguyên trong code bằng docstring `app/reliability.py`): faithfulness ở đây chỉ là PROXY 1 bước/1 giá trị nền — KHÔNG phải phép đo faithfulness đầy đủ của RQ2 (xóa k=1..10, 3 giá trị nền, AUC, đối chứng ngẫu nhiên, Wilcoxon). Cờ môi trường chỉ là cờ cảnh báo/bằng chứng hỗ trợ, chưa phải kết luận đã kiểm chứng (việc kiểm chứng giả thuyết này là **E4**, chưa làm).
+- Tạo `scripts/stage08_compute_train_stats.py`: đọc `train_set.parquet` (2,8 triệu dòng) **1 lần duy nhất lúc chuẩn bị** (không tính lại mỗi request), tính median toàn cục 78 đặc trưng + số mẫu train mỗi lớp, ghi ra `data/train_stats.json`. Lớp hiếm nhất: SQL Injection (70 mẫu, dưới ngưỡng 100 trong `config.yaml: rare_class_min_train_samples`).
+- Tạo `app/reliability.py` (class `ReliabilityScorer.score()`): nhận DataFrame 1 dòng (đầu vào gốc) + Top-5 SHAP vừa tính, trả về 4 số (`faithfulness_proxy_drop`, `env_fingerprint_count`, `env_fingerprint_flag`, `rare_class_flag`).
+- Sửa `app/explain_queue.py`: chạy `ReliabilityScorer.score()` NGAY SAU TreeSHAP trong cùng worker thread (dùng lại `shap_result["top_k"]` vừa tính, không phải tính lại), ghi cả 4 số vào `Reliability` qua `db.upsert_reliability()`, thêm 1 dòng `Timing(step="reliability")`. Sửa `app/main.py`: nạp `train_stats.json` lúc khởi động server, khởi tạo `ReliabilityScorer` 1 lần, truyền vào `ExplainQueue`.
+- Tạo `scripts/stage08_test_reliability.py`: bắn 2 flow thật từ Tập B (`clean_holdout_set.csv`) qua `/predict` — SQL Injection (lớp hiếm, kỳ vọng `rare_class_flag=1`) và Bot (lớp thường, kỳ vọng `rare_class_flag=0`) — chờ hàng đợi xử lý xong, mở DB kiểm tra cả 4 số.
+- **Kết quả chạy thật — cả 2 case [PASS]:**
+  - SQL Injection: `predicted_label=SQL Injection` (đoán đúng, khác với lần bước 8b từng đoán sai Benign vì hồi đó mẫu test khác), `faithfulness_proxy_drop=0.8202`, `env_fingerprint_count=1` → `env_fingerprint_flag=0` (dưới ngưỡng 2), `rare_class_flag=1` — đúng, lớp có 70 mẫu train < 100.
+  - Bot: `faithfulness_proxy_drop=0.9957` (xác suất Bot tụt gần hết khi xóa Top-5 SHAP — khớp với phát hiện của RQ2 là Bot gần như chỉ dựa vào `Dst Port`), `env_fingerprint_count=1` → `env_fingerprint_flag=0`, `rare_class_flag=0` — đúng, lớp có 100.650 mẫu train.
+  - Trước khi viết test này, đã mở trực tiếp `ids_system.db` kiểm tra: 183 Alert cũ (tạo từ trước khi bước 8 có code) đúng như dự kiến có `faithfulness_proxy_drop=NULL`, chỉ 1 Alert mới nhất (lúc đang thử nghiệm feeder, nhãn Bot) có đủ số liệu — xác nhận code không âm thầm ghi đè/sai dữ liệu cũ.
+- Commit: `(sắp cập nhật)`.
 - Commit: `9a1ecb7`.
+
+### Bước 8 — Tầng 4b: Đánh giá độ tin cậy + gắn cờ ✅
+- **Mục đích**: đúng mục "Tầng 4" trong plan (mục 3) — phần "Tính tại chỗ (rẻ)": faithfulness proxy nhanh + đếm cờ môi trường + cờ lớp hiếm, chạy cho MỌI Alert, NGAY SAU TreeSHAP (dùng Top-5 SHAP làm input). Số thứ tự "Bước 8" khớp với comment đã có sẵn từ Bước 7 trong `app/db.py::upsert_reliability` ("bước 8 điền cờ + faithfulness").
+- Tạo `scripts/stage08_compute_train_stats.py`: chạy 1 lần, đọc `train_set.parquet` (2,8 triệu dòng), tính trung vị toàn cục (`global_median`) của 78 đặc trưng + số mẫu huấn luyện từng lớp, lưu ra `data/train_stats.json` (không commit, đã thêm vào `.gitignore` — tái tạo được bằng cách chạy lại script). Kết quả số mẫu/lớp khớp đúng tài liệu kiến trúc: chỉ **SQL Injection = 70 mẫu** dưới ngưỡng 100 (`rare_class_min_train_samples` trong `config.yaml`).
+- Tạo `app/reliability.py` (class `ReliabilityScorer`): nạp `train_stats.json` 1 lần lúc server khởi động, hàm `score()` nhận flow đã chuẩn hóa + nhãn dự đoán + Top-5 SHAP, trả về:
+  - `faithfulness_proxy_drop`: đặt Top-k (mặc định k=5, lấy từ `config.yaml: faithfulness_proxy.k`) đặc trưng SHAP về `global_median`, gọi lại `Detector.predict_flow()`, đo xác suất lớp dự đoán tụt bao nhiêu. **PROXY một bước, một giá trị nền — không phải phép đo faithfulness đầy đủ của RQ2** (xem cảnh báo overclaim ở đầu file và mục 3 của plan).
+  - `env_fingerprint_count`/`env_fingerprint_flag`: đếm trong Top-5 có bao nhiêu đặc trưng thuộc 3 đặc trưng môi trường (`Dst Port`, `Fwd Seg Size Min`, `Init Fwd Win Byts`), bật cờ khi ≥2 (ngưỡng từ `config.yaml`).
+  - `rare_class_flag`: bật khi nhãn dự đoán có dưới 100 mẫu huấn luyện (tra từ `train_stats.json`, không tính lại mỗi request).
+- Nối vào `app/explain_queue.py`: `ReliabilityScorer.score()` chạy trong CÙNG worker thread, NGAY SAU SHAP (đúng thứ tự Làn B trong tài liệu kiến trúc: B3 TreeSHAP → B6 "Đánh giá có đủ dữ liệu"), ghi 4 cột mới vào `Reliability` qua `upsert_reliability()` (không đè `shap_top5_json` đã ghi trước đó), thêm `Timing(step="reliability")`.
+- Sửa `app/main.py`: khởi tạo `ReliabilityScorer` 1 lần lúc startup (đọc `train_stats.json` + các tham số từ `config.yaml`), truyền vào `ExplainQueue`.
+- Tạo `scripts/stage08_test_reliability.py`, test qua API thật (bật server con, CHỜ hàng đợi xử lý xong qua `/explain_queue_status` rồi mới đọc DB, vì SHAP/reliability chạy bất đồng bộ từ Bước 7b):
+  1. Flow Bot (`sample_attack.json`) → `faithfulness_proxy_drop=0,9957` (Dst Port φ=+7,51 chiếm áp đảo Top-5 → xóa đi làm xác suất Bot tụt gần hết, khớp đúng phát hiện RQ2), `env_fingerprint_count=1` (chưa đạt ngưỡng 2 nên `env_fingerprint_flag=0`), `rare_class_flag=0` (Bot có 100.650 mẫu train).
+  2. Flow SQL Injection (lấy từ Tập B, `clean_holdout_set.csv`) → model đoán đúng SQL Injection (xác suất 0,82), `rare_class_flag=1` — đúng kỳ vọng (lớp hiếm, 70 mẫu).
+  3. Flow Benign → không tạo Alert, không có dòng Reliability — đúng nguyên tắc.
+- **Kết quả chạy thật — cả 3 việc [PASS]**, không gặp lỗi kỹ thuật nào trong lúc code (khác các bước trước, bước này không phát sinh lỗi mới cần sửa).
+- Commit: *(chưa commit — chờ xác nhận)*.
