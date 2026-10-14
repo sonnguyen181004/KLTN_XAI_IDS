@@ -151,6 +151,23 @@ def insert_alert(conn, alert_id: str, flow_id: str, group_key: str, predicted_la
     conn.commit()
 
 
+def upsert_reliability(conn, alert_id: str, **fields) -> None:
+    """Ghi/cập nhật MỘT PHẦN bảng Reliability cho 1 alert_id.
+
+    Các bước 7-11 lần lượt điền thêm cột khác nhau cho CÙNG 1 alert_id (bước 7
+    điền shap_top5_json, bước 8 điền cờ + faithfulness, bước 9 điền lime_top5_json
+    + agreement, ...), nên dùng INSERT-nếu-chưa-có rồi UPDATE các cột được truyền
+    vào, thay vì ghi đè toàn bộ dòng (sẽ xóa mất dữ liệu bước trước đã ghi)."""
+    conn.execute("INSERT OR IGNORE INTO Reliability (alert_id) VALUES (?)", (alert_id,))
+    if fields:
+        set_clause = ", ".join(f"{k} = ?" for k in fields)
+        conn.execute(
+            f"UPDATE Reliability SET {set_clause} WHERE alert_id = ?",
+            (*fields.values(), alert_id),
+        )
+    conn.commit()
+
+
 def insert_timing(conn, flow_id: str, step: str, duration_ms: float, recorded_at: str) -> None:
     conn.execute(
         "INSERT INTO Timing (flow_id, step, duration_ms, recorded_at) VALUES (?, ?, ?, ?)",

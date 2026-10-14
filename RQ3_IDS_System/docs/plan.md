@@ -162,3 +162,18 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   - Để tiện bấm thử qua Swagger UI, đã xuất sẵn 2 file mẫu (lấy từ Tập B, flow model chưa từng thấy): `data/samples/sample_benign.json` (đáp án đúng = Benign) và `data/samples/sample_attack.json` (đáp án đúng = Bot).
   - Bạn dán `sample_attack.json` vào `/predict` qua Swagger UI và chạy thành công.
 - Commit: `41949ed`.
+
+### Bước 7 — Tầng 4a: TreeSHAP tự động, nối vào `/predict` 🔄 (đang làm)
+- **Mục đích**: mỗi cảnh báo có kèm "vì sao mô hình nghĩ vậy" — SHAP chạy TỰ ĐỘNG cho mọi Alert (khác LIME ở bước 9, chỉ chạy khi analyst bấm xin, đúng nguyên tắc kiến trúc Khối 3).
+- Sẽ làm: `app/explain_shap.py` (TreeSHAP, Top-5 có dấu cho đúng lớp dự đoán, kiểm tra additivity); nối vào `app/main.py` sau khi tạo Alert; thêm `db.upsert_reliability()` (ghi từng phần vào bảng `Reliability`, vì các bước 8-11 sau sẽ tiếp tục điền thêm cột khác cho CÙNG alert_id).
+- Test dự kiến: gửi flow tấn công (sample_attack.json) → có Top-5 SHAP trong response; gửi flow Benign → KHÔNG có SHAP (đúng nguyên tắc); additivity sai số phải cùng bậc với RQ2 (~1e-5/1e-6); mở DB xác nhận bảng Reliability có dữ liệu; so thời gian với RQ2 (~19ms/flow).
+
+### Bước 7 — Tầng 4a: TreeSHAP tự động, nối vào `/predict` ✅
+- Tạo `app/explain_shap.py` (class `ShapExplainer`), `db.upsert_reliability()` (ghi từng phần, không đè dữ liệu bước khác), nối vào `app/main.py`, `scripts/stage07_test_shap.py`.
+- **Kết quả chạy thật — PASS ngay lần đầu, không gặp lỗi:**
+  - Flow Bot (sample_attack.json) → `is_alert=True`, có Top-5 SHAP. **`Dst Port` φ=+7,512 — gần như một mình quyết định cả quyết định** (4 đặc trưng còn lại φ chỉ 0,01–0,05) — khớp ĐÚNG với phát hiện ở RQ2 (Bot gần như hoàn toàn dựa vào Dst Port, mean|φ|≈7,4/97,1% trọng số) → xác nhận code SHAP mới hoạt động nhất quán với phân tích RQ2 gốc.
+  - Additivity: sai số = **9,537e-07** — cùng bậc với RQ2 (1e-5 đến 1e-6), xác nhận TreeSHAP tính đúng.
+  - Flow Benign → `shap=None`, `is_alert=False` — đúng nguyên tắc "chỉ tính SHAP khi có cảnh báo".
+  - Mở DB: bảng `Reliability` có dòng ứng với `alert_id`, `shap_top5_json` đủ 5 phần tử.
+  - **Thời gian SHAP qua API: 40,79 ms** — chậm hơn ~2 lần so với con số RQ2 đo khi chạy hàng loạt theo lô (~19 ms/flow). Hợp lý: RQ2 dùng `TreeExplainer` trên nhiều flow cùng lúc (tận dụng batch), còn ở đây mỗi request API chỉ giải thích 1 flow riêng lẻ + có thêm chi phí HTTP/threadpool của FastAPI. Số liệu chính xác hơn sẽ có ở thí nghiệm **E1** (đo trên nhiều flow, lấy median/p95).
+- Commit: (sắp tới).

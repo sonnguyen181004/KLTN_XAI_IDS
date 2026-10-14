@@ -4,6 +4,7 @@ Chạy thử: uvicorn app.main:app --reload --port 8000  (chạy từ thư mục
 """
 from __future__ import annotations
 
+import json
 import sys
 import time
 import uuid
@@ -19,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import db  # noqa: E402
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
 from predict import Detector  # noqa: E402
+from explain_shap import ShapExplainer  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RQ3_ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +38,7 @@ def now_iso() -> str:
 # ---- Khởi tạo 1 lần lúc server bật lên --------------------------------------------
 cfg = load_config()
 detector = Detector(REPO_ROOT / cfg["paths"]["model"], REPO_ROOT / cfg["paths"]["label_encoder"])
+shap_explainer = ShapExplainer(detector.model, detector.class_names)
 DB_PATH = REPO_ROOT / cfg["paths"]["sqlite_db"]
 db.init_db(DB_PATH)  # chạy 1 lần lúc khởi động để chắc chắn đủ bảng
 
@@ -89,6 +92,7 @@ def predict(flow: Dict[str, float]):
 
         # ---- Luật tạo cảnh báo: nhãn khác Benign thì tạo Alert ngay ------------------
         alert_id = None
+        shap_result = None
         if result["predicted_label"] != "Benign":
             alert_id = str(uuid.uuid4())
             db.insert_alert(
@@ -98,10 +102,28 @@ def predict(flow: Dict[str, float]):
                 created_at=now_iso(),
             )
 
+            # ---- Tầng 4a: TreeSHAP TỰ ĐỘNG (chỉ khi có cảnh báo) ----------------------
+            t0 = time.perf_counter()
+            shap_result = shap_explainer.explain(normalized, result["predicted_label"], top_k=5)
+            t_shap_ms = (time.perf_counter() - t0) * 1000
+            db.insert_timing(conn, flow_id, "shap", t_shap_ms, now_iso())
+            db.upsert_reliability(
+                conn, alert_id,
+                shap_top5_json=json.dumps(shap_result["top_k"]),
+            )
+
         t_total_ms = (time.perf_counter() - t_start) * 1000
         db.insert_timing(conn, flow_id, "total", t_total_ms, now_iso())
     finally:
         conn.close()
+
+    timing_ms = {
+        "normalize": round(t_normalize_ms, 3),
+        "predict": round(t_predict_ms, 3),
+        "total": round(t_total_ms, 3),
+    }
+    if shap_result is not None:
+        timing_ms["shap"] = round(t_shap_ms, 3)
 
     return JSONResponse({
         "flow_id": flow_id,
@@ -110,9 +132,6 @@ def predict(flow: Dict[str, float]):
         "model_version": result["model_version"],
         "is_alert": alert_id is not None,
         "alert_id": alert_id,
-        "timing_ms": {
-            "normalize": round(t_normalize_ms, 3),
-            "predict": round(t_predict_ms, 3),
-            "total": round(t_total_ms, 3),
-        },
+        "shap": shap_result,  # None nếu Benign (không chạy SHAP) — đúng nguyên tắc kiến trúc
+        "timing_ms": timing_ms,
     })
