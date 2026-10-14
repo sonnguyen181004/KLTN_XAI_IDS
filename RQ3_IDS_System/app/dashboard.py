@@ -8,6 +8,7 @@ Chạy: streamlit run app/dashboard.py  (từ thư mục RQ3_IDS_System/)
 """
 from __future__ import annotations
 
+import subprocess
 import sys
 from pathlib import Path
 
@@ -67,6 +68,114 @@ cols[1].metric("Phiên bản model", health["model_version"])
 cols[2].metric("Số lớp", health["n_classes"])
 cols[3].metric("Hàng đợi SHAP", f"{q.get('qsize', '?')}/{q.get('maxsize', '?')}")
 cols[4].metric("Đã bỏ (hàng đợi đầy)", q.get("n_dropped", "?"))
+
+st.divider()
+
+# ---------------------------------------------------------------------------
+# Nạp dữ liệu vào hệ thống — CSV có đặc trưng sẵn / PCAP phát lại (nguồn 2 ở plan.md
+# mục 0.1). Vẫn qua HTTP /predict như mọi nguồn khác — Dashboard chỉ là tiện ích gửi
+# hộ, không tự ý gọi tắt qua hàm Python nào khác.
+# ---------------------------------------------------------------------------
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from feeder import CICFLOWMETER_COLUMN_MAP, row_to_payload  # noqa: E402
+
+st.subheader("Nạp dữ liệu vào hệ thống")
+tab_csv, tab_pcap = st.tabs(["Gửi file CSV (đặc trưng có sẵn)", "Phát lại file PCAP"])
+
+with tab_csv:
+    st.caption("Dùng cho CSV đã có đủ 78 đặc trưng (Tập A/B, hoặc CSV do CICFlowMeter ghi ra sẵn) — "
+               "mỗi dòng sẽ được gửi vào `/predict`, giống hệt cách `scripts/feeder.py` vẫn làm qua terminal.")
+    csv_file = st.file_uploader("Chọn file .csv", type=["csv"], key="csv_uploader")
+    convert_units_csv = st.checkbox(
+        "Đổi đơn vị thời gian giây -> micro giây (chỉ tick nếu CSV này do CICFlowMeter THẬT xuất ra)",
+        value=False, key="csv_convert_units")
+    if csv_file is not None:
+        raw_text = csv_file.getvalue().decode("utf-8-sig")
+        lines = raw_text.splitlines()
+        import csv as csv_module
+        reader = csv_module.reader(lines)
+        rows = list(reader)
+        header, data_rows = rows[0], rows[1:]
+        st.write(f"Đọc được {len(data_rows)} dòng, {len(header)} cột.")
+        if st.button(f"Gửi {len(data_rows)} dòng vào /predict", key="send_csv"):
+            progress = st.progress(0.0)
+            results = []
+            for i, raw_row in enumerate(data_rows):
+                if len(raw_row) != len(header):
+                    results.append({"dòng": i + 1, "kết quả": "BỎ QUA — số cột không khớp header"})
+                    continue
+                row_dict = dict(zip(header, raw_row))
+                payload = row_to_payload(row_dict, header, convert_units_csv)
+                try:
+                    r = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+                    if r.status_code == 200:
+                        b = r.json()
+                        results.append({"dòng": i + 1, "kết quả": f"OK — {b['predicted_label']} "
+                                                                    f"(is_alert={b['is_alert']})"})
+                    else:
+                        results.append({"dòng": i + 1, "kết quả": f"LỖI {r.status_code} — {r.text[:150]}"})
+                except requests.exceptions.RequestException as e:
+                    results.append({"dòng": i + 1, "kết quả": f"KHÔNG GỬI ĐƯỢC — {e}"})
+                progress.progress((i + 1) / len(data_rows))
+            st.success(f"Đã gửi xong {len(data_rows)} dòng.")
+            st.dataframe(pd.DataFrame(results), width="stretch", hide_index=True)
+            st.info("Kéo xuống bảng cảnh báo dưới đây và bấm lọc/F5 để thấy cảnh báo mới.")
+
+with tab_pcap:
+    st.caption("Đọc lại 1 file .pcap đã ghi sẵn — dùng CICFlowMeter (môi trường `.venv_capture`) để trích đặc "
+               "trưng, KHÔNG cần tcpreplay, giống đúng nguồn 2 ở `docs/plan.md` mục 0.1.")
+    venv_python = RQ3_ROOT / ".venv_capture" / "Scripts" / "python.exe"
+    if not venv_python.exists():
+        st.error(f"Chưa thấy môi trường bắt gói tại {venv_python} — xem mục M3/5.1 trong docs/plan.md để cài "
+                 "Npcap + cicflowmeter trước khi dùng tab này.")
+    else:
+        pcap_file = st.file_uploader("Chọn file .pcap", type=["pcap", "pcapng"], key="pcap_uploader")
+        if pcap_file is not None and st.button("Trích xuất + gửi vào /predict", key="send_pcap"):
+            upload_path = RQ3_ROOT / "data" / "dashboard_uploaded_replay.pcap"
+            output_csv = RQ3_ROOT / "data" / "dashboard_replay_output.csv"
+            upload_path.write_bytes(pcap_file.getvalue())
+            output_csv.unlink(missing_ok=True)  # xóa kết quả lần trước, tránh đọc nhầm dữ liệu cũ
+
+            with st.spinner("Đang chạy CICFlowMeter trích đặc trưng từ file pcap..."):
+                proc = subprocess.run(
+                    [str(venv_python), str(RQ3_ROOT / "scripts" / "run_live_capture.py"),
+                     "--pcap-input", str(upload_path), "--output", str(output_csv)],
+                    cwd=str(RQ3_ROOT), capture_output=True, text=True, timeout=120,
+                )
+            with st.expander("Log CICFlowMeter (bấm để xem)"):
+                st.code(proc.stdout + proc.stderr)
+
+            if proc.returncode != 0 or not output_csv.exists():
+                st.error("CICFlowMeter chạy lỗi hoặc không ghi ra file — xem log phía trên.")
+            else:
+                with open(output_csv, encoding="utf-8-sig", newline="") as f:
+                    import csv as csv_module
+                    rows = list(csv_module.reader(f))
+                if len(rows) <= 1:
+                    st.warning("File pcap không trích được flow nào (có thể quá ngắn hoặc không có TCP/UDP).")
+                else:
+                    header, data_rows = rows[0], rows[1:]
+                    st.write(f"Trích được {len(data_rows)} flow từ pcap. Đang gửi vào /predict "
+                             "(tự đổi đơn vị giây -> micro giây vì CICFlowMeter thật xuất ra giây)...")
+                    results = []
+                    for i, raw_row in enumerate(data_rows):
+                        if len(raw_row) != len(header):
+                            continue
+                        row_dict = dict(zip(header, raw_row))
+                        payload = row_to_payload(row_dict, header, convert_units=True)
+                        try:
+                            r = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+                            if r.status_code == 200:
+                                b = r.json()
+                                results.append({"flow": i + 1, "kết quả": f"OK — {b['predicted_label']} "
+                                                                           f"(is_alert={b['is_alert']})"})
+                            else:
+                                results.append({"flow": i + 1, "kết quả": f"LỖI {r.status_code}"})
+                        except requests.exceptions.RequestException as e:
+                            results.append({"flow": i + 1, "kết quả": f"KHÔNG GỬI ĐƯỢC — {e}"})
+                    st.success(f"Đã gửi xong {len(results)} flow trích từ pcap.")
+                    st.dataframe(pd.DataFrame(results), width="stretch", hide_index=True)
+                    st.info("Kéo xuống bảng cảnh báo dưới đây và bấm lọc/F5 để thấy cảnh báo mới.")
 
 st.divider()
 

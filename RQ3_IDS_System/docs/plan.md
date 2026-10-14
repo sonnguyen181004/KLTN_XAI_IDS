@@ -346,3 +346,14 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - Bắn 3 flow thật (Bot, SQL Injection, DoS attacks-Hulk) qua `/predict`, xin thêm LIME cho 1 alert qua `/explain`, rồi mới chạy AppTest — Dashboard hiển thị đúng dữ liệu thật, không phải dữ liệu giả.
   - Phát hiện phụ (không phải lỗi, chỉ dọn sạch): Streamlit cảnh báo `use_container_width` sẽ bị bỏ sau 2025-12-31 — đã sửa hết 4 chỗ thành `width="stretch"`, chạy lại xác nhận hết cảnh báo.
 - Commit: `bc9f158`.
+
+### Bước 13 (bổ sung theo yêu cầu) — Nạp dữ liệu ngay trên Dashboard (CSV + PCAP) ✅
+- **Mục đích**: bạn hỏi muốn Dashboard có sẵn các nút gửi CSV/PCAP (và real-time để sau) thay vì phải dùng Swagger UI hay terminal riêng — thêm 1 khối "Nạp dữ liệu vào hệ thống" ngay trên Dashboard, vẫn gọi `/predict` qua HTTP như mọi nguồn khác (không tự ý gọi tắt qua hàm Python nào khác, giữ đúng nguyên tắc Dashboard chỉ là client của API).
+- Thêm 2 tab vào `app/dashboard.py`:
+  - **"Gửi file CSV"**: `st.file_uploader`, đọc toàn bộ dòng, dùng lại `feeder.row_to_payload()` (bước 8b) để map tên cột/đơn vị, gửi từng dòng vào `/predict`, có thanh tiến trình + bảng kết quả từng dòng (OK/lỗi/predicted_label).
+  - **"Phát lại PCAP"**: `st.file_uploader` nhận `.pcap`/`.pcapng`, lưu ra `data/dashboard_uploaded_replay.pcap`, gọi `subprocess` chạy `scripts/run_live_capture.py --pcap-input ... ` bằng Python của `.venv_capture` (đúng việc mới thêm trước bước 13), đọc CSV CICFlowMeter xuất ra, map cột/đơn vị, gửi từng flow vào `/predict`. Có kiểm tra `venv_capture` chưa cài thì báo lỗi rõ ràng, trỏ tới mục M3/5.1 trong plan — không âm thầm crash.
+- Mở rộng `scripts/stage13_test_dashboard.py` thêm **Việc 4**: dùng `AppTest.file_uploader[...].upload()` (có sẵn từ Streamlit 1.65.0) để giả lập người dùng thật upload file `data/clean_holdout_set.csv` (241 dòng, Tập B) vào tab CSV, bấm nút gửi, kiểm tra không exception VÀ số alert trong DB tăng lên sau khi gửi (không chỉ kiểm tra UI không lỗi, phải xác nhận dữ liệu thật đã vào hệ thống).
+- **Kết quả chạy thật [PASS]:** upload 241 dòng Tập B qua tab CSV của Dashboard (không qua script/terminal nào khác) → 0 exception → số alert trong DB tăng từ 271 lên 469 (đúng — không phải mọi dòng đều là tấn công, nhiều dòng Benign không tạo alert).
+- **Tab PCAP chưa test chạy thật được** — vẫn thiếu 1 file `.pcap` mẫu như đã ghi ở mục trước bước 13. Code đã viết xong, đường ống đã rõ, chỉ còn thiếu dữ liệu để kiểm chứng — không được coi là "đã xong" cho tới khi chạy thật ra kết quả.
+- **Chưa làm (để sau theo yêu cầu của bạn)**: nút "Bắt real-time" ngay trên Dashboard (cần Streamlit chạy với quyền Administrator để Npcap hoạt động, phức tạp hơn do phải quản lý tiến trình nền + tự làm mới trang trong khi đang bắt) — hiện tại bắt real-time vẫn làm qua terminal như hướng dẫn cũ (`scripts/run_live_capture.py --interface ...`).
+- Commit: `(sắp tới)`.
