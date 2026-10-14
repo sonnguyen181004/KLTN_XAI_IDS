@@ -54,6 +54,11 @@ api:
   host: "127.0.0.1"
   port: 8000
   max_explain_queue: 50
+  # LIME tốn CPU hơn hẳn SHAP (~148ms, gấp ~8 lần) và chạy ĐỒNG BỘ trong POST /explain
+  # (analyst đang chờ kết quả nên không đưa vào hàng đợi nền như SHAP) — giới hạn số
+  # lượt LIME chạy cùng lúc để tránh nghẽn thread pool của FastAPI khi nhiều analyst
+  # bấm xin LIME cùng lúc. Vượt ngưỡng thì trả 429 (đúng bảng API trong tài liệu kiến trúc).
+  max_concurrent_lime: 4
 
 feeder:
   # File CSV mà feeder theo dõi. Khi test giả lập: tự ghi dần vào đây. Khi có
