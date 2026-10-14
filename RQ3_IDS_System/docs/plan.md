@@ -369,4 +369,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
 - Mở rộng `scripts/stage13_test_dashboard.py` thêm **Việc 5**: tạo pcap giả lập bằng script trên, dùng `AppTest.file_uploader.upload()` giả lập upload qua đúng tab PCAP của Dashboard, bấm nút, kiểm tra không exception.
 - **Kết quả chạy thật — cả 5 việc [PASS], 0 exception**: test Việc 5 **tái hiện lại chính xác lỗi `UnicodeDecodeError`** bạn gặp (xác nhận đây đúng là lỗi thật, không phải ngẫu nhiên riêng máy bạn) trước khi sửa (3); sau khi sửa cả 3 lỗi, chạy lại thì sạch hoàn toàn, trích đúng 1 flow từ pcap giả lập, gửi vào `/predict` thành công.
 - **Dọn dữ liệu test tích lũy** (theo yêu cầu "xóa mấy cái đang ở tạm/mẫu để tôi test"): xóa `data/ids_system.db` (tích lũy 1471 alert từ các lần tôi test — không commit vào git, xóa an toàn, khởi động lại server sẽ tự tạo lại 6 bảng rỗng) + dọn hết các file `.csv`/`.log` tạm còn sót lại trong `data/` từ các bước test trước, chỉ giữ lại file thật cần dùng (`clean_holdout_set.csv`, `train_stats.json`, `lime_background.npy`, `samples/`).
-- Commit: `(sắp tới)`.
+- Commit: `201801b`.
