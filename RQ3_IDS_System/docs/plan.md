@@ -176,4 +176,7 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   - Flow Benign → `shap=None`, `is_alert=False` — đúng nguyên tắc "chỉ tính SHAP khi có cảnh báo".
   - Mở DB: bảng `Reliability` có dòng ứng với `alert_id`, `shap_top5_json` đủ 5 phần tử.
   - **Thời gian SHAP qua API: 40,79 ms** — chậm hơn ~2 lần so với con số RQ2 đo khi chạy hàng loạt theo lô (~19 ms/flow). Hợp lý: RQ2 dùng `TreeExplainer` trên nhiều flow cùng lúc (tận dụng batch), còn ở đây mỗi request API chỉ giải thích 1 flow riêng lẻ + có thêm chi phí HTTP/threadpool của FastAPI. Số liệu chính xác hơn sẽ có ở thí nghiệm **E1** (đo trên nhiều flow, lấy median/p95).
-- Commit: (sắp tới).
+- **Bạn tự test lại thủ công qua Swagger UI** (`/docs`), độc lập với script tự động:
+  - Dán `sample_attack.json` (Bot) vào `POST /predict` → xác nhận response có trường `"shap"` đầy đủ (`class_explained`, `base_value`, `top_k` 5 đặc trưng, `additivity_error`), khác hẳn lần test bước 6 lúc trường này còn chưa tồn tại.
+  - Dán `sample_benign.json` vào `POST /predict` → xác nhận trường `"shap"` là `null` (đúng nguyên tắc: Benign không tạo cảnh báo nên không chạy SHAP).
+- Commit: `5e39a85`.
