@@ -1,0 +1,96 @@
+"""Schema SQLite cho hệ thống IDS (RQ3) — 6 bảng theo đúng "Thực thể dữ liệu"
+trong tài liệu kiến trúc. Dùng sqlite3 chuẩn của Python (không ORM) để đơn giản,
+dễ đọc, dễ debug bằng tay (mở file .db bằng bất kỳ công cụ SQLite nào).
+
+78 đặc trưng của một flow được lưu gộp thành 1 cột JSON (`features_json`) thay vì
+78 cột riêng — vì tên đặc trưng có khoảng trắng/dấu "/" (ví dụ "Flow Byts/s") rất
+phiền khi đặt tên cột SQL, và hệ thống không cần lọc theo từng đặc trưng bằng SQL,
+chỉ cần đọc nguyên khối 78 số để đưa vào model.
+"""
+from __future__ import annotations
+
+import json
+import sqlite3
+from pathlib import Path
+
+SCHEMA_SQL = """
+CREATE TABLE IF NOT EXISTS FlowRecord (
+    flow_id         TEXT PRIMARY KEY,
+    received_at     TEXT NOT NULL,
+    source          TEXT NOT NULL,      -- 'rq2_cohort' | 'clean_set' | 'lab' | 'pcap'
+    features_json   TEXT NOT NULL,      -- JSON: {"Dst Port": 80, "Protocol": 6, ...} đúng 78 đặc trưng
+    label_true      TEXT                -- nhãn thật nếu biết trước (Tập A/B); NULL nếu traffic thật
+);
+
+CREATE TABLE IF NOT EXISTS DataError (
+    error_id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    flow_id         TEXT NOT NULL,
+    occurred_at     TEXT NOT NULL,
+    error_code      INTEGER NOT NULL,   -- 422 = thiếu cột / NaN
+    reason          TEXT NOT NULL,
+    raw_input_json  TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Prediction (
+    flow_id             TEXT PRIMARY KEY REFERENCES FlowRecord(flow_id),
+    predicted_label     TEXT NOT NULL,
+    probabilities_json  TEXT NOT NULL,  -- JSON: {"Benign": 0.01, "Bot": 0.97, ...} 15 lớp
+    model_version       TEXT NOT NULL,
+    predicted_at        TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS AlertRecord (
+    alert_id        TEXT PRIMARY KEY,
+    flow_id         TEXT NOT NULL REFERENCES FlowRecord(flow_id),
+    group_key       TEXT NOT NULL,      -- khóa gộp cảnh báo cùng loại (vd: theo predicted_label)
+    predicted_label TEXT NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'new',  -- 'new' | 'explained' | 'reviewed'
+    created_at      TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Reliability (
+    alert_id                TEXT PRIMARY KEY REFERENCES AlertRecord(alert_id),
+    shap_top5_json          TEXT,       -- JSON list [[feature, value, phi], ...]
+    lime_top5_json          TEXT,       -- NULL cho tới khi analyst bấm xin LIME
+    agreement_jaccard5      REAL,       -- chỉ có khi đã chạy LIME
+    faithfulness_proxy_drop REAL,       -- PROXY nhanh — không phải phép đo đầy đủ của RQ2
+    env_fingerprint_count   INTEGER NOT NULL DEFAULT 0,  -- đếm trong Top-5 (0..5)
+    env_fingerprint_flag    INTEGER NOT NULL DEFAULT 0,  -- 0/1 — chỉ là cờ cảnh báo, không phải bằng chứng
+    rare_class_flag         INTEGER NOT NULL DEFAULT 0,  -- 0/1
+    stability_lookup        REAL,       -- tra sẵn theo lớp từ RQ2 (rq2_master_summary.json)
+    robustness_lookup_json  TEXT,       -- tra sẵn theo lớp từ RQ2
+    branch                  TEXT,       -- 'A' | 'B'
+    branch_reason           TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Timing (
+    timing_id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    flow_id         TEXT NOT NULL REFERENCES FlowRecord(flow_id),
+    step            TEXT NOT NULL,      -- 'normalize' | 'predict' | 'shap' | 'lime' | 'reliability'
+    duration_ms     REAL NOT NULL,
+    recorded_at     TEXT NOT NULL
+);
+"""
+
+TABLE_NAMES = ["FlowRecord", "DataError", "Prediction", "AlertRecord", "Reliability", "Timing"]
+
+
+def init_db(db_path: str | Path) -> sqlite3.Connection:
+    """Tạo file DB (nếu chưa có) và đủ 6 bảng. Gọi lại nhiều lần an toàn (IF NOT EXISTS)."""
+    db_path = Path(db_path)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.executescript(SCHEMA_SQL)
+    conn.commit()
+    return conn
+
+
+def list_tables(conn: sqlite3.Connection) -> list[str]:
+    cur = conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+    return [r[0] for r in cur.fetchall()]
+
+
+def table_columns(conn: sqlite3.Connection, table: str) -> list[str]:
+    cur = conn.execute(f"PRAGMA table_info({table})")
+    return [r[1] for r in cur.fetchall()]
