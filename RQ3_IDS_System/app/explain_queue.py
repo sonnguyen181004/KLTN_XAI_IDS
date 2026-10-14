@@ -23,10 +23,11 @@ def now_iso() -> str:
 
 
 class ExplainQueue:
-    def __init__(self, maxsize: int, shap_explainer, db_module, db_path):
+    def __init__(self, maxsize: int, shap_explainer, reliability_scorer, db_module, db_path):
         self._q: queue.Queue = queue.Queue(maxsize=maxsize)
         self.maxsize = maxsize
         self.shap_explainer = shap_explainer
+        self.reliability_scorer = reliability_scorer
         self.db = db_module
         self.db_path = db_path
         self.n_queued = 0
@@ -70,11 +71,27 @@ class ExplainQueue:
         shap_result = self.shap_explainer.explain(task["normalized_row"], task["predicted_label"], top_k=5)
         shap_ms = (time.perf_counter() - t0) * 1000
 
+        # Bước 8 — Đánh giá độ tin cậy + gắn cờ: chạy NGAY SAU SHAP, dùng Top-5 SHAP
+        # vừa tính làm input (xem app/reliability.py).
+        t0 = time.perf_counter()
+        reliability_result = self.reliability_scorer.score(
+            task["normalized_row"], task["predicted_label"], shap_result["top_k"],
+        )
+        reliability_ms = (time.perf_counter() - t0) * 1000
+
         conn = self.db.get_connection(self.db_path)
         try:
-            self.db.upsert_reliability(conn, task["alert_id"], shap_top5_json=json.dumps(shap_result["top_k"]))
+            self.db.upsert_reliability(
+                conn, task["alert_id"],
+                shap_top5_json=json.dumps(shap_result["top_k"]),
+                faithfulness_proxy_drop=reliability_result["faithfulness_proxy_drop"],
+                env_fingerprint_count=reliability_result["env_fingerprint_count"],
+                env_fingerprint_flag=reliability_result["env_fingerprint_flag"],
+                rare_class_flag=reliability_result["rare_class_flag"],
+            )
             self.db.insert_timing(conn, task["flow_id"], "shap_queue_wait", wait_ms, now_iso())
             self.db.insert_timing(conn, task["flow_id"], "shap", shap_ms, now_iso())
+            self.db.insert_timing(conn, task["flow_id"], "reliability", reliability_ms, now_iso())
         finally:
             conn.close()
         self.n_processed += 1

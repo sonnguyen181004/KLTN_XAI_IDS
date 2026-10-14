@@ -12,6 +12,7 @@ RQ3_IDS_System/data/*.db-shm
 RQ3_IDS_System/data/*.db-wal
 RQ3_IDS_System/data/*.csv
 RQ3_IDS_System/data/*.log
+RQ3_IDS_System/data/train_stats.json
 
 # Python & Environments
 __pycache__/
