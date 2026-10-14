@@ -327,4 +327,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - `branch=B` → `count=3` (đúng — 1 từ bước 11 (SQL Injection) + 1 từ bước 11 (DoS Hulk) + 1 SQL Injection mới tạo lúc test này).
   - `since=<mốc ngay trước khi tạo 2 alert mới>` → `count=2`, lọc đúng chỉ còn 2 alert mới tạo, loại hết 252 alert cũ.
   - `branch=C` → `422` đúng như kỳ vọng validate input.
-- Commit: `(sắp tới)`.
+- Commit: `1eabece`.
