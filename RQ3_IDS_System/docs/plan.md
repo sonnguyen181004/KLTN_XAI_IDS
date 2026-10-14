@@ -396,4 +396,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
 - Cả 2 bảng trên Dashboard (`Tất cả flow`, `Danh sách cảnh báo`) hiện tách rõ **2 cột thời gian riêng**: "thời điểm gói tin thật" và "lúc hệ thống xử lý", kèm cột "nguồn" — không còn gộp chung gây nhầm lẫn nữa.
 - **Xác nhận chạy thật**: gửi lại 1 flow qua tab PCAP, mở DB kiểm tra trực tiếp — `flow_timestamp='2026-10-14T23:46:02'` (giờ máy lúc gói tin được ghi trong pcap) khác hẳn `received_at='2026-10-14T16:46:05 UTC'` (= 23:46:05 giờ VN, lúc hệ thống xử lý) — đúng như kỳ vọng, 2 mốc thời gian tách biệt rõ ràng. `source` phân biệt đúng 3 giá trị `api`/`csv_upload`/`pcap_replay` sau khi test cả 3 đường.
 - Chạy lại `scripts/stage12_test_alerts.py` (5/5 PASS) và `scripts/stage13_test_dashboard.py` (5/5 PASS) xác nhận không vỡ gì.
-- Commit: `(sắp tới)`.
+- Commit: `872289e`.
