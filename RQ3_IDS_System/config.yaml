@@ -55,5 +55,15 @@ api:
   port: 8000
   max_explain_queue: 50
 
+feeder:
+  # File CSV mà feeder theo dõi. Khi test giả lập: tự ghi dần vào đây. Khi có
+  # CICFlowMeter thật: đổi thành đường dẫn CICFlowMeter xuất ra (qua tham số
+  # --watch, không cần sửa code).
+  default_watch_csv: "RQ3_IDS_System/data/live_feed_simulated.csv"
+  poll_interval_sec: 1.0
+  # CICFlowMeter thật xuất thời gian theo giây, Tập A/B đã sẵn micro giây —
+  # xem lý do ở app/normalize.py. Để False khi test giả lập bằng Tập B.
+  convert_seconds_to_microseconds: false
+
 dashboard:
   port: 8501
