@@ -79,8 +79,13 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     """Tạo file DB (nếu chưa có) và đủ 6 bảng. Gọi lại nhiều lần an toàn (IF NOT EXISTS)."""
     db_path = Path(db_path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(db_path))
+    conn = sqlite3.connect(str(db_path), timeout=10.0)
     conn.execute("PRAGMA foreign_keys = ON")
+    # WAL: cho phép nhiều connection đọc/ghi đồng thời mà ít khóa nhau hơn mode
+    # mặc định (rollback journal). Cần thiết khi nhiều request /predict tới cùng
+    # lúc (traffic thật dồn dập) — nếu không, lỗi thật đã gặp khi test:
+    # "sqlite3.OperationalError: database is locked".
+    conn.execute("PRAGMA journal_mode = WAL")
     conn.executescript(SCHEMA_SQL)
     conn.commit()
     return conn
@@ -93,9 +98,14 @@ def get_connection(db_path: str | Path) -> sqlite3.Connection:
     check_same_thread=True). FastAPI chạy mỗi request sync trong 1 thread riêng
     từ thread pool, nên app/main.py phải gọi hàm này để mở 1 connection RIÊNG
     cho MỖI request rồi đóng lại — không dùng chung 1 connection toàn cục.
+
+    `timeout=10.0`: nếu DB đang bị 1 connection khác khóa để ghi, CHỜ tối đa 10
+    giây rồi mới báo lỗi, thay vì báo lỗi ngay (mặc định sqlite3 timeout=5s
+    nhưng vẫn có thể không đủ khi nhiều request tới đồng thời — đã gặp lỗi thật
+    "database is locked" khi dội 70 request song song lúc test bước 7b).
     """
     db_path = Path(db_path)
-    conn = sqlite3.connect(str(db_path))
+    conn = sqlite3.connect(str(db_path), timeout=10.0)
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
