@@ -254,6 +254,26 @@ def explain(req: ExplainRequest):
     })
 
 
+@app.get("/alerts")
+def list_alerts(
+    since: Optional[str] = None, until: Optional[str] = None,
+    label: Optional[str] = None, branch: Optional[str] = None,
+):
+    """Bước 12 — Tầng 6: danh sách Alert kèm trạng thái giải thích, lọc theo
+    thời gian (`since`/`until`, ISO 8601, so sánh chuỗi vì `created_at` luôn ghi
+    cùng định dạng UTC ISO), nhãn (`label` = predicted_label) và nhánh (`branch`
+    = 'A'/'B', đúng bảng API trong tài liệu kiến trúc)."""
+    if branch is not None and branch not in ("A", "B"):
+        raise HTTPException(status_code=422, detail="branch chỉ nhận 'A' hoặc 'B'")
+
+    conn = db.get_connection(DB_PATH)
+    try:
+        alerts = db.get_alerts(conn, since=since, until=until, label=label, branch=branch)
+    finally:
+        conn.close()
+    return {"count": len(alerts), "alerts": alerts}
+
+
 @app.get("/explain_queue_status")
 def explain_queue_status():
     """Chỉ để quan sát/debug: xem hàng đợi giải thích đang ở trạng thái nào."""
