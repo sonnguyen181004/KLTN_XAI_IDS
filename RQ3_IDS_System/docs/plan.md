@@ -246,4 +246,4 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - **Kết quả dự đoán: 25/25 = Benign** — đúng 100%, hợp lý vì đây chỉ là traffic bình thường, không có tấn công nào.
   - Xác nhận toàn bộ chuỗi **gói tin thật → CICFlowMeter thật → feeder (đổi tên cột + đơn vị) → API → model → DB** chạy đúng, không có bước nào còn là giả lập.
 - Việc còn lại để có M4 đầy đủ: traffic TẤN CÔNG thật (cần máy Attacker + Victim, mạng host-only cô lập) để xem hệ thống có phát hiện và cảnh báo đúng không — quy trình kỹ thuật (feeder, mapping cột, flush) đã kiểm chứng xong ở đây, M4 chỉ còn là việc dựng máy ảo + tạo traffic tấn công, không cần sửa code gì thêm.
-- Commit: (sắp tới).
+- Commit: `9a1ecb7`.
