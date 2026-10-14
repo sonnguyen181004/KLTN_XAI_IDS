@@ -280,4 +280,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - SQL Injection: `predicted_label=SQL Injection` (đoán đúng), `faithfulness_proxy_drop=0,8202`, `env_fingerprint_count=1` → `env_fingerprint_flag=0` (dưới ngưỡng 2), `rare_class_flag=1` — đúng, lớp có 70 mẫu train < 100.
   - Bot: `faithfulness_proxy_drop=0,9957` (xác suất Bot tụt gần hết khi xóa Top-5 SHAP — khớp phát hiện RQ2 là Bot gần như chỉ dựa vào `Dst Port`), `env_fingerprint_count=1` → `env_fingerprint_flag=0`, `rare_class_flag=0` — đúng, lớp có 100.650 mẫu train.
   - Trước khi viết test, đã mở trực tiếp `ids_system.db` kiểm tra: 183 Alert cũ (tạo trước khi bước 8 có code) đúng như dự kiến có `faithfulness_proxy_drop=NULL`, chỉ 1 Alert mới nhất (lúc đang thử feeder, nhãn Bot) có đủ số liệu — xác nhận code không âm thầm ghi đè/sai dữ liệu cũ.
-- Commit: `(sắp tới)`.
+- Commit: `79cbe5f`.
