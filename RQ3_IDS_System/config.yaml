@@ -13,7 +13,6 @@ paths:
   rq2_cohort_ids: "RQ2/runs/20261009/gd3_cohorts/cohort_ids.csv"
   # Bảng tra theo lớp (stability/robustness/domain...) nạp 1 lần lúc khởi động.
   rq2_master_summary: "RQ2/runs/20261009/gd13_report/rq2_master_summary.json"
-  rq2_domain_knowledge: "RQ2/scripts/lib/domain_knowledge.py"
   # Tập B: dữ liệu sạch (loại trùng train/test) — do stage00 của RQ3 tự sinh ra.
   clean_set_out: "RQ3_IDS_System/data/clean_holdout_set.csv"
   sqlite_db: "RQ3_IDS_System/data/ids_system.db"
