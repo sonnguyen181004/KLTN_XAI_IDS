@@ -17,6 +17,18 @@ Nguyên tắc cứng (lấy từ tài liệu kiến trúc, không được vi ph
 - Mọi bước ghi lại mốc thời gian (phục vụ thí nghiệm E1).
 - Model, 78 cột và thứ tự cột phải **giống hệt** RQ1/RQ2 để so sánh được.
 
+### 0.1. BA nguồn flow hợp lệ ở Tầng 1 — ghi rõ để khỏi quên
+
+Tài liệu kiến trúc (Khối 1 + mô hình logic Làn A) nói **Tầng 1 có đúng 3 nguồn**, KHÔNG chỉ traffic thật:
+
+| # | Nguồn | Cách lấy | Dùng để | Trạng thái code |
+|---|---|---|---|---|
+| 1 | **Mạng lab thật** (Victim + Attacker) | Npcap/tcpdump bắt gói sống + CICFlowMeter gom flow trực tiếp | Demo thật, thí nghiệm E2/E3/E4 | ❌ Chưa làm — cần máy ảo (M4) + bộ feeder (bước 8b) |
+| 2 | **File PCAP đã ghi sẵn** (phát lại bằng `tcpreplay`) | Vẫn qua Npcap + CICFlowMeter (chỉ khác nguồn gói là "phát lại" thay vì "sống") | Demo không cần máy Attacker, hoặc test lại 1 tình huống cố định nhiều lần | ❌ Chưa làm — **dùng CHUNG bộ feeder với nguồn 1** (CICFlowMeter vẫn ghi ra cùng 1 file CSV, feeder không cần biết gói đến từ đâu) |
+| 3 | **CSV/Parquet đã có đặc trưng sẵn** (Tập A = cohort RQ2, Tập B = dữ liệu sạch) | Đọc file trực tiếp, không cần bắt gói gì cả | Test hệ thống, E5 (so khớp RQ2) | ✅ Đang dùng từ bước 3 tới giờ |
+
+**Điểm quan trọng nhất (đã làm ĐÚNG từ đầu, xác nhận lại):** tài liệu nói *"Cả hai nguồn đổ vào CÙNG MỘT hộp tiếp theo, nên phần còn lại không cần biết flow đến từ đâu."* — và đúng là vậy: `POST /predict` của hệ thống (từ bước 6) chỉ nhận 1 dòng 78 đặc trưng, **không quan tâm nó từ CICFlowMeter hay từ file CSV có sẵn**. Vậy nguồn 1 và 2 chỉ còn thiếu đúng 1 việc: **bộ feeder** (bước 8b, mục 5.1) đứng giữa CICFlowMeter và `/predict` — **dùng chung cho cả nguồn 1 và nguồn 2**, không cần code riêng cho từng nguồn.
+
 ## 1. Hai câu đã chốt trước khi code
 
 ### 1.1. Dữ liệu dùng để test — không phải "model học thuộc"
@@ -93,6 +105,8 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
 - Phương án dự phòng không cần máy Attacker: dùng `tcpreplay` phát lại 1 file pcap mẫu có sẵn, Npcap/CICFlowMeter trên Monitor vẫn bắt được như traffic thật.
 
 ### 5.1. Bộ "feeder" — nối CICFlowMeter với hệ thống TỰ ĐỘNG (không qua tay người)
+
+Dùng CHUNG cho cả nguồn 1 (mạng lab thật) và nguồn 2 (phát lại PCAP) ở mục 0.1 — CICFlowMeter ghi ra CSV giống nhau bất kể gói tin là "sống" hay "phát lại", nên feeder không cần phân biệt.
 
 CICFlowMeter tự nó chỉ làm việc "bắt gói + tính đặc trưng + ghi ra CSV" — đây là phần mềm có sẵn, không cần code. Nhưng CICFlowMeter **không tự gửi** dữ liệu sang hệ thống của mình. Cần 1 mảnh code riêng — gọi là **feeder** — đứng giữa 2 bên:
 
