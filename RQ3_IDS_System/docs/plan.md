@@ -356,4 +356,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
 - **Kết quả chạy thật [PASS]:** upload 241 dòng Tập B qua tab CSV của Dashboard (không qua script/terminal nào khác) → 0 exception → số alert trong DB tăng từ 271 lên 469 (đúng — không phải mọi dòng đều là tấn công, nhiều dòng Benign không tạo alert).
 - **Tab PCAP chưa test chạy thật được** — vẫn thiếu 1 file `.pcap` mẫu như đã ghi ở mục trước bước 13. Code đã viết xong, đường ống đã rõ, chỉ còn thiếu dữ liệu để kiểm chứng — không được coi là "đã xong" cho tới khi chạy thật ra kết quả.
 - **Chưa làm (để sau theo yêu cầu của bạn)**: nút "Bắt real-time" ngay trên Dashboard (cần Streamlit chạy với quyền Administrator để Npcap hoạt động, phức tạp hơn do phải quản lý tiến trình nền + tự làm mới trang trong khi đang bắt) — hiện tại bắt real-time vẫn làm qua terminal như hướng dẫn cũ (`scripts/run_live_capture.py --interface ...`).
-- Commit: `(sắp tới)`.
+- Commit: `84e423f`.
