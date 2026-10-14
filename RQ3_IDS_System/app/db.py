@@ -178,6 +178,35 @@ def upsert_reliability(conn, alert_id: str, **fields) -> None:
     conn.commit()
 
 
+def get_alert(conn, alert_id: str) -> dict | None:
+    """Dùng ở POST /explain (bước 9): tra flow_id + predicted_label từ alert_id, để
+    LIME biết cần giải thích flow nào, cho đúng lớp nào."""
+    row = conn.execute(
+        "SELECT alert_id, flow_id, predicted_label FROM AlertRecord WHERE alert_id = ?", (alert_id,),
+    ).fetchone()
+    if row is None:
+        return None
+    return {"alert_id": row[0], "flow_id": row[1], "predicted_label": row[2]}
+
+
+def get_flow_features(conn, flow_id: str) -> dict | None:
+    """Tra lại 78 đặc trưng gốc (chưa chuẩn hóa) của 1 flow đã lưu — cần ở POST /explain
+    vì request đó chỉ gửi alert_id, không gửi lại 78 số."""
+    row = conn.execute("SELECT features_json FROM FlowRecord WHERE flow_id = ?", (flow_id,)).fetchone()
+    if row is None:
+        return None
+    return json.loads(row[0])
+
+
+def get_shap_top5(conn, alert_id: str) -> list[dict] | None:
+    """Tra Top-5 SHAP đã ghi sẵn (từ bước 7, qua hàng đợi) — dùng để tính Agreement
+    khi LIME chạy xong ở bước 9. None nếu hàng đợi SHAP chưa xử lý xong flow này."""
+    row = conn.execute("SELECT shap_top5_json FROM Reliability WHERE alert_id = ?", (alert_id,)).fetchone()
+    if row is None or row[0] is None:
+        return None
+    return json.loads(row[0])
+
+
 def insert_timing(conn, flow_id: str, step: str, duration_ms: float, recorded_at: str) -> None:
     conn.execute(
         "INSERT INTO Timing (flow_id, step, duration_ms, recorded_at) VALUES (?, ?, ?, ?)",

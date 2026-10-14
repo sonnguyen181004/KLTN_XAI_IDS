@@ -133,7 +133,6 @@ dời xuống mục 7 (có chi tiết đầy đủ) ngay khi xong, y như các b
 
 | Bước | Nội dung | Tầng/Khối liên quan | Input cần có |
 |---|---|---|---|
-| **9** | `POST /explain` — LIME theo yêu cầu (`method=lime`), dùng đúng cấu hình đã khóa ở RQ2 (`config.yaml: lime.*`: kernel_width=3,312, num_samples=1000, discretize_continuous=false, nền 2.000 dòng, seed 42). Ghi `lime_top5_json` + `agreement_jaccard5` (Jaccard\@5 so với Top-5 SHAP đã có) vào `Reliability`. Trả lỗi `404` nếu không có alert, `429` nếu hàng đợi đầy. | Tầng 4 (Làn B4) | Cần `alert_id` đã tồn tại (từ `/predict`) |
 | **10** | "Tra bảng có sẵn (đắt)": nạp `rq2_master_summary.json` 1 lần lúc khởi động, tra `stability_lookup` + `robustness_lookup_json` theo **lớp dự đoán** (không tính lại mỗi flow — xem `gd9_stability`, `gd9_noise` trong file đó). Ghi vào 2 cột đã có sẵn trong `Reliability` nhưng chưa ai điền. | Tầng 4 | `rq2_master_summary.json` (đã có sẵn, đường dẫn trong `config.yaml: paths.rq2_master_summary`) |
 | **11** | Tầng 5 — luật quyết định nhánh A/B: không có cờ nào (env_fingerprint_flag=0 và rare_class_flag=0) → nhánh A; có ít nhất 1 cờ → nhánh B. Ghi `branch` + `branch_reason` vào `Reliability`. **Lưu ý đã chốt ở tài liệu kiến trúc (mục "Đồng bộ với phần cũ")**: CHỈ dựa vào 2 cờ lưu ý này, KHÔNG dùng ngưỡng từ tập dev 250 flow của RQ2 (184/250 là Benign, không đại diện), KHÔNG dùng Agreement làm ngưỡng chính (Jaccard\@5 trung bình RQ2 chỉ 0,141). | Tầng 5 (Khối 6) | Cần Bước 8 (cờ) đã xong — ✅ |
 | **12** | `GET /alerts` — danh sách Alert kèm trạng thái giải thích, lọc theo thời gian/nhãn/nhánh (theo đúng bảng API trong tài liệu kiến trúc). | Tầng 6 | Cần Bước 11 (branch) để lọc theo nhánh |
@@ -281,3 +280,24 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - Bot: `faithfulness_proxy_drop=0,9957` (xác suất Bot tụt gần hết khi xóa Top-5 SHAP — khớp phát hiện RQ2 là Bot gần như chỉ dựa vào `Dst Port`), `env_fingerprint_count=1` → `env_fingerprint_flag=0`, `rare_class_flag=0` — đúng, lớp có 100.650 mẫu train.
   - Trước khi viết test, đã mở trực tiếp `ids_system.db` kiểm tra: 183 Alert cũ (tạo trước khi bước 8 có code) đúng như dự kiến có `faithfulness_proxy_drop=NULL`, chỉ 1 Alert mới nhất (lúc đang thử feeder, nhãn Bot) có đủ số liệu — xác nhận code không âm thầm ghi đè/sai dữ liệu cũ.
 - Commit: `79cbe5f`.
+
+### Bước 9 — Tầng 4b: LIME theo yêu cầu (`POST /explain`) ✅
+- **Mục đích**: thêm cách giải thích thứ 2 (LIME) bên cạnh SHAP — nhưng KHÔNG tự động (chậm hơn SHAP ~8 lần: RQ2 đo LIME~148ms so SHAP~19ms), chỉ chạy khi analyst chủ động xin qua `POST /explain`.
+- Tra lại đúng cách RQ2 cài đặt LIME (`RQ2/scripts/stage06_lime_per_flow.py`) để dùng chung phương pháp, so sánh được: `LimeTabularExplainer` khởi tạo 1 lần với nền 2.000 dòng (seed khóa), cách seed riêng theo từng flow (`RQ2/scripts/lib/common.py::set_lime_explainer_seed` — lime==0.2.0.1 không có tham số `random_state` ở `explain_instance()`, phải tự gán lại thủ công `explainer.random_state` + `explainer.base.random_state` trước MỖI lần gọi, nếu không kết quả không tái lập được).
+- Tạo `scripts/stage09_compute_lime_background.py`: lấy sẵn 2.000 dòng nền từ `train_set.parquet` (seed khóa trong `config.yaml: lime.background_seed`), lưu `data/lime_background.npy` (không commit, gitignore) — tránh đọc lại 2,8 triệu dòng mỗi lần khởi động server.
+- Tạo `app/explain_lime.py` (class `LimeExplainer`, hàm `set_lime_explainer_seed` sao chép nguyên vẹn từ RQ2): seed riêng theo từng alert bằng cách băm `alert_id` (chuỗi UUID) ra số nguyên ổn định (`sha256` — không dùng `hash()` built-in vì `PYTHONHASHSEED` ngẫu nhiên giữa các lần chạy).
+- Thêm `POST /explain` vào `app/main.py`: nhận `alert_id` + `method` (chỉ nhận `"lime"`, SHAP đã tự động nên không xin lại qua đây). Chạy ĐỒNG BỘ (analyst đang chờ, không qua hàng đợi nền như SHAP), giới hạn số lượt chạy cùng lúc bằng `threading.Semaphore(config.yaml: api.max_concurrent_lime=4)` — vượt ngưỡng trả `429`; không có `alert_id` trả `404`. Ghi `lime_top5_json` + `agreement_jaccard5` vào `Reliability`.
+- Thêm `db.get_alert()`, `db.get_flow_features()`, `db.get_shap_top5()` vào `app/db.py` (tra cứu lại dữ liệu đã lưu, vì request `/explain` chỉ gửi `alert_id`, không gửi lại 78 đặc trưng).
+- **Agreement (Jaccard\@5) tính ĐÚNG cách RQ2 làm** (`RQ2/scripts/stage07_agreement.py`): so trực tiếp tên đặc trưng SHAP (sạch, vd `"Dst Port"`) với `feature_desc` THÔ của LIME (có thể kèm bất đẳng thức, vd `"Dst Port <= 8080.00"`) — KHÔNG tự "sửa" cho khớp đẹp hơn, vì đây chính là 1 lý do Jaccard\@5 trung bình RQ2 chỉ 0,141.
+- Tạo `scripts/stage09_test_lime.py`, test qua API thật, 5 việc:
+  1. Flow Bot → `/explain` trả Top-5 LIME hợp lệ, `local_r2` trong [0,1], có `agreement_jaccard5`.
+  2. `alert_id` không tồn tại → `404`.
+  3. `method="shap"` (không hỗ trợ qua `/explain`) → `400`.
+  4. Mở DB xác nhận `lime_top5_json` (5 phần tử) + `agreement_jaccard5` đã ghi vào `Reliability`.
+  5. Gọi lại `/explain` LẦN 2 cùng `alert_id` → Top-5 và `local_r2` phải GIỐNG HỆT lần 1 (seed cố định theo flow, đúng nguyên tắc tái lập của RQ2).
+- **Kết quả chạy thật — cả 5 việc [PASS]**:
+  - Flow Bot: `local_r2=0,4731` (model tuyến tính cục bộ của LIME khớp model gốc ở mức trung bình), Top-5 LIME hoàn toàn khác Top-5 SHAP (LIME không hề chọn `Dst Port`, dù SHAP coi đó gần như quyết định duy nhất) → `agreement_jaccard5=0,111` (chỉ 1 đặc trưng trùng trong hợp 9 đặc trưng).
+  - **Phát hiện cần ghi nhận trung thực, không phải lỗi**: con số Agreement rất thấp này khớp đúng hiện tượng RQ2 đã ghi nhận (Jaccard\@5 trung bình chỉ 0,141, SHAP và LIME "ít khi đồng ý") — đây là dấu hiệu code hoạt động nhất quán với phát hiện gốc, KHÔNG phải dấu hiệu lỗi cần sửa.
+  - Thời gian gọi `/explain` qua API: 66,6ms — nhanh hơn số RQ2 đo khi chạy hàng loạt (~148ms), hợp lý vì đây chỉ 1 request đơn, chưa tính network stack đầy đủ như batch RQ2; số chính xác hơn để dành cho **E1**.
+  - Gọi lại lần 2: `local_r2` và Top-5 giống hệt lần 1 (sai số 0) — xác nhận seed theo flow hoạt động đúng, tái lập được.
+- Commit: *(chưa commit — chờ xác nhận)*.

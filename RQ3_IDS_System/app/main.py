@@ -4,23 +4,28 @@ Chạy thử: uvicorn app.main:app --reload --port 8000  (chạy từ thư mục
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
+import threading
 import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
+import numpy as np
 import yaml
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import db  # noqa: E402
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
 from predict import Detector  # noqa: E402
 from explain_shap import ShapExplainer  # noqa: E402
+from explain_lime import LimeExplainer  # noqa: E402
 from reliability import ReliabilityScorer  # noqa: E402
 from explain_queue import ExplainQueue  # noqa: E402
 
@@ -69,6 +74,33 @@ explain_queue = ExplainQueue(
     db_module=db,
     db_path=DB_PATH,
 )
+
+# Bước 9 — LIME theo yêu cầu. Nền 2.000 dòng tính sẵn ở scripts/stage09_compute_lime_background.py
+# (phải chạy script đó trước khi bật server).
+LIME_BACKGROUND_PATH = RQ3_ROOT / "data" / "lime_background.npy"
+lime_background = np.load(LIME_BACKGROUND_PATH)
+lime_explainer = LimeExplainer(
+    model=detector.model,
+    feature_names=detector.feature_names,
+    class_names=detector.class_names,
+    background=lime_background,
+    lime_cfg=cfg["lime"],
+    base_seed=cfg["seed"],
+)
+# LIME chạy ĐỒNG BỘ trong request /explain (analyst đang chờ), không qua hàng đợi nền
+# như SHAP — giới hạn số lượt chạy cùng lúc bằng semaphore, vượt ngưỡng thì 429.
+lime_semaphore = threading.Semaphore(cfg["api"]["max_concurrent_lime"])
+
+
+def jaccard_at_k(rank_a: list[str], rank_b: list[str], k: int) -> float:
+    """Jaccard@k giữa 2 tập Top-k — ĐÚNG cách RQ2 tính Agreement (xem
+    RQ2/scripts/stage07_agreement.py): so trực tiếp tên đặc trưng SHAP (sạch) với
+    feature_desc thô của LIME (có thể kèm bất đẳng thức, vd "Dst Port <= 8080.00"),
+    KHÔNG tự "sửa" để khớp đẹp hơn — đây là lý do Jaccard@5 trung bình RQ2 chỉ 0,141."""
+    sa, sb = set(rank_a[:k]), set(rank_b[:k])
+    union = sa | sb
+    return len(sa & sb) / len(union) if union else float("nan")
+
 
 app = FastAPI(title="RQ3 IDS System API")
 
@@ -159,6 +191,66 @@ def predict(flow: Dict[str, float]):
         # giải thích, GIỮ cảnh báo), None = Benign, không cần giải thích.
         "explanation_status": explanation_status,
         "timing_ms": timing_ms,
+    })
+
+
+class ExplainRequest(BaseModel):
+    alert_id: str
+    method: str = "lime"
+
+
+@app.post("/explain")
+def explain(req: ExplainRequest):
+    if req.method != "lime":
+        raise HTTPException(status_code=400, detail=f"method '{req.method}' không hỗ trợ — chỉ nhận 'lime' "
+                                                      "(SHAP đã tự động chạy ở /predict, không cần xin lại qua đây).")
+
+    conn = db.get_connection(DB_PATH)
+    try:
+        alert = db.get_alert(conn, req.alert_id)
+        if alert is None:
+            raise HTTPException(status_code=404, detail=f"Không có alert_id={req.alert_id}")
+
+        if not lime_semaphore.acquire(blocking=False):
+            raise HTTPException(status_code=429, detail="Đang có quá nhiều lượt LIME chạy cùng lúc, thử lại sau.")
+        try:
+            t_start = time.perf_counter()
+            features = db.get_flow_features(conn, alert["flow_id"])
+            normalized = normalize_flow(features, detector.feature_names, convert_seconds_to_microseconds=False)
+
+            # Seed riêng theo từng alert (đúng nguyên tắc RQ2: tái lập được độc lập mỗi
+            # flow) — alert_id là UUID (chuỗi), không phải số nguyên như cohort RQ2, nên
+            # băm ra 1 số nguyên ổn định thay vì dùng hash() (có PYTHONHASHSEED ngẫu nhiên).
+            flow_seed_key = int(hashlib.sha256(req.alert_id.encode()).hexdigest()[:8], 16)
+
+            lime_result = lime_explainer.explain(normalized, alert["predicted_label"], flow_seed_key, top_k=5)
+            t_lime_ms = (time.perf_counter() - t_start) * 1000
+
+            shap_top5 = db.get_shap_top5(conn, req.alert_id)
+            agreement = None
+            if shap_top5 is not None:
+                shap_rank = [item["feature"] for item in shap_top5]
+                lime_rank = [item["feature_desc"] for item in lime_result["top_k"]]
+                agreement = jaccard_at_k(shap_rank, lime_rank, k=5)
+
+            db.upsert_reliability(
+                conn, req.alert_id,
+                lime_top5_json=json.dumps(lime_result["top_k"]),
+                agreement_jaccard5=agreement,
+            )
+            db.insert_timing(conn, alert["flow_id"], "lime", t_lime_ms, now_iso())
+        finally:
+            lime_semaphore.release()
+    finally:
+        conn.close()
+
+    return JSONResponse({
+        "alert_id": req.alert_id,
+        "class_explained": lime_result["class_explained"],
+        "local_r2": lime_result["local_r2"],
+        "top_k": lime_result["top_k"],
+        "agreement_jaccard5": agreement,
+        "timing_ms": {"lime": round(t_lime_ms, 3)},
     })
 
 
