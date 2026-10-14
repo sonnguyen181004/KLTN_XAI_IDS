@@ -156,4 +156,9 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   - 3 flow thật từ Tập B qua `POST /predict` → cả 3 trả 200, nhãn đúng, `timing_ms` ví dụ dòng 0: normalize=4,5ms, predict=13,3ms, total=75,6ms.
   - Flow thiếu cột `Idle Min` → 422, đúng lý do, đúng tên cột.
   - Mở lại file DB: cả 3 flow có đủ `FlowRecord`, `Prediction`, 3 dòng `Timing`; bảng `DataError` có 2 dòng (đúng số lỗi đã tạo ra trong lúc test).
-- Commit: (sắp tới).
+- **Bạn (người dùng) tự test lại thủ công, độc lập với script tự động** — xác nhận kết quả trùng khớp:
+  - Chạy `python -m uvicorn app.main:app --port 8000` để tự bật server, mở `http://127.0.0.1:8000/docs` (giao diện Swagger UI do FastAPI tự sinh) để gọi `/predict` bằng tay, không qua script.
+  - **Sự cố gặp phải**: terminal có `(.venv)` ở đầu dòng nhắc, nhưng là venv của **`cicflowmeter_capture_demo/`** (thư mục demo cũ) tự kích hoạt, không phải môi trường đã cài `fastapi`/`uvicorn` (cài vào Python hệ thống) → báo lỗi `No module named uvicorn`. **Sửa**: chạy `deactivate` để thoát venv cũ trước khi gọi `python -m uvicorn...`. Đây là một lời nhắc tốt: venv cũ vẫn có thể tự kích hoạt trong terminal nếu không cẩn thận, dù code không hề đụng tới thư mục đó.
+  - Để tiện bấm thử qua Swagger UI, đã xuất sẵn 2 file mẫu (lấy từ Tập B, flow model chưa từng thấy): `data/samples/sample_benign.json` (đáp án đúng = Benign) và `data/samples/sample_attack.json` (đáp án đúng = Bot).
+  - Bạn dán `sample_attack.json` vào `/predict` qua Swagger UI và chạy thành công.
+- Commit: `41949ed`.
