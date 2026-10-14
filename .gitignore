@@ -21,6 +21,7 @@ __pycache__/
 .venv/
 venv/
 env/
+RQ3_IDS_System/.venv_capture/
 
 # OS and Office Temp Files
 .DS_Store

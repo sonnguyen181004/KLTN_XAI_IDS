@@ -232,3 +232,18 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - Toàn bộ luồng **CSV → feeder → /predict → DB** chạy tự động hoàn toàn, không cần tay người ở giữa — đúng mục tiêu ban đầu của bước này.
 - Khi có CICFlowMeter thật (M4): chỉ cần đổi `--watch` sang đường dẫn CICFlowMeter ghi ra và bật `--convert-units` (nếu CICFlowMeter xuất giây) — không cần sửa code.
 - Commit: `f0f21b4`.
+
+### M3 — Test bằng traffic thật trên chính máy bạn (KHÔNG cần máy ảo) ✅
+- **Vì sao làm ngay, không đợi M4**: M3 (mục 1.2, mục 2) không phụ thuộc M4 — chỉ cần Npcap + CICFlowMeter chạy trên máy hiện tại, bắt traffic bình thường (lướt web), không cần máy Victim/Attacker. Làm ngay để xác nhận "cầu nối" CSV→feeder→hệ thống hoạt động với dữ liệu CICFlowMeter THẬT (không phải giả lập từ Tập B như bước 8b).
+- **Môi trường mới riêng**: `RQ3_IDS_System/.venv_capture/` (Python 3.13, KHÔNG dùng lại venv của `cicflowmeter_capture_demo/`), cài `cicflowmeter==0.5.0` (ghi lại ở `requirements-capture.txt`). Lý do cần bản 0.5.0: bản 0.2.0 đi kèm Python 3.11 có lỗi ghi flow trên Windows (đã biết từ trước).
+- **3 lỗi/vấn đề thật gặp phải, đã tìm ra và sửa (không phải vấn đề ở hệ thống RQ3, mà ở việc dùng CICFlowMeter đúng cách):**
+  1. **Lỗi thật trong chính thư viện `cicflowmeter` 0.5.0**: `sniffer.py::main()` gọi `create_sniffer(...)` bằng tham số VỊ TRÍ nhưng thứ tự không khớp chữ ký hàm — `args.verbose` (bool) bị nhét nhầm vào tham số `fields`, gây `AttributeError: 'bool' object has no attribute 'split'` mỗi khi chạy qua CLI `cicflowmeter` thẳng. **Sửa**: viết `scripts/run_live_capture.py` gọi THẲNG hàm `create_sniffer()` bằng keyword argument (né lỗi thứ tự), không qua CLI gốc.
+  2. **File CSV trống dù bắt được hàng nghìn gói tin**: CICFlowMeter chỉ ghi 1 flow ra CSV khi flow đã "đóng" (FIN/RST) hoặc hết hạn (timeout) — dừng sớm (test 15 giây) mà không ép ghi nốt thì mọi flow "đang mở" (đa số traffic HTTPS/keep-alive) bị bỏ qua, file trông như trống dù đã xử lý 4316+ gói tin. **Sửa**: gọi `session.flush_flows()` (có sẵn trong thư viện) ngay sau khi dừng sniffer, ép ghi nốt toàn bộ flow còn dang dở.
+  3. **Tên cột hoàn toàn khác** (đúng như đã cảnh báo trước khi làm): CICFlowMeter 0.5.0 xuất tên cột kiểu `snake_case` (`dst_port`, `flow_duration`...) + 4 cột định danh thừa (`src_ip`, `dst_ip`, `src_port`, `timestamp`), khác hẳn 78 tên cột model cần (`Dst Port`, `Flow Duration`...). Thời gian cũng xác nhận ra là **giây** (vd `flow_duration=15.016630`), đúng như tài liệu kiến trúc đã cảnh báo. **Sửa**: thêm `CICFLOWMETER_COLUMN_MAP` (78 cặp ánh xạ 1-1, phát hiện thêm 1 điểm lệch tên: `cwr_flag_count` ↔ `CWE Flag Count`) vào `app/feeder.py`, áp dụng trước khi gửi; 4 cột định danh không có trong bảng ánh xạ cứ để nguyên, `/predict` tự bỏ qua vì không nằm trong 78 cột nó cần.
+- **Kết quả chạy thật — luồng đầy đủ không giả lập bất kỳ phần nào:**
+  - Bắt traffic Wi-Fi thật 15 giây trong lúc dùng máy bình thường → 4316+ gói tin, 25 flow ghi ra CSV (sau khi ép flush).
+  - Chạy `feeder.py --convert-units` trên file CSV thật đó (không phải Tập B giả lập) → gửi đủ **25/25 flow** qua `/predict`.
+  - **Kết quả dự đoán: 25/25 = Benign** — đúng 100%, hợp lý vì đây chỉ là traffic bình thường, không có tấn công nào.
+  - Xác nhận toàn bộ chuỗi **gói tin thật → CICFlowMeter thật → feeder (đổi tên cột + đơn vị) → API → model → DB** chạy đúng, không có bước nào còn là giả lập.
+- Việc còn lại để có M4 đầy đủ: traffic TẤN CÔNG thật (cần máy Attacker + Victim, mạng host-only cô lập) để xem hệ thống có phát hiện và cảnh báo đúng không — quy trình kỹ thuật (feeder, mapping cột, flush) đã kiểm chứng xong ở đây, M4 chỉ còn là việc dựng máy ảo + tạo traffic tấn công, không cần sửa code gì thêm.
+- Commit: (sắp tới).
