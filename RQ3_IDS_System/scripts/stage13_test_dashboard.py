@@ -129,6 +129,30 @@ def main() -> int:
         print(f"  [{'PASS' if ok else 'FAIL'}]")
         all_ok &= ok
 
+        print("\n--- Việc 4: Tab 'Gửi file CSV' — upload Tập B, bấm gửi, kiểm tra alert mới xuất hiện ---")
+        count_before = requests.get(f"{api_url}/alerts").json()["count"]
+        at2 = AppTest.from_file(str(RQ3_ROOT / "app" / "dashboard.py"))
+        at2.run(timeout=30)
+        csv_bytes = (RQ3_ROOT / "data" / "clean_holdout_set.csv").read_bytes()
+        csv_uploader = next(fu for fu in at2.file_uploader if fu.key == "csv_uploader")
+        csv_uploader.upload("clean_holdout_set.csv", csv_bytes, "text/csv").run(timeout=30)
+        ok = not at2.exception
+        print(f"  Sau khi upload CSV, số exception: {len(at2.exception)}")
+        send_button = next((b for b in at2.button if b.key == "send_csv"), None)
+        ok = ok and send_button is not None
+        if ok:
+            send_button.set_value(True).run(timeout=120)  # 241 dòng, mỗi dòng 1 request /predict qua API thật
+            ok = not at2.exception
+            print(f"  Sau khi bấm gửi, số exception: {len(at2.exception)}")
+            if at2.exception:
+                for e in at2.exception:
+                    print(f"  [FAIL] {e.value!r}\n{e.stack_trace}")
+        count_after = requests.get(f"{api_url}/alerts").json()["count"]
+        ok = ok and count_after > count_before
+        print(f"  Số alert trước khi gửi: {count_before}, sau khi gửi: {count_after} (phải tăng)")
+        print(f"  [{'PASS' if ok else 'FAIL'}]")
+        all_ok &= ok
+
     finally:
         print("\nĐang tắt API...")
         api_proc.terminate()
