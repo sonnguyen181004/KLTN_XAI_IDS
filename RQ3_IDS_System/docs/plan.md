@@ -98,3 +98,25 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
 2. `RQ3_IDS_System/app/` — code tầng 2–6 (FastAPI + Streamlit + SQLite schema).
 3. `RQ3_IDS_System/scripts/stageE1_latency.py`, `stageE5_consistency.py` — 2 thí nghiệm M2.
 4. Test toàn bộ bằng Tập A + Tập B, không cần máy ảo.
+
+## 7. Tiến độ (cập nhật sau mỗi bước)
+
+### Bước 1 — `config.yaml` ✅
+- Tạo `RQ3_IDS_System/config.yaml`: đường dẫn model/dữ liệu RQ1/RQ2, cấu hình LIME khóa y hệt RQ2 (kernel_width=3,312, num_samples=1000, discretize_continuous=false), 3 đặc trưng cờ môi trường, ngưỡng lớp hiếm (<100 mẫu train), tham số Tập B.
+- Kiểm tra: đọc file thành công, xác nhận cả 7 đường dẫn tới dữ liệu/model có sẵn đều tồn tại trên đĩa.
+- Sửa 1 lần: bỏ đường dẫn `rq2_domain_knowledge` (trỏ sang file `.py` của RQ2) vì dư thừa — 3 tên đặc trưng môi trường đã có sẵn ngay trong `config.yaml`, không script nào cần đọc thêm file đó.
+- Commit: `8218ec3`, `99f3c53`.
+
+### Bước 2 — Schema SQLite (6 bảng) ✅
+- Tạo `app/db.py`: định nghĩa 6 bảng `FlowRecord`, `DataError`, `Prediction`, `AlertRecord`, `Reliability`, `Timing` (có khóa ngoại nối nhau). 78 đặc trưng gộp vào 1 cột JSON (`features_json`) thay vì 78 cột SQL riêng, vì tên đặc trưng có khoảng trắng/dấu `/`.
+- Tạo `scripts/stage02_init_db.py`: chạy tạo DB thật + tự kiểm tra 3 việc — (1) đủ 6/6 bảng, (2) đúng cột từng bảng, (3) chèn 1 flow giả (78 "đặc trưng") rồi đọc lại khớp 100%, sau đó tự xóa dòng test.
+- Thêm `*.db`, `*.csv` của `RQ3_IDS_System/data/` vào `.gitignore` (dữ liệu sinh ra, không commit).
+- Commit: `e5b3f06`.
+
+### Bước 3 — Tập B (dữ liệu sạch, loại trùng train/test) ✅
+- Tạo `scripts/stage03_build_clean_dataset.py`: băm 78 cột của train_set và test_set, loại khỏi test_set mọi dòng trùng hash với train_set, rồi lấy mẫu phân tầng (seed 42, tối đa 30 dòng/lớp) từ phần còn lại.
+- **Kết quả chạy thật**: 194.149/700.000 dòng test (27,74%) trùng train — khớp đúng con số RQ2 đã ghi nhận trước đó. Sau khi loại trùng còn 505.851 dòng "sạch". Lấy mẫu được **241 flow, 13/15 lớp**.
+- **Phát hiện cần ghi nhận trung thực**: 2 lớp `DoS attacks-SlowHTTPTest` và `FTP-BruteForce` **100% dòng test trùng với train** (1.735/1.735 và 3.507/3.507) → **0 dòng sạch còn lại**, nên **không có mặt trong Tập B**. Đây là đặc điểm thật của cách lấy mẫu gốc của CSE-CIC-IDS2018, không phải lỗi code — khi demo/báo cáo cần nói rõ Tập B chỉ phủ được 13/15 lớp, 2 lớp này phải dùng Tập A (cohort RQ2) hoặc traffic thật để minh họa.
+- Tự kiểm tra lại: băm 241 dòng của Tập B, xác nhận 0 dòng trùng train_set — [PASS].
+- File ra: `RQ3_IDS_System/data/clean_holdout_set.csv` (không commit git, đã gitignore).
+- Commit: (sắp tới — xem bên dưới).
