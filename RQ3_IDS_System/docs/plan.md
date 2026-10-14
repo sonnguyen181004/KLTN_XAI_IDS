@@ -314,4 +314,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - Bot: `env_fingerprint_flag=0, rare_class_flag=0` → `branch=A`, `branch_reason="Không có cờ nào được bật — hiển thị SHAP bình thường."`
   - SQL Injection: `rare_class_flag=1` → `branch=B`, `branch_reason` nêu đúng lý do.
   - DoS attacks-Hulk: dự đoán đúng trước khi test — `env_fingerprint_flag=1` thật (không phải giả định) → `branch=B` — xác nhận nhánh B không chỉ lý thuyết, có flow thật rơi vào đúng trường hợp này.
-- Commit: `(sắp tới)`.
+- Commit: `b31fe54`.
