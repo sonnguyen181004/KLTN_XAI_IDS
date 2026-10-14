@@ -16,8 +16,9 @@ from pathlib import Path
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS FlowRecord (
     flow_id         TEXT PRIMARY KEY,
-    received_at     TEXT NOT NULL,
-    source          TEXT NOT NULL,      -- 'rq2_cohort' | 'clean_set' | 'lab' | 'pcap'
+    received_at     TEXT NOT NULL,      -- lúc API xử lý xong request này (giờ hệ thống, KHÔNG phải lúc gói tin thật xảy ra)
+    source          TEXT NOT NULL,      -- 'csv_upload' | 'pcap_replay' | 'feeder_live' | 'api' (Swagger/test tay) | 'rq2_cohort' | 'clean_set'
+    flow_timestamp  TEXT,               -- lúc gói tin THẬT được bắt (cột "timestamp" CICFlowMeter ghi) — NULL nếu nguồn không có (vd Tập A/B)
     features_json   TEXT NOT NULL,      -- JSON: {"Dst Port": 80, "Protocol": 6, ...} đúng 78 đặc trưng
     label_true      TEXT                -- nhãn thật nếu biết trước (Tập A/B); NULL nếu traffic thật
 );
@@ -87,8 +88,18 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     # "sqlite3.OperationalError: database is locked".
     conn.execute("PRAGMA journal_mode = WAL")
     conn.executescript(SCHEMA_SQL)
+    _migrate_add_flow_timestamp(conn)
     conn.commit()
     return conn
+
+
+def _migrate_add_flow_timestamp(conn: sqlite3.Connection) -> None:
+    """DB tạo từ trước khi có cột `flow_timestamp` (thêm sau, để phân biệt lúc gói
+    tin THẬT xảy ra với lúc hệ thống xử lý) sẽ thiếu cột này — `CREATE TABLE IF NOT
+    EXISTS` không tự thêm cột cho bảng đã có sẵn. An toàn gọi lại nhiều lần."""
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(FlowRecord)").fetchall()]
+    if "flow_timestamp" not in cols:
+        conn.execute("ALTER TABLE FlowRecord ADD COLUMN flow_timestamp TEXT")
 
 
 def get_connection(db_path: str | Path) -> sqlite3.Connection:
@@ -124,11 +135,12 @@ def table_columns(conn: sqlite3.Connection, table: str) -> list[str]:
 # Hàm ghi dữ liệu — dùng chung bởi app/main.py (API) và các script test.
 # ---------------------------------------------------------------------------
 
-def insert_flow(conn, flow_id: str, received_at: str, source: str, features: dict, label_true: str | None) -> None:
+def insert_flow(conn, flow_id: str, received_at: str, source: str, features: dict, label_true: str | None,
+                 flow_timestamp: str | None = None) -> None:
     conn.execute(
-        "INSERT OR REPLACE INTO FlowRecord (flow_id, received_at, source, features_json, label_true) "
-        "VALUES (?, ?, ?, ?, ?)",
-        (flow_id, received_at, source, json.dumps(features), label_true),
+        "INSERT OR REPLACE INTO FlowRecord (flow_id, received_at, source, flow_timestamp, features_json, label_true) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        (flow_id, received_at, source, flow_timestamp, json.dumps(features), label_true),
     )
     conn.commit()
 
@@ -217,11 +229,13 @@ def get_alerts(
     bước 7b) hoặc đã bị bỏ do hàng đợi đầy (khi đó không có dòng Reliability nào)."""
     query = """
         SELECT a.alert_id, a.flow_id, a.predicted_label, a.status, a.created_at,
+               f.source, f.flow_timestamp,
                r.shap_top5_json, r.lime_top5_json, r.branch, r.branch_reason,
                r.agreement_jaccard5, r.faithfulness_proxy_drop, r.env_fingerprint_count,
                r.env_fingerprint_flag, r.rare_class_flag, r.stability_lookup, r.robustness_lookup_json
         FROM AlertRecord a
         LEFT JOIN Reliability r ON a.alert_id = r.alert_id
+        LEFT JOIN FlowRecord f ON a.flow_id = f.flow_id
         WHERE 1=1
     """
     params: list = []
@@ -237,11 +251,14 @@ def get_alerts(
     if branch is not None:
         query += " AND r.branch = ?"
         params.append(branch)
-    query += " ORDER BY a.created_at DESC"
+    # Sắp theo flow_timestamp (lúc gói tin THẬT xảy ra) nếu có, lùi về created_at
+    # (lúc hệ thống tạo Alert) nếu không có — xem giải thích đầy đủ ở get_flows().
+    query += " ORDER BY COALESCE(f.flow_timestamp, a.created_at) DESC"
 
     rows = conn.execute(query, params).fetchall()
     result = []
-    for (alert_id, flow_id, predicted_label, status, created_at, shap_json, lime_json, br, br_reason,
+    for (alert_id, flow_id, predicted_label, status, created_at, source, flow_timestamp,
+         shap_json, lime_json, br, br_reason,
          agreement, faith_drop, env_count, env_flag, rare_flag, stability, robustness_json) in rows:
         if shap_json is None:
             explanation_status = "pending_or_dropped"  # chưa xử lý xong HOẶC bị bỏ vì hàng đợi đầy (bước 7b)
@@ -252,6 +269,7 @@ def get_alerts(
         result.append({
             "alert_id": alert_id, "flow_id": flow_id, "predicted_label": predicted_label,
             "status": status, "created_at": created_at,
+            "source": source, "flow_timestamp": flow_timestamp,
             "explanation_status": explanation_status,
             "branch": br, "branch_reason": br_reason,
             "shap_top5": json.loads(shap_json) if shap_json else None,
@@ -280,7 +298,7 @@ def get_flows(
     công), nên LEFT JOIN ở đây chỉ để phòng hờ, không phải vì có flow thiếu dự đoán
     trong vận hành bình thường."""
     query = """
-        SELECT f.flow_id, f.received_at, f.source, f.label_true,
+        SELECT f.flow_id, f.received_at, f.source, f.flow_timestamp, f.label_true,
                p.predicted_label, p.predicted_at
         FROM FlowRecord f
         LEFT JOIN Prediction p ON f.flow_id = p.flow_id
@@ -296,17 +314,23 @@ def get_flows(
     if label is not None:
         query += " AND p.predicted_label = ?"
         params.append(label)
-    query += " ORDER BY f.received_at DESC LIMIT ?"
+    # Sắp theo flow_timestamp (lúc gói tin THẬT xảy ra) nếu có — đúng thứ tự thời
+    # gian thật của traffic (quan trọng khi phát lại CSV/PCAP cũ: mọi flow được
+    # XỬ LÝ gần như cùng lúc lúc bạn bấm gửi, received_at dồn cục, không phản ánh
+    # đúng thứ tự traffic thật đã xảy ra). Thiếu flow_timestamp (vd Tập A/B không
+    # có cột timestamp gốc) thì lùi về received_at.
+    query += " ORDER BY COALESCE(f.flow_timestamp, f.received_at) DESC LIMIT ?"
     params.append(limit)
 
     rows = conn.execute(query, params).fetchall()
     return [
         {
             "flow_id": flow_id, "received_at": received_at, "source": source,
+            "flow_timestamp": flow_timestamp,
             "label_true": label_true, "predicted_label": predicted_label,
             "is_alert": predicted_label is not None and predicted_label != "Benign",
         }
-        for flow_id, received_at, source, label_true, predicted_label, predicted_at in rows
+        for flow_id, received_at, source, flow_timestamp, label_true, predicted_label, predicted_at in rows
     ]
 
 

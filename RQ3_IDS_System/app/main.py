@@ -117,7 +117,14 @@ def health():
 
 
 @app.post("/predict")
-def predict(flow: Dict[str, float]):
+def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optional[str] = None):
+    """`source`/`flow_timestamp` là 2 tham số query TÙY CHỌN, KHÔNG thuộc 78 đặc
+    trưng — thêm sau khi test thực tế: khi phát lại CSV/PCAP cũ, mọi flow được XỬ
+    LÝ gần như cùng lúc (lúc bạn bấm gửi), nếu chỉ lưu "lúc xử lý" thì Dashboard
+    hiện giờ hiện tại dồn cục cho hàng chục flow, không phản ánh đúng thứ tự traffic
+    THẬT đã xảy ra, gây khó hiểu khi xem bảng cảnh báo. `source` cho biết flow tới
+    từ đâu (csv_upload/pcap_replay/feeder_live/api) để phân biệt các đợt gửi khác
+    nhau trên Dashboard."""
     flow_id = str(uuid.uuid4())
     t_start = time.perf_counter()
     # Mở 1 connection RIÊNG cho request này (xem lý do trong app/db.py::get_connection).
@@ -136,7 +143,7 @@ def predict(flow: Dict[str, float]):
 
         # Phải ghi FlowRecord TRƯỚC Timing, vì Timing.flow_id tham chiếu khóa ngoại
         # tới FlowRecord.flow_id — ghi ngược thứ tự sẽ vi phạm FOREIGN KEY constraint.
-        db.insert_flow(conn, flow_id, now_iso(), "api", flow, label_true=None)
+        db.insert_flow(conn, flow_id, now_iso(), source, flow, label_true=None, flow_timestamp=flow_timestamp)
         db.insert_timing(conn, flow_id, "normalize", t_normalize_ms, now_iso())
 
         # ---- Tầng 3: dự đoán ---------------------------------------------------------
