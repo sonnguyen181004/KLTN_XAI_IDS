@@ -333,7 +333,7 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
 - **Mục đích**: trả lời câu hỏi "test CSV/PCAP có trích xuất đưa vào model được chưa" — xác nhận CSV đã test từ lâu (bước 3, 8b, M3); PCAP thì chưa, nhưng khi đọc lại code thư viện `cicflowmeter` phát hiện KHÔNG cần `tcpreplay` như kiến trúc dự tính ban đầu — `create_sniffer(input_file=...)` tự đọc trực tiếp 1 file `.pcap`, xử lý giống hệt bắt sống.
 - Sửa `scripts/run_live_capture.py`: thêm `--pcap-input <file>` (nhóm loại trừ lẫn nhau với `--interface`) — đọc xong hết gói trong file thì tự dừng (không cần `--seconds`/Ctrl+C như khi bắt sống).
 - **Chưa test được bằng chạy thật** — cần 1 file `.pcap` thật (chưa có sẵn trong máy, cần bạn tự bắt bằng Npcap giống M3 rồi lưu ra `.pcap`, hoặc cung cấp file có sẵn). Việc test thật để sau, không chặn bước 13.
-- Commit: `(gộp vào commit bước 13 bên dưới)`.
+- Commit: `bc9f158`.
 
 ### Bước 13 — Tầng 6 (Khối 7): Streamlit Dashboard ✅
 - **Mục đích**: trang Dashboard duy nhất — bảng cảnh báo, biểu đồ SHAP/LIME có dấu (2 tab), bảng độ tin cậy, nhãn nhánh A/B, hiển thị trạng thái `/health` — đúng mục 3 "Tầng 6 — API + Dashboard" của plan. Đây là phần đầu tiên xem được trực tiếp trên trình duyệt, không chỉ qua script test.
@@ -345,4 +345,4 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
 - **Kết quả chạy thật — cả 3 việc [PASS], 0 exception ở cả 2 lần chạy script** (lần đầu + sau khi chọn alert có LIME):
   - Bắn 3 flow thật (Bot, SQL Injection, DoS attacks-Hulk) qua `/predict`, xin thêm LIME cho 1 alert qua `/explain`, rồi mới chạy AppTest — Dashboard hiển thị đúng dữ liệu thật, không phải dữ liệu giả.
   - Phát hiện phụ (không phải lỗi, chỉ dọn sạch): Streamlit cảnh báo `use_container_width` sẽ bị bỏ sau 2025-12-31 — đã sửa hết 4 chỗ thành `width="stretch"`, chạy lại xác nhận hết cảnh báo.
-- Commit: `(sắp tới)`.
+- Commit: `bc9f158`.
