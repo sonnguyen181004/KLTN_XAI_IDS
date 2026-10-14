@@ -133,4 +133,13 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   3. Cố ý đặt `Flow IAT Min = NaN` → bị từ chối đúng lý do, đúng tên cột liệt kê.
   4. Đảo ngược toàn bộ thứ tự 78 cột ở input → hàm tự sắp lại đúng thứ tự model mong đợi, không từ chối oan.
 - Kết quả chạy thật: cả 4 tình huống đều đúng như kỳ vọng — xem log chạy, không có [FAIL] nào.
+- Commit: `cf8cff4`.
+
+### Bước 5 — Tầng 3: nạp model, hàm dự đoán ✅
+- **Mục đích**: nối ngay sau hàm chuẩn hóa — nhận 1 dòng đã chuẩn hóa, trả về nhãn + xác suất 15 lớp, kèm "phiên bản model" (hash SHA-256 file .pkl) để truy vết sau này.
+- Tạo `app/predict.py` (class `Detector`): nạp model/encoder RQ1 (không huấn luyện lại), `model_version` = 16 ký tự đầu SHA-256 của file model (`52eb5a671ee82109`), hàm `predict_flow()`.
+- Tạo `scripts/stage05_test_predict.py`, 3 việc kiểm tra bằng dữ liệu thật:
+  1. **Tự nhất quán**: tổng xác suất 15 lớp = 0,99999994 (≈1.0), lớp xác suất cao nhất khớp `predicted_label` — [PASS].
+  2. **So với Tập B** (241 flow, đã biết đáp án): độ chính xác tổng 212/241 = **88,0%**. Theo lớp: hầu hết 94,7–100%, nhưng **Infilteration chỉ 15,8%** (3/19), Brute Force-Web 63,2%, SQL Injection 69,2% — ba con số này **khớp đúng** với 3 lớp "khó" đã ghi nhận sẵn trong tài liệu kiến trúc (Infilteration Recall ~16% trên toàn test set) → một dấu hiệu nhất quán tốt, không phải trùng hợp.
+  3. **So với `pred_label` có sẵn trong cohort_ids.csv của RQ2** (50 flow lấy ngẫu nhiên từ Tập A, seed 42): **khớp y hệt 50/50 = 100%** — xác nhận hàm dự đoán mới không có lỗi nạp model/sai thứ tự cột so với pipeline RQ2 gốc (kiểm tra sớm, thu nhỏ của thí nghiệm E5).
 - Commit: (sắp tới).
