@@ -300,4 +300,18 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - **Phát hiện cần ghi nhận trung thực, không phải lỗi**: con số Agreement rất thấp này khớp đúng hiện tượng RQ2 đã ghi nhận (Jaccard\@5 trung bình chỉ 0,141, SHAP và LIME "ít khi đồng ý") — đây là dấu hiệu code hoạt động nhất quán với phát hiện gốc, KHÔNG phải dấu hiệu lỗi cần sửa.
   - Thời gian gọi `/explain` qua API: 66,6ms — nhanh hơn số RQ2 đo khi chạy hàng loạt (~148ms), hợp lý vì đây chỉ 1 request đơn, chưa tính network stack đầy đủ như batch RQ2; số chính xác hơn để dành cho **E1**.
   - Gọi lại lần 2: `local_r2` và Top-5 giống hệt lần 1 (sai số 0) — xác nhận seed theo flow hoạt động đúng, tái lập được.
-- Commit: *(chưa commit — chờ xác nhận)*.
+- Commit: `4e866ca`.
+
+### Bước 11 — Tầng 5: Luật quyết định nhánh A/B ✅
+- **Mục đích**: thêm luật quyết định flow nào hiển thị "bình thường" (nhánh A), flow nào cần hiển thị kèm cảnh báo "cần xem lại" + gợi ý xem thêm LIME (nhánh B) — chỉ đổi CÁCH HIỂN THỊ, không đổi nhãn, không ẩn cảnh báo (đúng nguyên tắc cứng ở mục 0 và mục 3 của plan). Bỏ qua Bước 10 (tra bảng RQ2) theo quyết định của bạn — bước 11 không phụ thuộc bước 10, chỉ dùng 2 cờ đã có từ bước 8.
+- Thêm `ReliabilityScorer._decide_branch()` vào `app/reliability.py`, gọi trong `score()`: branch = `'A'` nếu CẢ 2 cờ (`env_fingerprint_flag`, `rare_class_flag`) đều 0; `'B'` nếu có ít nhất 1 cờ được bật — **CHỈ dựa vào 2 cờ này**, đúng như plan đã chốt (không dùng ngưỡng từ tập dev 250 flow của RQ2 vì không đại diện, không dùng Agreement vì Jaccard\@5 trung bình RQ2 chỉ 0,141, không đủ ổn định làm ngưỡng). Ghi kèm `branch_reason` mô tả cờ nào gây ra nhánh B.
+- Sửa `app/explain_queue.py`: ghi thêm `branch` + `branch_reason` vào `Reliability` cùng lúc với các cột bước 8 (không cần bước/worker riêng, vì đã có đủ 2 cờ ngay sau khi `score()` chạy).
+- Tạo `scripts/stage11_test_branch.py`: test qua API thật với 3 case, cố tình chọn đủ cả 3 tình huống khác nhau:
+  1. Bot (cả 2 cờ = 0) → kỳ vọng branch = 'A'.
+  2. SQL Injection (rare_class_flag=1) → kỳ vọng branch = 'B'.
+  3. DoS attacks-Hulk (dự đoán trước từ SHAP toàn cục RQ2: Top-5 gồm `Fwd Seg Size Min` + `Init Fwd Win Byts`, đủ 2 đặc trưng môi trường → env_fingerprint_flag=1) → kỳ vọng branch = 'B'.
+- **Kết quả chạy thật — cả 3 case [PASS]:**
+  - Bot: `env_fingerprint_flag=0, rare_class_flag=0` → `branch=A`, `branch_reason="Không có cờ nào được bật — hiển thị SHAP bình thường."`
+  - SQL Injection: `rare_class_flag=1` → `branch=B`, `branch_reason` nêu đúng lý do.
+  - DoS attacks-Hulk: dự đoán đúng trước khi test — `env_fingerprint_flag=1` thật (không phải giả định) → `branch=B` — xác nhận nhánh B không chỉ lý thuyết, có flow thật rơi vào đúng trường hợp này.
+- Commit: `(sắp tới)`.

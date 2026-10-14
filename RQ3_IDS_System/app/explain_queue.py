@@ -88,6 +88,8 @@ class ExplainQueue:
                 env_fingerprint_count=reliability_result["env_fingerprint_count"],
                 env_fingerprint_flag=reliability_result["env_fingerprint_flag"],
                 rare_class_flag=reliability_result["rare_class_flag"],
+                branch=reliability_result["branch"],
+                branch_reason=reliability_result["branch_reason"],
             )
             self.db.insert_timing(conn, task["flow_id"], "shap_queue_wait", wait_ms, now_iso())
             self.db.insert_timing(conn, task["flow_id"], "shap", shap_ms, now_iso())
