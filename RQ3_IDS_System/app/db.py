@@ -207,6 +207,54 @@ def get_shap_top5(conn, alert_id: str) -> list[dict] | None:
     return json.loads(row[0])
 
 
+def get_alerts(
+    conn, since: str | None = None, until: str | None = None,
+    label: str | None = None, branch: str | None = None,
+) -> list[dict]:
+    """Bước 12 — `GET /alerts`: danh sách Alert kèm trạng thái giải thích, lọc
+    theo thời gian/nhãn/nhánh (đúng bảng API trong tài liệu kiến trúc). LEFT JOIN
+    với Reliability vì SHAP/branch có thể CHƯA xử lý xong (hàng đợi bất đồng bộ từ
+    bước 7b) hoặc đã bị bỏ do hàng đợi đầy (khi đó không có dòng Reliability nào)."""
+    query = """
+        SELECT a.alert_id, a.flow_id, a.predicted_label, a.status, a.created_at,
+               r.shap_top5_json, r.lime_top5_json, r.branch, r.branch_reason
+        FROM AlertRecord a
+        LEFT JOIN Reliability r ON a.alert_id = r.alert_id
+        WHERE 1=1
+    """
+    params: list = []
+    if since is not None:
+        query += " AND a.created_at >= ?"
+        params.append(since)
+    if until is not None:
+        query += " AND a.created_at <= ?"
+        params.append(until)
+    if label is not None:
+        query += " AND a.predicted_label = ?"
+        params.append(label)
+    if branch is not None:
+        query += " AND r.branch = ?"
+        params.append(branch)
+    query += " ORDER BY a.created_at DESC"
+
+    rows = conn.execute(query, params).fetchall()
+    result = []
+    for alert_id, flow_id, predicted_label, status, created_at, shap_json, lime_json, br, br_reason in rows:
+        if shap_json is None:
+            explanation_status = "pending_or_dropped"  # chưa xử lý xong HOẶC bị bỏ vì hàng đợi đầy (bước 7b)
+        elif lime_json is None:
+            explanation_status = "shap_only"
+        else:
+            explanation_status = "shap_and_lime"
+        result.append({
+            "alert_id": alert_id, "flow_id": flow_id, "predicted_label": predicted_label,
+            "status": status, "created_at": created_at,
+            "explanation_status": explanation_status,
+            "branch": br, "branch_reason": br_reason,
+        })
+    return result
+
+
 def insert_timing(conn, flow_id: str, step: str, duration_ms: float, recorded_at: str) -> None:
     conn.execute(
         "INSERT INTO Timing (flow_id, step, duration_ms, recorded_at) VALUES (?, ?, ?, ?)",

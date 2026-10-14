@@ -315,3 +315,16 @@ Sau Bước 16 mới tới **M4** (dựng 3 máy ảo Victim/Attacker/Monitor tr
   - SQL Injection: `rare_class_flag=1` → `branch=B`, `branch_reason` nêu đúng lý do.
   - DoS attacks-Hulk: dự đoán đúng trước khi test — `env_fingerprint_flag=1` thật (không phải giả định) → `branch=B` — xác nhận nhánh B không chỉ lý thuyết, có flow thật rơi vào đúng trường hợp này.
 - Commit: `b31fe54`.
+
+### Bước 12 — Tầng 6: `GET /alerts` ✅
+- **Mục đích**: thêm API trả danh sách Alert kèm trạng thái giải thích, lọc theo thời gian/nhãn/nhánh — đúng nguyên văn bảng API trong tài liệu kiến trúc (`Kiến trúc hệ thống IDS.docx`, phần "Giao diện (API) giữa tầng 6 và các tầng dưới": *"GET /alerts | Bộ lọc thời gian, nhãn, nhánh | Danh sách Alert kèm trạng thái giải thích"*). Đây là API đầu tiên cung cấp dữ liệu "nhìn thấy được" cho Dashboard (bước 13).
+- Thêm `db.get_alerts(conn, since, until, label, branch)` vào `app/db.py`: `LEFT JOIN AlertRecord` với `Reliability` (LEFT vì SHAP có thể chưa xử lý xong — hàng đợi bất đồng bộ từ bước 7b — hoặc đã bị bỏ do hàng đợi đầy, khi đó không có dòng `Reliability`), lọc động theo tham số được truyền, sắp theo `created_at` giảm dần. Tính `explanation_status` theo 3 mức: `"pending_or_dropped"` (chưa có `shap_top5_json`), `"shap_only"`, `"shap_and_lime"`.
+- Thêm `GET /alerts` vào `app/main.py`: 4 tham số query tùy chọn `since`/`until` (ISO 8601, so sánh chuỗi vì `created_at` luôn ghi cùng định dạng UTC), `label` (= predicted_label), `branch` (chỉ nhận `'A'`/`'B'`, sai thì `422`).
+- Tạo `scripts/stage12_test_alerts.py`, test qua API thật, 5 việc: (1) không lọc gì → thấy đủ 2 alert vừa tạo (Bot + SQL Injection); (2) lọc `label=Bot` → chỉ còn alert Bot; (3) lọc `branch=B` → chỉ còn alert branch B; (4) lọc `since=<mốc trước 2 alert mới>` → loại hết alert cũ, chỉ còn đúng 2 alert mới; (5) `branch=C` (sai) → `422`.
+- **Kết quả chạy thật — cả 5 việc [PASS]:**
+  - DB lúc test đã có 254 alert tích lũy từ các bước trước — `GET /alerts` không lọc trả đủ `count=254`, có cả 2 alert mới.
+  - `label=Bot` → `count=78` (đúng số Alert Bot tích lũy qua nhiều lần test trước đó).
+  - `branch=B` → `count=3` (đúng — 1 từ bước 11 (SQL Injection) + 1 từ bước 11 (DoS Hulk) + 1 SQL Injection mới tạo lúc test này).
+  - `since=<mốc ngay trước khi tạo 2 alert mới>` → `count=2`, lọc đúng chỉ còn 2 alert mới tạo, loại hết 252 alert cũ.
+  - `branch=C` → `422` đúng như kỳ vọng validate input.
+- Commit: `(sắp tới)`.
