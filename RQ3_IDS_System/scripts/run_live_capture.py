@@ -9,9 +9,18 @@ Bắt SỐNG (cần quyền Administrator để bắt gói tin trên Windows):
   RQ3_IDS_System/.venv_capture/Scripts/python.exe RQ3_IDS_System/scripts/run_live_capture.py --interface "Wi-Fi" --output RQ3_IDS_System/data/real_capture.csv --seconds 90
 
 Đọc lại 1 file .pcap đã ghi sẵn (nguồn 2 ở plan.md mục 0.1 — KHÔNG cần quyền
-Administrator, KHÔNG cần tcpreplay: `create_sniffer(input_file=...)` tự đọc file,
-chạy xong tự dừng vì không còn gói nào để đọc):
+Administrator, KHÔNG cần tcpreplay: tự đọc file, chạy xong tự dừng vì không còn gói
+nào để đọc):
   RQ3_IDS_System/.venv_capture/Scripts/python.exe RQ3_IDS_System/scripts/run_live_capture.py --pcap-input duong_dan/file.pcap --output RQ3_IDS_System/data/replay_capture.csv
+
+LỖI THẬT đã gặp + đã né: `create_sniffer(input_file=...)` của thư viện gốc gắn cứng
+bộ lọc BPF `filter="ip and (tcp or udp)"` cho CẢ chế độ đọc file lẫn bắt sống — với
+file pcap, scapy áp bộ lọc này bằng cách tự shell ra chạy `tcpdump -w -`, nhưng
+Windows không có sẵn `tcpdump` -> luôn lỗi `Scapy_Exception: tcpdump is not
+available`. Bắt sống không bị ảnh hưởng vì dùng Npcap trực tiếp, không qua tcpdump.
+Chế độ đọc file ở đây KHÔNG gọi `create_sniffer()` nữa mà tự dựng `AsyncSniffer`
+thẳng, bỏ hẳn tham số `filter` — không mất gì vì `FlowSession.process()` (bên trong
+thư viện) đã tự bỏ qua mọi gói không phải TCP/UDP, đúng việc bộ lọc kia định làm.
 """
 from __future__ import annotations
 
@@ -23,7 +32,18 @@ for _stream in (sys.stdout, sys.stderr):
     if hasattr(_stream, "reconfigure"):
         _stream.reconfigure(encoding="utf-8", errors="replace")
 
-from cicflowmeter.sniffer import create_sniffer
+from cicflowmeter.flow_session import FlowSession
+from cicflowmeter.sniffer import GC_INTERVAL, _start_periodic_gc, create_sniffer
+from scapy.sendrecv import AsyncSniffer
+
+
+def create_replay_sniffer(pcap_path: str, output: str):
+    """Thay cho `create_sniffer(input_file=...)` — xem lý do ở docstring đầu file:
+    bản gốc gắn cứng bộ lọc BPF cần `tcpdump`, Windows không có sẵn."""
+    session = FlowSession(output_mode="csv", output=output, fields=None, verbose=True)
+    _start_periodic_gc(session, interval=GC_INTERVAL)
+    sniffer = AsyncSniffer(offline=pcap_path, prn=session.process, store=False)
+    return sniffer, session
 
 
 def main():
@@ -43,15 +63,18 @@ def main():
         print(f"Bắt đầu bắt traffic trên interface '{args.interface}', ghi ra: {args.output}")
         print("Hãy mở trình duyệt, lướt web bình thường trong lúc này. Nhấn Ctrl+C để dừng sớm.")
 
-    sniffer, session = create_sniffer(
-        input_file=args.pcap_input,
-        input_interface=None if is_replay else args.interface,
-        output_mode="csv",
-        output=args.output,
-        input_directory=None,
-        fields=None,
-        verbose=True,
-    )
+    if is_replay:
+        sniffer, session = create_replay_sniffer(args.pcap_input, args.output)
+    else:
+        sniffer, session = create_sniffer(
+            input_file=None,
+            input_interface=args.interface,
+            output_mode="csv",
+            output=args.output,
+            input_directory=None,
+            fields=None,
+            verbose=True,
+        )
     sniffer.start()
 
     try:

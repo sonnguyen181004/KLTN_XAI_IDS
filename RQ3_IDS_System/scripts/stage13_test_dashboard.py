@@ -153,6 +153,47 @@ def main() -> int:
         print(f"  [{'PASS' if ok else 'FAIL'}]")
         all_ok &= ok
 
+        print("\n--- Việc 5: Tab 'Phát lại PCAP' — upload 1 file .pcap thật, trích xuất + gửi ---")
+        venv_python = RQ3_ROOT / ".venv_capture" / "Scripts" / "python.exe"
+        synthetic_pcap = RQ3_ROOT / "data" / "stage13_synthetic.pcap"
+        if not venv_python.exists():
+            print(f"  [BỎ QUA] Chưa có {venv_python} (chưa cài môi trường bắt gói — xem M3/5.1 trong plan.md).")
+        else:
+            gen = subprocess.run(
+                [str(venv_python), str(RQ3_ROOT / "scripts" / "make_synthetic_pcap.py"), str(synthetic_pcap)],
+                cwd=str(RQ3_ROOT), capture_output=True, text=True, timeout=30,
+                encoding="utf-8", errors="replace",
+            )
+            if gen.returncode != 0 or not synthetic_pcap.exists():
+                print(f"  [FAIL] Không tạo được file pcap giả lập để test: {gen.stdout}{gen.stderr}")
+                all_ok = False
+            else:
+                count_before_pcap = requests.get(f"{api_url}/alerts").json()["count"]
+                at3 = AppTest.from_file(str(RQ3_ROOT / "app" / "dashboard.py"))
+                at3.run(timeout=30)
+                pcap_bytes = synthetic_pcap.read_bytes()
+                pcap_uploader = next(fu for fu in at3.file_uploader if fu.key == "pcap_uploader")
+                pcap_uploader.upload("stage13_synthetic.pcap", pcap_bytes, "application/octet-stream").run(timeout=30)
+                ok = not at3.exception
+                send_pcap_button = next((b for b in at3.button if b.key == "send_pcap"), None)
+                ok = ok and send_pcap_button is not None
+                if ok:
+                    send_pcap_button.set_value(True).run(timeout=60)
+                    ok = not at3.exception
+                    print(f"  Sau khi bấm 'Trích xuất + gửi vào /predict', số exception: {len(at3.exception)}")
+                    if at3.exception:
+                        for e in at3.exception:
+                            print(f"  [FAIL] {e.value!r}\n{e.stack_trace}")
+                count_after_pcap = requests.get(f"{api_url}/alerts").json()["count"] if ok else count_before_pcap
+                # File pcap giả lập chỉ có 1 flow TCP thường (không phải tấn công) -> model
+                # rất có thể đoán Benign (không tạo alert) -> KHÔNG kiểm tra count tăng ở
+                # đây, chỉ cần không exception VÀ không còn file CSV cũ lẫn vào (unlink
+                # trước đó trong code dashboard) là đủ xác nhận luồng chạy đúng.
+                print(f"  Số alert trước: {count_before_pcap}, sau: {count_after_pcap} (không bắt buộc tăng — "
+                      "flow giả lập không phải tấn công)")
+                print(f"  [{'PASS' if ok else 'FAIL'}]")
+                all_ok &= ok
+
     finally:
         print("\nĐang tắt API...")
         api_proc.terminate()

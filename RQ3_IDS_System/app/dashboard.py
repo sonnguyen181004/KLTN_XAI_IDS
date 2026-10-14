@@ -117,9 +117,9 @@ with tab_csv:
                 except requests.exceptions.RequestException as e:
                     results.append({"dòng": i + 1, "kết quả": f"KHÔNG GỬI ĐƯỢC — {e}"})
                 progress.progress((i + 1) / len(data_rows))
-            st.success(f"Đã gửi xong {len(data_rows)} dòng.")
             st.dataframe(pd.DataFrame(results), width="stretch", hide_index=True)
-            st.info("Kéo xuống bảng cảnh báo dưới đây và bấm lọc/F5 để thấy cảnh báo mới.")
+            st.toast(f"Đã gửi xong {len(data_rows)} dòng — bảng cảnh báo bên dưới vừa được làm mới.", icon="✅")
+            st.rerun()
 
 with tab_pcap:
     st.caption("Đọc lại 1 file .pcap đã ghi sẵn — dùng CICFlowMeter (môi trường `.venv_capture`) để trích đặc "
@@ -136,16 +136,39 @@ with tab_pcap:
             upload_path.write_bytes(pcap_file.getvalue())
             output_csv.unlink(missing_ok=True)  # xóa kết quả lần trước, tránh đọc nhầm dữ liệu cũ
 
+            timed_out = False
             with st.spinner("Đang chạy CICFlowMeter trích đặc trưng từ file pcap..."):
-                proc = subprocess.run(
-                    [str(venv_python), str(RQ3_ROOT / "scripts" / "run_live_capture.py"),
-                     "--pcap-input", str(upload_path), "--output", str(output_csv)],
-                    cwd=str(RQ3_ROOT), capture_output=True, text=True, timeout=120,
-                )
-            with st.expander("Log CICFlowMeter (bấm để xem)"):
-                st.code(proc.stdout + proc.stderr)
+                try:
+                    # encoding="utf-8": LỖI THẬT đã gặp — mặc định subprocess.run() đọc
+                    # output bằng encoding hệ thống (cp1252 trên Windows), nhưng log DEBUG
+                    # của CICFlowMeter có byte không giải mã được bằng cp1252. Khi đó,
+                    # thread đọc output nội bộ của subprocess CHẾT ÂM THẦM (in traceback ra
+                    # console server, không ném lên luồng chính) và để proc.stdout = None,
+                    # gây crash khác hẳn (TypeError khi cộng None với chuỗi ở dưới). Ép đúng
+                    # utf-8 (khớp `sys.stdout.reconfigure(encoding="utf-8")` ở các script con)
+                    # để không bao giờ rơi vào trường hợp đó.
+                    proc = subprocess.run(
+                        [str(venv_python), str(RQ3_ROOT / "scripts" / "run_live_capture.py"),
+                         "--pcap-input", str(upload_path), "--output", str(output_csv)],
+                        cwd=str(RQ3_ROOT), capture_output=True, text=True, timeout=120,
+                        encoding="utf-8", errors="replace",
+                    )
+                    proc_stdout, proc_stderr, proc_returncode = proc.stdout, proc.stderr, proc.returncode
+                except subprocess.TimeoutExpired as e:
+                    timed_out = True
+                    proc_stdout, proc_stderr, proc_returncode = e.stdout, e.stderr, None
 
-            if proc.returncode != 0 or not output_csv.exists():
+            # proc_stdout/proc_stderr có thể là None (vd khi hết 120s timeout, tiến trình
+            # bị kill trước khi kịp trả hết output) — không được cộng thẳng 2 chuỗi lại,
+            # phải phòng hờ None trước (lỗi thật đã gặp: TypeError unsupported operand
+            # 'NoneType' và 'str').
+            with st.expander("Log CICFlowMeter (bấm để xem)"):
+                st.code((proc_stdout or "") + (proc_stderr or ""))
+
+            if timed_out:
+                st.error("CICFlowMeter chạy quá 120 giây không xong (file pcap có thể quá lớn, hoặc tiến trình bị "
+                         "treo) — đã tự dừng. Thử lại với file nhỏ hơn, hoặc báo lại nếu file nhỏ mà vẫn bị vậy.")
+            elif proc_returncode != 0 or not output_csv.exists():
                 st.error("CICFlowMeter chạy lỗi hoặc không ghi ra file — xem log phía trên.")
             else:
                 with open(output_csv, encoding="utf-8-sig", newline="") as f:
@@ -173,9 +196,10 @@ with tab_pcap:
                                 results.append({"flow": i + 1, "kết quả": f"LỖI {r.status_code}"})
                         except requests.exceptions.RequestException as e:
                             results.append({"flow": i + 1, "kết quả": f"KHÔNG GỬI ĐƯỢC — {e}"})
-                    st.success(f"Đã gửi xong {len(results)} flow trích từ pcap.")
                     st.dataframe(pd.DataFrame(results), width="stretch", hide_index=True)
-                    st.info("Kéo xuống bảng cảnh báo dưới đây và bấm lọc/F5 để thấy cảnh báo mới.")
+                    st.toast(f"Đã gửi xong {len(results)} flow trích từ pcap — bảng cảnh báo bên dưới vừa được "
+                             "làm mới.", icon="✅")
+                    st.rerun()
 
 st.divider()
 
