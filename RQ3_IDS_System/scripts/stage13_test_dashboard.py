@@ -108,10 +108,11 @@ def main() -> int:
         all_ok &= ok
 
         print("\n--- Việc 3: Chọn cảnh báo có LIME trong selectbox, chạy lại, không lỗi ---")
-        select_boxes = at.selectbox
-        branch_select = select_boxes[0]  # f_branch — bộ lọc nhánh, đứng trước selectbox chọn alert
-        # selectbox chọn alert là cái có nhiều option nhất (list toàn bộ alert)
-        alert_select = max(select_boxes, key=lambda sb: len(sb.options))
+        # Nhận diện theo LABEL, không theo số lượng lựa chọn — khi DB ít alert (sau
+        # khi dọn sạch để test), ô lọc nhánh ("(tất cả)"/A/B = 3) và ô chọn alert có
+        # thể TRÙNG số lượng lựa chọn, lấy theo max(len(options)) sẽ chọn nhầm ô
+        # (lỗi thật đã gặp khi DB chỉ có đúng 3 alert).
+        alert_select = next(sb for sb in at.selectbox if sb.label == "Chọn cảnh báo để xem chi tiết")
         target_option = next((o for o in alert_select.options if alert_ids[0][:8] in o), None)
         ok = target_option is not None
         if ok:
