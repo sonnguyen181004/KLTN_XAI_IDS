@@ -231,4 +231,4 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - Mở DB: `FlowRecord` tăng đúng 8 dòng sau khi feeder chạy.
   - Toàn bộ luồng **CSV → feeder → /predict → DB** chạy tự động hoàn toàn, không cần tay người ở giữa — đúng mục tiêu ban đầu của bước này.
 - Khi có CICFlowMeter thật (M4): chỉ cần đổi `--watch` sang đường dẫn CICFlowMeter ghi ra và bật `--convert-units` (nếu CICFlowMeter xuất giây) — không cần sửa code.
-- Commit: (sắp tới).
+- Commit: `f0f21b4`.
