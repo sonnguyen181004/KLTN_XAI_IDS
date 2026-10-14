@@ -202,7 +202,7 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - Phát hiện thêm: tổng thời gian request vẫn ~40-108ms dù đã bỏ SHAP (~40ms) ra khỏi đường đồng bộ — có ~overhead khác (có thể từ FastAPI/SQLite/Windows) **đã tồn tại từ trước bước 7b**, không phải do thay đổi này gây ra; để lại cho **E1** đo chính xác, không thuộc phạm vi bước này.
   - Đợi worker xử lý xong: `Reliability.shap_top5_json` xuất hiện đúng 5 phần tử.
   - Dội 70 request đồng thời (maxsize=50): **60 'queued', 10 'dropped_queue_full'** — đúng kỳ vọng. Alert bị dropped **vẫn tồn tại** trong `AlertRecord` (không mất cảnh báo), chỉ `Reliability` không có dòng (đúng — không được xếp hàng giải thích).
-- Commit: (sắp tới).
+- Commit: `cf83fb6`.
 
 ### Bước 8b — Bộ "feeder" tự động (chuẩn bị cho bắt traffic thật) ⏳ (sắp làm, song song với bước 8)
 - **Mục đích**: trả lời câu hỏi "hệ thống có tự động bắt rồi đưa flow vào model không, hay phải làm tay?" — xem chi tiết mục 5.1. Đây là mảnh ghép còn thiếu giữa CICFlowMeter (phần mềm có sẵn, tự bắt gói + tính đặc trưng) và hệ thống (chỉ nhận qua API) — không có feeder thì vẫn phải tự copy từng dòng CSV sang, không tự động.
