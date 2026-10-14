@@ -218,8 +218,17 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - Dội 70 request đồng thời (maxsize=50): **60 'queued', 10 'dropped_queue_full'** — đúng kỳ vọng. Alert bị dropped **vẫn tồn tại** trong `AlertRecord` (không mất cảnh báo), chỉ `Reliability` không có dòng (đúng — không được xếp hàng giải thích).
 - Commit: `cf83fb6`.
 
-### Bước 8b — Bộ "feeder" tự động (chuẩn bị cho bắt traffic thật) ⏳ (sắp làm, song song với bước 8)
-- **Mục đích**: trả lời câu hỏi "hệ thống có tự động bắt rồi đưa flow vào model không, hay phải làm tay?" — xem chi tiết mục 5.1. Đây là mảnh ghép còn thiếu giữa CICFlowMeter (phần mềm có sẵn, tự bắt gói + tính đặc trưng) và hệ thống (chỉ nhận qua API) — không có feeder thì vẫn phải tự copy từng dòng CSV sang, không tự động.
-- Sẽ làm: `app/feeder.py` chạy nền liên tục, theo dõi 1 file CSV, phát hiện dòng MỚI → tự chuẩn hóa → tự `POST /predict`.
-- Test dự kiến: KHÔNG cần CICFlowMeter thật — giả lập bằng cách tự ghi từng dòng Tập B vào 1 file CSV cách nhau vài giây (mô phỏng CICFlowMeter đang chạy sống), xem feeder có tự phát hiện + tự gửi đúng toàn bộ, không sót dòng nào, không gửi trùng dòng nào 2 lần.
-- Độc lập với bước 9-16, có thể làm trước/sau/xen kẽ tùy ý.
+### Bước 8b — Bộ "feeder" tự động (chuẩn bị cho bắt traffic thật) ✅
+- **Mục đích**: trả lời câu hỏi "hệ thống có tự động bắt rồi đưa flow vào model không, hay phải làm tay?" — xem chi tiết mục 5.1. Dùng CHUNG cho cả nguồn 1 (mạng lab thật) và nguồn 2 (PCAP phát lại) ở mục 0.1 — CICFlowMeter ghi CSV giống nhau bất kể gói tin "sống" hay "phát lại".
+- Tạo `app/feeder.py`: theo dõi 1 file CSV, phát hiện dòng MỚI (so độ dài file mỗi vòng lặp) → đọc, đổi đơn vị μs nếu cần (tham số `--convert-units`, dùng lại `TIME_COLUMNS` từ `app/normalize.py`) → tự `POST /predict` → log kết quả. Thêm `feeder` section vào `config.yaml` (đường dẫn theo dõi mặc định, chu kỳ kiểm tra, cờ đổi đơn vị).
+- Tạo `scripts/stage08b_test_feeder.py`: GIẢ LẬP CICFlowMeter thật bằng cách tự ghi 8 dòng của Tập B vào 1 file CSV, cách nhau 1,5 giây (không cần CICFlowMeter/máy ảo gì cả).
+- **2 lỗi gặp khi test (cả 2 đều ở SCRIPT TEST, không phải ở feeder) — đã sửa:**
+  1. Quên bật **unbuffered** (`-u`) cho tiến trình con `feeder.py` → log chưa kịp ghi ra file khi script test đọc, tưởng feeder gửi 0 dòng (thực ra DB đã nhận đủ 8 — kiểm tra DB trực tiếp phát hiện ra feeder vẫn đúng, chỉ log đọc sai).
+  2. Regex kiểm tra log dùng `\S+` (không khoảng trắng) để bắt `predicted_label` — SAI vì nhãn như "Brute Force -XSS" có khoảng trắng, chỉ khớp nhãn 1 từ (SSH-Bruteforce, Infilteration, Benign) → **sửa thành** `(.+?), is_alert=` để bắt đủ cả nhãn có khoảng trắng.
+- **Kết quả chạy thật — mọi [PASS]:**
+  - Feeder gửi đủ **8/8 dòng**, đúng thứ tự #1→#8, không thiếu không trùng.
+  - **Nhãn dự đoán đúng 7/8** — chỉ sai đúng 1 ca: SQL Injection (lớp cực hiếm, 9-13 mẫu toàn tập) bị đoán Benign, khớp với hạn chế đã biết từ RQ1, không phải lỗi feeder.
+  - Mở DB: `FlowRecord` tăng đúng 8 dòng sau khi feeder chạy.
+  - Toàn bộ luồng **CSV → feeder → /predict → DB** chạy tự động hoàn toàn, không cần tay người ở giữa — đúng mục tiêu ban đầu của bước này.
+- Khi có CICFlowMeter thật (M4): chỉ cần đổi `--watch` sang đường dẫn CICFlowMeter ghi ra và bật `--convert-units` (nếu CICFlowMeter xuất giây) — không cần sửa code.
+- Commit: (sắp tới).
