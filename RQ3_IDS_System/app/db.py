@@ -217,7 +217,9 @@ def get_alerts(
     bước 7b) hoặc đã bị bỏ do hàng đợi đầy (khi đó không có dòng Reliability nào)."""
     query = """
         SELECT a.alert_id, a.flow_id, a.predicted_label, a.status, a.created_at,
-               r.shap_top5_json, r.lime_top5_json, r.branch, r.branch_reason
+               r.shap_top5_json, r.lime_top5_json, r.branch, r.branch_reason,
+               r.agreement_jaccard5, r.faithfulness_proxy_drop, r.env_fingerprint_count,
+               r.env_fingerprint_flag, r.rare_class_flag, r.stability_lookup, r.robustness_lookup_json
         FROM AlertRecord a
         LEFT JOIN Reliability r ON a.alert_id = r.alert_id
         WHERE 1=1
@@ -239,7 +241,8 @@ def get_alerts(
 
     rows = conn.execute(query, params).fetchall()
     result = []
-    for alert_id, flow_id, predicted_label, status, created_at, shap_json, lime_json, br, br_reason in rows:
+    for (alert_id, flow_id, predicted_label, status, created_at, shap_json, lime_json, br, br_reason,
+         agreement, faith_drop, env_count, env_flag, rare_flag, stability, robustness_json) in rows:
         if shap_json is None:
             explanation_status = "pending_or_dropped"  # chưa xử lý xong HOẶC bị bỏ vì hàng đợi đầy (bước 7b)
         elif lime_json is None:
@@ -251,6 +254,15 @@ def get_alerts(
             "status": status, "created_at": created_at,
             "explanation_status": explanation_status,
             "branch": br, "branch_reason": br_reason,
+            "shap_top5": json.loads(shap_json) if shap_json else None,
+            "lime_top5": json.loads(lime_json) if lime_json else None,
+            "agreement_jaccard5": agreement,
+            "faithfulness_proxy_drop": faith_drop,
+            "env_fingerprint_count": env_count,
+            "env_fingerprint_flag": env_flag,
+            "rare_class_flag": rare_flag,
+            "stability_lookup": stability,
+            "robustness_lookup": json.loads(robustness_json) if robustness_json else None,
         })
     return result
 

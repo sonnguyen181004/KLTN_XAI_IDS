@@ -5,8 +5,13 @@ gọi `create_sniffer(...)` bằng tham số VỊ TRÍ nhưng thứ tự không 
 `AttributeError: 'bool' object has no attribute 'split'`). Dùng keyword argument
 ở đây thì không bị ảnh hưởng bởi lỗi thứ tự đó.
 
-Chạy (cần quyền Administrator để bắt gói tin trên Windows):
+Bắt SỐNG (cần quyền Administrator để bắt gói tin trên Windows):
   RQ3_IDS_System/.venv_capture/Scripts/python.exe RQ3_IDS_System/scripts/run_live_capture.py --interface "Wi-Fi" --output RQ3_IDS_System/data/real_capture.csv --seconds 90
+
+Đọc lại 1 file .pcap đã ghi sẵn (nguồn 2 ở plan.md mục 0.1 — KHÔNG cần quyền
+Administrator, KHÔNG cần tcpreplay: `create_sniffer(input_file=...)` tự đọc file,
+chạy xong tự dừng vì không còn gói nào để đọc):
+  RQ3_IDS_System/.venv_capture/Scripts/python.exe RQ3_IDS_System/scripts/run_live_capture.py --pcap-input duong_dan/file.pcap --output RQ3_IDS_System/data/replay_capture.csv
 """
 from __future__ import annotations
 
@@ -23,17 +28,24 @@ from cicflowmeter.sniffer import create_sniffer
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface", required=True, help='Tên interface, ví dụ "Wi-Fi" (xem bằng Get-NetAdapter)')
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--interface", help='Bắt SỐNG: tên interface, ví dụ "Wi-Fi" (xem bằng Get-NetAdapter)')
+    group.add_argument("--pcap-input", help="Đọc lại 1 file .pcap đã ghi sẵn (nguồn 2 — phát lại), thay vì bắt sống")
     parser.add_argument("--output", required=True, help="Đường dẫn file CSV để ghi flow ra")
-    parser.add_argument("--seconds", type=int, default=0, help="Tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
+    parser.add_argument("--seconds", type=int, default=0,
+                         help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
     args = parser.parse_args()
 
-    print(f"Bắt đầu bắt traffic trên interface '{args.interface}', ghi ra: {args.output}")
-    print("Hãy mở trình duyệt, lướt web bình thường trong lúc này. Nhấn Ctrl+C để dừng sớm.")
+    is_replay = args.pcap_input is not None
+    if is_replay:
+        print(f"Đọc lại file pcap có sẵn: {args.pcap_input}, ghi ra: {args.output}")
+    else:
+        print(f"Bắt đầu bắt traffic trên interface '{args.interface}', ghi ra: {args.output}")
+        print("Hãy mở trình duyệt, lướt web bình thường trong lúc này. Nhấn Ctrl+C để dừng sớm.")
 
     sniffer, session = create_sniffer(
-        input_file=None,
-        input_interface=args.interface,
+        input_file=args.pcap_input,
+        input_interface=None if is_replay else args.interface,
         output_mode="csv",
         output=args.output,
         input_directory=None,
@@ -43,7 +55,11 @@ def main():
     sniffer.start()
 
     try:
-        if args.seconds > 0:
+        if is_replay:
+            # Đọc file xong là hết gói để đọc, scapy tự dừng — không cần Ctrl+C.
+            sniffer.join()
+            print("\nĐã đọc hết file pcap.")
+        elif args.seconds > 0:
             time.sleep(args.seconds)
             print(f"\nĐã đủ {args.seconds} giây, tự dừng...")
             sniffer.stop()
