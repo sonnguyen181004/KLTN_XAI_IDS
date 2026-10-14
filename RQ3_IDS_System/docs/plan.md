@@ -92,6 +92,19 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
 - Cách đúng kiến trúc (làm sau): Monitor là máy riêng, bật **promiscuous mode** trên card mạng host-only để "nghe" được cả traffic giữa Victim và Attacker.
 - Phương án dự phòng không cần máy Attacker: dùng `tcpreplay` phát lại 1 file pcap mẫu có sẵn, Npcap/CICFlowMeter trên Monitor vẫn bắt được như traffic thật.
 
+### 5.1. Bộ "feeder" — nối CICFlowMeter với hệ thống TỰ ĐỘNG (không qua tay người)
+
+CICFlowMeter tự nó chỉ làm việc "bắt gói + tính đặc trưng + ghi ra CSV" — đây là phần mềm có sẵn, không cần code. Nhưng CICFlowMeter **không tự gửi** dữ liệu sang hệ thống của mình. Cần 1 mảnh code riêng — gọi là **feeder** — đứng giữa 2 bên:
+
+```
+CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện dòng mới]  →  POST /predict  →  Dashboard
+```
+
+- **Việc của bạn** (không cần code): cài Npcap + CICFlowMeter, chạy ở chế độ **bắt trực tiếp (live capture)** trỏ vào 1 card mạng — CICFlowMeter sẽ tự ghi thêm dòng mới vào 1 file CSV mỗi khi có flow mới kết thúc.
+- **Việc tôi code**: script `feeder.py` chạy nền liên tục, theo dõi file CSV đó, phát hiện dòng MỚI xuất hiện → tự đối chiếu/đổi tên cột, đổi đơn vị μs (tham số đã có sẵn ở bước 4) → tự `POST /predict` → không cần ai copy/paste tay.
+- **Test được NGAY BÂY GIỜ, không cần CICFlowMeter thật**: giả lập bằng cách tự ghi từng dòng của Tập B vào 1 file CSV cách nhau vài giây (như CICFlowMeter đang chạy thật), xem feeder có tự phát hiện + tự gửi đúng không. Khi có CICFlowMeter thật, chỉ cần đổi đường dẫn file theo dõi, không sửa code.
+- Xếp vào **Bước 8b** trong tiến độ bên dưới — làm độc lập, không phụ thuộc thứ tự bước 9-16.
+
 ## 6. Việc tôi làm ngay bây giờ
 
 1. `RQ3_IDS_System/scripts/stage00_build_clean_dataset.py` — tạo Tập B (loại trùng train/test, lấy mẫu phân tầng).
@@ -163,12 +176,8 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   - Bạn dán `sample_attack.json` vào `/predict` qua Swagger UI và chạy thành công.
 - Commit: `41949ed`.
 
-### Bước 7 — Tầng 4a: TreeSHAP tự động, nối vào `/predict` 🔄 (đang làm)
-- **Mục đích**: mỗi cảnh báo có kèm "vì sao mô hình nghĩ vậy" — SHAP chạy TỰ ĐỘNG cho mọi Alert (khác LIME ở bước 9, chỉ chạy khi analyst bấm xin, đúng nguyên tắc kiến trúc Khối 3).
-- Sẽ làm: `app/explain_shap.py` (TreeSHAP, Top-5 có dấu cho đúng lớp dự đoán, kiểm tra additivity); nối vào `app/main.py` sau khi tạo Alert; thêm `db.upsert_reliability()` (ghi từng phần vào bảng `Reliability`, vì các bước 8-11 sau sẽ tiếp tục điền thêm cột khác cho CÙNG alert_id).
-- Test dự kiến: gửi flow tấn công (sample_attack.json) → có Top-5 SHAP trong response; gửi flow Benign → KHÔNG có SHAP (đúng nguyên tắc); additivity sai số phải cùng bậc với RQ2 (~1e-5/1e-6); mở DB xác nhận bảng Reliability có dữ liệu; so thời gian với RQ2 (~19ms/flow).
-
 ### Bước 7 — Tầng 4a: TreeSHAP tự động, nối vào `/predict` ✅
+- **Mục đích**: mỗi cảnh báo có kèm "vì sao mô hình nghĩ vậy" — SHAP chạy TỰ ĐỘNG cho mọi Alert (khác LIME ở bước 9, chỉ chạy khi analyst bấm xin, đúng nguyên tắc kiến trúc Khối 3).
 - Tạo `app/explain_shap.py` (class `ShapExplainer`), `db.upsert_reliability()` (ghi từng phần, không đè dữ liệu bước khác), nối vào `app/main.py`, `scripts/stage07_test_shap.py`.
 - **Kết quả chạy thật — PASS ngay lần đầu, không gặp lỗi:**
   - Flow Bot (sample_attack.json) → `is_alert=True`, có Top-5 SHAP. **`Dst Port` φ=+7,512 — gần như một mình quyết định cả quyết định** (4 đặc trưng còn lại φ chỉ 0,01–0,05) — khớp ĐÚNG với phát hiện ở RQ2 (Bot gần như hoàn toàn dựa vào Dst Port, mean|φ|≈7,4/97,1% trọng số) → xác nhận code SHAP mới hoạt động nhất quán với phân tích RQ2 gốc.
@@ -180,3 +189,9 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
   - Dán `sample_attack.json` (Bot) vào `POST /predict` → xác nhận response có trường `"shap"` đầy đủ (`class_explained`, `base_value`, `top_k` 5 đặc trưng, `additivity_error`), khác hẳn lần test bước 6 lúc trường này còn chưa tồn tại.
   - Dán `sample_benign.json` vào `POST /predict` → xác nhận trường `"shap"` là `null` (đúng nguyên tắc: Benign không tạo cảnh báo nên không chạy SHAP).
 - Commit: `5e39a85`.
+
+### Bước 8b — Bộ "feeder" tự động (chuẩn bị cho bắt traffic thật) ⏳ (sắp làm, song song với bước 8)
+- **Mục đích**: trả lời câu hỏi "hệ thống có tự động bắt rồi đưa flow vào model không, hay phải làm tay?" — xem chi tiết mục 5.1. Đây là mảnh ghép còn thiếu giữa CICFlowMeter (phần mềm có sẵn, tự bắt gói + tính đặc trưng) và hệ thống (chỉ nhận qua API) — không có feeder thì vẫn phải tự copy từng dòng CSV sang, không tự động.
+- Sẽ làm: `app/feeder.py` chạy nền liên tục, theo dõi 1 file CSV, phát hiện dòng MỚI → tự chuẩn hóa → tự `POST /predict`.
+- Test dự kiến: KHÔNG cần CICFlowMeter thật — giả lập bằng cách tự ghi từng dòng Tập B vào 1 file CSV cách nhau vài giây (mô phỏng CICFlowMeter đang chạy sống), xem feeder có tự phát hiện + tự gửi đúng toàn bộ, không sót dòng nào, không gửi trùng dòng nào 2 lần.
+- Độc lập với bước 9-16, có thể làm trước/sau/xen kẽ tùy ý.
