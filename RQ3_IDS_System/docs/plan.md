@@ -102,21 +102,35 @@ M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 l
 ## 7. Tiến độ (cập nhật sau mỗi bước)
 
 ### Bước 1 — `config.yaml` ✅
+- **Mục đích**: gom mọi tham số dự án vào 1 file, không ghi cứng đường dẫn/số liệu rải rác trong code.
 - Tạo `RQ3_IDS_System/config.yaml`: đường dẫn model/dữ liệu RQ1/RQ2, cấu hình LIME khóa y hệt RQ2 (kernel_width=3,312, num_samples=1000, discretize_continuous=false), 3 đặc trưng cờ môi trường, ngưỡng lớp hiếm (<100 mẫu train), tham số Tập B.
 - Kiểm tra: đọc file thành công, xác nhận cả 7 đường dẫn tới dữ liệu/model có sẵn đều tồn tại trên đĩa.
 - Sửa 1 lần: bỏ đường dẫn `rq2_domain_knowledge` (trỏ sang file `.py` của RQ2) vì dư thừa — 3 tên đặc trưng môi trường đã có sẵn ngay trong `config.yaml`, không script nào cần đọc thêm file đó.
 - Commit: `8218ec3`, `99f3c53`.
 
 ### Bước 2 — Schema SQLite (6 bảng) ✅
+- **Mục đích**: tạo "nơi chứa" cho mọi dữ liệu hệ thống sẽ ghi ra khi chạy thật (flow, lỗi, dự đoán, cảnh báo, độ tin cậy, thời gian từng bước) — chuẩn bị trước khi có logic xử lý.
 - Tạo `app/db.py`: định nghĩa 6 bảng `FlowRecord`, `DataError`, `Prediction`, `AlertRecord`, `Reliability`, `Timing` (có khóa ngoại nối nhau). 78 đặc trưng gộp vào 1 cột JSON (`features_json`) thay vì 78 cột SQL riêng, vì tên đặc trưng có khoảng trắng/dấu `/`.
 - Tạo `scripts/stage02_init_db.py`: chạy tạo DB thật + tự kiểm tra 3 việc — (1) đủ 6/6 bảng, (2) đúng cột từng bảng, (3) chèn 1 flow giả (78 "đặc trưng") rồi đọc lại khớp 100%, sau đó tự xóa dòng test.
 - Thêm `*.db`, `*.csv` của `RQ3_IDS_System/data/` vào `.gitignore` (dữ liệu sinh ra, không commit).
 - Commit: `e5b3f06`.
 
 ### Bước 3 — Tập B (dữ liệu sạch, loại trùng train/test) ✅
+- **Mục đích**: có một tập flow để demo/test mà chắc chắn model chưa từng thấy dưới bất kỳ hình thức nào (kể cả trùng lặp ẩn với train), tránh mọi tranh cãi "model học thuộc".
 - Tạo `scripts/stage03_build_clean_dataset.py`: băm 78 cột của train_set và test_set, loại khỏi test_set mọi dòng trùng hash với train_set, rồi lấy mẫu phân tầng (seed 42, tối đa 30 dòng/lớp) từ phần còn lại.
 - **Kết quả chạy thật**: 194.149/700.000 dòng test (27,74%) trùng train — khớp đúng con số RQ2 đã ghi nhận trước đó. Sau khi loại trùng còn 505.851 dòng "sạch". Lấy mẫu được **241 flow, 13/15 lớp**.
 - **Phát hiện cần ghi nhận trung thực**: 2 lớp `DoS attacks-SlowHTTPTest` và `FTP-BruteForce` **100% dòng test trùng với train** (1.735/1.735 và 3.507/3.507) → **0 dòng sạch còn lại**, nên **không có mặt trong Tập B**. Đây là đặc điểm thật của cách lấy mẫu gốc của CSE-CIC-IDS2018, không phải lỗi code — khi demo/báo cáo cần nói rõ Tập B chỉ phủ được 13/15 lớp, 2 lớp này phải dùng Tập A (cohort RQ2) hoặc traffic thật để minh họa.
 - Tự kiểm tra lại: băm 241 dòng của Tập B, xác nhận 0 dòng trùng train_set — [PASS].
 - File ra: `RQ3_IDS_System/data/clean_holdout_set.csv` (không commit git, đã gitignore).
-- Commit: (sắp tới — xem bên dưới).
+- Commit: `6ba128a`.
+
+### Bước 4 — Tầng 2: hàm chuẩn hóa flow ✅
+- **Mục đích**: đứng giữa "dữ liệu thô nhận được" và "model" — đảm bảo chỉ dữ liệu đủ điều kiện (đủ 78 cột, không NaN, đúng thứ tự cột) mới được đưa vào model dự đoán; dữ liệu thiếu/lỗi bị từ chối có lý do rõ ràng (422) thay vì để model đoán bừa và sai âm thầm.
+- Tạo `app/normalize.py`: hàm `normalize_flow()` kiểm tra đủ cột, kiểm tra NaN/Inf, tự sắp lại đúng thứ tự cột theo model; tham số `convert_seconds_to_microseconds` (mặc định tắt) chuẩn bị sẵn cho traffic thật ở M4, chưa dùng tới lúc này vì Tập A/B đã đúng đơn vị micro giây từ gốc.
+- Tạo `scripts/stage04_test_normalize.py`, chạy 4 tình huống trên dữ liệu thật (Tập B):
+  1. 3 dòng thật từ Tập B → PASS, đúng thứ tự cột.
+  2. Cố ý xóa cột `Fwd Pkt Len Std` → bị từ chối đúng lý do, đúng tên cột liệt kê.
+  3. Cố ý đặt `Flow IAT Min = NaN` → bị từ chối đúng lý do, đúng tên cột liệt kê.
+  4. Đảo ngược toàn bộ thứ tự 78 cột ở input → hàm tự sắp lại đúng thứ tự model mong đợi, không từ chối oan.
+- Kết quả chạy thật: cả 4 tình huống đều đúng như kỳ vọng — xem log chạy, không có [FAIL] nào.
+- Commit: (sắp tới).
