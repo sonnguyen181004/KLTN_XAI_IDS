@@ -190,6 +190,20 @@ CICFlowMeter (bắt gói, ghi CSV)  →  [FEEDER theo dõi file, phát hiện d�
   - Dán `sample_benign.json` vào `POST /predict` → xác nhận trường `"shap"` là `null` (đúng nguyên tắc: Benign không tạo cảnh báo nên không chạy SHAP).
 - Commit: `5e39a85`.
 
+### Bước 7b — Sửa lỗi kiến trúc: hàng đợi giải thích BẤT ĐỒNG BỘ ✅
+- **Vì sao có bước này**: trước khi làm bước 8, kiểm lại 8 bước "Luồng xử lý một flow" trong tài liệu kiến trúc so với code đã viết (bước 1-7). Phát hiện: tài liệu yêu cầu *"Cảnh báo hiện lên dashboard NGAY, phần giải thích được NỐI THÊM VÀO khi tính xong"* + *"giải thích được ghi thành một tác vụ CHỜ (tối đa 50)... nếu hàng đợi đầy thì cảnh báo vẫn hiện, chỉ thiếu phần giải thích"* — nhưng code bước 7 lại tính SHAP ĐỒNG BỘ ngay trong `/predict`, không có hàng đợi, không có giới hạn 50. Đây là 1 **lỗi kiến trúc thật**, không chỉ là thiếu sót nhỏ — nếu không sửa, traffic thật dồn dập (demo DDoS) sẽ làm API chậm dây chuyền.
+- **Mục đích**: tách việc tính SHAP ra khỏi request `/predict` — API tạo Alert và trả lời ngay, SHAP chạy trong 1 **thread nền riêng**, đọc việc từ 1 **hàng đợi có giới hạn** (`queue.Queue(maxsize=50)`, lấy từ `config.yaml: api.max_explain_queue`). Hàng đợi đầy → bỏ phần giải thích, GIỮ nguyên cảnh báo.
+- Tạo `app/explain_queue.py` (class `ExplainQueue`: `submit()` không chặn, worker thread riêng xử lý tuần tự); sửa `app/main.py` (`/predict` gọi `explain_queue.submit()` thay vì gọi SHAP trực tiếp, trả thêm field `explanation_status`: `"queued"` / `"dropped_queue_full"` / `None`); thêm `GET /explain_queue_status` để quan sát hàng đợi; tạo `scripts/stage07b_test_async_queue.py`.
+- **2 lỗi thật gặp phải khi test, đã sửa:**
+  1. **Test sai thiết kế**: lần đầu gửi 60 request TUẦN TỰ để ép hàng đợi đầy — nhưng worker xử lý SHAP (~40ms) nhanh hơn tốc độ gửi tuần tự (~96ms/request) nên hàng đợi không bao giờ đầy kịp (0/60 dropped). **Sửa**: dùng `ThreadPoolExecutor` gửi 70 request ĐỒNG THỜI.
+  2. **`sqlite3.OperationalError: database is locked`** (lỗi thật, quan trọng): 70 connection SQLite ghi đồng thời bị khóa lẫn nhau, nhiều request lỗi 500. **Sửa**: bật `PRAGMA journal_mode = WAL` (cho phép đọc/ghi đồng thời tốt hơn) + `timeout=10.0` khi mở connection (chờ thay vì báo lỗi ngay khi bị khóa tạm thời) trong `app/db.py`.
+- **Kết quả chạy thật (sau khi sửa cả 2 lỗi) — mọi [PASS]:**
+  - `/predict` không còn field `"shap"` trong response, `explanation_status="queued"` — xác nhận đã tách SHAP ra khỏi đường đồng bộ.
+  - Phát hiện thêm: tổng thời gian request vẫn ~40-108ms dù đã bỏ SHAP (~40ms) ra khỏi đường đồng bộ — có ~overhead khác (có thể từ FastAPI/SQLite/Windows) **đã tồn tại từ trước bước 7b**, không phải do thay đổi này gây ra; để lại cho **E1** đo chính xác, không thuộc phạm vi bước này.
+  - Đợi worker xử lý xong: `Reliability.shap_top5_json` xuất hiện đúng 5 phần tử.
+  - Dội 70 request đồng thời (maxsize=50): **60 'queued', 10 'dropped_queue_full'** — đúng kỳ vọng. Alert bị dropped **vẫn tồn tại** trong `AlertRecord` (không mất cảnh báo), chỉ `Reliability` không có dòng (đúng — không được xếp hàng giải thích).
+- Commit: (sắp tới).
+
 ### Bước 8b — Bộ "feeder" tự động (chuẩn bị cho bắt traffic thật) ⏳ (sắp làm, song song với bước 8)
 - **Mục đích**: trả lời câu hỏi "hệ thống có tự động bắt rồi đưa flow vào model không, hay phải làm tay?" — xem chi tiết mục 5.1. Đây là mảnh ghép còn thiếu giữa CICFlowMeter (phần mềm có sẵn, tự bắt gói + tính đặc trưng) và hệ thống (chỉ nhận qua API) — không có feeder thì vẫn phải tự copy từng dòng CSV sang, không tự động.
 - Sẽ làm: `app/feeder.py` chạy nền liên tục, theo dõi 1 file CSV, phát hiện dòng MỚI → tự chuẩn hóa → tự `POST /predict`.
