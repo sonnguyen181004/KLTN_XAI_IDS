@@ -1,0 +1,100 @@
+# Kế hoạch xây dựng hệ thống IDS có giải thích (RQ3)
+
+> Dự án **mới hoàn toàn**, không tái sử dụng `cicflowmeter_capture_demo/` cũ. Đặc tả gốc: `Kiến trúc hệ thống IDS.docx` (kiến trúc 7 khối / 6 tầng, mô hình logic 3 làn, mô hình vật lý, API, thực thể dữ liệu, 5 thí nghiệm E1–E5) — tài liệu đó là nguồn sự thật, kế hoạch này là cách triển khai nó thành code.
+
+## 0. Bức tranh tổng thể
+
+```
+Tầng 1        Tầng 2              Tầng 3       Tầng 4                Tầng 5         Tầng 6
+Traffic  →  Bắt gói & gom   →   Model đoán  →  Giải thích +      →  Quyết định   →  API +
+vào          thành flow          (XGBoost)      chấm tin cậy          hiển thị       Dashboard
+```
+
+Nguyên tắc cứng (lấy từ tài liệu kiến trúc, không được vi phạm):
+- Cảnh báo tạo ngay từ Prediction, **không chờ** giải thích xong.
+- SHAP (TreeSHAP) là giải thích **mặc định, tự động**. LIME **chỉ chạy khi analyst bấm xin** (dùng đúng cấu hình đã khóa ở RQ2: `kernel_width=3,312`, `num_samples=1000`, `discretize_continuous=False`, nền 2.000 dòng, seed 42).
+- Tầng 5 (nhánh A/B) chỉ đổi **cách hiển thị**, không đổi nhãn, không ẩn cảnh báo.
+- Mọi bước ghi lại mốc thời gian (phục vụ thí nghiệm E1).
+- Model, 78 cột và thứ tự cột phải **giống hệt** RQ1/RQ2 để so sánh được.
+
+## 1. Hai câu đã chốt trước khi code
+
+### 1.1. Dữ liệu dùng để test — không phải "model học thuộc"
+- Khi gọi `/predict`, hệ thống **chỉ gửi 78 con số đặc trưng**, không gửi nhãn thật → model luôn đoán thật, không "tra bảng đáp án". Nhãn thật chỉ giữ riêng để tự so sánh sau.
+- Dùng **2 tập dữ liệu**, mục đích khác nhau:
+  - **Tập A — cohort 1.339 flow của RQ2** (giữ nguyên, không đổi): bắt buộc dùng để **E5** (so khớp kết quả hệ thống mới với kết quả RQ2 đã có).
+  - **Tập B — tập mới, "sạch"**: lấy từ `test_set.parquet`, **loại bỏ hẳn** các dòng trùng với `train_set.parquet` (train/test của CSE-CIC-IDS2018 trùng ~27,7% dòng — vấn đề đã ghi nhận ở RQ2 GĐ1), rồi lấy mẫu ngẫu nhiên phân tầng theo lớp (~200–300 flow). Tập này **chắc chắn model chưa từng thấy dưới bất kỳ hình thức nào** — dùng để demo và test hệ thống nói chung, tránh mọi tranh cãi "có phải học thuộc không".
+
+### 1.2. Test tầng 2 (bắt gói) độc lập, trước khi có lab tấn công
+- Việc cài Npcap + CICFlowMeter và thử bắt traffic bình thường của chính máy bạn (mở vài trang web, bắt gói 1–2 phút) là một bước kiểm tra **tách biệt hoàn toàn** khỏi việc dựng máy attacker/victim.
+- Mục đích: xác nhận cơ chế "bắt gói → gom flow → ra đúng 78 cột" chạy đúng kỹ thuật, trước khi lo tới việc tấn công thật.
+- Việc này bạn tự làm trên máy mình (cài phần mềm), song song với lúc tôi viết code tầng 3–6.
+
+## 2. Các mốc thực hiện (M1 → M5)
+
+| Mốc | Nội dung | Cần máy ảo? | Ai làm |
+|---|---|---|---|
+| **M0** | Khung dự án: `RQ3_IDS_System/`, `config.yaml`, schema SQLite (6 bảng) | Không | Tôi |
+| **M1** | Tầng 2 (chuẩn hóa) + Tầng 3 (dự đoán) + Tầng 4 (SHAP/LIME/độ tin cậy) + Tầng 5 (nhánh A/B) + Tầng 6 (API + Dashboard + Docker), chạy bằng Tập A + Tập B | Không | Tôi |
+| **M2** | Thí nghiệm **E1** (đo độ trễ thật qua API) và **E5** (so khớp Tập A với RQ2) | Không | Tôi |
+| **M3** | Bạn tự cài Npcap + CICFlowMeter, test bắt gói trên máy mình (mục 1.2) — song song làm với M1 | 1 máy (máy bạn) | Bạn (tôi hướng dẫn) |
+| **M4** | Dựng 3 máy ảo VirtualBox (Victim, Attacker, Monitor) trên mạng host-only cô lập, nối hệ thống vào traffic thật | 3 máy ảo | Bạn dựng, tôi hướng dẫn từng lệnh |
+| **M5** | Thí nghiệm **E2** (lệch phân bố), **E3** (báo động giả trên traffic thật), **E4** (kiểm chứng cờ môi trường) trên traffic thật từ M4 | 3 máy ảo | Cùng làm |
+
+M0–M2 làm được trọn vẹn ngay bây giờ, không cần chờ gì. M3 làm song song, không phụ thuộc M1/M2. M4–M5 cần bạn chuẩn bị máy ảo trước.
+
+## 3. Chi tiết M1 — xây 6 tầng
+
+### Tầng 2 — Chuẩn hóa flow
+- Input: 1 dòng 78+ cột (từ Tập A/B, hoặc sau này từ CICFlowMeter thật).
+- Kiểm tra: đủ 78 cột không, có NaN không → thiếu thì trả lỗi `422`, lưu vào bảng `DataError`, **không đoán bừa**.
+- Chuẩn hóa: đổi cột thời gian ×1.000.000 (giây → micro giây), xếp đúng thứ tự cột như lúc huấn luyện model.
+
+### Tầng 3 — Dự đoán
+- Nạp lại `best_xgboost_model.pkl` + `label_encoder.pkl` từ RQ1 (dùng lại nguyên file, không huấn luyện lại).
+- `POST /predict`: trả nhãn + xác suất 15 lớp. Nhãn ≠ Benign → tạo `AlertRecord` ngay.
+
+### Tầng 4 — Giải thích + độ tin cậy
+- **TreeSHAP tự động**: mọi Alert đều chạy, lấy Top-5 có dấu, ghi kèm additivity check.
+- **LIME theo yêu cầu**: `POST /explain` với `method=lime`, dùng đúng cấu hình khóa ở RQ2.
+- **Tính tại chỗ (rẻ)**: faithfulness nhanh + đếm cờ môi trường — **xem lưu ý quan trọng ngay dưới đây, hai thứ này KHÔNG phải bằng chứng kết luận**.
+- **Tra bảng có sẵn (đắt)**: độ ổn định + độ chịu nhiễu theo từng lớp — lấy thẳng từ `rq2_master_summary.json` của RQ2, nạp 1 lần lúc khởi động, không tính lại mỗi flow.
+- Cờ lớp hiếm: nhãn dự đoán có dưới 100 mẫu huấn luyện thì bật cờ (hiện chỉ SQL Injection).
+
+**⚠️ Lưu ý quan trọng — tránh overclaim:**
+
+- **Cờ môi trường chỉ là cờ cảnh báo, không phải bằng chứng.** Đếm xem Top-5 có bao nhiêu trong 3 đặc trưng (Dst Port, Fwd Seg Size Min, Init Fwd Win Byts) chỉ nói "lời giải thích CÓ KHẢ NĂNG dựa vào đặc điểm môi trường lab, nên xem kỹ hơn" — đây là **giả thuyết tự đặt** (RQ2 mục L3.5), **chưa được kiểm chứng**; việc kiểm chứng thật sự là thí nghiệm **E4** (huấn luyện lại không dùng 3 đặc trưng, so độ chính xác trong/chéo miền). Cờ không chứng minh model sai, không đổi nhãn, không ẩn cảnh báo.
+- **Faithfulness tính tại chỗ là PROXY nhanh, không phải phép đo faithfulness đầy đủ của RQ2.** RQ2 đo bài bản: xóa k=1→10, **3 giá trị nền** (median toàn tập, mean toàn tập, median lớp Benign), tính AUC trên cả deletion lẫn insertion, có đối chứng ngẫu nhiên, kiểm định Wilcoxon, chạy hàng nghìn flow. Bản runtime chỉ kịp làm **một bước xóa, một giá trị nền (median toàn tập), một con số duy nhất** — không AUC, không đối chứng ngẫu nhiên đi kèm mỗi lần. Chỉ dùng để so với một **ngưỡng đơn giản tính sẵn từ RQ2** (phục vụ quyết định nhánh A/B ở tầng 5), **không được trích dẫn như một phép đo faithfulness chuẩn** trong báo cáo.
+
+### Tầng 5 — Nhánh A/B
+- Ngưỡng tính từ **cohort 1.339 flow theo từng lớp** (ví dụ phân vị thấp của faithfulness) — **không dùng** tập dev 250 flow của RQ2 (184/250 là Benign, không đại diện).
+- Nhánh A: mọi chỉ số ổn → hiện SHAP bình thường.
+- Nhánh B: 1 chỉ số dưới ngưỡng, hoặc ≥2 cờ môi trường, hoặc lớp hiếm → hiện SHAP kèm dòng "cần xem lại" + nút xem LIME.
+
+### Tầng 6 — API + Dashboard
+- **FastAPI**: `POST /predict`, `POST /explain`, `GET /alerts`, `GET /health`.
+- **Streamlit**: 1 trang — bảng cảnh báo, biểu đồ SHAP/LIME có dấu, bảng độ tin cậy, nhãn nhánh A/B.
+- **Docker Compose**: gói 2 service, chạy bằng `docker compose up`.
+- **Lưu trữ**: SQLite (6 bảng: `FlowRecord`, `DataError`, `Prediction`, `AlertRecord`, `Reliability`, `Timing`).
+
+## 4. Chi tiết M2 — E1 và E5
+
+- **E1 (độ trễ)**: bơm Tập A qua `/predict` rồi `/explain` **qua API thật** (HTTP, không gọi hàm Python trực tiếp), đo median và p95 từng khâu (chuẩn hóa, dự đoán, SHAP, LIME, đánh giá tin cậy) — so với số đo "thô" ở RQ2 (SHAP ~19ms, LIME ~148ms) để biết chạy qua API có chậm thêm không.
+- **E5 (nhất quán offline)**: Tập A qua API → so nhãn dự đoán và Top-5 SHAP với kết quả gốc đã có từ RQ2. Khớp 100% thì xác nhận code hệ thống không có lỗi (sai cột, sai đơn vị, sai model) so với pipeline RQ2 gốc.
+
+## 5. Chi tiết M4 — dựng traffic thật (để khi tới lúc)
+
+- VirtualBox, 3 máy ảo trên 1 mạng **host-only** (cô lập, không nối internet):
+  - **Victim**: Linux, chạy sẵn 1 dịch vụ (nginx hoặc SSH) để có cái tấn công vào.
+  - **Attacker**: Linux/Kali, công cụ `hydra` (brute-force), `nmap` (quét cổng), `hping3` (DDoS giả lập).
+  - **Monitor**: chạy Npcap/tcpdump + CICFlowMeter + hệ thống (API + Dashboard) của M1.
+- Cách đơn giản nhất để bắt đầu: Monitor và Victim **là cùng một máy** (bắt traffic đến/đi chính nó) — không cần cấu hình mạng phức tạp.
+- Cách đúng kiến trúc (làm sau): Monitor là máy riêng, bật **promiscuous mode** trên card mạng host-only để "nghe" được cả traffic giữa Victim và Attacker.
+- Phương án dự phòng không cần máy Attacker: dùng `tcpreplay` phát lại 1 file pcap mẫu có sẵn, Npcap/CICFlowMeter trên Monitor vẫn bắt được như traffic thật.
+
+## 6. Việc tôi làm ngay bây giờ
+
+1. `RQ3_IDS_System/scripts/stage00_build_clean_dataset.py` — tạo Tập B (loại trùng train/test, lấy mẫu phân tầng).
+2. `RQ3_IDS_System/app/` — code tầng 2–6 (FastAPI + Streamlit + SQLite schema).
+3. `RQ3_IDS_System/scripts/stageE1_latency.py`, `stageE5_consistency.py` — 2 thí nghiệm M2.
+4. Test toàn bộ bằng Tập A + Tập B, không cần máy ảo.

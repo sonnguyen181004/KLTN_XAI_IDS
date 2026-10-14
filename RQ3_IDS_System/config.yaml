@@ -1,0 +1,60 @@
+# RQ3 IDS System — cấu hình dự án. Mọi script/app chỉ đọc tham số từ đây,
+# không ghi cứng đường dẫn hay số liệu trong code.
+
+seed: 42
+
+# Đường dẫn tính từ gốc repo (SELF_KLTN/), không phải từ RQ3_IDS_System/
+paths:
+  model: "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl"
+  label_encoder: "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl"
+  train_set: "dataset/CICID-2018_processed/train_set.parquet"
+  test_set: "dataset/CICID-2018_processed/test_set.parquet"
+  # Tập A: cohort 1.339 flow gốc của RQ2 — bắt buộc dùng nguyên vẹn cho E5.
+  rq2_cohort_ids: "RQ2/runs/20261009/gd3_cohorts/cohort_ids.csv"
+  # Bảng tra theo lớp (stability/robustness/domain...) nạp 1 lần lúc khởi động.
+  rq2_master_summary: "RQ2/runs/20261009/gd13_report/rq2_master_summary.json"
+  rq2_domain_knowledge: "RQ2/scripts/lib/domain_knowledge.py"
+  # Tập B: dữ liệu sạch (loại trùng train/test) — do stage00 của RQ3 tự sinh ra.
+  clean_set_out: "RQ3_IDS_System/data/clean_holdout_set.csv"
+  sqlite_db: "RQ3_IDS_System/data/ids_system.db"
+
+n_classes_expected: 15
+n_features_expected: 78
+
+# Cấu hình LIME — PHẢI khớp y hệt cấu hình đã khóa ở RQ2 GĐ5 để so sánh được.
+lime:
+  kernel_width: 3.312
+  num_samples: 1000
+  discretize_continuous: false
+  num_features: 78
+  background_sample_size: 2000
+  background_seed: 42
+
+# 3 đặc trưng "nghi nhạy môi trường" — CHỈ dùng làm cờ cảnh báo tham khảo,
+# không phải bằng chứng (xem RQ3_IDS_System/docs/plan.md, mục cảnh báo overclaim).
+environment_fingerprint_features:
+  - "Dst Port"
+  - "Fwd Seg Size Min"
+  - "Init Fwd Win Byts"
+environment_fingerprint_flag_threshold: 2  # Top-5 có >= 2 cái này thì bật cờ
+
+rare_class_min_train_samples: 100  # lớp có dưới ngưỡng này thì bật cờ "lớp hiếm"
+
+# Tập B (dữ liệu sạch dùng để demo/test, không dính nghi vấn "model học thuộc").
+clean_dataset:
+  target_size: 250
+  max_per_class: 30
+  exclude_duplicates_with_train: true
+
+# Faithfulness proxy tính tại chỗ (runtime) — CHỈ là bản rút gọn, xem cảnh báo overclaim.
+faithfulness_proxy:
+  k: 5
+  baseline: "global_median"  # chỉ 1 trong 3 giá trị nền RQ2 từng dùng
+
+api:
+  host: "127.0.0.1"
+  port: 8000
+  max_explain_queue: 50
+
+dashboard:
+  port: 8501
