@@ -79,6 +79,18 @@ st.divider()
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from feeder import CICFLOWMETER_COLUMN_MAP, row_to_payload  # noqa: E402
 
+
+def extract_flow_timestamp(row_dict: dict) -> str | None:
+    """Lấy lúc gói tin THẬT xảy ra từ cột `timestamp` CICFlowMeter ghi sẵn (dạng
+    "YYYY-MM-DD HH:MM:SS", không có timezone) — đổi sang dạng gần ISO (thay khoảng
+    trắng bằng "T") để so sánh thứ tự đúng với `received_at` (ISO 8601 có timezone)
+    khi sắp xếp trên Dashboard. Trả None nếu nguồn không có cột này (vd Tập A/B)."""
+    ts = row_dict.get("timestamp")
+    if not ts:
+        return None
+    return ts.replace(" ", "T")
+
+
 st.subheader("Nạp dữ liệu vào hệ thống")
 tab_csv, tab_pcap = st.tabs(["Gửi file CSV (đặc trưng có sẵn)", "Phát lại file PCAP"])
 
@@ -106,8 +118,11 @@ with tab_csv:
                     continue
                 row_dict = dict(zip(header, raw_row))
                 payload = row_to_payload(row_dict, header, convert_units_csv)
+                flow_ts = extract_flow_timestamp(row_dict)
                 try:
-                    r = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+                    r = requests.post(f"{API_URL}/predict", json=payload, timeout=10,
+                                       params={"source": "csv_upload", "flow_timestamp": flow_ts} if flow_ts
+                                       else {"source": "csv_upload"})
                     if r.status_code == 200:
                         b = r.json()
                         results.append({"dòng": i + 1, "kết quả": f"OK — {b['predicted_label']} "
@@ -186,8 +201,11 @@ with tab_pcap:
                             continue
                         row_dict = dict(zip(header, raw_row))
                         payload = row_to_payload(row_dict, header, convert_units=True)
+                        flow_ts = extract_flow_timestamp(row_dict)
                         try:
-                            r = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+                            r = requests.post(f"{API_URL}/predict", json=payload, timeout=10,
+                                               params={"source": "pcap_replay", "flow_timestamp": flow_ts} if flow_ts
+                                               else {"source": "pcap_replay"})
                             if r.status_code == 200:
                                 b = r.json()
                                 results.append({"flow": i + 1, "kết quả": f"OK — {b['predicted_label']} "
@@ -226,7 +244,9 @@ else:
     flows_df = pd.DataFrame([
         {
             "flow_id": f["flow_id"][:8] + "…",
-            "received_at": f["received_at"],
+            "thời điểm gói tin thật (nếu biết)": f["flow_timestamp"] or "(không rõ — nguồn không kèm mốc thời gian gốc)",
+            "lúc hệ thống xử lý": f["received_at"],
+            "nguồn": f["source"],
             "predicted_label": f["predicted_label"] or "(đang xử lý)",
             "is_alert": f["is_alert"],
             "nhãn thật (nếu biết)": f["label_true"] or "",
@@ -273,7 +293,9 @@ if not alerts:
 table_df = pd.DataFrame([
     {
         "alert_id": a["alert_id"][:8] + "…",
-        "created_at": a["created_at"],
+        "thời điểm gói tin thật (nếu biết)": a["flow_timestamp"] or "(không rõ — nguồn không kèm mốc thời gian gốc)",
+        "lúc hệ thống tạo cảnh báo": a["created_at"],
+        "nguồn": a["source"],
         "predicted_label": a["predicted_label"],
         "branch": a["branch"] or "(chưa xử lý)",
         "explanation_status": a["explanation_status"],

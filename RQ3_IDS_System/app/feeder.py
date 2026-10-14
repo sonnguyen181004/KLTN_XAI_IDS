@@ -155,8 +155,17 @@ def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert
             payload = row_to_payload(row_dict, header, convert_units)
             n_lines_processed += 1
 
+            # flow_timestamp: lúc gói tin THẬT xảy ra (cột "timestamp" CICFlowMeter
+            # ghi sẵn, nếu nguồn có) — khác với lúc feeder/API xử lý, để Dashboard
+            # sắp đúng thứ tự traffic thật thay vì thứ tự feeder gửi.
+            flow_ts = row_dict.get("timestamp")
+            flow_ts = flow_ts.replace(" ", "T") if flow_ts else None
+            params = {"source": "feeder_live"}
+            if flow_ts:
+                params["flow_timestamp"] = flow_ts
+
             try:
-                r = requests.post(f"{api_url}/predict", json=payload, timeout=5)
+                r = requests.post(f"{api_url}/predict", json=payload, params=params, timeout=5)
                 if r.status_code == 200:
                     body = r.json()
                     n_sent += 1
