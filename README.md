@@ -3,7 +3,7 @@
 Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XAI) cho hệ thống phát hiện xâm nhập (IDS)** trên bộ dữ liệu CSE-CIC-IDS2018. Mô hình phát hiện là XGBoost (so sánh với Random Forest ở RQ1); phần giải thích dùng **SHAP** và **LIME**.
 
 - Dữ liệu: CSE-CIC-IDS2018 đã xử lý, 78 đặc trưng, 15 lớp (1 Benign + 14 loại tấn công), test set 700.000 flow.
-- Trạng thái: **RQ1 xong · RQ2 chạy lại từ đầu (2026-10-09) theo pipeline 14 giai đoạn, đủ kết quả cho cả 5 câu hỏi (agreement, quality gate, stability/robustness, faithfulness, domain validation) + cohort lỗi · RQ3 mới ở giai đoạn demo/kế hoạch.**
+- Trạng thái: **RQ1 xong · RQ2 chạy lại từ đầu (2026-10-09) theo pipeline 14 giai đoạn, đủ kết quả cho cả 5 câu hỏi (agreement, quality gate, stability/robustness, faithfulness, domain validation) + cohort lỗi · RQ3 đang xây dựng, Bước 1–13/16 xong (API + SHAP/LIME + Dashboard chạy được, test thật bằng traffic thật qua Wireshark/CICFlowMeter), còn Docker Compose + 2 thí nghiệm E1/E5 + mốc traffic tấn công thật (M4/M5).**
 
 ---
 
@@ -22,7 +22,13 @@ SELF_KLTN/
 ├── v1_archive/RQ2_old_20260929/      # Toàn bộ kết quả RQ2 lần chạy trước (lưu trữ)
 ├── xai-ids-study-hub/                # Trang demo tương tác, số liệu kéo từ RQ2/runs mới nhất
 ├── WorkFlow/                        # Sơ đồ workflow tổng quan (workflow_v3.mmd / .png)
-├── cicflowmeter_capture_demo/       # RQ3: demo bắt flow bằng CICFlowMeter (giữ .venv tại chỗ)
+├── RQ3_IDS_System/                  # RQ3: hệ thống IDS realtime có giải thích — xem mục 5
+│   ├── docs/plan.md                  # Kế hoạch + tiến độ chi tiết từng bước (1→16)
+│   ├── config.yaml                   # Mọi tham số (seed, path, LIME khóa theo RQ2, ngưỡng cờ...)
+│   ├── app/                          # main.py (API), dashboard.py (Streamlit), db.py, predict.py, explain_shap.py, explain_lime.py, reliability.py, feeder.py
+│   ├── scripts/                      # stage0N_*.py (test từng bước) + run_live_capture.py + make_synthetic_pcap.py
+│   └── data/                         # DB SQLite + dữ liệu chạy (không commit — xem .gitignore)
+├── cicflowmeter_capture_demo/       # (CŨ, không dùng nữa — RQ3 xây lại từ đầu ở RQ3_IDS_System/)
 ├── Tai_lieu_tham_khao/              # Nhãn CICIDS2018, bài báo, hỏi–đáp bảo vệ
 ├── Report/                          # Proposal và hướng dẫn khóa luận
 ├── Kiem_thu_noi_bo/                 # PDF/PNG kiểm thử khi dựng tài liệu (không phải kết quả nghiên cứu)
@@ -37,7 +43,7 @@ SELF_KLTN/
 |---|---|---|
 | RQ1 | 1.1 F1/Precision của RF vs XGBoost sau tuning; 1.2 tỉ lệ báo động giả trên Benign | `RQ1_*` |
 | RQ2 | 2.1 độ tương đồng Top-k SHAP vs LIME (agreement); 2.2 tính ổn định và chịu nhiễu (stability/robustness); 2.3 độ trung thực (faithfulness); 2.4 kiểm chứng theo tri thức miền (domain validation) | `RQ2/` |
-| RQ3 | 3.1 độ trễ SHAP vs LIME; 3.2 biểu đồ/UI cho SOC, dashboard, Docker | `cicflowmeter_capture_demo/` |
+| RQ3 | 3.1 độ trễ SHAP vs LIME; 3.2 biểu đồ/UI cho SOC, dashboard, Docker | `RQ3_IDS_System/` |
 
 > Đánh số tiểu mục RQ2 dùng thống nhất theo [`RQ2/docs/plan.md`](RQ2/docs/plan.md) (2.1 agreement, 2.2 stability/robustness, 2.3 faithfulness, 2.4 domain validation) — khác thứ tự trình bày trong mục 4 dưới đây, vốn đi theo mạch kể chuyện (domain validation và faithfulness có thể đổi chỗ khi trình bày). Cần hỏi thầy hướng dẫn trước khi đổi số trong tài liệu chính thức.
 
@@ -212,13 +218,93 @@ Chạy lại script này sau mỗi lần chạy RQ2 mới để đồng bộ s�
 
 ---
 
-## 5. RQ3 — Realtime (mới ở giai đoạn demo/kế hoạch)
+## 5. RQ3 — Hệ thống IDS realtime có giải thích (`RQ3_IDS_System/`)
 
-- **Đã có:** `cicflowmeter_capture_demo/` (`capture_live.py`, `capture.ps1`, `setup.ps1`, `verify_csv.py`, `flows.csv` với 136 flow × 82 cột; `cicflowmeter==0.5.0`).
-- **Vấn đề đã phát hiện:**
-  - Lệch đơn vị: CICFlowMeter bản Python xuất **giây**, còn dữ liệu huấn luyện CICIDS2018 là **micro giây** → cần nhân ×1e6 cho các đặc trưng thời gian.
-  - Báo động giả trên traffic thật do các đặc trưng "dấu vân tay môi trường" (đặc biệt `Fwd Seg Size Min`).
-- **Kế hoạch:** pipeline realtime (bắt gói → flow → chuẩn hóa đơn vị → XGBoost → SHAP) → dashboard cho SOC → đo latency → Docker. Kết quả RQ2 cho thấy có thể **chỉ dùng SHAP trong dashboard** (nhanh hơn ≈ 7,8×, ổn định, trung thực hơn), nhưng vẫn cần đo latency LIME một lần để trả lời Sub-RQ 3.1 — đây là điều chỉnh so với proposal cần ghi chú.
+Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiến trúc gốc: `Kiến trúc hệ thống IDS.docx` (6 tầng: Bắt gói → Chuẩn hóa → Dự đoán XGBoost → Giải thích SHAP/LIME + độ tin cậy → Nhánh hiển thị A/B → API + Dashboard). Kế hoạch + tiến độ chi tiết từng bước nằm ở [`RQ3_IDS_System/docs/plan.md`](RQ3_IDS_System/docs/plan.md) — **đây là nguồn chi tiết nhất**, README chỉ tóm tắt.
+
+**Trạng thái: Bước 1–13/16 xong**, đã test thật bằng model+dữ liệu thật (không phải giả lập), kể cả traffic thật bắt từ máy thật qua Wireshark/CICFlowMeter.
+
+### 5.1 Đã làm xong
+
+| Bước | Nội dung |
+|---|---|
+| 1–6 | Config, SQLite (6 bảng), tập dữ liệu sạch (loại trùng train/test), chuẩn hóa flow, nạp lại model RQ1, `POST /predict` |
+| 7, 7b | TreeSHAP tự động cho mọi cảnh báo, chạy **bất đồng bộ** qua hàng đợi (tối đa 50) — không chặn API |
+| 8 | Độ tin cậy tính tại chỗ: faithfulness proxy, cờ môi trường, cờ lớp hiếm |
+| 8b, M3 | Bộ feeder tự động (CSV→API) + **test bằng traffic Wi-Fi thật** qua CICFlowMeter — 25/25 flow Benign đoán đúng |
+| 9 | LIME theo yêu cầu (`POST /explain`), đúng cấu hình đã khóa ở RQ2 |
+| 11 | Luật nhánh hiển thị A/B (chỉ dựa 2 cờ ở bước 8, không dùng tập dev RQ2) |
+| 12 | `GET /alerts`, `GET /flows` (xem cả flow Benign, không chỉ cảnh báo) |
+| 13 | **Dashboard Streamlit** — bảng cảnh báo, biểu đồ SHAP/LIME có dấu, bảng độ tin cậy, **nạp dữ liệu trực tiếp trên Dashboard** (upload CSV hoặc `.pcap`, không cần dòng lệnh) |
+
+**Còn thiếu:** Bước 10 (tra bảng ổn định/chịu nhiễu từ RQ2 — tạm bỏ qua, không bắt buộc), Bước 14 (Docker Compose), Bước 15–16 (đo độ trễ E1, đối chiếu nhất quán E5), M4–M5 (dựng máy ảo Attacker/Victim để test traffic tấn công thật).
+
+**Phát hiện quan trọng khi test bằng traffic thật** (xem chi tiết, số liệu trong `plan.md`): model (huấn luyện trên CICIDS2018, 2018) có xu hướng đoán nhầm "DoS attacks-Hulk" cho các flow bình thường **có gói FIN** (đóng kết nối TCP đàng hoàng) — rất có thể do cách lấy mẫu dữ liệu huấn luyện gốc hiếm khi chụp đủ một phiên Benign tới lúc đóng. Đây là bằng chứng thật về giới hạn tổng quát hoá của model khi gặp traffic ngoài phòng lab — không phải lỗi hệ thống, và là tiền đề cho thí nghiệm E2/E4 ở M5.
+
+### 5.2 Cách chạy
+
+Chuẩn bị 1 lần (cần Python có `fastapi`, `pandas`, `streamlit`... — xem `RQ3_IDS_System/requirements.txt`):
+
+```powershell
+cd RQ3_IDS_System
+python scripts\stage08_compute_train_stats.py      # tạo data\train_stats.json (cần cho bước 8)
+python scripts\stage09_compute_lime_background.py  # tạo data\lime_background.npy (cần cho bước 9)
+```
+
+Mở **2 terminal** riêng, cả hai `cd RQ3_IDS_System`:
+
+```powershell
+# Terminal 1 — API
+python -m uvicorn app.main:app --port 8000
+
+# Terminal 2 — Dashboard
+python -m streamlit run app\dashboard.py
+```
+
+Dashboard tự mở `http://localhost:8501`. Swagger UI (test API thủ công, không cần Dashboard) ở `http://localhost:8000/docs`.
+
+### 5.3 Cách test
+
+- **Cách nhanh nhất — ngay trên Dashboard:** mục "Nạp dữ liệu vào hệ thống" có 2 tab:
+  - *Gửi file CSV*: dùng `data\samples\sample_attack.json` (qua Swagger) hoặc `data\clean_holdout_set.csv` (toàn bộ qua Dashboard) để có dữ liệu mẫu ngay, không cần bắt gói gì.
+  - *Phát lại PCAP*: xem mục 5.4 bên dưới để có file `.pcap`.
+- **Test từng bước bằng script** (mỗi bước đều có, tự bật server con + chạy thật + in `[PASS]`/`[FAIL]`, không cần tự tay bật server):
+  ```powershell
+  cd RQ3_IDS_System
+  python scripts\stage06_test_api.py
+  python scripts\stage07_test_shap.py
+  python scripts\stage07b_test_async_queue.py
+  python scripts\stage08_test_reliability.py
+  python scripts\stage09_test_lime.py
+  python scripts\stage11_test_branch.py
+  python scripts\stage12_test_alerts.py
+  python scripts\stage13_test_dashboard.py
+  ```
+- **Dọn dữ liệu test** (DB tích lũy nhiều alert sau khi test nhiều lần — an toàn xóa, không commit git):
+  ```powershell
+  Remove-Item RQ3_IDS_System\data\ids_system.db
+  ```
+  Khởi động lại API, hệ thống tự tạo lại 6 bảng rỗng.
+
+### 5.4 Bắt traffic thật bằng Wireshark để test tab "Phát lại PCAP"
+
+Không cần chạy `run_live_capture.py` trực tiếp (cần Npcap + quyền Administrator) — dùng Wireshark (giao diện quen thuộc hơn) để bắt rồi đưa file vào Dashboard:
+
+1. Mở **Wireshark**, chọn đúng card mạng đang dùng (Wi-Fi hoặc Ethernet) ở màn hình chọn interface.
+2. Bấm nút **Start capturing** (hình cá mập xanh). Lướt web bình thường (mở vài trang) trong khoảng **15–60 giây**.
+3. Bấm **Stop capturing** (hình vuông đỏ).
+4. **File → Save As**, chọn định dạng **`.pcapng`** hoặc **`.pcap`** (cả 2 đều đọc được), lưu vào máy.
+5. Vào Dashboard (`http://localhost:8501`), mục "Nạp dữ liệu vào hệ thống" → tab **"Phát lại file PCAP"** → kéo thả file vừa lưu → bấm **"Trích xuất + gửi vào /predict"**.
+6. Hệ thống tự chạy CICFlowMeter trích đặc trưng (không cần cài gì thêm ngoài môi trường `.venv_capture` đã có sẵn trong `RQ3_IDS_System/`), gửi từng flow vào model, bảng cảnh báo + bảng "Tất cả flow" (kể cả Benign) tự cập nhật ngay bên dưới.
+
+**Lưu ý đọc kết quả:** cột "thời điểm gói tin thật" là lúc gói tin THẬT xảy ra trong lúc bạn bắt bằng Wireshark (lấy từ CICFlowMeter) — khác với cột "lúc hệ thống xử lý" (lúc bạn bấm nút trên Dashboard). Nếu thấy vài flow bị báo "DoS attacks-Hulk" dù chỉ là duyệt web bình thường — xem phát hiện về cờ FIN ở mục 5.1, đây là giới hạn đã biết của model, không phải lỗi khi bắt/gửi dữ liệu.
+
+**Không có Wireshark / muốn test nhanh không cần bắt gói thật:**
+```powershell
+cd RQ3_IDS_System
+.venv_capture\Scripts\python.exe scripts\make_synthetic_pcap.py data\my_test.pcap
+```
+Tạo 1 file `.pcap` giả lập (6 gói TCP, không bắt gói thật nào, không cần quyền Admin) để test luồng PCAP ngay.
 
 ---
 
