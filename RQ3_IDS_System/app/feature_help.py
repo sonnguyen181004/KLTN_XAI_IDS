@@ -63,7 +63,7 @@ for prefix, direction in [('Fwd', 'chiều đi'), ('Bwd', 'chiều về')]:
     for flag in ('PSH', 'URG'):
         add(f'{prefix} {flag} Flags', f'Số gói có cờ {flag} {direction}',
             f'Đếm gói {direction} có cờ {flag}: {flag_meanings[flag]}.', 'gói có cờ')
-GLOSSARY['CWE Flag Count']['note'] = 'Lưu ý: Python CICFlowMeter 0.5.0 hiện sao chép Fwd URG Flags vào cột này; không coi dữ liệu đó là phép đếm CWR độc lập.'
+GLOSSARY['CWE Flag Count']['note'] = 'Bản Python CICFlowMeter 0.5.0 gốc sao chép Fwd URG Flags vào cột này. Adapter rq3-cfm-0.5.0-fixes-v1 đã đếm CWR riêng; cần xem phiên bản bộ trích xuất của flow trước khi diễn giải dữ liệu cũ.'
 add('Flow Byts/s', 'Tốc độ byte toàn flow', 'Tổng độ dài các gói chia cho thời lượng flow.', 'byte/giây')
 add('Flow Pkts/s', 'Tốc độ gói toàn flow', 'Tổng số gói chia cho thời lượng flow.', 'gói/giây')
 add('Down/Up Ratio', 'Tỉ lệ gói chiều về / chiều đi', 'Số gói backward chia cho số gói forward.', 'tỉ lệ', 'Không phải tỉ lệ byte tải xuống/tải lên.')

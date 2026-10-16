@@ -88,7 +88,8 @@ def main():
                     response = requests.post(url + '/predict', json=payload, params={
                         'capture_run_id': 'real-model-test', 'run_name': 'Real model isolated test',
                         'src_ip': '192.0.2.1', 'dst_ip': '198.51.100.1', 'src_port': 50000,
-                        'flow_timestamp': '2026-10-16T07:21:30', 'capture_timezone': '+07:00'}, timeout=15)
+                        'flow_timestamp': '2026-10-16T07:21:30', 'capture_timezone': '+07:00',
+                        'extractor_version': 'metadata-test-version'}, timeout=15)
                     response.raise_for_status(); real.append(response.json())
                 assert not real[0]['is_alert'] and real[1]['is_alert'], real
                 for _ in range(100):
@@ -100,14 +101,16 @@ def main():
                 assert get('/alerts', capture_run_id='real-model-test')['count'] == 1
                 assert detail['src_ip'] == '192.0.2.1' and len(detail['features']) == 78
                 assert detail['flow_timestamp_utc'] == '2026-10-16T00:21:30+00:00'
+                assert detail['extractor_version'] == 'metadata-test-version'
                 benign = get('/flows/' + real[0]['flow_id'])
                 assert benign['explanation_status'] == 'not_required' and not benign['shap_top5']
                 assert get('/dashboard/summary', capture_run_id='real-model-test')['flows'] == 2
                 print('PASS real prediction, metadata, async SHAP, Benign and alert detail')
                 # Same feature vector with/without metadata must have identical predictions.
-                response = requests.post(url + '/predict', json=payload, timeout=15)
+                response = requests.post(url + '/predict', json={**payload, 'src_port': 50000}, timeout=15)
                 response.raise_for_status()
                 assert response.json()['probabilities'] == real[1]['probabilities']
+                assert len(get('/flows/' + response.json()['flow_id'])['features']) == 78
                 from streamlit.testing.v1 import AppTest
                 with patch.dict(os.environ, {'IDS_API_URL': url}):
                     at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)

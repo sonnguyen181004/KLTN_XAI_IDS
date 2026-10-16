@@ -5,7 +5,7 @@ JOIN = ''' FROM FlowRecord f JOIN Prediction p ON p.flow_id=f.flow_id
  LEFT JOIN AlertRecord a ON a.flow_id=f.flow_id
  LEFT JOIN Reliability r ON r.alert_id=a.alert_id '''
 SELECT = '''SELECT f.flow_id, f.received_at, f.source, f.capture_run_id, f.run_name,
- f.flow_timestamp, f.flow_timestamp_utc, f.src_ip, f.dst_ip, f.src_port, f.label_true,
+ f.flow_timestamp, f.flow_timestamp_utc, f.src_ip, f.dst_ip, f.src_port, f.label_true, f.extractor_version,
  p.predicted_label, p.probabilities_json, p.predicted_at, p.model_version,
  a.alert_id, a.status, a.explanation_status, a.created_at, r.branch, r.branch_reason,
  json_extract(f.features_json, '$."Dst Port"') AS dst_port,

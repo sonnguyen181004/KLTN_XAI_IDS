@@ -22,6 +22,8 @@ def timestamp_utc(raw, offset=None):
 
 def row_metadata(row, run_id, name, offset=None):
     result = {'capture_run_id': run_id, 'run_name': name[:200]}
+    if row.get('extractor_version'):
+        result['extractor_version'] = row['extractor_version'][:128]
     for key in ('src_ip', 'dst_ip', 'src_port'):
         if row.get(key):
             result[key] = row[key]

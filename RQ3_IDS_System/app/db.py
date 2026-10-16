@@ -91,7 +91,8 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     _migrate_add_flow_timestamp(conn)
     for table, fields in {
         'FlowRecord': {'capture_run_id': 'TEXT', 'run_name': 'TEXT', 'src_ip': 'TEXT',
-                       'dst_ip': 'TEXT', 'src_port': 'INTEGER', 'flow_timestamp_utc': 'TEXT'},
+                       'dst_ip': 'TEXT', 'src_port': 'INTEGER', 'flow_timestamp_utc': 'TEXT',
+                       'extractor_version': 'TEXT'},
         'AlertRecord': {'explanation_status': "TEXT DEFAULT 'unknown_legacy'"},
         'Reliability': {'lime_local_r2': 'REAL', 'lime_diagnostics_json': 'TEXT'},
     }.items():

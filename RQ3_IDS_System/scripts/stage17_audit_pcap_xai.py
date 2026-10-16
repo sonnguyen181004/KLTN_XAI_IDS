@@ -101,7 +101,7 @@ def main():
         with tempfile.TemporaryDirectory(prefix='ids_pcap_audit_') as folder:
             output = Path(folder) / 'flows.csv'
             proc = subprocess.run([str(capture_python), str(RQ3 / 'scripts/run_live_capture.py'),
-                '--pcap-input', str(original), '--output', str(output)], cwd=RQ3,
+                '--pcap-input', str(original), '--output', str(output), '--extractor', 'legacy'], cwd=RQ3,
                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=120,
                 creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
             if proc.returncode or not output.exists():

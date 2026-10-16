@@ -97,6 +97,18 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Adapter capture có phiên bản và kiểm tra realtime (16/10/2026)
+
+- [x] `app/capture_adapter.py`: sửa đếm đầu flow/CWR/IAT/Active-Idle/protocol key; session đồng bộ GC, replay theo clock PCAP; không sửa site-packages.
+- [x] CLI mặc định project v1, hỗ trợ baseline `--extractor legacy`; lịch sử audit dùng legacy để tái lập.
+- [x] Metadata extractor version từ CSV qua feeder/upload tới API/DB/UI; migration cộng cột, vector mới lưu đúng 78 đặc trưng.
+- [x] 10 bài fixture và regression API/UI/CSV/PCAP PASS; đối chiếu hai PCAP trên lượt tạm: 92 vector đổi, 0 nhãn đổi; 8 LIME vẫn thiếu neighborhood.
+- [x] Wi-Fi thật 20 giây: 2.704 gói →178 flow →178 dự đoán; không lỗi feeder trong mẫu; SHAP 14/14, không dropped. UI AppTest PASS. Phiên ngắn nhận 0 flow trước khi dừng; chưa coi là chứng minh streaming tức thì.
+- [x] Wi-Fi thật 100 giây: 42.027 packet →159 flow →159 dự đoán; 88 flow lên API trước khi capture dừng. SHAP 29/29, không dropped/lỗi feeder trong mẫu; version/IP/78 cột/15 lớp/đơn vị/UI AppTest PASS. CSV packet total khớp callback count; chưa đo mất packet trước callback hoặc tải dài.
+- [ ] Chốt quy ước length/header/std/subflow/window/cờ với nguồn train; sửa retry feeder, thiết kế timeout/TCP close cho mục tiêu độ trễ, đo tải dài.
+
+Chi tiết và JSON đo thực: [capture_adapter_v1.md](capture_adapter_v1.md). Ngưỡng hiện tại duration 90 giây/idle 240 giây; cần restart API/UI và capture/feeder với tên file mới để áp dụng đầy đủ.
+
 ### Kiểm tra tương thích 78 đặc trưng (16/10/2026)
 
 - [x] Quét đủ train 2,8 triệu dòng, các cột trọng tâm trên 10 daily cleaned (15.589.784 dòng), đọc DB PCAP ở mode=ro.

@@ -1,0 +1,4757 @@
+{
+  "model_version": "52eb5a671ee82109",
+  "warning": "No confirmed ground truth; changes are not accuracy/FPR measurements. LIME uses identical per-pair diagnostic seed, not saved DB alert IDs.",
+  "runs": [
+    {
+      "file": "tesst2.pcapng",
+      "source_sha256": "bf06d31a01cbfd387f797c3aafd702afd43fe72a5f73c2f2b130bcb4b01d05b0",
+      "comparison_run_id": "f95bd7ec-5c62-4fd4-9e2e-9f925ae33ef8",
+      "legacy": {
+        "flow_count": 59,
+        "labels": {
+          "Benign": 56,
+          "DoS attacks-Hulk": 3
+        },
+        "packet_total": 696.0,
+        "extractor_versions": [
+          "python-cicflowmeter-0.5.0-legacy"
+        ]
+      },
+      "project": {
+        "flow_count": 59,
+        "labels": {
+          "Benign": 56,
+          "DoS attacks-Hulk": 3
+        },
+        "packet_total": 637.0,
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-fixes-v1"
+        ]
+      },
+      "matched_flows": [
+        {
+          "pair_id": "01895afee87915cd",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9877328872680664
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9712615013122559
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "0eb55c489bc5f5af",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9679092168807983,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23721323907375336
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000000000568,
+              "max_other_weight": 3.677423722903851e-15,
+              "min_other_distance": 27.0030851381944,
+              "raw_local_r2": 4.049816038076415e-11,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 5.086536994042344e-13
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 4.2794210212279934e-13
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.495518698440142e-13
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 1.3856163853833833e-13
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 5.586574442097734e-14
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9707248210906982,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 1.2,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23738478124141693
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000005118497,
+              "max_other_weight": 1.8375859114223554e-11,
+              "min_other_distance": 23.28785093918711,
+              "raw_local_r2": 2.6897915839096953e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.591040948296844e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.586935918802404e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.758842794601266e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 8.006878708116567e-10
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 4.921306337163367e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "11465acf52391421",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7296878695487976,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.4733622074127197
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.48320505023002625
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.48156216740608215
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": 0.30089014768600464
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7252411246299744,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.2722384929656982
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6818297505378723
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6127.0,
+                "phi": -0.2324749231338501
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 65535.0,
+                "phi": -0.18035061657428741
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "17292bbcd656f5b7",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9860819578170776
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9891513586044312
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "1a16509671f9622e",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.964714765548706
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9396049380302429
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "1d3d1a212cc862b1",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9819971919059753
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9864285588264465
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "264500e0eb03e2c6",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9702540636062622
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9758198261260986
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "269a89f4d6e69458",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9919081330299377
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9913860559463501
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "28aaa4ced64cb021",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9585319757461548
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9946289658546448
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "2a1b4be70f1573ae",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Header Len",
+            "ACK Flag Cnt",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9637231826782227
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9580371975898743
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "301641d8ded56db7",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9614477157592773
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9709869623184204
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "323f245b14e08b5c",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9318804740905762
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9672612547874451
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "343ae584a5417b68",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9737304449081421
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "3e92d4c2a3b12bb5",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9564348459243774
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9582052826881409
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "40868fbef2f8686d",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9229745864868164
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9652782678604126
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "40da568a7a540aa7",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9737304449081421
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4203c84fab1c0af5",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9957835674285889
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9956012964248657
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "42a7d6ed9b0b17ca",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9886829257011414
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9737246036529541
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4e75d4d43d7584cf",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9645131230354309
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9763393402099609
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4ee430bd7ec7d505",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.992980420589447
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9971689581871033
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "56e92292bbae2fdf",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9760270714759827
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9820116758346558
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5a9dec5fd6425751",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9783005118370056
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.976635217666626
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5aeccbb0168f5d6c",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9909232258796692
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9903094172477722
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5afc70270108ce62",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9890499114990234
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9750128388404846
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5b915b550d004f8d",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9737304449081421
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5da7663b449469d8",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9534338116645813
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9330214262008667
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "656f29cb5166f50b",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9737304449081421
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.967284083366394
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "6c14a54cd4dfcb66",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9870023727416992
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9637017250061035
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "71abe17bd44ca153",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9376636147499084
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "71fb5e9e4c7fb2e6",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9465634226799011
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9454524517059326
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "7276c57513fe4126",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9689663052558899
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9664688110351562
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "73bc631c9320fce5",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9855079054832458
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9833183288574219
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "82c8caea9aff8ccc",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9859302639961243
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9769709706306458
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "82ec9c34d5c507f0",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9892277717590332
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.975547730922699
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "8d012c5b53f88776",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9773045778274536
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9712496995925903
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "912f0dffe5b4aa67",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9376636147499084
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "91cb9a0a735f075b",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9929195046424866
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9930532574653625
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "95f663e549ae4351",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.939587414264679
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "96cc5ba5dbb91e9a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9892828464508057
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9766126871109009
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "9b9e23cd39126401",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9534338116645813
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9160967469215393
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "9d6954f2021c7e96",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9864479303359985
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9681513905525208
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a49f9ac6cff69f2d",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9647680521011353
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9634478092193604
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ab2589ebf5565c81",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9614477157592773
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9710595011711121
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ada2630904169ae0",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.987130343914032
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9711957573890686
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "b709b5a1b031b005",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9288414716720581
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9445956349372864
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "bc9e999fdd777b8a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Down/Up Ratio",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9869988560676575
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9742320775985718
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c1a8b233bdaf38f1",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9751719832420349
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9743364453315735
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c262838269168d84",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9688766002655029,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.964794874191284
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.6042773723602295
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.5983837246894836
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": 0.3081754744052887
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 5.606373763404889e-93,
+              "min_other_distance": 68.26521463042246,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 7.254408219233159e-91
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 5.040520851315111e-91
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 8.650551855240557e-92
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 8.32432667916966e-92
+                },
+                {
+                  "feature_desc": "Fwd Act Data Pkts",
+                  "weight": 4.4419137448637696e-92
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9701392650604248,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 14.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 2.4183473405292208e-90,
+              "min_other_distance": 67.28327371995312,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.36014018767157e-88
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 1.705673130708429e-88
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 2.882704055464237e-89
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.8685395848695e-89
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 2.7887951484423735e-89
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c72b18ec196b4caa",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9852787256240845
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.979282796382904
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c7a4281808e8d86b",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9781915545463562
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9841436147689819
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ca242ff55181356b",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9472983479499817
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9722579121589661
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d69e02f3d0341a5f",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9780910611152649
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9654223322868347
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d9ee857acab49e81",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.93149334192276
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9655319452285767
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "da9bafaefd2cc6d0",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9707270860671997
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9685153961181641
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "eb687767f19d0abb",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9770032167434692
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.977929949760437
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f2b7b804d13c052a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.959557831287384
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9710794687271118
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f787c6ed2ec5cee8",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.93149334192276
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9660316109657288
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fb8f9f59ec3d2b0e",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9888366460800171
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9791475534439087
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fddc0ed4574208ad",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9538037776947021
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9664322733879089
+          },
+          "label_changed": false
+        }
+      ],
+      "ambiguous_or_unmatched_keys": 0,
+      "matched_count": 59,
+      "changed_labels": 0,
+      "changed_vectors": 59
+    },
+    {
+      "file": "test.pcapng",
+      "source_sha256": "229d5d05ffd167aa5c28eb672728290f688c46f2152137ee9145e1ace1646705",
+      "comparison_run_id": "acfd5e83-0d15-4da1-a8a2-a08cf49a4869",
+      "legacy": {
+        "flow_count": 33,
+        "labels": {
+          "Benign": 28,
+          "DoS attacks-Hulk": 5
+        },
+        "packet_total": 544.0,
+        "extractor_versions": [
+          "python-cicflowmeter-0.5.0-legacy"
+        ]
+      },
+      "project": {
+        "flow_count": 33,
+        "labels": {
+          "Benign": 28,
+          "DoS attacks-Hulk": 5
+        },
+        "packet_total": 511.0,
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-fixes-v1"
+        ]
+      },
+      "matched_flows": [
+        {
+          "pair_id": "03495e3baaf86166",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.93149334192276
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9670676589012146
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "05e3c813640ffac6",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9716576337814331,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.7547263503074646
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.7468024492263794
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.23846009373664856
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000000000249,
+              "max_other_weight": 9.332727014147686e-16,
+              "min_other_distance": 27.55450013256857,
+              "raw_local_r2": 1.8399615164810257e-11,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 2.292724657325394e-13
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.7845674942720256e-13
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.2899079535166738e-13
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 5.900909082482524e-14
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 4.6311656343604124e-14
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.975837230682373,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771833419799805
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.1117918491363525
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.2408888339996338
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.23519796133041382
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.000000000043833,
+              "max_other_weight": 1.4926638886124515e-12,
+              "min_other_distance": 24.44177854738727,
+              "raw_local_r2": 2.5376899914775208e-08,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.0044594601908313e-10
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.72822998676084e-10
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.1370909498018203e-10
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 8.25739502776227e-11
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 6.508225336182039e-11
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "133ea2ca92352971",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9859302639961243
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9766572713851929
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "24535556640b2dd1",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9943806529045105
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9954867959022522
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "32c565d056c2a65e",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9318626523017883,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.9688332080841064
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.7364429831504822
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.7317240834236145
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.34957101941108704
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 9.485966135940278e-33,
+              "min_other_distance": 40.22014434088926,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 3.4528069096654646e-31
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.1929356171415432e-31
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0333335611656104e-31
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 2.5822390616988863e-32
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -2.522209364013821e-32
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9331679940223694,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.973891496658325
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.923297643661499
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.3599399924278259
+              },
+              {
+                "feature": "Bwd IAT Min",
+                "value": 235.6,
+                "phi": -0.2240319550037384
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.2254047564177127e-29,
+              "min_other_distance": 38.216432054976345,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.231569816580984e-28
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0210312615110608e-28
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 7.972041551174988e-29
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -3.269028655506331e-29
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 3.179948846120721e-29
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "33d3b93aacb53468",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.952531635761261
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9591697454452515
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4d6083eaa01fdbb7",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9859302639961243
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9726355075836182
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "51cf1822b0c73a06",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9395864605903625
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9732583165168762
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "526ecae09669cecd",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9874398708343506
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9875859022140503
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "538342236711e35a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Down/Up Ratio",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9869107604026794
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9734628796577454
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5fe58e95816db848",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9859302639961243
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9799903035163879
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "62aadad759e6a5b5",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9933204650878906
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9784367680549622
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "64082f94d105ba61",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9599568843841553
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9558324217796326
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "73d0986ca34ef06f",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.969926118850708
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9813058972358704
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "7639908247aa70a5",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9984599351882935
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9985311031341553
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "78517bd709854765",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.968407392501831
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9738775491714478
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "80dfad36cabb683e",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9687851667404175,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9641120433807373
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.5874069333076477
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.5815131068229675
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": 0.3250460922718048
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 9.329447792203984e-103,
+              "min_other_distance": 71.79222614598534,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.1291532301586824e-100
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 7.359881819057632e-101
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.340275052063701e-101
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.103371434959308e-101
+                },
+                {
+                  "feature_desc": "Fwd Act Data Pkts",
+                  "weight": 6.286034990718876e-102
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9696980714797974,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 6.95707946107923e-101,
+              "min_other_distance": 71.13036978994732,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 9.501681030322365e-99
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 6.322578497432458e-99
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 1.2009404615634127e-99
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1317907728565596e-99
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 1.0982571774253827e-99
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "86352110813de537",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9234071373939514
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9641744494438171
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "918ecb85ec7bd48e",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9104246497154236
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9579676985740662
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a55766ec5e8c728a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9927167892456055
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.991923987865448
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a851ee88a217de83",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9726577401161194,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9671621322631836
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.6716610193252563
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6653164625167847
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.23983345925807953
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 4.159435339313611e-51,
+              "min_other_distance": 50.4482858082755,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 5.78568079126481e-49
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 4.602667961345072e-49
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 9.176732617409382e-50
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 8.420220454366402e-50
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 4.926958304254509e-50
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9732859134674072,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771475791931152
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.087133526802063
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.2396582067012787
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.21119962632656097
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 3.878869306094098e-49,
+              "min_other_distance": 49.452302790508526,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 7.000041192509215e-47
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 5.206752514622428e-47
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1103001510292141e-47
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.0186979068230678e-47
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 5.949212190868329e-48
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "aaa67330ee2dc62c",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9788570404052734
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9568110108375549
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "acf7520b30b10e31",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Max",
+            "Bwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9689744114875793
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9702500104904175
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "b3cbd100c6201063",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.939587414264679
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c7cd4a6ecdeb588b",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9862686991691589
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9813297390937805
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ceba0376df8c76b8",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9859302639961243
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9763473868370056
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d4e47fe008c770d9",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.787423312664032,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.4906704425811768
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 0.0,
+                "phi": -0.46668845415115356
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.4655914902687073
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": 0.3096582889556885
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107694023,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "project": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.758594274520874,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.355480194091797
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6000420451164246
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6304.0,
+                "phi": -0.22880612313747406
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.21672390401363373
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107669618,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d5b519dceadeb9ae",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9854751825332642
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9876202940940857
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d858a16ebca3bb84",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9465121626853943
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9541257619857788
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "e3de4d7f40bb1d8d",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9716672301292419
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9605482220649719
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "eacb4aa3e2626448",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Std",
+            "Active Max",
+            "Active Min",
+            "Idle Mean",
+            "Idle Std",
+            "Idle Max",
+            "Idle Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9637889266014099
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9623894691467285
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f337a2731766c07a",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "SYN Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9987708926200867
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9987934827804565
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fbf853077c8d3f8d",
+          "changed_features": [
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Min",
+            "Fwd PSH Flags",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "PSH Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Fwd Act Data Pkts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "legacy": {
+            "predicted_label": "Benign",
+            "probability": 0.9788570404052734
+          },
+          "project": {
+            "predicted_label": "Benign",
+            "probability": 0.9760068655014038
+          },
+          "label_changed": false
+        }
+      ],
+      "ambiguous_or_unmatched_keys": 0,
+      "matched_count": 33,
+      "changed_labels": 0,
+      "changed_vectors": 33
+    }
+  ]
+}

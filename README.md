@@ -245,7 +245,7 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 
 **Còn thiếu:** Bước 10 (tra bảng ổn định/chịu nhiễu từ RQ2 — tạm bỏ qua, không bắt buộc), Bước 14 (Docker Compose), Bước 15–16 (đo độ trễ E1, đối chiếu nhất quán E5), M4–M5 (dựng máy ảo Attacker/Victim để test traffic tấn công thật).
 
-**Đính chính kiểm tra đặc trưng 16/10/2026:** traffic duyệt web có flow bị dự đoán Hulk, nhưng chưa được quy toàn bộ cho khả năng tổng quát hóa của model. Audit đã tái hiện lỗi Python CICFlowMeter 0.5.0: lặp gói đầu (PCAP 6 gói → 7), CWR lấy từ URG, IAT một khoảng bị trả 0, active/idle không cập nhật và khóa flow thiếu protocol. Còn khác biệt length/header và miền cờ/bulk so với train. [Báo cáo và hướng xử lý](RQ3_IDS_System/docs/feature_compatibility_audit_20261016.md), [đối chiếu đủ 78 cột](RQ3_IDS_System/docs/feature_compatibility_matrix_20261016.md). Chưa sửa extractor/model trong bước audit; tái lập dự đoán/SHAP không chứng nhận tính đúng của đầu vào.
+**Đính chính và sửa extractor 16/10/2026:** audit đã tái hiện 5 lỗi Python CICFlowMeter 0.5.0; [adapter có phiên bản v1](RQ3_IDS_System/docs/capture_adapter_v1.md) đã sửa đếm lặp gói đầu, CWR, IAT một khoảng, Active/Idle và khóa flow thiếu protocol. CLI/PCAP UI mặc định dùng bản mới; metadata phiên bản đi vào DB/UI. Còn khác biệt length/header và miền cờ/bulk so với train; hai PCAP trích lại vẫn có 8 dự đoán Hulk và LIME chưa đạt. Chưa thể quy hết cho model hoặc tuyên bố đầu vào đã tương thích V3. Xem [audit trước sửa](RQ3_IDS_System/docs/feature_compatibility_audit_20261016.md), [ma trận 78 cột trước sửa](RQ3_IDS_System/docs/feature_compatibility_matrix_20261016.md).
 
 ### 5.2 Cách chạy
 

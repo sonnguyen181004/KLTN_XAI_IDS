@@ -1,0 +1,31 @@
+{
+  "test_run_id": "20fa86f2-2c13-4806-9876-c90d4334d162",
+  "interface": "Wi-Fi",
+  "duration_seconds": 100,
+  "isolated_database": true,
+  "generated_network_traffic": false,
+  "model_version": "52eb5a671ee82109",
+  "flows_received_before_capture_exit": 88,
+  "accepted_packets": 42027,
+  "exported_packets": 42027,
+  "csv_packet_total": 42027,
+  "csv_flows": 159,
+  "api_flows": 159,
+  "labels": {
+    "Benign": 130,
+    "DoS attacks-Hulk": 29
+  },
+  "feature_columns": 78,
+  "class_probabilities": 15,
+  "metadata_version_and_ip_pass": true,
+  "duration_unit_conversion_pass": true,
+  "queue": {
+    "qsize": 0,
+    "maxsize": 200,
+    "n_queued": 29,
+    "n_processed": 29,
+    "n_dropped": 0
+  },
+  "live_run_dashboard_app_test_pass": true,
+  "feeder_error_count": 0
+}
