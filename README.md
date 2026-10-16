@@ -235,7 +235,7 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 | Bước | Nội dung |
 |---|---|
 | 1–6 | Config, SQLite (6 bảng), tập dữ liệu sạch (loại trùng train/test), chuẩn hóa flow, nạp lại model RQ1, `POST /predict` |
-| 7, 7b | TreeSHAP tự động cho mọi cảnh báo, chạy **bất đồng bộ** qua hàng đợi (tối đa 50) — không chặn API |
+| 7, 7b | TreeSHAP tự động cho cảnh báo, chạy **bất đồng bộ** qua hàng đợi (tối đa 200 tác vụ chờ; đầy thì giữ cảnh báo và ghi rõ SHAP bị bỏ) |
 | 8 | Độ tin cậy tính tại chỗ: faithfulness proxy, cờ môi trường, cờ lớp hiếm |
 | 8b, M3 | Bộ feeder tự động (CSV→API) + **test bằng traffic Wi-Fi thật** qua CICFlowMeter — 25/25 flow Benign đoán đúng |
 | 9 | LIME theo yêu cầu (`POST /explain`), đúng cấu hình đã khóa ở RQ2 |

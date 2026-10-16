@@ -4,6 +4,8 @@
 
 ## 0. Bức tranh tổng thể
 
+**Cập nhật hàng đợi 16/10/2026:** tăng `api.max_explain_queue` từ 50 lên **200 tác vụ SHAP chờ**, ngoài tác vụ đang chạy. Cần restart API để áp dụng. Giữ chính sách đầy queue thì bỏ SHAP mới, giữ dự đoán/cảnh báo; dashboard lấy dung lượng từ API. Các con số maxsize=50 ở nhật ký Bước 7b dưới đây là bằng chứng của cấu hình lịch sử, không phải giới hạn hiện hành. Chưa có benchmark kết luận 200 tối ưu hoặc cơ chế phục hồi queue sau restart.
+
 **Khối hiển thị dễ hiểu:** [Hướng dẫn đọc đặc trưng, SHAP và LIME](reading_shap_lime.md). Tên/giá trị/đơn vị được giải nghĩa bằng tiếng Việt; đây là tầng trình bày, không thay logic dự đoán hoặc số liệu nghiên cứu.
 
 **Cập nhật runtime/UI 16/10/2026:** [Dashboard mới và hướng dẫn](dashboard_usage.md), [checklist triển khai](dashboard_redesign_plan.md), [LIME suy biến và đối chứng đặc trưng](lime_validity_and_comparison.md). Đã thêm kiểm tra tính hợp lệ lân cận LIME; không đổi cấu hình RQ2, model hoặc luật nhánh A/B. Kết quả giải thích không hợp lệ không được trình bày như R²/Jaccard đáng tin cậy.

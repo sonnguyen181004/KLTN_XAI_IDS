@@ -25,6 +25,12 @@ Lần API mới khởi động sẽ tự thêm cột và index vào DB hiện c�
 
 ## Một lượt live mới, tránh trộn dữ liệu cũ
 
+### Giới hạn hàng đợi SHAP
+
+Cập nhật 16/10/2026: `api.max_explain_queue` tăng từ 50 lên **200 tác vụ chờ**, ngoài tác vụ worker đang xử lý. Khởi động lại API để áp dụng; dashboard đọc giới hạn từ `/explain_queue_status`, nên sẽ hiện `…/200` sau khi API mới lên.
+
+Đây không phải giới hạn số flow được bắt, số dự đoán hoặc số bản ghi lịch sử. Khi hàng đợi đầy, tác vụ SHAP mới bị bỏ với trạng thái `dropped_queue_full`; dự đoán và cảnh báo đã lưu vẫn còn. Hiện chưa tự chạy lại tác vụ bị bỏ hoặc phục hồi queue RAM sau restart. Bảng vẫn hiển thị 50 flow/trang; không liên quan giới hạn queue. Tăng dung lượng giúp chứa đợt tăng ngắn, không làm worker tính SHAP nhanh hơn. Chưa đo tải để xác nhận 200 là mức tối ưu.
+
 Terminal 3, quyền Administrator nếu môi trường bắt gói yêu cầu. Đổi tên file cho **mỗi lần demo**:
 
 ```powershell

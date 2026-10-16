@@ -53,7 +53,9 @@ faithfulness_proxy:
 api:
   host: "127.0.0.1"
   port: 8000
-  max_explain_queue: 50
+  # Số tác vụ SHAP đang CHỜ (không tính tác vụ worker đang chạy).
+  # Đầy thì bỏ tác vụ SHAP mới, vẫn giữ dự đoán/cảnh báo. Cần restart API khi đổi.
+  max_explain_queue: 200
   # LIME tốn CPU hơn hẳn SHAP (~148ms, gấp ~8 lần) và chạy ĐỒNG BỘ trong POST /explain
   # (analyst đang chờ kết quả nên không đưa vào hàng đợi nền như SHAP) — giới hạn số
   # lượt LIME chạy cùng lúc để tránh nghẽn thread pool của FastAPI khi nhiều analyst
