@@ -174,7 +174,7 @@ with st.sidebar:
     st.caption(f"Model: {'Đã nạp' if health['model_loaded'] else 'LỖI'} · {health['n_classes']} lớp")
     st.caption('Phiên bản: ' + health['model_version'])
 
-live, upload = st.tabs(['Giám sát', 'Nạp dữ liệu'])
+live, capture_help, upload = st.tabs(['Giám sát flow', 'Hướng dẫn live', 'Nạp CSV / PCAP'])
 
 
 @st.fragment(run_every=None if paused else '5s')
@@ -271,5 +271,18 @@ def monitor():
 
 with live:
     monitor()
+with capture_help:
+    st.subheader('Bắt traffic trên máy → gom flow → dự đoán')
+    st.info('Tab này hướng dẫn chạy capture/feeder trong terminal, chưa có nút bật hoặc tắt bộ bắt. API nhận flow không đủ để xác nhận capture còn đang chạy.')
+    st.write('1. Trong VS Code, mở hai terminal tại thư mục RQ3_IDS_System. API và Dashboard giữ chạy; không bật thêm API thứ hai cùng DB.')
+    st.write('2. Chọn đúng interface và tên CSV mới cho mỗi phiên. Thay live_review_01.csv nếu tên này đã dùng.')
+    st.code('.\\.venv_capture\\Scripts\\python.exe scripts\\run_live_capture.py --interface "Wi-Fi" --output data\\live_review_01.csv', language='powershell')
+    st.write('3. Ở terminal còn lại, chạy feeder theo dõi đúng CSV:')
+    st.code('python app\\feeder.py --watch data\\live_review_01.csv --convert-units --capture-timezone +07:00', language='powershell')
+    st.write('4. Mở tab Giám sát flow, chọn Nguồn = feeder_live và chọn đúng lượt live_review_01.csv. Dữ liệu CSV/PCAP đã nạp vẫn giữ trong lịch sử.')
+    st.caption('Chỉ bắt trên máy/mạng bạn được phép kiểm thử. +07:00 phải khớp múi giờ timestamp capture. Có traffic nền ngay cả khi chưa mở trình duyệt.')
+    st.warning('Chưa có flow mới không đồng nghĩa mất kết nối: project xuất khi đạt duration 90 giây, idle 240 giây hoặc flush lúc dừng. Ctrl+C capture để ghi nốt, đợi feeder gửi hết rồi mới dừng feeder.')
+    st.write('Feeder bị ngắt: chạy lại cùng lệnh và giữ checkpoint để tiếp tục. Không ghi đè CSV. Queue 200 chỉ giới hạn SHAP đang chờ, không giới hạn số flow được dự đoán/lưu.')
 with upload:
+    st.caption('CSV có đặc trưng sẵn hoặc PCAP qua extractor đều gửi về cùng /predict. Sau khi nạp, mở Giám sát flow để xem lượt tương ứng; không cần xóa lịch sử.')
     render_ingestion(API, ROOT)
