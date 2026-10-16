@@ -31,13 +31,15 @@ def key(row):
     return tuple(row[n] for n in ('src_ip','dst_ip','src_port','dst_port','protocol','timestamp'))
 
 
-def main(output):
+def main(output, baseline='legacy', candidate='project'):
+    if baseline == candidate:
+        raise ValueError('Choose different baseline and candidate modes')
     cfg=yaml.safe_load((RQ3/'config.yaml').read_text(encoding='utf-8'))
     detector=Detector(ROOT/cfg['paths']['model'],ROOT/cfg['paths']['label_encoder'])
     shap=ShapExplainer(detector.model,detector.class_names)
     lime=LimeExplainer(detector.model,detector.feature_names,detector.class_names,
         np.load(RQ3/'data/lime_background.npy'),cfg['lime'],cfg['seed'])
-    report=dict(model_version=detector.model_version,
+    report=dict(model_version=detector.model_version, baseline_mode=baseline, candidate_mode=candidate,
         warning='No confirmed ground truth; changes are not accuracy/FPR measurements. LIME uses identical per-pair diagnostic seed, not saved DB alert IDs.',runs=[])
     with tempfile.TemporaryDirectory(prefix='ids_capture_comparison_') as folder:
         for name in ('tesst2.pcapng','test.pcapng'):
@@ -46,7 +48,7 @@ def main(output):
                 report['runs'].append(dict(file=name,skipped='PCAP not found'))
                 continue
             variants={}
-            for mode in ('legacy','project'):
+            for mode in (baseline,candidate):
                 target=Path(folder)/(name+'.'+mode+'.csv')
                 proc=subprocess.run([str(RQ3/'.venv_capture/Scripts/python.exe'),
                     str(RQ3/'scripts/run_live_capture.py'),'--pcap-input',str(path),
@@ -68,15 +70,15 @@ def main(output):
                     packet_total=sum(float(s['row']['tot_fwd_pkts'])+float(s['row']['tot_bwd_pkts']) for s in samples),
                     extractor_versions=sorted({s['row'].get('extractor_version','python-cicflowmeter-0.5.0-legacy') for s in samples}))
             run=dict(file=name,source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                comparison_run_id=str(uuid.uuid4()),legacy=summarize(variants['legacy']),
-                project=summarize(variants['project']),matched_flows=[],ambiguous_or_unmatched_keys=0)
+                comparison_run_id=str(uuid.uuid4()),baseline=summarize(variants[baseline]),
+                candidate=summarize(variants[candidate]),matched_flows=[],ambiguous_or_unmatched_keys=0)
             groups={}
             for mode,samples in variants.items():
                 groups[mode]=defaultdict(list)
                 for sample in samples:
                     groups[mode][sample['key']].append(sample)
-            for k in groups['legacy'].keys() | groups['project'].keys():
-                old,new=groups['legacy'].get(k,[]),groups['project'].get(k,[])
+            for k in groups[baseline].keys() | groups[candidate].keys():
+                old,new=groups[baseline].get(k,[]),groups[candidate].get(k,[])
                 if len(old)!=1 or len(new)!=1:
                     run['ambiguous_or_unmatched_keys']+=1
                     continue
@@ -86,7 +88,7 @@ def main(output):
                 changed=[n for n in detector.feature_names
                          if not np.isclose(float(old['x'][n].iloc[0]),float(new['x'][n].iloc[0]),rtol=1e-10,atol=1e-8)]
                 pair=dict(pair_id=token,changed_features=changed)
-                for mode,sample in [('legacy',old),('project',new)]:
+                for mode,sample in [('baseline',old),('candidate',new)]:
                     prediction=sample['prediction']
                     label=prediction['predicted_label']
                     result=dict(predicted_label=label,probability=prediction['probabilities'][label])
@@ -96,14 +98,14 @@ def main(output):
                         result.update(shap_top5=s['top_k'],shap_additivity_error=s['additivity_error'],
                                       lime_status=l['status'],lime_diagnostics=l['diagnostics'])
                     pair[mode]=result
-                pair['label_changed']=pair['legacy']['predicted_label']!=pair['project']['predicted_label']
+                pair['label_changed']=pair['baseline']['predicted_label']!=pair['candidate']['predicted_label']
                 run['matched_flows'].append(pair)
             run['matched_flows'].sort(key=lambda x:x['pair_id'])
             run['matched_count']=len(run['matched_flows'])
             run['changed_labels']=sum(p['label_changed'] for p in run['matched_flows'])
             run['changed_vectors']=sum(bool(p['changed_features']) for p in run['matched_flows'])
             report['runs'].append(run)
-            print(name,run['legacy']['labels'],'=>',run['project']['labels'],
+            print(name,run['baseline']['labels'],'=>',run['candidate']['labels'],
                   'matched',run['matched_count'],'label changes',run['changed_labels'],flush=True)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -113,4 +115,7 @@ def main(output):
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--output',type=Path,required=True)
-    main(parser.parse_args().output)
+    parser.add_argument('--baseline',choices=['legacy','project-v1','project','train-candidate'],default='legacy')
+    parser.add_argument('--candidate',choices=['legacy','project-v1','project','train-candidate'],default='project')
+    args=parser.parse_args()
+    main(args.output,args.baseline,args.candidate)

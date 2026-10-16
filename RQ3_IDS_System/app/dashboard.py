@@ -20,6 +20,8 @@ cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
 LOCAL = timezone(timedelta(hours=7))
 STATUS = {'not_required': 'Không cần (Benign)', 'queued': 'Chờ SHAP',
+          'pending_dispatch': 'Đã lưu dự đoán; chưa đưa vào SHAP',
+          'recovery_pending': 'Chờ khôi phục SHAP sau restart',
           'processed': 'Đã có SHAP', 'failed': 'SHAP lỗi',
           'dropped_queue_full': 'Bỏ SHAP: hàng đợi đầy', 'unknown_legacy': 'Chưa rõ (dữ liệu cũ)'}
 
@@ -70,6 +72,8 @@ def show_detail(flow_id):
         st.write(f"Protocol: {flow['protocol']} · Nguồn dữ liệu: {flow['source']}")
         st.write('Lượt: ' + (flow['run_name'] or 'Lịch sử chưa gắn lượt'))
         st.caption('Bộ trích xuất: ' + (flow.get('extractor_version') or 'Nguồn chưa cung cấp phiên bản'))
+        if (flow.get('extractor_version') or '').startswith('rq3-train-conventions-experimental'):
+            st.warning('Flow dùng bộ trích xuất thử nghiệm một phần quy ước train; chưa được xác nhận tương thích đầy đủ.')
     with right:
         st.write('Gói đầu tiên của flow: ' + local_time(flow['flow_timestamp_utc'] or flow['flow_timestamp']))
         st.write('API nhận: ' + local_time(flow['received_at']))
@@ -197,6 +201,8 @@ def monitor():
         stats = get('/dashboard/summary', params)
         queue = get('/explain_queue_status')
         st.caption(f"Cập nhật: {local_time(now.isoformat())} · Lượt: {selected_run} · SHAP toàn hệ thống: {queue['qsize']}/{queue['maxsize']}")
+        if queue.get('recovery_pending'):
+            st.caption(f"Đang chờ khôi phục SHAP từ DB: {queue['recovery_pending']} cảnh báo; xử lý dần khi hàng đợi hiện tại rảnh.")
         cols = st.columns(6)
         for col, title, val in zip(cols, ['Tổng flow', 'Benign', 'Cảnh báo', 'Chờ SHAP', 'SHAP xong', 'SHAP bỏ / lỗi'],
                                   [stats['flows'], stats['benign'], stats['alerts'], stats['queued'], stats['processed'], f"{stats['dropped']} / {stats['failed']}"]):
@@ -204,7 +210,7 @@ def monitor():
         st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
         st.write('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']))
         if not stats['last_received_at'] or (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() > 30:
-            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: adapter v1 ghi khi flow đạt thời lượng 90 giây, idle 240 giây hoặc khi dừng bắt để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; nguồn khác có thể dùng timeout khác.')
+            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: adapter project ghi khi flow đạt thời lượng 90 giây, idle 240 giây hoặc khi dừng bắt để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; nguồn khác có thể dùng timeout khác.')
         if not stats['flows']:
             st.info('Không có flow khớp bộ lọc. Thử chọn Tất cả lịch sử hoặc bỏ bớt bộ lọc.')
             return

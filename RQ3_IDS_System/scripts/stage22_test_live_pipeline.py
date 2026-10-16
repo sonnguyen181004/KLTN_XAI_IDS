@@ -61,16 +61,23 @@ def main(interface,seconds,output):
                     '--convert-units','--capture-timezone','+07:00'],cwd=RQ3,env=env,stdout=feeder_log,
                     stderr=subprocess.STDOUT,creationflags=creationflags)
                 children.append(feeder)
-                capture=subprocess.Popen([str(RQ3/'.venv_capture/Scripts/python.exe'),
+                capture=subprocess.Popen([str(RQ3/'.venv_capture/Scripts/python.exe'),'-u',
                     str(RQ3/'scripts/run_live_capture.py'),'--interface',interface,'--seconds',str(seconds),
                     '--output',str(csv_path)],cwd=RQ3,env=env,stdout=capture_log,
                     stderr=subprocess.STDOUT,creationflags=creationflags)
                 children.append(capture)
                 deadline=time.monotonic()+seconds+30
                 during=0
+                while_sniffing=0
                 last_progress=time.monotonic()
                 while capture.poll() is None and time.monotonic()<deadline:
-                    during=max(during,get('/flows?source=feeder_live&limit=1')['count'])
+                    if feeder.poll() is not None:
+                        raise RuntimeError('Feeder stopped during capture:\n'+(target/'feeder.log').read_text(encoding='utf-8',errors='replace'))
+                    count=get('/flows?source=feeder_live&limit=1')['count']
+                    during=max(during,count)
+                    capture_text=(target/'capture.log').read_text(encoding='utf-8',errors='replace')
+                    if '[capture] receiving_started' in capture_text and '[capture] receiving_stopped' not in capture_text:
+                        while_sniffing=max(while_sniffing,count)
                     if time.monotonic()-last_progress>=15:
                         print(f'LIVE progress: {during} flows received while capture runs',flush=True)
                         last_progress=time.monotonic()
@@ -80,17 +87,22 @@ def main(interface,seconds,output):
                 if capture.returncode:
                     raise RuntimeError((target/'capture.log').read_text(encoding='utf-8'))
                 result['flows_received_before_capture_exit']=during
+                result['flows_received_while_sniffing']=while_sniffing
                 with csv_path.open(encoding='utf-8-sig',newline='') as stream:
                     rows=list(csv.DictReader(stream))
                 if not rows:
                     raise RuntimeError('No completed IPv4 TCP/UDP flows observed; live path not validated')
                 deadline=time.monotonic()+max(30,len(rows)*.2)
                 while time.monotonic()<deadline:
+                    if feeder.poll() is not None:
+                        raise RuntimeError('Feeder stopped after capture:\n'+(target/'feeder.log').read_text(encoding='utf-8',errors='replace'))
                     data=get('/flows?source=feeder_live&limit=1000')
                     if data['count']==len(rows):
                         break
                     time.sleep(.25)
-                assert data['count']==len(rows),(len(rows),data['count'])
+                if data['count'] != len(rows):
+                    raise RuntimeError(f"CSV/API mismatch: {len(rows)}/{data['count']}; feeder_exit={feeder.poll()}\n" +
+                        (target/'feeder.log').read_text(encoding='utf-8',errors='replace')[-12000:])
                 listed=list(data['flows'])
                 while len(listed)<data['count']:
                     listed.extend(get(f'/flows?source=feeder_live&limit=1000&offset={len(listed)}')['flows'])
@@ -99,7 +111,9 @@ def main(interface,seconds,output):
                 observed=sorted(d['features']['Flow Duration'] for d in details)
                 assert all(abs(a-b)<1e-5 for a,b in zip(expected,observed))
                 assert all(len(d['probabilities'])==15 and len(d['features'])==78 for d in details)
-                assert all(d['extractor_version']=='rq3-cfm-0.5.0-fixes-v1' for d in details)
+                versions = {r['extractor_version'] for r in rows}
+                assert versions == {'rq3-cfm-0.5.0-fixes-v2'}
+                assert all(d['extractor_version'] in versions for d in details)
                 assert all(d['src_ip'] and d['dst_ip'] for d in details)
                 counters=re.search(r'accepted_packets=(\d+) exported_packets=(\d+) exported_flows=(\d+)',
                     (target/'capture.log').read_text(encoding='utf-8'))
@@ -119,7 +133,7 @@ def main(interface,seconds,output):
                     app=AppTest.from_file(str(RQ3/'app/dashboard.py')).run(timeout=40)
                     assert not app.exception,app.exception
                     assert app.session_state['selected_flow'] in {d['flow_id'] for d in details}
-                    assert any('Bộ trích xuất: rq3-cfm-0.5.0-fixes-v1' in c.value for c in app.caption)
+                    assert any('Bộ trích xuất: rq3-cfm-0.5.0-fixes-v2' in c.value for c in app.caption)
                 result['live_run_dashboard_app_test_pass']=True
                 log=(target/'feeder.log').read_text(encoding='utf-8')
                 assert 'KHÔNG GỬI ĐƯỢC' not in log and 'LỖI ' not in log,log

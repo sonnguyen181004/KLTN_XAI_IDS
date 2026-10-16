@@ -182,4 +182,12 @@ Khi bắt đầu triển khai, cập nhật checkbox và nhật ký này sau t�
 - UI hiện xếp theo lúc API nhận. Chế độ sắp xếp riêng theo timestamp gốc cho replay chưa thêm; vẫn xem được timestamp gốc trong chi tiết, không trộn với UTC.
 - Bộ lọc UI cung cấp toàn bộ lượt/5 phút/15 phút/1 giờ/hôm nay; khoảng tùy ý dùng API since/until, chưa có date-picker.
 - Nhóm chỉ hiển thị 100 nhóm mới nhất trong phạm vi, từng nhóm có phân trang; bảng flow chính vẫn cho xem mọi flow.
-- API chỉ biết flow đã được gửi đến, không có heartbeat của capture. Trạng thái queued còn lại sau restart chưa có cơ chế phục hồi tác vụ RAM.
+- API chỉ biết flow đã được gửi đến, không có heartbeat của capture. Bản v2 đã phục hồi SHAP bị ngắt từ DB, hiển thị backlog riêng; chỉ chạy một API process/DB. Xem [cập nhật ổn định](stability_update_20261016.md).
+
+### Ổn định vận hành sau audit
+
+- [x] Capture v2 bảo toàn initial window=0; candidate quy ước train tách phiên bản và đối chiếu hai PCAP.
+- [x] Feeder đọc tăng dần, checkpoint sau ACK, backoff, khóa, xử lý dòng dở dang và phát hiện truncate.
+- [x] `/predict` chống gửi trùng bằng khóa, hash và giao dịch nguyên khối trên sáu bảng hiện có.
+- [x] SHAP phục hồi tác vụ bị ngắt từ DB, giữ giới hạn queue 200 và chính sách dropped.
+- [ ] Tương thích đầy đủ train/V3, ground truth đánh giá live, benchmark dài/tải cao và tab điều khiển capture.

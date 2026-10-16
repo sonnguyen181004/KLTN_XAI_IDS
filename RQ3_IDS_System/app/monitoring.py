@@ -90,7 +90,7 @@ def summary(conn, filters):
  COALESCE(SUM(p.predicted_label='Benign'),0) AS benign,
  COALESCE(SUM(a.alert_id IS NOT NULL),0) AS alerts,
  COALESCE(SUM(r.shap_top5_json IS NOT NULL),0) AS processed,
- COALESCE(SUM(a.explanation_status='queued' AND r.shap_top5_json IS NULL),0) AS queued,
+ COALESCE(SUM(a.explanation_status IN ('queued','pending_dispatch','recovery_pending') AND r.shap_top5_json IS NULL),0) AS queued,
  COALESCE(SUM(a.explanation_status='dropped_queue_full'),0) AS dropped,
  COALESCE(SUM(a.explanation_status='failed'),0) AS failed,
  MAX(f.received_at) AS last_received_at''' + JOIN + where, values))[0]

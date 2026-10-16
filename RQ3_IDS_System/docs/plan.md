@@ -4,6 +4,8 @@
 
 ## 0. Bức tranh tổng thể
 
+**Ổn định vận hành v2 (16/10/2026):** [capture v2, feeder checkpoint/idempotency và khôi phục SHAP](stability_update_20261016.md). Giữ sáu bảng và các tầng kiến trúc; `/predict` lưu giao dịch nguyên khối rồi dispatch SHAP, LIME theo yêu cầu. CLI mặc định sửa window=0; bản quy ước train thử nghiệm tách riêng, chưa thay model/RQ2. Hướng dẫn cũ nói feeder restart luôn gửi lại từ đầu hoặc queue không phục hồi là lịch sử trước bản này; hành vi hiện tại xem tài liệu mới.
+
 **Hợp đồng ngữ nghĩa đặc trưng (16/10/2026):** [audit quan hệ từng dòng train/test](feature_semantics_contract_20261016.md) đã kiểm tra toàn bộ 3,5 triệu dòng. Xác minh sample SD độ dài trong trường hợp hai packet phân biệt được, floor Down/Up và window thiếu=-1; phát hiện thêm quan hệ hai mean dùng n/n+1. Capture v1 còn khác các quy ước này và ghi đè initial window=0. Subflow packet lại khớp tổng trên toàn bộ tập đủ điều kiện, không được mặc định coi sai. Đã có script/JSON tái lập, chưa đổi runtime/model/LIME; còn thiếu nguồn preprocessing/cặp original PCAP–CSV để chứng nhận tương thích.
 
 **Bản sửa capture v1 (16/10/2026):** [triển khai và kết quả kiểm tra](capture_adapter_v1.md). Đã sửa 5 lỗi được audit tái hiện trong adapter thuộc mã dự án; CLI/UI PCAP dùng bản mới mặc định. Có version metadata qua CSV→API→DB→UI, giữ đúng 78 đặc trưng lưu. Test fixture/API/UI PASS; hai PCAP đối chiếu chưa đổi nhãn, LIME còn suy biến. Thử Wi-Fi thật trên DB tạm được ghi riêng trong tài liệu. Phần audit và ma trận dưới đây mô tả baseline trước sửa, không thay chứng cứ lịch sử.
