@@ -16,7 +16,7 @@ from pathlib import Path
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS FlowRecord (
     flow_id         TEXT PRIMARY KEY,
-    received_at     TEXT NOT NULL,      -- lúc API xử lý xong request này (giờ hệ thống, KHÔNG phải lúc gói tin thật xảy ra)
+    received_at     TEXT NOT NULL,      -- lúc API nhận request (UTC, KHÔNG phải lúc gói tin thật xảy ra)
     source          TEXT NOT NULL,      -- 'csv_upload' | 'pcap_replay' | 'feeder_live' | 'api' (Swagger/test tay) | 'rq2_cohort' | 'clean_set'
     flow_timestamp  TEXT,               -- lúc gói tin THẬT được bắt (cột "timestamp" CICFlowMeter ghi) — NULL nếu nguồn không có (vd Tập A/B)
     features_json   TEXT NOT NULL,      -- JSON: {"Dst Port": 80, "Protocol": 6, ...} đúng 78 đặc trưng
@@ -89,6 +89,19 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode = WAL")
     conn.executescript(SCHEMA_SQL)
     _migrate_add_flow_timestamp(conn)
+    for table, fields in {
+        'FlowRecord': {'capture_run_id': 'TEXT', 'run_name': 'TEXT', 'src_ip': 'TEXT',
+                       'dst_ip': 'TEXT', 'src_port': 'INTEGER', 'flow_timestamp_utc': 'TEXT'},
+        'AlertRecord': {'explanation_status': "TEXT DEFAULT 'unknown_legacy'"},
+        'Reliability': {'lime_local_r2': 'REAL'},
+    }.items():
+        existing = set(table_columns(conn, table))
+        for name, datatype in fields.items():
+            if name not in existing:
+                conn.execute(f'ALTER TABLE {table} ADD COLUMN {name} {datatype}')
+    conn.execute('CREATE INDEX IF NOT EXISTS idx_flow_received ON FlowRecord(received_at)')
+    conn.execute('CREATE INDEX IF NOT EXISTS idx_flow_run ON FlowRecord(capture_run_id, received_at)')
+    conn.execute('CREATE INDEX IF NOT EXISTS idx_alert_flow ON AlertRecord(flow_id)')
     conn.commit()
     return conn
 

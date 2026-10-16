@@ -45,15 +45,25 @@ class ExplainQueue:
             "enqueued_at": time.perf_counter(),
         }
         try:
+            self._set_status(alert_id, 'queued')
             self._q.put_nowait(task)
             self.n_queued += 1
             return "queued"
         except queue.Full:
+            self._set_status(alert_id, 'dropped_queue_full')
             self.n_dropped += 1
             return "dropped_queue_full"
 
     def qsize(self) -> int:
         return self._q.qsize()
+
+    def _set_status(self, alert_id, status):
+        conn = self.db.get_connection(self.db_path)
+        try:
+            conn.execute('UPDATE AlertRecord SET explanation_status=? WHERE alert_id=?', (status, alert_id))
+            conn.commit()
+        finally:
+            conn.close()
 
     def _run(self) -> None:
         while True:
@@ -62,6 +72,10 @@ class ExplainQueue:
                 self._process(task)
             except Exception as e:  # noqa: BLE001 — worker nền không được chết vì 1 task lỗi
                 print(f"[explain_queue] Lỗi khi xử lý alert_id={task['alert_id']}: {e}")
+                try:
+                    self._set_status(task['alert_id'], 'failed')
+                except Exception as status_error:
+                    print(f'[explain_queue] Không ghi được trạng thái lỗi: {status_error}')
             finally:
                 self._q.task_done()
 
@@ -97,3 +111,4 @@ class ExplainQueue:
         finally:
             conn.close()
         self.n_processed += 1
+        self._set_status(task['alert_id'], 'processed')

@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import uuid
+import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -25,6 +27,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from normalize import TIME_COLUMNS  # noqa: E402
+from flow_metadata import row_metadata
 
 # CICFlowMeter 0.5.0 (cài ở RQ3_IDS_System/.venv_capture) xuất tên cột kiểu
 # snake_case, hoàn toàn khác 78 tên cột model cần (chữ Hoa, có khoảng trắng —
@@ -120,7 +123,7 @@ def row_to_payload(row: dict, header: list[str], convert_units: bool) -> dict:
 
 
 def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert_units: bool,
-               max_iterations: int | None = None) -> None:
+               max_iterations: int | None = None, capture_timezone: str | None = None) -> None:
     print(f"[feeder] Bắt đầu theo dõi: {watch_path}")
     print(f"[feeder] Gửi tới: {api_url}/predict | đổi đơn vị μs: {convert_units} | "
           f"chu kỳ kiểm tra: {poll_interval_sec}s")
@@ -129,6 +132,10 @@ def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert
     header: list[str] | None = None
     n_lines_processed = 0  # không tính dòng header
     n_sent = 0
+    run_id = str(uuid.uuid4())
+    local_offset = datetime.now().astimezone().strftime('%z')
+    capture_zone = capture_timezone or local_offset[:3] + ':' + local_offset[3:]
+    print(f'[feeder] Lượt: {run_id} — {watch_path.name}. File có sẵn sẽ được đọc lại từ đầu.')
     iteration = 0
 
     while max_iterations is None or iteration < max_iterations:
@@ -145,24 +152,18 @@ def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert
             header = all_rows[0]
             print(f"[feeder] Đọc được header: {len(header)} cột")
 
-        data_rows = all_rows[1:]
+        data_rows = [row for row in all_rows[1:] if row]
         new_rows = data_rows[n_lines_processed:]
 
         for raw_row in new_rows:
             if len(raw_row) != len(header):
-                continue  # dòng chưa ghi xong hết (CICFlowMeter đang flush) -> bỏ qua, chờ lần sau
+                break  # retry partial row next poll; never advance past it
             row_dict = dict(zip(header, raw_row))
             payload = row_to_payload(row_dict, header, convert_units)
             n_lines_processed += 1
 
-            # flow_timestamp: lúc gói tin THẬT xảy ra (cột "timestamp" CICFlowMeter
-            # ghi sẵn, nếu nguồn có) — khác với lúc feeder/API xử lý, để Dashboard
-            # sắp đúng thứ tự traffic thật thay vì thứ tự feeder gửi.
-            flow_ts = row_dict.get("timestamp")
-            flow_ts = flow_ts.replace(" ", "T") if flow_ts else None
-            params = {"source": "feeder_live"}
-            if flow_ts:
-                params["flow_timestamp"] = flow_ts
+            # Preserve packet time/IP separately; the live table sorts by API receive time.
+            params = {'source': 'feeder_live', **row_metadata(row_dict, run_id, watch_path.name, capture_zone)}
 
             try:
                 r = requests.post(f"{api_url}/predict", json=payload, params=params, timeout=5)
@@ -188,11 +189,13 @@ def main():
     parser.add_argument("--watch", type=str, default=str(REPO_ROOT / cfg["feeder"]["default_watch_csv"]))
     parser.add_argument("--convert-units", action="store_true", default=cfg["feeder"]["convert_seconds_to_microseconds"])
     parser.add_argument("--max-iterations", type=int, default=None, help="Dừng sau N lần kiểm tra (dùng khi test; để trống = chạy mãi)")
+    parser.add_argument('--capture-timezone', default=None, help='Múi giờ timestamp CSV, ví dụ +07:00; mặc định giờ máy bắt')
     args = parser.parse_args()
 
     watch_path = Path(args.watch)
     api_url = f"http://{cfg['api']['host']}:{cfg['api']['port']}"
-    run_feeder(watch_path, api_url, cfg["feeder"]["poll_interval_sec"], args.convert_units, args.max_iterations)
+    api_url = os.environ.get('IDS_API_URL', api_url)
+    run_feeder(watch_path, api_url, cfg["feeder"]["poll_interval_sec"], args.convert_units, args.max_iterations, args.capture_timezone)
 
 
 if __name__ == "__main__":
