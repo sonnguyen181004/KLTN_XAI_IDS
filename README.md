@@ -9,6 +9,8 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 
 ## 1. Cấu trúc dự án
 
+**Bổ sung LIME/đối chứng:** cảnh báo khi mẫu lân cận suy biến, không dùng Top-5 bằng 0/R² giả tốt; tab đối chiếu 78 đặc trưng với nền LIME và tập B có nhãn. [Giải thích kỹ thuật, giới hạn và test](RQ3_IDS_System/docs/lime_validity_and_comparison.md).
+
 **Dashboard RQ3 cập nhật 16/10/2026:** tự làm mới 5 giây, lọc lượt test, chọn mọi flow để xem chi tiết, biểu đồ tổng quan/xác suất/SHAP/LIME và giờ GMT+7. Hướng dẫn khởi động lại và kết quả test: [Dashboard mới](RQ3_IDS_System/docs/dashboard_usage.md). Kế hoạch và hạng mục còn lại: [Checklist UI](RQ3_IDS_System/docs/dashboard_redesign_plan.md).
 
 ```text

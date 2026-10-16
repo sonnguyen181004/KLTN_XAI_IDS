@@ -122,7 +122,15 @@ def main():
                     assert not at.exception, at.exception
                     at.button(key='lime_' + real[1]['flow_id']).click().run(timeout=60)
                     assert not at.exception, at.exception
-                    assert get('/flows/' + real[1]['flow_id'])['lime_local_r2'] is not None
+                    explained = get('/flows/' + real[1]['flow_id'])
+                    assert explained['lime_diagnostics']['samples'] == 1000
+                    if explained['lime_status'] == 'ok':
+                        assert explained['lime_local_r2'] is not None
+                    else:
+                        assert explained['lime_local_r2'] is None and explained['agreement_jaccard5'] is None
+                    comparison = get('/flows/' + real[1]['flow_id'] + '/comparison')
+                    assert len(comparison['features']) == 78 and comparison['background_n'] == 2000
+                    assert any(r['benign']['n'] > 0 for r in comparison['features'])
                     at.run(timeout=30)
                     assert at.session_state['selected_flow'] == real[1]['flow_id']
                     at.selectbox(key='run_choice').set_value('__all__').run(timeout=30)
@@ -162,6 +170,25 @@ def main():
                     run_feeder(csv_path, url, .01, False, max_iterations=2, capture_timezone='+07:00')
                     assert post.call_count == 1
                 print('PASS feeder blank-line deduplication and per-run metadata')
+                # Numerical regression: background-constant bulk-rate feature far from support.
+                extreme = {**payload, 'Bwd Blk Rate Avg': 1264390243.902439}
+                response = requests.post(url + '/predict', json=extreme,
+                                         params={'capture_run_id': 'degenerate-fixture'}, timeout=15)
+                response.raise_for_status()
+                event = response.json()
+                assert event['is_alert']
+                response = requests.post(url + '/explain', json={'alert_id': event['alert_id']}, timeout=30)
+                response.raise_for_status()
+                invalid = response.json()
+                assert invalid['status'] == 'insufficient_neighborhood'
+                assert invalid['diagnostics']['nonzero_weights'] == 1
+                assert invalid['local_r2'] is None and invalid['agreement_jaccard5'] is None and invalid['top_k'] == []
+                with patch.dict(os.environ, {'IDS_API_URL': url}):
+                    at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)
+                    assert not at.exception, at.exception
+                    assert any('LIME chưa cung cấp' in item.value for item in at.warning)
+                    assert any(tab.label == 'Đối chứng đặc trưng' for tab in at.tabs)
+                print('PASS degenerate LIME guard, null R2/agreement, diagnostic UI and feature comparison')
             finally:
                 proc.terminate()
                 proc.wait(timeout=10)

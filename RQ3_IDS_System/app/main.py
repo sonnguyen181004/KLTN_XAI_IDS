@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import db  # noqa: E402
 import monitoring
 from flow_metadata import timestamp_utc
+from feature_reference import FeatureReference
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
 from predict import Detector  # noqa: E402
 from explain_shap import ShapExplainer  # noqa: E402
@@ -83,6 +84,8 @@ explain_queue = ExplainQueue(
 # (phải chạy script đó trước khi bật server).
 LIME_BACKGROUND_PATH = RQ3_ROOT / "data" / "lime_background.npy"
 lime_background = np.load(LIME_BACKGROUND_PATH)
+feature_reference = FeatureReference(detector.feature_names, lime_background,
+                                     REPO_ROOT / cfg['paths']['clean_set_out'])
 lime_explainer = LimeExplainer(
     model=detector.model,
     feature_names=detector.feature_names,
@@ -255,7 +258,7 @@ def explain(req: ExplainRequest):
 
             shap_top5 = db.get_shap_top5(conn, req.alert_id)
             agreement = None
-            if shap_top5 is not None:
+            if shap_top5 is not None and lime_result['status'] == 'ok':
                 shap_rank = [item["feature"] for item in shap_top5]
                 lime_rank = [item["feature_desc"] for item in lime_result["top_k"]]
                 agreement = jaccard_at_k(shap_rank, lime_rank, k=5)
@@ -265,6 +268,7 @@ def explain(req: ExplainRequest):
                 lime_top5_json=json.dumps(lime_result["top_k"]),
                 agreement_jaccard5=agreement,
                 lime_local_r2=lime_result['local_r2'],
+                lime_diagnostics_json=json.dumps(lime_result['diagnostics']),
             )
             db.insert_timing(conn, alert["flow_id"], "lime", t_lime_ms, now_iso())
         finally:
@@ -276,6 +280,8 @@ def explain(req: ExplainRequest):
         "alert_id": req.alert_id,
         "class_explained": lime_result["class_explained"],
         "local_r2": lime_result["local_r2"],
+        "status": lime_result['status'],
+        "diagnostics": lime_result['diagnostics'],
         "top_k": lime_result["top_k"],
         "agreement_jaccard5": agreement,
         "timing_ms": {"lime": round(t_lime_ms, 3)},
@@ -371,6 +377,11 @@ def flow_detail(flow_id: str):
     if result is None:
         raise HTTPException(404, 'Không có flow này')
     return result
+
+
+@app.get('/flows/{flow_id}/comparison')
+def flow_comparison(flow_id: str):
+    return feature_reference.compare(flow_detail(flow_id))
 
 
 @app.get("/explain_queue_status")

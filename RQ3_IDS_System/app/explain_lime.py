@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+import threading
 from lime.lime_tabular import LimeTabularExplainer
 
 
@@ -31,6 +32,7 @@ class LimeExplainer:
         self.class_names = class_names
         self.lime_cfg = lime_cfg
         self.base_seed = base_seed
+        self._lock = threading.Lock()
 
         self.explainer = LimeTabularExplainer(
             training_data=background,
@@ -46,6 +48,11 @@ class LimeExplainer:
         return self.model.predict_proba(df_x)
 
     def explain(self, normalized_row: pd.DataFrame, predicted_label: str, flow_seed_key: int, top_k: int = 5) -> dict:
+        # LIME owns mutable RNG state: serialize calls, including diagnostic capture.
+        with self._lock:
+            return self._explain_locked(normalized_row, predicted_label, flow_seed_key, top_k)
+
+    def _explain_locked(self, normalized_row, predicted_label, flow_seed_key, top_k):
         """normalized_row: DataFrame 1 dòng, đúng 78 cột, đúng thứ tự.
         flow_seed_key: số nguyên dùng để seed riêng cho flow này (vd hash alert_id),
         giữ đúng nguyên tắc RQ2 "random_state cố định THEO TỪNG FLOW" để tái lập được
@@ -56,12 +63,27 @@ class LimeExplainer:
         flow_seed = (self.base_seed * 1_000_003 + flow_seed_key) % (2 ** 31 - 1)
         set_lime_explainer_seed(self.explainer, flow_seed)
 
-        exp = self.explainer.explain_instance(
-            row, self._predict_proba_fn,
-            num_features=self.lime_cfg["num_features"],
-            num_samples=self.lime_cfg["num_samples"],
-            labels=[class_idx],
-        )
+        diagnostics = {}
+        original = self.explainer.base.explain_instance_with_data
+
+        def inspect_neighborhood(data, labels, distances, label, *args, **kwargs):
+            weights = self.explainer.base.kernel_fn(distances)
+            total = float(weights.sum())
+            squared = float(weights @ weights)
+            diagnostics.update(samples=len(weights), nonzero_weights=int(np.count_nonzero(weights)),
+                effective_sample_size=total * total / squared if squared else 0.0,
+                max_other_weight=float(weights[1:].max()) if len(weights) > 1 else 0.0,
+                min_other_distance=float(distances[1:].min()) if len(distances) > 1 else None)
+            return original(data, labels, distances, label, *args, **kwargs)
+
+        self.explainer.base.explain_instance_with_data = inspect_neighborhood
+        try:
+            exp = self.explainer.explain_instance(
+                row, self._predict_proba_fn,
+                num_features=self.lime_cfg['num_features'],
+                num_samples=self.lime_cfg['num_samples'], labels=[class_idx])
+        finally:
+            self.explainer.base.explain_instance_with_data = original
 
         local_r2 = exp.score[class_idx] if isinstance(exp.score, dict) else exp.score
         weights = exp.as_list(label=class_idx)  # [(feature_desc, weight), ...] đã sắp theo |weight| giảm dần
@@ -70,8 +92,22 @@ class LimeExplainer:
             for desc, w in weights[:top_k]
         ]
 
+        status = 'ok'
+        if diagnostics['effective_sample_size'] < 2:
+            status = 'insufficient_neighborhood'
+        elif not any(w != 0 for _, w in weights):
+            status = 'zero_coefficients'
+        elif not np.isfinite(local_r2):
+            status = 'undefined_fit'
+        diagnostics['raw_local_r2'] = float(local_r2) if np.isfinite(local_r2) else None
+        diagnostics['raw_top_k'] = top_k_list
+        # These are validity checks, not new A/B thresholds or a claim of accuracy.
+        diagnostics['status'] = status
+
         return {
             "class_explained": predicted_label,
-            "local_r2": float(local_r2),
-            "top_k": top_k_list,
+            "local_r2": float(local_r2) if status == 'ok' else None,
+            "top_k": top_k_list if status == 'ok' else [],
+            "status": status,
+            "diagnostics": diagnostics,
         }

@@ -97,6 +97,17 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Bổ sung theo test PCAP: LIME và đối chứng (16/10/2026)
+
+- [x] Xác định LIME toàn trọng số 0: 999/1000 mẫu lân cận có kernel weight bằng 0; cỡ mẫu hiệu dụng bằng 1.
+- [x] Lưu chẩn đoán; không công bố R²/Jaccard/Top-5 có ý nghĩa khi LIME suy biến; nhận diện kết quả cũ toàn 0 mà không sửa lịch sử DB.
+- [x] Khóa RNG LIME khi có nhiều request đồng thời để giữ tái lập theo flow.
+- [x] Tab đối chứng đủ 78 đặc trưng, nền LIME và P05/median/P95 tập B theo nhãn; số mẫu/nguồn/giới hạn ghi rõ.
+- [x] Test số học bình thường/suy biến/hằng, đa luồng và kết quả legacy; test API/UI/CSV/PCAP bằng DB tạm.
+- [ ] Đánh giá riêng độ tương thích định nghĩa đặc trưng extractor live với dataset train; chưa thay extractor hoặc cấu hình RQ2 để ép LIME có thanh.
+
+Xem [báo cáo kỹ thuật và cách sử dụng](lime_validity_and_comparison.md). Đây là sửa tính trung thực của kết quả/UI, không phải tuyên bố đã khắc phục dịch chuyển phân bố traffic thật.
+
 | Ngày | Mục | Trạng thái | Bằng chứng/ghi chú |
 |---|---|---|---|
 | 16/10/2026 | Lập kế hoạch theo ảnh test live và tài liệu kiến trúc | Xong | Chưa sửa code |

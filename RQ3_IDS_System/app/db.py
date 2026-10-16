@@ -93,7 +93,7 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
         'FlowRecord': {'capture_run_id': 'TEXT', 'run_name': 'TEXT', 'src_ip': 'TEXT',
                        'dst_ip': 'TEXT', 'src_port': 'INTEGER', 'flow_timestamp_utc': 'TEXT'},
         'AlertRecord': {'explanation_status': "TEXT DEFAULT 'unknown_legacy'"},
-        'Reliability': {'lime_local_r2': 'REAL'},
+        'Reliability': {'lime_local_r2': 'REAL', 'lime_diagnostics_json': 'TEXT'},
     }.items():
         existing = set(table_columns(conn, table))
         for name, datatype in fields.items():
