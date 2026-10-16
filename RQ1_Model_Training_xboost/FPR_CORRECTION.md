@@ -40,5 +40,6 @@ Bao phủ ma trận nhiều lớp bất đối xứng, đổi thứ tự Benign,
 
 - Tuning dùng test để chọn cấu hình; chưa sửa thiết kế train/validation/test trong thay đổi này.
 - Đường dẫn huấn luyện cũ trong hai script chưa phù hợp bố cục hiện tại; không chạy chúng chỉ để cập nhật metric. Dùng lệnh kiểm thử trên, không kích hoạt train.
-- DOCX xuất trước đây có thể còn nhãn FPR cũ; chưa chỉnh DOCX. Khi cập nhật luận văn cần dùng đính chính này.
+- Đã đính chính 4 DOCX XGBoost (báo cáo thực nghiệm, tổng hợp RF/XGBoost, giải thích chỉ số, cẩm nang) và báo cáo tổng hợp dataset 3.5M. Đổi tên cột tuning thành FNR; sửa FPR XGBoost thành 0.2324%; đánh dấu FPR RF chưa đối chiếu và bỏ kết luận chênh lệch không được xác minh. Các DOCX khác không có lỗi FPR này được giữ nguyên.
+- Kiểm tra cấu trúc ZIP/XML và nội dung hoàn tất; không đổi ảnh, styles hoặc các part ngoài document.xml. Bản gốc lưu tại thư mục tạm `ids_fpr_word_qa/originals`, đồng thời bản tracked có thể khôi phục bằng Git. Render trực quan đang bị chặn vì bộ runtime thiếu LibreOffice/soffice.exe; chưa xác nhận bố cục từng trang sau sửa.
 - PCAP chưa có ground truth xác minh không được dùng để tính FPR.
