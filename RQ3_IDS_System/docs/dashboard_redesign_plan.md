@@ -97,6 +97,16 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Audit hai PCAP theo yêu cầu người dùng (16/10/2026)
+
+- [x] Đọc 92 flow, tính lại model: 92/92 khớp nhãn/xác suất; trích lại PCAP: 59/59 và 33/33 khớp 78 đặc trưng.
+- [x] 8/8 SHAP khớp và additivity sai số tối đa ≈2,861e-6; 8/8 LIME ESS≈1.
+- [x] Phân biệt 2 flow có weight underflow về 0 và 6 flow có weight khác 0 nhưng cực nhỏ; không kết luận đồng loạt 999 weight bằng 0.
+- [x] Kiểm tra cờ/bulk trên toàn bộ 2,8 triệu dòng train và 13 mẫu LIME đối chứng.
+- [ ] Chưa thay adapter đặc trưng/cấu hình LIME; cần một bước sửa phương pháp có đánh giá riêng. Sửa UI trước đó chỉ làm rõ tính không hợp lệ.
+
+Chi tiết: [pcap_xai_audit_20261016.md](pcap_xai_audit_20261016.md). Lệnh kiểm tra chỉ đọc: `scripts/stage17_audit_pcap_xai.py`.
+
 ### Điều chỉnh theo phản hồi: cần hiểu tên đặc trưng (16/10/2026)
 
 - [x] Định nghĩa tiếng Việt + đơn vị + lưu ý cho đủ 78 tên đầu vào, dùng chung API/UI; không còn placeholder trong danh mục.
