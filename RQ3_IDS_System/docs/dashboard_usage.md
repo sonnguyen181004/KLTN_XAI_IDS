@@ -46,6 +46,8 @@ Lần API mới khởi động sẽ tự thêm cột và index vào DB hiện c�
 
 ## Một lượt live mới, tránh trộn dữ liệu cũ
 
+Nếu terminal capture không nhận Ctrl+C ở bản cũ, khởi chạy phiên mới sau cập nhật script. Bản mới tránh `join()` vô hạn, xử lý yêu cầu dừng rồi flush. Có thể thêm `--seconds 60` vào lệnh capture để tự dừng sau một phút; dùng tên CSV mới và cùng tên đó cho feeder. Xem [chi tiết sửa dừng capture](operations.md). Không cần đổi model hoặc reset DB.
+
 ### Giới hạn hàng đợi SHAP
 
 Cập nhật 16/10/2026: `api.max_explain_queue` tăng từ 50 lên **200 tác vụ chờ**, ngoài tác vụ worker đang xử lý. Khởi động lại API để áp dụng; dashboard đọc giới hạn từ `/explain_queue_status`, nên sẽ hiện `…/200` sau khi API mới lên.
