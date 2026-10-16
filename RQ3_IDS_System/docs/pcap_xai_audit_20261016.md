@@ -87,3 +87,20 @@ Hướng triển khai cần kiểm chứng riêng, không chỉ đổi văn bả
 4. UI phải đọc số liệu thực của mỗi flow để phân biệt weight=0 với weight cực nhỏ; không dùng kết luận của flow bulk cho flow lệch cờ TCP.
 
 Không kết luận accuracy/FPR live từ 92 flow không có ground truth.
+
+## Kiểm tra sâu sampling — stage18
+
+Chạy `python -B RQ3_IDS_System/scripts/stage18_probe_lime_sampling.py`: 8 cảnh báo × 3 seed × 2 chế độ = 48 lần giải thích. Seed đầu giống production; hai seed sau là kiểm tra độ nhạy. Chỉ đổi `sample_around_instance` trên explainer trong bộ nhớ, không đổi config/model/DB. Đọc mã LIME đang cài xác nhận `False` sinh quanh mean nền, `True` sinh quanh instance; scale và kernel giữ nguyên.
+
+| Chế độ | Kết quả 24 lần | ESS | Nhận xét |
+|---|---|---|---|
+| RQ2 hiện tại, quanh mean nền | 24/24 insufficient_neighborhood | ≈1 | Đổi seed không giải quyết suy biến |
+| Thử nghiệm quanh instance | 24/24 vượt guard số học | 416–500 | Không đồng nghĩa giải thích đáng tin |
+
+Thử nghiệm quanh instance có R² khoảng 0,245–0,636; sai số tuyệt đối giữa dự đoán surrogate LIME tại flow và xác suất model khoảng 0,011–0,729 (1,1–72,9 điểm phần trăm). Riêng flow b1e78518: model 96,8877%, surrogate 45,6653–47,2820%, ESS 472–483 và R² 0,582–0,597. Đây là ví dụ rõ rằng ESS tốt/R² dương vẫn không đủ xác nhận fidelity tại flow.
+
+Top-5 Jaccard trung bình giữa ba seed của từng flow chỉ 0,204–0,369 trong chế độ quanh instance; không diễn giải thành độ chính xác. 100% mẫu nhân tạo (không tính dòng gốc) ở cả hai chế độ có ít nhất một cờ TCP hoặc Protocol mang giá trị không nguyên. Đây là bằng chứng sampling chưa tôn trọng miền biến rời rạc; kiểm tra này chưa bao phủ mọi ràng buộc chéo giữa 78 đặc trưng.
+
+Kết luận: không thể chỉ bật `sample_around_instance=True` rồi coi LIME đã sửa xong. Cần thiết kế/đánh giá sampling phù hợp miền đặc trưng và kiểm tra fidelity tại điểm gốc, độ ổn định cùng tính hợp lệ mẫu. Guard hiện tại chỉ chống suy biến tối thiểu, không phải chứng nhận chất lượng. Chưa triển khai chế độ thử nghiệm vào API/UI.
+
+Môi trường vẫn báo cảnh báo pickle XGBoost khác phiên bản và LabelEncoder sklearn 1.8.0 so với runtime 1.9.1; audit không tự nâng/hạ phiên bản. Đây là vấn đề tái lập riêng cần quản lý, chưa có bằng chứng nó là nguyên nhân collapse trọng số nêu trên.
