@@ -1,7 +1,7 @@
 """Hàng đợi giải thích bất đồng bộ (đúng kiến trúc Làn B, bước "Vào hàng đợi" +
 "Lưu tác vụ XAI"): /predict TẠO Alert và TRẢ LỜI NGAY, không chờ SHAP tính xong.
 SHAP được tính trong 1 THREAD NỀN riêng, đọc việc cần làm từ 1 hàng đợi có giới
-hạn (mặc định 50, lấy từ config `api.max_explain_queue`).
+hạn (hiện cấu hình 200 tác vụ chờ, lấy từ `api.max_explain_queue`).
 
 Nếu hàng đợi ĐẦY: bỏ việc giải thích (không chặn, không chờ), NHƯNG Alert vẫn
 đã được tạo và trả về cho analyst từ trước — đúng nguyên tắc "đầy thì bỏ giải

@@ -97,6 +97,16 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Mở rộng hàng đợi SHAP theo yêu cầu (16/10/2026)
+
+- [x] Tăng cấu hình từ 50 lên 200 tác vụ chờ; không đổi worker hoặc luật khi queue đầy.
+- [x] UI tiếp tục đọc `maxsize` qua API, không gán cứng mẫu số; bảng vẫn 50 flow/trang.
+- [x] Cập nhật README, hướng dẫn chạy và kế hoạch RQ3; giữ số liệu test queue 50 trong nhật ký lịch sử.
+- [x] Kiểm tra `submit()` khi worker dừng trong bộ nhớ: nhận đủ 200 tác vụ, tác vụ 201 trả `dropped_queue_full`, queue vẫn 200; không ghi DB. Chạy lại `stage14_test_dashboard_redesign.py`: toàn bộ regression API/UI/CSV/PCAP PASS trên DB tạm với cấu hình mới. Đây không phải benchmark tải.
+- [ ] Đo tải để chọn dung lượng phù hợp; chưa cải thiện tốc độ xử lý, retry feeder hoặc khôi phục queue RAM.
+
+Áp dụng bằng khởi động lại API. Đây là thay đổi cấu hình dung lượng, không phải kết quả benchmark hoặc sửa độ tin cậy giao nhận dữ liệu.
+
 ### Audit hai PCAP theo yêu cầu người dùng (16/10/2026)
 
 - [x] Đọc 92 flow, tính lại model: 92/92 khớp nhãn/xác suất; trích lại PCAP: 59/59 và 33/33 khớp 78 đặc trưng.

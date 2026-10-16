@@ -2,7 +2,7 @@
   1) /predict phải trả lời NHANH (không còn +40ms SHAP chặn trong response).
   2) Response có explanation_status="queued"; SHAP CHƯA có ngay, nhưng xuất hiện
      trong DB sau một chút (worker nền xử lý xong).
-  3) Dội 60 flow tấn công LIÊN TỤC (nhiều hơn maxsize=50) để ép hàng đợi đầy ->
+  3) Dội maxsize + 20 flow tấn công đồng thời theo dung lượng trong config ->
      phải có ít nhất 1 flow bị "dropped_queue_full", NHƯNG Alert của flow đó vẫn
      phải tồn tại trong DB (không mất cảnh báo, chỉ mất phần giải thích).
 """
