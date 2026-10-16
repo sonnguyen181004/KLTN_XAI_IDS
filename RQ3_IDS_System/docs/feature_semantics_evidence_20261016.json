@@ -1,0 +1,2043 @@
+{
+  "scope": "Row-wise hypotheses only; not historical V3 parity certification or accuracy measurement",
+  "source_sha256": {
+    "RQ3_IDS_System\\scripts\\stage23_audit_feature_semantics.py": "9ccdb5ad3d227f00c29a4758eb745b7dc475380a457a8e0a0f0889b2bae9651b",
+    "RQ3_IDS_System\\app\\capture_adapter.py": "aa14961cf217e0ea398a10c685f11fa3fa64985daeeb8d1db02acd2f30f00f87"
+  },
+  "tolerance": {
+    "relative": 2e-05,
+    "absolute": 0.001
+  },
+  "datasets": {
+    "train_set": {
+      "path": "dataset\\CICID-2018_processed\\train_set.parquet",
+      "rows": 2800000,
+      "file_bytes": 305095727,
+      "file_sha256": "baa16f4546f39cf7fdf6383453c053c3d9ae8fd33622cdbe2ff817292fc34b32",
+      "schema_sha256": "5eef2cded46c5b2962eaf7a5c4d904f5a82abb05b4f6af24a9d0ebb3af8f7d3b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 2800000,
+          "matched": 2800000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 35079,
+          "matched": 0,
+          "unmatched": 35079,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 35079,
+          "matched": 35079,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 463061,
+          "matched": 0,
+          "unmatched": 463061,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 463061,
+          "matched": 450678,
+          "unmatched": 12383,
+          "match_fraction": 0.9732583828048572
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 2800000,
+          "matched": 828708,
+          "unmatched": 1971292,
+          "match_fraction": 0.2959671428571429
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 2800000,
+          "matched": 2800000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 1815362,
+          "matched": 1815362,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 1924318,
+          "matched": 1924308,
+          "unmatched": 10,
+          "match_fraction": 0.9999948033537076
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 59954,
+          "matched": 0,
+          "unmatched": 59954,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 59954,
+          "matched": 59954,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 67362,
+          "matched": 0,
+          "unmatched": 67362,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 67362,
+          "matched": 66771,
+          "unmatched": 591,
+          "match_fraction": 0.9912265075264987
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 1924318,
+          "matched": 259805,
+          "unmatched": 1664513,
+          "match_fraction": 0.13501146899836722
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 1924318,
+          "matched": 1924318,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 1673230,
+          "matched": 1673220,
+          "unmatched": 10,
+          "match_fraction": 0.999994023535318
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 1057559,
+          "matched": 1057559,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 1057559,
+          "matched": 0,
+          "unmatched": 1057559,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 2800000,
+          "matched": 1003203,
+          "unmatched": 1796797,
+          "match_fraction": 0.35828678571428574
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 2800000,
+          "matched": 985321,
+          "unmatched": 1814679,
+          "match_fraction": 0.35190035714285717
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 2800000,
+          "matched": 2800000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 1816319,
+          "matched": 1640,
+          "unmatched": 1814679,
+          "match_fraction": 0.0009029250919029092
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 2800000,
+          "matched": 2799990,
+          "unmatched": 10,
+          "match_fraction": 0.9999964285714286
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 622298,
+          "matched": 622298,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 622298,
+          "matched": 622298,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 826983,
+          "matched": 826983,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "test_set": {
+      "path": "dataset\\CICID-2018_processed\\test_set.parquet",
+      "rows": 700000,
+      "file_bytes": 76644576,
+      "file_sha256": "c8df6be5d6bb779b6edf0efcf765470130c5119d321c029f0cec490753cfd366",
+      "schema_sha256": "5eef2cded46c5b2962eaf7a5c4d904f5a82abb05b4f6af24a9d0ebb3af8f7d3b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 700000,
+          "matched": 700000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 8814,
+          "matched": 0,
+          "unmatched": 8814,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 8814,
+          "matched": 8814,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 115780,
+          "matched": 0,
+          "unmatched": 115780,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 115780,
+          "matched": 112772,
+          "unmatched": 3008,
+          "match_fraction": 0.9740196925202971
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 700000,
+          "matched": 206882,
+          "unmatched": 493118,
+          "match_fraction": 0.2955457142857143
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 700000,
+          "matched": 700000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 454049,
+          "matched": 454049,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 481750,
+          "matched": 481749,
+          "unmatched": 1,
+          "match_fraction": 0.9999979242345615
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 14901,
+          "matched": 0,
+          "unmatched": 14901,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 14901,
+          "matched": 14901,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 16766,
+          "matched": 0,
+          "unmatched": 16766,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 16766,
+          "matched": 16611,
+          "unmatched": 155,
+          "match_fraction": 0.9907550996063462
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 481750,
+          "matched": 65142,
+          "unmatched": 416608,
+          "match_fraction": 0.13521951219512196
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 481750,
+          "matched": 481750,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 418546,
+          "matched": 418545,
+          "unmatched": 1,
+          "match_fraction": 0.9999976107763543
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 264686,
+          "matched": 264686,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 264686,
+          "matched": 0,
+          "unmatched": 264686,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 700000,
+          "matched": 250530,
+          "unmatched": 449470,
+          "match_fraction": 0.3579
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 700000,
+          "matched": 246107,
+          "unmatched": 453893,
+          "match_fraction": 0.35158142857142854
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 700000,
+          "matched": 700000,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 454300,
+          "matched": 407,
+          "unmatched": 453893,
+          "match_fraction": 0.0008958837772397094
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 700000,
+          "matched": 699999,
+          "unmatched": 1,
+          "match_fraction": 0.9999985714285714
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 155488,
+          "matched": 155488,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 155488,
+          "matched": 155488,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 206246,
+          "matched": 206246,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-14-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-14-2018_clean.parquet",
+      "rows": 819126,
+      "file_bytes": 81884901,
+      "file_sha256": "c706666eeba2bf2256913b8159dd27da9832ada9687fa3a087e4262e6667162d",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 819126,
+          "matched": 819126,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 12797,
+          "matched": 0,
+          "unmatched": 12797,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 12797,
+          "matched": 12797,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 83963,
+          "matched": 0,
+          "unmatched": 83963,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 83963,
+          "matched": 78155,
+          "unmatched": 5808,
+          "match_fraction": 0.9308266736538714
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 819126,
+          "matched": 175150,
+          "unmatched": 643976,
+          "match_fraction": 0.21382546763257423
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 819126,
+          "matched": 819126,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 591127,
+          "matched": 591127,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 676192,
+          "matched": 676192,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 1693,
+          "matched": 0,
+          "unmatched": 1693,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 1693,
+          "matched": 1693,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 2760,
+          "matched": 0,
+          "unmatched": 2760,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 2760,
+          "matched": 2630,
+          "unmatched": 130,
+          "match_fraction": 0.9528985507246377
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 676192,
+          "matched": 94388,
+          "unmatched": 581804,
+          "match_fraction": 0.1395875727603994
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 676192,
+          "matched": 676192,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 542337,
+          "matched": 542337,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 293376,
+          "matched": 293376,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 293376,
+          "matched": 0,
+          "unmatched": 293376,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 819126,
+          "matched": 236386,
+          "unmatched": 582740,
+          "match_fraction": 0.28858319721263886
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 819126,
+          "matched": 227727,
+          "unmatched": 591399,
+          "match_fraction": 0.27801217395126027
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 819126,
+          "matched": 819126,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 591399,
+          "matched": 0,
+          "unmatched": 591399,
+          "match_fraction": 0.0
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 819126,
+          "matched": 819126,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 207338,
+          "matched": 207338,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 207338,
+          "matched": 207338,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 123045,
+          "matched": 123045,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-15-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-15-2018_clean.parquet",
+      "rows": 1037987,
+      "file_bytes": 110189508,
+      "file_sha256": "6b755495915ff287ddfc48dffbbbdc5ae15f89e692459b5071b74f7a7af6e092",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 1037987,
+          "matched": 1037987,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 19787,
+          "matched": 0,
+          "unmatched": 19787,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 19787,
+          "matched": 19787,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 134797,
+          "matched": 0,
+          "unmatched": 134797,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 134797,
+          "matched": 125940,
+          "unmatched": 8857,
+          "match_fraction": 0.9342937899211406
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 1037987,
+          "matched": 270151,
+          "unmatched": 767836,
+          "match_fraction": 0.2602643385707143
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 1037987,
+          "matched": 1037987,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 764945,
+          "matched": 764945,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 795511,
+          "matched": 795511,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 2966,
+          "matched": 0,
+          "unmatched": 2966,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 2966,
+          "matched": 2966,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 19598,
+          "matched": 0,
+          "unmatched": 19598,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 19598,
+          "matched": 19309,
+          "unmatched": 289,
+          "match_fraction": 0.9852535973058475
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 795511,
+          "matched": 88219,
+          "unmatched": 707292,
+          "match_fraction": 0.11089601526565943
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 795511,
+          "matched": 795511,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 680269,
+          "matched": 680269,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 329153,
+          "matched": 329153,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 329153,
+          "matched": 0,
+          "unmatched": 329153,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 1037987,
+          "matched": 285093,
+          "unmatched": 752894,
+          "match_fraction": 0.2746595092231406
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 1037987,
+          "matched": 272758,
+          "unmatched": 765229,
+          "match_fraction": 0.2627759307197489
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 1037987,
+          "matched": 1037987,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 765229,
+          "matched": 0,
+          "unmatched": 765229,
+          "match_fraction": 0.0
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 1037987,
+          "matched": 1037987,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 345448,
+          "matched": 345448,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 345448,
+          "matched": 345448,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 213917,
+          "matched": 213917,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-16-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-16-2018_clean.parquet",
+      "rows": 900988,
+      "file_bytes": 76351611,
+      "file_sha256": "e0e2056fe786379d2ed7b68c5b6042451fe567bed0fff694a2adb60f7a1da92b",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 900988,
+          "matched": 900988,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 21,
+          "matched": 0,
+          "unmatched": 21,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 21,
+          "matched": 21,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 75184,
+          "matched": 0,
+          "unmatched": 75184,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 75184,
+          "matched": 75183,
+          "unmatched": 1,
+          "match_fraction": 0.9999866992977229
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 900988,
+          "matched": 32,
+          "unmatched": 900956,
+          "match_fraction": 3.551656625837414e-05
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 900988,
+          "matched": 900988,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 467886,
+          "matched": 467886,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 489760,
+          "matched": 489760,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 0,
+          "matched": 0,
+          "unmatched": 0,
+          "match_fraction": null
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 0,
+          "matched": 0,
+          "unmatched": 0,
+          "match_fraction": null
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 336623,
+          "matched": 0,
+          "unmatched": 336623,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 336623,
+          "matched": 336622,
+          "unmatched": 1,
+          "match_fraction": 0.999997029317664
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 489760,
+          "matched": 19493,
+          "unmatched": 470267,
+          "match_fraction": 0.03980112708265273
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 489760,
+          "matched": 489760,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 467857,
+          "matched": 467857,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 450900,
+          "matched": 450900,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 450900,
+          "matched": 0,
+          "unmatched": 450900,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 900988,
+          "matched": 433100,
+          "unmatched": 467888,
+          "match_fraction": 0.4806945264531825
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 900988,
+          "matched": 433100,
+          "unmatched": 467888,
+          "match_fraction": 0.4806945264531825
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 900988,
+          "matched": 900988,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 467888,
+          "matched": 0,
+          "unmatched": 467888,
+          "match_fraction": 0.0
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 900988,
+          "matched": 900988,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 11,
+          "matched": 11,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 11,
+          "matched": 11,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 411114,
+          "matched": 411114,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-20-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-20-2018_clean.parquet",
+      "rows": 7884555,
+      "file_bytes": 845765072,
+      "file_sha256": "a6d2e4e97f39ae6d59bd3a8218eb00e07c6df511f0f32451919f4ea9cd6f5307",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 7884555,
+          "matched": 7884555,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 142453,
+          "matched": 0,
+          "unmatched": 142453,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 142453,
+          "matched": 142453,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 1190108,
+          "matched": 0,
+          "unmatched": 1190108,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 1190108,
+          "matched": 1142275,
+          "unmatched": 47833,
+          "match_fraction": 0.9598078493716536
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 7884555,
+          "matched": 2120119,
+          "unmatched": 5764436,
+          "match_fraction": 0.2688952008071476
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 7884555,
+          "matched": 7884555,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 5965876,
+          "matched": 5965876,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 6223862,
+          "matched": 6223862,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 16056,
+          "matched": 0,
+          "unmatched": 16056,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 16056,
+          "matched": 16056,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 52179,
+          "matched": 0,
+          "unmatched": 52179,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 52179,
+          "matched": 50432,
+          "unmatched": 1747,
+          "match_fraction": 0.9665190977213055
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 6223862,
+          "matched": 667672,
+          "unmatched": 5556190,
+          "match_fraction": 0.10727615747264319
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 6223862,
+          "matched": 6223862,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 5427262,
+          "matched": 5427262,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 3053628,
+          "matched": 3053628,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 3053628,
+          "matched": 1,
+          "unmatched": 3053627,
+          "match_fraction": 3.2747931313178945e-07
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 7884555,
+          "matched": 1969709,
+          "unmatched": 5914846,
+          "match_fraction": 0.2498186644648937
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 7884555,
+          "matched": 1917546,
+          "unmatched": 5967009,
+          "match_fraction": 0.24320281867524546
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 7884555,
+          "matched": 7884555,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 5967733,
+          "matched": 724,
+          "unmatched": 5967009,
+          "match_fraction": 0.00012131910056968032
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 7884555,
+          "matched": 7884555,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 2508368,
+          "matched": 2508368,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 2508368,
+          "matched": 2508368,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 1494092,
+          "matched": 1494092,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-21-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-21-2018_clean.parquet",
+      "rows": 1031013,
+      "file_bytes": 57362405,
+      "file_sha256": "3bcf806a954a75cb7a261f2b5369dfd87df09f25948c7123ddcf8bac9dc758a7",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 1031013,
+          "matched": 1031013,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 8,
+          "matched": 0,
+          "unmatched": 8,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 8,
+          "matched": 8,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 163782,
+          "matched": 0,
+          "unmatched": 163782,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 163782,
+          "matched": 163765,
+          "unmatched": 17,
+          "match_fraction": 0.999896203490005
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 1031013,
+          "matched": 504857,
+          "unmatched": 526156,
+          "match_fraction": 0.4896708382920487
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 1031013,
+          "matched": 1031013,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 526028,
+          "matched": 526028,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 522594,
+          "matched": 522594,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 358524,
+          "matched": 0,
+          "unmatched": 358524,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 358524,
+          "matched": 358524,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 9,
+          "matched": 0,
+          "unmatched": 9,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 9,
+          "matched": 9,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 522594,
+          "matched": 358723,
+          "unmatched": 163871,
+          "match_fraction": 0.6864277048722335
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 522594,
+          "matched": 522594,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 522387,
+          "matched": 522387,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 522422,
+          "matched": 522422,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 522422,
+          "matched": 0,
+          "unmatched": 522422,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 1031013,
+          "matched": 508617,
+          "unmatched": 522396,
+          "match_fraction": 0.49331773702174464
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 1031013,
+          "matched": 506690,
+          "unmatched": 524323,
+          "match_fraction": 0.49144870142277547
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 1031013,
+          "matched": 1031013,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 526033,
+          "matched": 1710,
+          "unmatched": 524323,
+          "match_fraction": 0.003250746626162237
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 1031013,
+          "matched": 1031013,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 3641,
+          "matched": 3641,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 3641,
+          "matched": 3641,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 504730,
+          "matched": 504730,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-22-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-22-2018_clean.parquet",
+      "rows": 1039689,
+      "file_bytes": 112126564,
+      "file_sha256": "21e6bcce2e76198f41e26d122d646a5e9e4b38317e447029374c92e081059039",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 1039689,
+          "matched": 1039689,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 15319,
+          "matched": 0,
+          "unmatched": 15319,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 15319,
+          "matched": 15319,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 116891,
+          "matched": 0,
+          "unmatched": 116891,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 116891,
+          "matched": 109089,
+          "unmatched": 7802,
+          "match_fraction": 0.9332540571985867
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 1039689,
+          "matched": 320606,
+          "unmatched": 719083,
+          "match_fraction": 0.30836721365716097
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 1039689,
+          "matched": 1039689,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 739901,
+          "matched": 739901,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 764688,
+          "matched": 764688,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 3740,
+          "matched": 0,
+          "unmatched": 3740,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 3740,
+          "matched": 3740,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 2818,
+          "matched": 0,
+          "unmatched": 2818,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 2818,
+          "matched": 2702,
+          "unmatched": 116,
+          "match_fraction": 0.9588360539389638
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 764688,
+          "matched": 75373,
+          "unmatched": 689315,
+          "match_fraction": 0.09856699725901283
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 764688,
+          "matched": 764688,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 671759,
+          "matched": 671759,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 374125,
+          "matched": 374125,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 374125,
+          "matched": 0,
+          "unmatched": 374125,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 1039689,
+          "matched": 312011,
+          "unmatched": 727678,
+          "match_fraction": 0.3001003184606166
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 1039689,
+          "matched": 299088,
+          "unmatched": 740601,
+          "match_fraction": 0.28767063997022185
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 1039689,
+          "matched": 1039689,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 740601,
+          "matched": 0,
+          "unmatched": 740601,
+          "match_fraction": 0.0
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 1039689,
+          "matched": 1039689,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 305899,
+          "matched": 305899,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 305899,
+          "matched": 305899,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 247215,
+          "matched": 247215,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-23-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-23-2018_clean.parquet",
+      "rows": 1040251,
+      "file_bytes": 111594353,
+      "file_sha256": "b53ef728eac59bd0e9747030d5893497919e5811cddf5e9baf859a095abecf45",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 1040251,
+          "matched": 1040251,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 15922,
+          "matched": 0,
+          "unmatched": 15922,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 15922,
+          "matched": 15922,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 118760,
+          "matched": 0,
+          "unmatched": 118760,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 118760,
+          "matched": 111021,
+          "unmatched": 7739,
+          "match_fraction": 0.9348349612664196
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 1040251,
+          "matched": 329460,
+          "unmatched": 710791,
+          "match_fraction": 0.3167120243095176
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 1040251,
+          "matched": 1040251,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 728702,
+          "matched": 728702,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 756173,
+          "matched": 756173,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 2668,
+          "matched": 0,
+          "unmatched": 2668,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 2668,
+          "matched": 2668,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 3247,
+          "matched": 0,
+          "unmatched": 3247,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 3247,
+          "matched": 3075,
+          "unmatched": 172,
+          "match_fraction": 0.9470280258700339
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 756173,
+          "matched": 76653,
+          "unmatched": 679520,
+          "match_fraction": 0.10136966011745989
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 756173,
+          "matched": 756173,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 659519,
+          "matched": 659519,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 377169,
+          "matched": 377169,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 377169,
+          "matched": 1,
+          "unmatched": 377168,
+          "match_fraction": 2.65133136604546e-06
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 1040251,
+          "matched": 323950,
+          "unmatched": 716301,
+          "match_fraction": 0.3114152257484011
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 1040251,
+          "matched": 310884,
+          "unmatched": 729367,
+          "match_fraction": 0.29885479562144135
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 1040251,
+          "matched": 1040251,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 729371,
+          "matched": 4,
+          "unmatched": 729367,
+          "match_fraction": 5.484177462498509e-06
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 1040251,
+          "matched": 1040251,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 292293,
+          "matched": 292293,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 292293,
+          "matched": 292293,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 256691,
+          "matched": 256691,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/02-28-2018_clean": {
+      "path": "dataset\\CICID-2018\\02-28-2018_clean.parquet",
+      "rows": 469011,
+      "file_bytes": 45630663,
+      "file_sha256": "e9d79595ff64b2def3b528caf055022cca82aae56a7b51d4a1f00719f5504c09",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 469011,
+          "matched": 469011,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 7394,
+          "matched": 0,
+          "unmatched": 7394,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 7394,
+          "matched": 7394,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 42789,
+          "matched": 0,
+          "unmatched": 42789,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 42789,
+          "matched": 40154,
+          "unmatched": 2635,
+          "match_fraction": 0.9384187524831148
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 469011,
+          "matched": 106792,
+          "unmatched": 362219,
+          "match_fraction": 0.22769615211583524
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 469011,
+          "matched": 469011,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 330501,
+          "matched": 330501,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 393618,
+          "matched": 393608,
+          "unmatched": 10,
+          "match_fraction": 0.9999745946577646
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 2568,
+          "matched": 0,
+          "unmatched": 2568,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 2568,
+          "matched": 2568,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 5242,
+          "matched": 0,
+          "unmatched": 5242,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 5242,
+          "matched": 4956,
+          "unmatched": 286,
+          "match_fraction": 0.9454406714994277
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 393618,
+          "matched": 96326,
+          "unmatched": 297292,
+          "match_fraction": 0.24471949961637934
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 393618,
+          "matched": 393618,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 291286,
+          "matched": 291276,
+          "unmatched": 10,
+          "match_fraction": 0.9999656694794806
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 147243,
+          "matched": 147243,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 147243,
+          "matched": 0,
+          "unmatched": 147243,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 469011,
+          "matched": 142663,
+          "unmatched": 326348,
+          "match_fraction": 0.3041783668186887
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 469011,
+          "matched": 138324,
+          "unmatched": 330687,
+          "match_fraction": 0.2949269846549441
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 469011,
+          "matched": 469011,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 330692,
+          "matched": 5,
+          "unmatched": 330687,
+          "match_fraction": 1.511980936944347e-05
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 469011,
+          "matched": 469001,
+          "unmatched": 10,
+          "match_fraction": 0.9999786785384565
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 152206,
+          "matched": 152206,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 152206,
+          "matched": 152206,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 63557,
+          "matched": 63557,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/03-01-2018_clean": {
+      "path": "dataset\\CICID-2018\\03-01-2018_clean.parquet",
+      "rows": 328092,
+      "file_bytes": 31020044,
+      "file_sha256": "7dbee5687e1c2576db78b698c8d13615bbdd8f661318d60b936b7de14409509f",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 328092,
+          "matched": 328092,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 5531,
+          "matched": 0,
+          "unmatched": 5531,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 5531,
+          "matched": 5531,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 27607,
+          "matched": 0,
+          "unmatched": 27607,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 27607,
+          "matched": 27217,
+          "unmatched": 390,
+          "match_fraction": 0.9858731481146086
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 328092,
+          "matched": 69745,
+          "unmatched": 258347,
+          "match_fraction": 0.21257756970605807
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 328092,
+          "matched": 328092,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 228474,
+          "matched": 228474,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 281068,
+          "matched": 281050,
+          "unmatched": 18,
+          "match_fraction": 0.9999359585580714
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 1629,
+          "matched": 0,
+          "unmatched": 1629,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 1629,
+          "matched": 1629,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 3395,
+          "matched": 0,
+          "unmatched": 3395,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 3395,
+          "matched": 2975,
+          "unmatched": 420,
+          "match_fraction": 0.8762886597938144
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 281068,
+          "matched": 70999,
+          "unmatched": 210069,
+          "match_fraction": 0.25260435197176484
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 281068,
+          "matched": 281068,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 204039,
+          "matched": 204021,
+          "unmatched": 18,
+          "match_fraction": 0.9999117815711702
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 103845,
+          "matched": 103845,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 103845,
+          "matched": 0,
+          "unmatched": 103845,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 328092,
+          "matched": 103272,
+          "unmatched": 224820,
+          "match_fraction": 0.31476537068870925
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 328092,
+          "matched": 99435,
+          "unmatched": 228657,
+          "match_fraction": 0.3030704802311547
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 328092,
+          "matched": 328092,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 228658,
+          "matched": 1,
+          "unmatched": 228657,
+          "match_fraction": 4.3733435961129725e-06
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 328092,
+          "matched": 328074,
+          "unmatched": 18,
+          "match_fraction": 0.9999451373395267
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 110997,
+          "matched": 110997,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 110997,
+          "matched": 110997,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 38374,
+          "matched": 38374,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    },
+    "daily/03-02-2018_clean": {
+      "path": "dataset\\CICID-2018\\03-02-2018_clean.parquet",
+      "rows": 1039072,
+      "file_bytes": 94350035,
+      "file_sha256": "53862f7d5a5ab47c5e90141f1a296f9b84ec8995abb8028c11287663472c6c3d",
+      "schema_sha256": "5daf2af3abe78457df5d2133c152b4c6a5237b009b952e619b5cfb6bec060f5b",
+      "hypotheses": {
+        "Fwd.total_equals_n_times_mean": {
+          "eligible": 1039072,
+          "matched": 1039072,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_packet_std_population": {
+          "eligible": 11246,
+          "matched": 0,
+          "unmatched": 11246,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_packet_std_sample": {
+          "eligible": 11246,
+          "matched": 11246,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.two_interval_iat_std_population": {
+          "eligible": 213604,
+          "matched": 0,
+          "unmatched": 213604,
+          "match_fraction": 0.0
+        },
+        "Fwd.two_interval_iat_std_sample": {
+          "eligible": 213604,
+          "matched": 212867,
+          "unmatched": 737,
+          "match_fraction": 0.9965496900807101
+        },
+        "Fwd.header_equals_20_times_n": {
+          "eligible": 1039072,
+          "matched": 341134,
+          "unmatched": 697938,
+          "match_fraction": 0.3283064118752117
+        },
+        "Fwd.subflow_packets_equal_total": {
+          "eligible": 1039072,
+          "matched": 1039072,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Fwd.subflow_bytes_equal_total": {
+          "eligible": 710987,
+          "matched": 710987,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.total_equals_n_times_mean": {
+          "eligible": 730778,
+          "matched": 730754,
+          "unmatched": 24,
+          "match_fraction": 0.9999671582888374
+        },
+        "Bwd.two_packet_std_population": {
+          "eligible": 6130,
+          "matched": 0,
+          "unmatched": 6130,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_packet_std_sample": {
+          "eligible": 6130,
+          "matched": 6130,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.two_interval_iat_std_population": {
+          "eligible": 2259,
+          "matched": 0,
+          "unmatched": 2259,
+          "match_fraction": 0.0
+        },
+        "Bwd.two_interval_iat_std_sample": {
+          "eligible": 2259,
+          "matched": 1648,
+          "unmatched": 611,
+          "match_fraction": 0.7295263390880921
+        },
+        "Bwd.header_equals_20_times_n": {
+          "eligible": 730778,
+          "matched": 57374,
+          "unmatched": 673404,
+          "match_fraction": 0.07851084734351609
+        },
+        "Bwd.subflow_packets_equal_total": {
+          "eligible": 730778,
+          "matched": 730778,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "Bwd.subflow_bytes_equal_total": {
+          "eligible": 663341,
+          "matched": 663317,
+          "unmatched": 24,
+          "match_fraction": 0.9999638195136438
+        },
+        "ratio.fractional_cases_floor": {
+          "eligible": 461699,
+          "matched": 461699,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "ratio.fractional_cases_real": {
+          "eligible": 461699,
+          "matched": 0,
+          "unmatched": 461699,
+          "match_fraction": 0.0
+        },
+        "length.global_mean_times_n_equals_directional_total": {
+          "eligible": 1039072,
+          "matched": 336416,
+          "unmatched": 702656,
+          "match_fraction": 0.32376582181023067
+        },
+        "length.average_size_equals_global_mean": {
+          "eligible": 1039072,
+          "matched": 326917,
+          "unmatched": 712155,
+          "match_fraction": 0.314624010655662
+        },
+        "length.average_size_times_n_equals_mean_times_n_plus_one": {
+          "eligible": 1039072,
+          "matched": 1039072,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "length.nonzero_mean_average_size_equals_global_mean": {
+          "eligible": 712164,
+          "matched": 9,
+          "unmatched": 712155,
+          "match_fraction": 1.2637538544492561e-05
+        },
+        "length.candidate_extra_within_packet_min_max": {
+          "eligible": 1039072,
+          "matched": 1039048,
+          "unmatched": 24,
+          "match_fraction": 0.9999769024668166
+        },
+        "window.udp_Fwd_minus_one": {
+          "eligible": 202653,
+          "matched": 202653,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.udp_Bwd_minus_one": {
+          "eligible": 202653,
+          "matched": 202653,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        },
+        "window.tcp_missing_bwd_minus_one": {
+          "eligible": 289125,
+          "matched": 289125,
+          "unmatched": 0,
+          "match_fraction": 1.0
+        }
+      }
+    }
+  },
+  "packet_fixtures": {
+    "extractor_version": "rq3-cfm-0.5.0-fixes-v1",
+    "cicflowmeter_version": "0.5.0",
+    "assertions_passed": true,
+    "two_forward_packets": {
+      "payload_lengths": [
+        0,
+        100
+      ],
+      "frame_lengths": [
+        62,
+        154
+      ],
+      "transport_headers": [
+        28,
+        20
+      ],
+      "project_total": 216,
+      "project_header": 40,
+      "project_std": 46.0,
+      "population_frame_std": 46.0,
+      "sample_frame_std": 65.05382386916237,
+      "population_payload_std": 50.0,
+      "sample_payload_std": 70.71067811865476
+    },
+    "zero_initial_window_then_4096": {
+      "expected_first_observation": 0,
+      "project_value": 4096
+    },
+    "missing_backward_window": 0,
+    "udp_windows": [
+      0,
+      0
+    ],
+    "ratio_two_forward_one_backward": 0.5,
+    "subflow_with_1_9_second_gap": {
+      "packets": 3,
+      "bytes": 222
+    },
+    "five_payload_bulk": {
+      "fwd_byts_b_avg": 500.0,
+      "fwd_pkts_b_avg": 5.0,
+      "fwd_blk_rate_avg": 1249.999701976847
+    }
+  },
+  "limits": [
+    "No original paired PCAP/CSV or preprocessing pipeline located.",
+    "Data relations do not prove which historical extractor or cleaning operation produced them.",
+    "No runtime/default feature transformations, model or LIME changes."
+  ]
+}

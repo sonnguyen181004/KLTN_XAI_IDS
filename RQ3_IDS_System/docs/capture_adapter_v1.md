@@ -70,6 +70,8 @@ Cùng các kiểm tra version/IP, 78 cột, 15 lớp, đơn vị thời gian và
 
 ## Giới hạn và bước tiếp theo
 
+Audit tiếp theo đã thu hẹp một số quy ước bằng quan hệ trên toàn bộ train/test, không chỉ min/max: [hợp đồng ngữ nghĩa và bằng chứng mới](feature_semantics_contract_20261016.md). Có khác biệt sample SD độ dài, floor ratio, sentinel window và quan hệ hai mean; fixture còn xác nhận initial window=0 bị upstream ghi đè. Bản v1 chưa sửa những phần đó. Ngược lại subflow packet=số packet tổng khớp tập đủ điều kiện, chưa có căn cứ tự thay theo Java master.
+
 - Length/header vẫn dùng quy ước upstream Python; chưa chuyển sang payload/header transport của bản Java tham chiếu. Std, subflow, missing window và binary flag convention chưa chứng nhận tương thích dataset V3.
 - Không clip cờ >1 về 1, không zero bulk, không train lại model và không thay cấu hình LIME. LIME vẫn còn vấn đề đã ghi nhận.
 - Chỉ IPv4 TCP/UDP; packet ngoài phạm vi bị bỏ và đếm trong `ignored_packets`. BPF live cũng giới hạn phạm vi này.

@@ -153,7 +153,9 @@ Hướng dẫn: [reading_shap_lime.md](reading_shap_lime.md). Test `stage16_test
 - [x] Khóa RNG LIME khi có nhiều request đồng thời để giữ tái lập theo flow.
 - [x] Tab đối chứng đủ 78 đặc trưng, nền LIME và P05/median/P95 tập B theo nhãn; số mẫu/nguồn/giới hạn ghi rõ.
 - [x] Test số học bình thường/suy biến/hằng, đa luồng và kết quả legacy; test API/UI/CSV/PCAP bằng DB tạm.
-- [ ] Đánh giá riêng độ tương thích định nghĩa đặc trưng extractor live với dataset train; chưa thay extractor hoặc cấu hình RQ2 để ép LIME có thanh.
+- [x] Audit baseline và adapter v1: tái hiện/sửa 5 lỗi extractor; giữ cấu hình RQ2, không ép LIME có thanh.
+- [x] Audit quan hệ từng dòng: toàn bộ train/test và 10 daily cleaned; [hợp đồng ngữ nghĩa](feature_semantics_contract_20261016.md) kèm JSON/checksum và fixture.
+- [ ] Nghiệm thu tương thích ngữ nghĩa train/PCAP: chưa xong; còn khác SD, ratio, sentinel window, length/header, mean, cờ/bulk và nguồn preprocessing lịch sử.
 
 Xem [báo cáo kỹ thuật và cách sử dụng](lime_validity_and_comparison.md). Đây là sửa tính trung thực của kết quả/UI, không phải tuyên bố đã khắc phục dịch chuyển phân bố traffic thật.
 
@@ -175,7 +177,7 @@ Khi bắt đầu triển khai, cập nhật checkbox và nhật ký này sau t�
 
 ### Phần chưa nghiệm thu / giới hạn được giữ rõ
 
-- Chưa chạy một lượt Wi-Fi live mới sau cập nhật, chưa xác nhận tự-refresh/click bằng trình duyệt thật; AppTest đã chạy các nhánh UI.
+- Đã chạy Wi-Fi live 20s/100s trên DB tạm sau adapter v1 (xem báo cáo capture); chưa xác nhận tự-refresh/click bằng trình duyệt thật, AppTest đã chạy các nhánh UI.
 - Chưa chạy lại toàn bộ test bước 6–12; không đánh dấu tương thích toàn bộ chỉ dựa trên bộ smoke/regression mới.
 - UI hiện xếp theo lúc API nhận. Chế độ sắp xếp riêng theo timestamp gốc cho replay chưa thêm; vẫn xem được timestamp gốc trong chi tiết, không trộn với UTC.
 - Bộ lọc UI cung cấp toàn bộ lượt/5 phút/15 phút/1 giờ/hôm nay; khoảng tùy ý dùng API since/until, chưa có date-picker.
