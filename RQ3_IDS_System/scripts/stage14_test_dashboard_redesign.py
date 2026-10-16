@@ -130,7 +130,11 @@ def main():
                         assert explained['lime_local_r2'] is None and explained['agreement_jaccard5'] is None
                     comparison = get('/flows/' + real[1]['flow_id'] + '/comparison')
                     assert len(comparison['features']) == 78 and comparison['background_n'] == 2000
+                    assert all('Xem định nghĩa' not in r['meaning'] for r in comparison['features'])
                     assert any(r['benign']['n'] > 0 for r in comparison['features'])
+                    at.selectbox(key='feature_guide_' + real[1]['flow_id']).set_value('FIN Flag Cnt').run(timeout=30)
+                    assert not at.exception, at.exception
+                    assert any('không phải số cuộc tấn công' in element.value for element in at.markdown)
                     at.run(timeout=30)
                     assert at.session_state['selected_flow'] == real[1]['flow_id']
                     at.selectbox(key='run_choice').set_value('__all__').run(timeout=30)
@@ -186,7 +190,8 @@ def main():
                 with patch.dict(os.environ, {'IDS_API_URL': url}):
                     at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)
                     assert not at.exception, at.exception
-                    assert any('LIME chưa cung cấp' in item.value for item in at.warning)
+                    assert any('LIME chưa giải thích' in item.value for item in at.warning)
+                    assert any('không còn các ví dụ lân cận hữu ích' in item.value for item in at.markdown)
                     assert any(tab.label == 'Đối chứng đặc trưng' for tab in at.tabs)
                 print('PASS degenerate LIME guard, null R2/agreement, diagnostic UI and feature comparison')
             finally:

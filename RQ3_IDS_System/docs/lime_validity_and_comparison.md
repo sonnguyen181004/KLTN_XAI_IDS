@@ -1,5 +1,7 @@
 # LIME suy biến và đối chứng đặc trưng — 16/10/2026
 
+UI đã bổ sung [hướng dẫn bằng lời cho SHAP/LIME](reading_shap_lime.md): tra cứu tên đặc trưng thay vì buộc người dùng đọc bảng thống kê rộng. Nội dung kỹ thuật dưới đây vẫn giữ nguyên; không thay phương pháp tính LIME để phục vụ hiển thị.
+
 ## Bằng chứng từ PCAP người dùng
 
 Flow `4546093c-b3b1-400f-ba43-498f704b537b`, nguồn `tesst2.pcapng`, dự đoán Hulk khoảng 72,97%.

@@ -14,6 +14,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'app'))
 from ingestion_ui import render_ingestion
+from xai_reading_ui import explain_top_features, lime_problem, feature_guide
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
@@ -54,6 +55,7 @@ def bars(data, name, value, signed=False):
 
 def show_detail(flow_id):
     flow = get('/flows/' + flow_id)
+    reference = get('/flows/' + flow_id + '/comparison')
     st.subheader('Chi tiết flow đang chọn')
     st.caption('Flow ID: ' + flow_id)
     cols = st.columns(3)
@@ -86,7 +88,9 @@ def show_detail(flow_id):
         if flow.get('shap_top5'):
             bars(flow['shap_top5'], 'feature', 'phi', signed=True)
             st.caption('Đỏ/dương: tăng điểm lớp đang giải thích; xanh/âm: giảm điểm. SHAP ở raw margin, không phải phần trăm xác suất.')
-            st.dataframe(flow['shap_top5'], hide_index=True, width='stretch')
+            explain_top_features(flow, 'SHAP')
+            with st.expander('Số liệu SHAP gốc'):
+                st.dataframe(flow['shap_top5'], hide_index=True, width='stretch')
         else:
             st.info(STATUS.get(flow['explanation_status'], 'Chưa có SHAP'))
     with lime_tab:
@@ -94,48 +98,25 @@ def show_detail(flow_id):
         if not flow['is_alert']:
             st.info('Không yêu cầu LIME cho flow Benign.')
         elif lime_status in ('insufficient_neighborhood', 'zero_coefficients', 'undefined_fit'):
-            st.warning('LIME chưa cung cấp giải thích có ý nghĩa cho flow này. Không dùng R²/Jaccard hoặc Top-5 bằng 0 để kết luận model đúng.')
-            diagnostics = flow.get('lime_diagnostics') or {}
-            if diagnostics:
-                st.write(f"Mẫu sinh: {diagnostics.get('samples')} · Mẫu trọng số khác 0: {diagnostics.get('nonzero_weights')} · Cỡ mẫu hiệu dụng: {diagnostics.get('effective_sample_size', 0):.3f}")
-                with st.expander('Chẩn đoán LIME gốc (không phải chứng nhận chất lượng)'):
-                    st.json(diagnostics)
-            else:
-                st.caption('Kết quả cũ có toàn hệ số 0; chưa lưu chẩn đoán lân cận. Có thể bấm kiểm tra lại.')
-            st.caption('Mở Đối chứng đặc trưng để xem cột lệch khỏi mẫu nền. Giữ nguyên cấu hình RQ2; không tự tăng kernel hoặc sửa giá trị đầu vào.')
+            lime_problem(flow, reference)
         elif flow.get('lime_top5'):
             bars(flow['lime_top5'], 'feature_desc', 'weight', signed=True)
-            st.dataframe(flow['lime_top5'], hide_index=True, width='stretch')
+            st.caption('Đỏ/dương và xanh/âm là dấu hệ số trong mô hình LIME xấp xỉ, không phải phần trăm gây ra dự đoán.')
+            explain_top_features(flow, 'LIME')
+            with st.expander('Số liệu LIME gốc'):
+                st.dataframe(flow['lime_top5'], hide_index=True, width='stretch')
             if lime_status == 'legacy_unchecked':
                 st.info('Kết quả cũ chưa có kiểm tra lân cận. Bấm kiểm tra lại để bổ sung chẩn đoán.')
             st.caption(f"Local R²: {flow.get('lime_local_r2') if flow.get('lime_local_r2') is not None else 'Chưa có'} · Jaccard@5: {flow.get('agreement_jaccard5') if flow.get('agreement_jaccard5') is not None else 'Chưa có'}")
             st.caption('LIME là mô hình thay thế cục bộ trên xác suất; không so độ lớn trực tiếp với SHAP raw margin.')
+            st.caption('R² đo độ khớp trên các mẫu LIME, không phải độ chính xác IDS. Jaccard@5 đo mức trùng các tên/mô tả Top-5 được so sánh, không xác nhận nhãn đúng.')
         if flow['is_alert'] and st.button('Yêu cầu / kiểm tra lại LIME', key='lime_' + flow_id):
             with st.spinner('Đang tính LIME theo yêu cầu…'):
                 response = requests.post(API + '/explain', json={'alert_id': flow['alert_id'], 'method': 'lime'}, timeout=60)
                 response.raise_for_status()
             st.rerun()
     with comparison:
-        reference = get('/flows/' + flow_id + '/comparison')
-        st.caption(reference['background_source'] + f" ({reference['background_n']} mẫu). " + reference['class_reference_source'])
-        st.info(reference['warning'])
-        rows = reference['features']
-        st.caption('Ưu tiên cột hằng trong background nhưng khác ở flow, rồi độ lệch chuẩn hóa. Đây không phải thứ hạng quan trọng của model.')
-        st.dataframe([{'Đặc trưng': r['feature'], 'Flow': r['value'], 'Đơn vị': r['unit'], 'Ý nghĩa': r['meaning'],
-            'Nền LIME median': r['background']['median'], 'Nền min': r['background_min'], 'Nền max': r['background_max'],
-            'Khác cột nền hằng': r['constant_mismatch'], 'Độ lệch chuẩn hóa nền': r['background_scaled_deviation'],
-            'Benign n': r['benign']['n'], 'Benign P05': r['benign']['p05'], 'Benign median': r['benign']['median'], 'Benign P95': r['benign']['p95'],
-            'Lớp dự đoán n': r['predicted_class']['n'], 'Lớp P05': r['predicted_class']['p05'],
-            'Lớp median': r['predicted_class']['median'], 'Lớp P95': r['predicted_class']['p95'],
-            'SHAP phi (Top-5)': r['shap_phi'], 'LIME weight (hợp lệ, Top-5)': r['lime_weight']} for r in rows],
-            hide_index=True, width='stretch')
-        feature = st.selectbox('Đặc trưng để đối chiếu', [r['feature'] for r in rows], key='compare_' + flow_id)
-        selected = next(r for r in rows if r['feature'] == feature)
-        bars([{'Nguồn': 'Flow đang xem', 'Giá trị': selected['value']}] +
-             [{'Nguồn': title, 'Giá trị': selected[key]['median']} for title, key in
-              [('Nền LIME median', 'background'), ('Benign median', 'benign'), ('Lớp dự đoán median', 'predicted_class')]
-              if selected[key]['median'] is not None], 'Nguồn', 'Giá trị')
-        st.caption('Biểu đồ dùng giá trị gốc cùng đặc trưng; P05–P95 và cỡ mẫu ở bảng trên. Nhãn thật của flow hiện tại vẫn chưa biết.')
+        feature_guide(flow, reference)
     with reliability:
         st.dataframe([{'Chỉ số': name, 'Giá trị': str(flow.get(key)) if flow.get(key) is not None else 'Chưa có'}
             for name, key in [('Nhánh', 'branch'), ('Số đặc trưng môi trường trong Top-5', 'env_fingerprint_count'),

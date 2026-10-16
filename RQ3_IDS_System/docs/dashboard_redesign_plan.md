@@ -97,6 +97,16 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Điều chỉnh theo phản hồi: cần hiểu tên đặc trưng (16/10/2026)
+
+- [x] Định nghĩa tiếng Việt + đơn vị + lưu ý cho đủ 78 tên đầu vào, dùng chung API/UI; không còn placeholder trong danh mục.
+- [x] SHAP/LIME có phần đọc từng đặc trưng bằng lời ngay dưới biểu đồ, phân biệt giá trị đầu vào và hệ số giải thích.
+- [x] Tra cứu một đặc trưng là giao diện chính; bảng rộng 78 cột số liệu tham chiếu chuyển vào phần mở rộng gọn hơn.
+- [x] LIME lỗi giải thích quy trình, số mẫu mất trọng số và ý nghĩa kết quả bằng ngôn ngữ phổ thông; kỹ thuật/JSON thu gọn.
+- [x] Giữ nguyên mô hình, đầu vào, cấu hình LIME và luật A/B; không biến diễn giải thành quy tắc phát hiện mới.
+
+Hướng dẫn: [reading_shap_lime.md](reading_shap_lime.md). Test `stage16_test_feature_help.py` kiểm tra đủ 78 tên, đơn vị, dấu và định dạng số.
+
 ### Bổ sung theo test PCAP: LIME và đối chứng (16/10/2026)
 
 - [x] Xác định LIME toàn trọng số 0: 999/1000 mẫu lân cận có kernel weight bằng 0; cỡ mẫu hiệu dụng bằng 1.

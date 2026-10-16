@@ -4,6 +4,8 @@
 
 ## 0. Bức tranh tổng thể
 
+**Khối hiển thị dễ hiểu:** [Hướng dẫn đọc đặc trưng, SHAP và LIME](reading_shap_lime.md). Tên/giá trị/đơn vị được giải nghĩa bằng tiếng Việt; đây là tầng trình bày, không thay logic dự đoán hoặc số liệu nghiên cứu.
+
 **Cập nhật runtime/UI 16/10/2026:** [Dashboard mới và hướng dẫn](dashboard_usage.md), [checklist triển khai](dashboard_redesign_plan.md), [LIME suy biến và đối chứng đặc trưng](lime_validity_and_comparison.md). Đã thêm kiểm tra tính hợp lệ lân cận LIME; không đổi cấu hình RQ2, model hoặc luật nhánh A/B. Kết quả giải thích không hợp lệ không được trình bày như R²/Jaccard đáng tin cậy.
 
 ```
