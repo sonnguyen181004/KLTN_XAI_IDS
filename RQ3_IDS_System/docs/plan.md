@@ -8,11 +8,14 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 Đây là mục đọc trước; các nhật ký phía dưới giữ lại để truy vết, không phải danh sách việc chưa làm hôm nay.
 
+**Quyết định mới nhất (16/10/2026):** giữ cách chạy thủ công qua terminal VS Code; realtime không giới hạn 60 giây. Nút Bắt đầu/Dừng capture trên UI **hoãn theo yêu cầu**, chưa triển khai. Đợt hiện tại chỉ đối chiếu commit và cập nhật README/hướng dẫn CSV, PCAP, live trong các tài liệu đang có; không tự mở dịch vụ, reset DB hoặc đổi kiến trúc/model. Mốc code gần nhất `b24f93c`; xem [bảng commit](operations.md).
+
 | Ưu tiên | Công việc | Điều kiện hoàn tất |
 |---|---|---|
 | Đã làm | Gom 11 Markdown RQ3 thành 5 tài liệu; sửa liên kết, giữ JSON bằng chứng | Không còn liên kết tới file đã gộp; bản cũ phục hồi được bằng Git |
 | Đang hoàn thiện | UI: Giám sát flow / Hướng dẫn live / Nạp CSV–PCAP; đọc từng flow, biểu đồ, trạng thái SHAP/LIME | Regression API/UI PASS và mở bản chạy trên máy; chưa coi hướng dẫn terminal là nút điều khiển capture |
-| Tiếp theo 1 | Hoàn thiện trải nghiệm live: lọc đúng lượt/nguồn, giữ lựa chọn, báo thiếu dữ liệu rõ; cân nhắc start/stop chỉ khi có quản lý process và telemetry | Kiểm thử thực tế tránh trộn lượt; không gán trạng thái “đang bắt” chỉ từ API khỏe |
+| Đang ưu tiên | Hướng dẫn tự chạy/test, xác nhận đúng lượt/nguồn và ghi nhận lỗi khi người dùng test | Có bước CSV, PCAP, live liên tục, dừng/tiếp tục và chẩn đoán rõ; không gán trạng thái “đang bắt” chỉ từ API khỏe |
+| Hoãn | Nút Bắt đầu/Dừng capture và telemetry trực tiếp trên UI | Chỉ triển khai khi tiếp tục hạng mục này; cần quản lý process, chống chạy trùng và dừng/flush/drain an toàn |
 | Tiếp theo 2 | Đo chạy lâu/tải và phục hồi, E1 độ trễ | Ghi số flow CSV/API, thời gian HTTP/end-to-end, queue/SHAP dropped và tài nguyên; phân biệt packet sniff với flow đã xuất |
 | Tiếp theo 3 | Xác minh train–PCAP và E5 đối chiếu RQ2 | Có nguồn preprocessing/cặp PCAP–CSV để chốt quy ước; E5 chạy nguyên cohort A và cấu hình khóa, không tự sửa kết quả để khớp |
 | Tiếp theo 4 | Traffic có nhãn xác minh; FPR/FNR và lab được phép | Tách dự đoán với ground truth; chưa có nhãn thì không báo FPR live; chỉ quyết định train lại sau kiểm tra đầu vào |
