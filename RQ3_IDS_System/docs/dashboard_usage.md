@@ -42,6 +42,16 @@ Feeder mới tự sinh một `capture_run_id`, hiện trong log. Khởi động 
 
 ## Đọc màn hình
 
+### LIME và đối chứng đặc trưng (bổ sung)
+
+Sau cập nhật, khởi động lại API và Streamlit. Không cần xóa DB hoặc upload lại PCAP chỉ để xem đối chứng.
+Chọn flow → **LIME theo yêu cầu** → **Yêu cầu / kiểm tra lại LIME** để bổ sung chẩn đoán cho kết quả cũ.
+Nếu LIME suy biến, UI hiện cảnh báo thay vì biểu đồ toàn số 0 và R²=1 gây hiểu nhầm. Chạy lại cùng dữ liệu/config không đảm bảo hết suy biến.
+
+Tab **Đối chứng đặc trưng**: xem đủ 78 giá trị, nền LIME min/max/median, Benign và lớp dự đoán P05/median/P95 kèm cỡ mẫu, SHAP/LIME Top-5. Chọn đặc trưng để xem biểu đồ đối chiếu median. Các hàng đầu ưu tiên lệch mẫu nền, **không phải thứ hạng SHAP**. Mẫu tham chiếu theo lớp lấy từ tập B nhỏ, không đại diện toàn bộ lớp hay chứng minh tấn công.
+
+Chi tiết nguyên nhân và giới hạn: [LIME validity và đối chứng](lime_validity_and_comparison.md).
+
 - Mặc định là **lượt nhận dữ liệu gần nhất**, không mặc định tất cả lịch sử. Nếu upload CSV/PCAP hoặc có nguồn khác gửi sau đó, chọn cố định lượt live của bạn trong sidebar. Danh sách lựa chọn lượt cập nhật khi bấm Làm mới ngay.
 - Mọi chỉ số/biểu đồ lấy toàn bộ phạm vi bộ lọc; bảng phân trang 50 flow. Thời gian là lúc API nhận, mới nhất trước.
 - Chọn dòng bảng để mở chi tiết. Flow đang đọc được giữ qua lần làm mới; đổi phạm vi sẽ chọn lại. Có nút tạm dừng tự làm mới.

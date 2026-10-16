@@ -10,7 +10,7 @@ SELECT = '''SELECT f.flow_id, f.received_at, f.source, f.capture_run_id, f.run_n
  a.alert_id, a.status, a.explanation_status, a.created_at, r.branch, r.branch_reason,
  json_extract(f.features_json, '$."Dst Port"') AS dst_port,
  json_extract(f.features_json, '$."Protocol"') AS protocol,
- r.shap_top5_json, r.lime_top5_json, r.lime_local_r2, r.agreement_jaccard5,
+ r.shap_top5_json, r.lime_top5_json, r.lime_local_r2, r.lime_diagnostics_json, r.agreement_jaccard5,
  r.faithfulness_proxy_drop, r.env_fingerprint_count, r.env_fingerprint_flag,
  r.rare_class_flag, r.stability_lookup, r.robustness_lookup_json'''
 
@@ -38,7 +38,7 @@ def scope(filters):
 
 
 def decorate(row):
-    for key in ('probabilities', 'features', 'shap_top5', 'lime_top5', 'robustness_lookup'):
+    for key in ('probabilities', 'features', 'shap_top5', 'lime_top5', 'lime_diagnostics', 'robustness_lookup'):
         if key + '_json' in row:
             raw = row.pop(key + '_json')
             row[key] = json.loads(raw) if raw else None
@@ -48,6 +48,16 @@ def decorate(row):
     elif row.get('shap_top5'):
         row['explanation_status'] = 'processed'
     row['confidence'] = (row.get('probabilities') or {}).get(row['predicted_label'])
+    diagnostics = row.get('lime_diagnostics') or {}
+    row['lime_status'] = diagnostics.get('status', 'not_requested')
+    if not diagnostics and row.get('lime_top5'):
+        # Read-only interpretation of legacy results; preserve raw DB evidence.
+        row['lime_status'] = 'legacy_unchecked'
+        if all(item['weight'] == 0 for item in row['lime_top5']):
+            row['lime_status'] = 'zero_coefficients'
+    if row['lime_status'] not in ('ok', 'legacy_unchecked', 'not_requested'):
+        row['lime_local_r2'] = None
+        row['agreement_jaccard5'] = None
     return row
 
 
