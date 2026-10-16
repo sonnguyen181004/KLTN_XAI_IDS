@@ -9,13 +9,17 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 
 ## 1. Cấu trúc dự án
 
-**RQ3 ổn định vận hành v2:** capture sửa window đầu bằng 0; feeder tiếp tục từ checkpoint và chống gửi trùng khi mất ACK/restart; API lưu prediction/cảnh báo nguyên khối; SHAP bị ngắt được phục hồi từ DB, queue RAM vẫn 200. Có bản thử nghiệm quy ước train, chưa chứng nhận đầy đủ ngữ nghĩa hoặc sửa hết LIME. [Cách áp dụng, kiến trúc và kiểm thử](RQ3_IDS_System/docs/stability_update_20261016.md).
+**RQ3 — chỉ cần 5 tài liệu chính** (đã gộp 11 file cũ, giữ bằng chứng JSON):
 
-**Đọc SHAP/LIME dễ hiểu:** đã có giải nghĩa tiếng Việt đủ 78 đặc trưng, diễn giải từng mục Top-5 và thông báo LIME suy biến bằng lời. [Hướng dẫn đọc](RQ3_IDS_System/docs/reading_shap_lime.md).
+| Bạn muốn xem | Tài liệu |
+|---|---|
+| Chạy hệ thống, live/CSV/PCAP và hiểu SHAP/LIME | [Hướng dẫn sử dụng](RQ3_IDS_System/docs/dashboard_usage.md) |
+| Kiến trúc, đã làm gì và tiếp theo làm gì, gồm hoàn thiện UI | [Kiến trúc và kế hoạch](RQ3_IDS_System/docs/plan.md) |
+| Capture v2, checkpoint, queue 200, phục hồi và kết quả test | [Vận hành](RQ3_IDS_System/docs/operations.md) |
+| Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
+| Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
-**Bổ sung LIME/đối chứng:** cảnh báo khi mẫu lân cận suy biến, không dùng Top-5 bằng 0/R² giả tốt; tab đối chiếu 78 đặc trưng với nền LIME và tập B có nhãn. [Giải thích kỹ thuật, giới hạn và test](RQ3_IDS_System/docs/lime_validity_and_comparison.md).
-
-**Dashboard RQ3 cập nhật 16/10/2026:** tự làm mới 5 giây, lọc lượt test, chọn mọi flow để xem chi tiết, biểu đồ tổng quan/xác suất/SHAP/LIME và giờ GMT+7. Hướng dẫn khởi động lại và kết quả test: [Dashboard mới](RQ3_IDS_System/docs/dashboard_usage.md). Kế hoạch và hạng mục còn lại: [Checklist UI](RQ3_IDS_System/docs/dashboard_redesign_plan.md).
+UI có Giám sát flow, Hướng dẫn live và Nạp CSV / PCAP; chưa có nút điều khiển capture. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
 
 ```text
 SELF_KLTN/
@@ -76,7 +80,7 @@ python .\RQ1_Model_Training_xboost\2_train_optimal_model.py
 
 ## 4. RQ2 — Khả năng giải thích SHAP vs LIME (trọng tâm)
 
-> **Chạy lại từ đầu ngày 2026-10-09** theo kế hoạch 14 giai đoạn (GĐ0→GĐ13) trong [`RQ2/docs/plan.md`](RQ2/docs/plan.md). Toàn bộ kết quả của lần chạy trước đã chuyển vào [`v1_archive/RQ2_old_20260929/`](v1_archive/RQ2_old_20260929) để lưu trữ/so sánh. Pipeline mới nằm ở `RQ2/scripts/` (14 script `stage00_*.py` → `stage13_*.py` + 4 script `build_report_*.py`), mỗi lần chạy ghi vào `RQ2/runs/<ngày>/` (không ghi đè, có `config.yaml` chốt tham số, log, checksum).
+> **Chạy lại từ đầu ngày 2026-10-09** theo kế hoạch 14 giai đoạn (GĐ0→GĐ13) trong [`RQ2/docs/plan.md`](RQ2/docs/plan.md). Nhật ký cũ ghi bản lưu ở `v1_archive/RQ2_old_20260929/`; đường dẫn này hiện không có trong checkout, cần xác minh nơi lưu nếu muốn đối chiếu bản cũ. Pipeline mới nằm ở `RQ2/scripts/` (14 script `stage00_*.py` → `stage13_*.py` + 4 script `build_report_*.py`), mỗi lần chạy ghi vào `RQ2/runs/<ngày>/` (không ghi đè, có `config.yaml` chốt tham số, log, checksum).
 
 ### 4.1 Ý tưởng thiết kế
 
@@ -239,7 +243,7 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 | 1–6 | Config, SQLite (6 bảng), tập dữ liệu sạch (loại trùng train/test), chuẩn hóa flow, nạp lại model RQ1, `POST /predict` |
 | 7, 7b | TreeSHAP tự động cho cảnh báo, chạy **bất đồng bộ** qua hàng đợi (tối đa 200 tác vụ chờ; đầy thì giữ cảnh báo và ghi rõ SHAP bị bỏ) |
 | 8 | Độ tin cậy tính tại chỗ: faithfulness proxy, cờ môi trường, cờ lớp hiếm |
-| 8b, M3 | Bộ feeder tự động (CSV→API) + **test bằng traffic Wi-Fi thật** qua CICFlowMeter — 25/25 flow Benign đoán đúng |
+| 8b, M3 | Bộ feeder tự động (CSV→API) + **test bằng traffic Wi-Fi thật**; phiên lịch sử trả 25/25 nhãn Benign, chưa có ground truth độc lập để gọi là đoán đúng |
 | 9 | LIME theo yêu cầu (`POST /explain`), đúng cấu hình đã khóa ở RQ2 |
 | 11 | Luật nhánh hiển thị A/B (chỉ dựa 2 cờ ở bước 8, không dùng tập dev RQ2) |
 | 12 | `GET /alerts`, `GET /flows` (xem cả flow Benign, không chỉ cảnh báo) |
@@ -247,9 +251,9 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 
 **Còn thiếu:** Bước 10 (tra bảng ổn định/chịu nhiễu từ RQ2 — tạm bỏ qua, không bắt buộc), Bước 14 (Docker Compose), Bước 15–16 (đo độ trễ E1, đối chiếu nhất quán E5), M4–M5 (dựng máy ảo Attacker/Victim để test traffic tấn công thật).
 
-**Đính chính và sửa extractor 16/10/2026:** audit đã tái hiện 5 lỗi Python CICFlowMeter 0.5.0; [adapter có phiên bản v1](RQ3_IDS_System/docs/capture_adapter_v1.md) đã sửa đếm lặp gói đầu, CWR, IAT một khoảng, Active/Idle và khóa flow thiếu protocol. CLI/PCAP UI mặc định dùng bản mới; metadata phiên bản đi vào DB/UI. Còn khác biệt length/header và miền cờ/bulk so với train; hai PCAP trích lại vẫn có 8 dự đoán Hulk và LIME chưa đạt. Chưa thể quy hết cho model hoặc tuyên bố đầu vào đã tương thích V3. Xem [audit trước sửa](RQ3_IDS_System/docs/feature_compatibility_audit_20261016.md), [ma trận 78 cột trước sửa](RQ3_IDS_System/docs/feature_compatibility_matrix_20261016.md).
+**Đính chính và sửa extractor 16/10/2026:** audit đã tái hiện 5 lỗi Python CICFlowMeter 0.5.0; [adapter có phiên bản v1](RQ3_IDS_System/docs/feature_compatibility.md#adapter-v1) đã sửa đếm lặp gói đầu, CWR, IAT một khoảng, Active/Idle và khóa flow thiếu protocol. CLI/PCAP UI mặc định dùng bản mới; metadata phiên bản đi vào DB/UI. Còn khác biệt length/header và miền cờ/bulk so với train; hai PCAP trích lại vẫn có 8 dự đoán Hulk và LIME chưa đạt. Chưa thể quy hết cho model hoặc tuyên bố đầu vào đã tương thích V3. Xem [audit trước sửa](RQ3_IDS_System/docs/feature_compatibility.md#baseline-audit), [ma trận 78 cột trước sửa](RQ3_IDS_System/docs/feature_compatibility.md#matrix-78).
 
-**Đối chiếu ngữ nghĩa tiếp theo:** [kiểm tra toàn bộ 3,5 triệu dòng train/test](RQ3_IDS_System/docs/feature_semantics_contract_20261016.md) đã phân biệt được sample SD độ dài, floor Down/Up, window thiếu=-1 và quan hệ hai mean n/n+1. Capture v1 chưa theo các quy ước này; subflow packet lại khớp tổng trên dữ liệu đủ điều kiện. Chưa đổi model/LIME hay ép cờ/bulk; cần nguồn preprocessing/cặp PCAP–CSV gốc trước khi chứng nhận tương thích.
+**Đối chiếu ngữ nghĩa tiếp theo:** [kiểm tra toàn bộ 3,5 triệu dòng train/test](RQ3_IDS_System/docs/feature_compatibility.md#semantics) đã phân biệt được sample SD độ dài, floor Down/Up, window thiếu=-1 và quan hệ hai mean n/n+1. Capture v1 chưa theo các quy ước này; subflow packet lại khớp tổng trên dữ liệu đủ điều kiện. Chưa đổi model/LIME hay ép cờ/bulk; cần nguồn preprocessing/cặp PCAP–CSV gốc trước khi chứng nhận tương thích.
 
 ### 5.2 Cách chạy
 
@@ -290,11 +294,7 @@ Dashboard tự mở `http://localhost:8501`. Swagger UI (test API thủ công, k
   python scripts\stage12_test_alerts.py
   python scripts\stage13_test_dashboard.py
   ```
-- **Dọn dữ liệu test** (DB tích lũy nhiều alert sau khi test nhiều lần — an toàn xóa, không commit git):
-  ```powershell
-  Remove-Item RQ3_IDS_System\data\ids_system.db
-  ```
-  Khởi động lại API, hệ thống tự tạo lại 6 bảng rỗng.
+- **Xem lượt mới:** chọn Lượt dữ liệu ở sidebar, không cần xóa DB. Nếu chủ động reset, phải dừng đúng API/feeder và sao lưu SQLite nhất quán trước; DB chứa lịch sử, không phải file có thể xóa tùy ý. Checkpoint cũ không tự phát lại dữ liệu sau reset; xem [vận hành](RQ3_IDS_System/docs/operations.md).
 
 ### 5.4 Bắt traffic thật bằng Wireshark để test tab "Phát lại PCAP"
 

@@ -236,7 +236,10 @@ def main(output):
         '|---|---|---|---|---|']
     for i,row in enumerate(contract,1):
         matrix.append(f"| {i} | {row['feature']} | {row['capture_column']} | {row['assessment']} | {row['interpretation']} |")
-    output.with_name('feature_compatibility_matrix_20261016.md').write_text('\n'.join(matrix)+'\n',encoding='utf-8')
+    # Optional generated artifact, separate from the five maintained documents.
+    if getattr(args, 'matrix_output', None):
+        args.matrix_output.parent.mkdir(parents=True, exist_ok=True)
+        args.matrix_output.write_text('\n'.join(matrix)+'\n', encoding='utf-8')
     print('WROTE',output,flush=True)
     print('TRAIN_CONSTANT_COLUMNS', [n for n,s in train['columns'].items() if s['minimum']==s['maximum']],flush=True)
     for f in fixture['fixtures']:
@@ -249,5 +252,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--fixture-worker',action='store_true')
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--matrix-output',type=Path, help='Optional generated Markdown matrix; default keeps only JSON evidence')
     args = parser.parse_args()
     (capture_worker if args.fixture_worker else main)(args.output)

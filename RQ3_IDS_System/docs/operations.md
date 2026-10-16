@@ -1,6 +1,27 @@
+# Vận hành, phục hồi và kiểm thử RQ3
+
+Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
+
+> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+
+- [Capture v2, phục hồi và kiểm thử](#stability-v2)
+
+## Áp dụng trên máy người dùng — 16/10/2026
+
+- Bật API tại `127.0.0.1:8000` và Streamlit tại `127.0.0.1:8501`; health xác nhận model `52eb5a671ee82109`, 78 đặc trưng, 15 lớp, idempotency và queue 200. Không chạy thêm API cùng DB.
+- Không reset DB, không gửi thêm flow và không tự bật capture. DB hiện có 176 flow/88 cảnh báo; worker tự tiếp tục các SHAP bị ngắt theo cơ chế phục hồi v2. Việc cập nhật giải thích không phải tạo thêm traffic.
+- Có bản sao SQLite nhất quán `data/ids_system_backup_ui_20261016_112528.db`, không đưa vào Git. Bản sao được tạo sau lúc API khởi động (lần sao lưu trước bị quyền sandbox chặn), vì vậy có thể đã chứa một phần trạng thái SHAP được phục hồi.
+- UI được mở và kiểm tra trên trình duyệt: thấy ba tab, dữ liệu lịch sử/biểu đồ và hướng dẫn live. Kiểm thử tự động Stage14 dùng DB tạm, không nạp fixture vào DB này. Đây chưa phải nghiệm thu mọi kích thước màn hình hoặc điều khiển capture trực tiếp.
+- Stage14 sau thay UI PASS, gồm assertion ba tab/lệnh capture, regression CSV/PCAP, chọn flow và LIME. Kiểm tra liên kết tới file cục bộ của năm tài liệu PASS. Sau startup, 50 tác vụ SHAP được phục hồi hoàn tất, backlog về 0; không tự thử lại các việc đã dropped.
+- Hai dịch vụ được bật nền để xem lại. Muốn chuyển sang chạy terminal VS Code, dừng đúng hai tiến trình này trước; không dừng toàn bộ Python. PID của phiên mở này: API `17032`, UI `45184` (phải xác minh command line trước khi dừng; PID có thể được tái sử dụng về sau).
+
+---
+
+<a id="stability-v2"></a>
+
 # Cập nhật độ ổn định RQ3 — capture v2 và giao nhận có phục hồi
 
-Ngày 16/10/2026. Tiếp nối [audit ngữ nghĩa](feature_semantics_contract_20261016.md). Model XGBoost/78 đặc trưng, cấu hình LIME khóa RQ2 và luật nhánh A/B được giữ nguyên.
+Ngày 16/10/2026. Tiếp nối [audit ngữ nghĩa](feature_compatibility.md#semantics). Model XGBoost/78 đặc trưng, cấu hình LIME khóa RQ2 và luật nhánh A/B được giữ nguyên.
 
 ## Thay đổi theo kiến trúc
 

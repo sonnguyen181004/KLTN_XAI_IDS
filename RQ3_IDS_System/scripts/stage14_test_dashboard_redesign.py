@@ -115,6 +115,9 @@ def main():
                 with patch.dict(os.environ, {'IDS_API_URL': url}):
                     at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)
                     assert not at.exception, at.exception
+                    assert {'Giám sát flow', 'Hướng dẫn live', 'Nạp CSV / PCAP'} <= {tab.label for tab in at.tabs}
+                    assert any('chưa có nút bật hoặc tắt' in item.value for item in at.info)
+                    assert any('run_live_capture.py' in item.value for item in at.code)
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
                     assert not at.exception, at.exception
                     at.session_state['selected_flow'] = real[0]['flow_id']
