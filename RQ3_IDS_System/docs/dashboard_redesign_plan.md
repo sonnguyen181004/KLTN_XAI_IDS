@@ -97,6 +97,13 @@ Cho phép nhóm để dễ đọc khi có nhiều flow giống nhau, nhưng khô
 
 ## 8. Nhật ký tiến độ
 
+### Kiểm tra tương thích 78 đặc trưng (16/10/2026)
+
+- [x] Quét đủ train 2,8 triệu dòng, các cột trọng tâm trên 10 daily cleaned (15.589.784 dòng), đọc DB PCAP ở mode=ro.
+- [x] 8 fixture TCP/UDP tái hiện lỗi đếm đầu flow, CWR, IAT một khoảng, active/idle và thiếu protocol trong khóa flow; một fixture đối chiếu đường `run_live_capture.py` thực tế.
+- [x] Xuất [báo cáo](feature_compatibility_audit_20261016.md), [ma trận đủ 78 cột](feature_compatibility_matrix_20261016.md) và JSON bằng chứng; đính chính nhận định quy toàn bộ cảnh báo nhầm cho model trong README/kế hoạch.
+- [ ] Sửa extractor có phiên bản trong mã dự án, kiểm chứng chuẩn length/header/std/subflow/window và nguồn preprocessing; chưa tự sửa site-packages, clip cờ hoặc zero bulk.
+
 ### Mở rộng hàng đợi SHAP theo yêu cầu (16/10/2026)
 
 - [x] Tăng cấu hình từ 50 lên 200 tác vụ chờ; không đổi worker hoặc luật khi queue đầy.

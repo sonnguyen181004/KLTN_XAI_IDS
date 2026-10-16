@@ -245,7 +245,7 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 
 **Còn thiếu:** Bước 10 (tra bảng ổn định/chịu nhiễu từ RQ2 — tạm bỏ qua, không bắt buộc), Bước 14 (Docker Compose), Bước 15–16 (đo độ trễ E1, đối chiếu nhất quán E5), M4–M5 (dựng máy ảo Attacker/Victim để test traffic tấn công thật).
 
-**Phát hiện quan trọng khi test bằng traffic thật** (xem chi tiết, số liệu trong `plan.md`): model (huấn luyện trên CICIDS2018, 2018) có xu hướng đoán nhầm "DoS attacks-Hulk" cho các flow bình thường **có gói FIN** (đóng kết nối TCP đàng hoàng) — rất có thể do cách lấy mẫu dữ liệu huấn luyện gốc hiếm khi chụp đủ một phiên Benign tới lúc đóng. Đây là bằng chứng thật về giới hạn tổng quát hoá của model khi gặp traffic ngoài phòng lab — không phải lỗi hệ thống, và là tiền đề cho thí nghiệm E2/E4 ở M5.
+**Đính chính kiểm tra đặc trưng 16/10/2026:** traffic duyệt web có flow bị dự đoán Hulk, nhưng chưa được quy toàn bộ cho khả năng tổng quát hóa của model. Audit đã tái hiện lỗi Python CICFlowMeter 0.5.0: lặp gói đầu (PCAP 6 gói → 7), CWR lấy từ URG, IAT một khoảng bị trả 0, active/idle không cập nhật và khóa flow thiếu protocol. Còn khác biệt length/header và miền cờ/bulk so với train. [Báo cáo và hướng xử lý](RQ3_IDS_System/docs/feature_compatibility_audit_20261016.md), [đối chiếu đủ 78 cột](RQ3_IDS_System/docs/feature_compatibility_matrix_20261016.md). Chưa sửa extractor/model trong bước audit; tái lập dự đoán/SHAP không chứng nhận tính đúng của đầu vào.
 
 ### 5.2 Cách chạy
 
@@ -303,7 +303,7 @@ Không cần chạy `run_live_capture.py` trực tiếp (cần Npcap + quyền A
 5. Vào Dashboard (`http://localhost:8501`), mục "Nạp dữ liệu vào hệ thống" → tab **"Phát lại file PCAP"** → kéo thả file vừa lưu → bấm **"Trích xuất + gửi vào /predict"**.
 6. Hệ thống tự chạy CICFlowMeter trích đặc trưng (không cần cài gì thêm ngoài môi trường `.venv_capture` đã có sẵn trong `RQ3_IDS_System/`), gửi từng flow vào model, bảng cảnh báo + bảng "Tất cả flow" (kể cả Benign) tự cập nhật ngay bên dưới.
 
-**Lưu ý đọc kết quả:** cột "thời điểm gói tin thật" là lúc gói tin THẬT xảy ra trong lúc bạn bắt bằng Wireshark (lấy từ CICFlowMeter) — khác với cột "lúc hệ thống xử lý" (lúc bạn bấm nút trên Dashboard). Nếu thấy vài flow bị báo "DoS attacks-Hulk" dù chỉ là duyệt web bình thường — xem phát hiện về cờ FIN ở mục 5.1, đây là giới hạn đã biết của model, không phải lỗi khi bắt/gửi dữ liệu.
+**Lưu ý đọc kết quả:** mốc traffic gốc lấy từ CICFlowMeter khác lúc API xử lý sau upload. Nếu thấy Hulk khi duyệt web, xem audit mục 5.1: phải kiểm tra cả tính đúng đặc trưng extractor và khả năng tổng quát hóa của model, chưa thể khẳng định chỉ do model. PCAP chưa có nhãn xác minh không đủ để tính FPR live.
 
 **Không có Wireshark / muốn test nhanh không cần bắt gói thật:**
 ```powershell
