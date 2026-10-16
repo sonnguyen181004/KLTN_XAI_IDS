@@ -23,7 +23,8 @@ def now_iso() -> str:
 
 
 class ExplainQueue:
-    def __init__(self, maxsize: int, shap_explainer, reliability_scorer, db_module, db_path):
+    def __init__(self, maxsize: int, shap_explainer, reliability_scorer, db_module, db_path,
+                 recovery_feature_names=None, model_version=None):
         self._q: queue.Queue = queue.Queue(maxsize=maxsize)
         self.maxsize = maxsize
         self.shap_explainer = shap_explainer
@@ -33,6 +34,35 @@ class ExplainQueue:
         self.n_queued = 0
         self.n_dropped = 0
         self.n_processed = 0
+        self.n_recovered = 0
+        self.recovery_feature_names = recovery_feature_names
+        self.model_version = model_version
+        if recovery_feature_names is not None:
+            if model_version is None:
+                raise ValueError('SHAP recovery requires model_version')
+            # Prevent a second API process from treating this worker's live jobs
+            # as interrupted. OS releases the lock even after a hard process exit.
+            from ingestion_checkpoint import checkpoint_lock
+            self._ownership = checkpoint_lock(str(db_path) + '.worker')
+            try:
+                self._ownership.__enter__()
+            except RuntimeError as exc:
+                raise RuntimeError('DB đang được một API worker khác sử dụng. Chạy một tiến trình API cho mỗi DB.') from exc
+            # Deployment contract: ONE API process owns the explanation worker.
+            # Reconstruct interrupted jobs from saved alerts/features, not RAM.
+            conn = self.db.get_connection(self.db_path)
+            try:
+                conn.execute("""UPDATE AlertRecord SET explanation_status='recovery_pending'
+                    WHERE explanation_status IN ('queued','pending_dispatch')""")
+                conn.execute("""UPDATE AlertRecord SET explanation_status='processed'
+                    WHERE explanation_status='recovery_pending' AND alert_id IN
+                    (SELECT alert_id FROM Reliability WHERE shap_top5_json IS NOT NULL)""")
+                conn.execute("""UPDATE AlertRecord SET explanation_status='failed'
+                    WHERE explanation_status='recovery_pending' AND flow_id IN
+                    (SELECT flow_id FROM Prediction WHERE model_version != ?)""", (model_version,))
+                conn.commit()
+            finally:
+                conn.close()
         self._worker = threading.Thread(target=self._run, daemon=True)
         self._worker.start()
 
@@ -57,6 +87,40 @@ class ExplainQueue:
     def qsize(self) -> int:
         return self._q.qsize()
 
+    def recovery_pending(self):
+        conn = self.db.get_connection(self.db_path)
+        try:
+            return conn.execute("SELECT COUNT(*) FROM AlertRecord WHERE explanation_status='recovery_pending'").fetchone()[0]
+        finally:
+            conn.close()
+
+    def _take_recovery(self):
+        if self.recovery_feature_names is None:
+            return None
+        conn = self.db.get_connection(self.db_path)
+        try:
+            row = conn.execute("""SELECT a.alert_id,a.flow_id,a.predicted_label,f.features_json
+                FROM AlertRecord a JOIN FlowRecord f ON f.flow_id=a.flow_id
+                WHERE a.explanation_status='recovery_pending' ORDER BY a.created_at LIMIT 1""").fetchone()
+            if row is None:
+                return None
+            claimed = conn.execute("UPDATE AlertRecord SET explanation_status='queued' WHERE alert_id=? AND explanation_status='recovery_pending'", (row[0],)).rowcount
+            conn.commit()
+            if not claimed:
+                return None
+            try:
+                from normalize import normalize_flow
+                normalized = normalize_flow(json.loads(row[3]), self.recovery_feature_names)
+            except Exception:
+                conn.execute("UPDATE AlertRecord SET explanation_status='failed' WHERE alert_id=?", (row[0],))
+                conn.commit()
+                raise
+            self.n_recovered += 1
+            return dict(alert_id=row[0], flow_id=row[1], predicted_label=row[2],
+                        normalized_row=normalized, enqueued_at=time.perf_counter(), recovered=True)
+        finally:
+            conn.close()
+
     def _set_status(self, alert_id, status):
         conn = self.db.get_connection(self.db_path)
         try:
@@ -67,7 +131,18 @@ class ExplainQueue:
 
     def _run(self) -> None:
         while True:
-            task = self._q.get()  # chờ (block) tới khi có việc, không tốn CPU lúc rỗng
+            from_memory = True
+            try:
+                task = self._q.get(timeout=1)
+            except queue.Empty:
+                from_memory = False
+                try:
+                    task = self._take_recovery()
+                except Exception as exc:
+                    print(f'[explain_queue] Recovery failed: {exc}')
+                    continue
+                if task is None:
+                    continue
             try:
                 self._process(task)
             except Exception as e:  # noqa: BLE001 — worker nền không được chết vì 1 task lỗi
@@ -77,7 +152,8 @@ class ExplainQueue:
                 except Exception as status_error:
                     print(f'[explain_queue] Không ghi được trạng thái lỗi: {status_error}')
             finally:
-                self._q.task_done()
+                if from_memory:
+                    self._q.task_done()
 
     def _process(self, task: dict) -> None:
         wait_ms = (time.perf_counter() - task["enqueued_at"]) * 1000
@@ -105,7 +181,9 @@ class ExplainQueue:
                 branch=reliability_result["branch"],
                 branch_reason=reliability_result["branch_reason"],
             )
-            self.db.insert_timing(conn, task["flow_id"], "shap_queue_wait", wait_ms, now_iso())
+            # Recovery wait starts at this process's claim, not before downtime.
+            wait_step = 'shap_recovery_wait' if task.get('recovered') else 'shap_queue_wait'
+            self.db.insert_timing(conn, task["flow_id"], wait_step, wait_ms, now_iso())
             self.db.insert_timing(conn, task["flow_id"], "shap", shap_ms, now_iso())
             self.db.insert_timing(conn, task["flow_id"], "reliability", reliability_ms, now_iso())
         finally:

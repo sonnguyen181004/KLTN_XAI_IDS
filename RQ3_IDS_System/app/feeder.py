@@ -14,8 +14,7 @@ Chạy: python app/feeder.py --watch <đường_dẫn_csv> [--convert-units]
 from __future__ import annotations
 
 import argparse
-import csv
-import uuid
+import math
 import os
 import sys
 import time
@@ -28,6 +27,8 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from normalize import TIME_COLUMNS  # noqa: E402
 from flow_metadata import row_metadata
+from ingestion_checkpoint import (checkpoint_lock, open_state, save_checkpoint,
+                                   read_record, validate_file, identity, anchor)
 
 # CICFlowMeter 0.5.0 (cài ở RQ3_IDS_System/.venv_capture) xuất tên cột kiểu
 # snake_case, hoàn toàn khác 78 tên cột model cần (chữ Hoa, có khoảng trắng —
@@ -123,64 +124,94 @@ def row_to_payload(row: dict, header: list[str], convert_units: bool) -> dict:
 
 
 def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert_units: bool,
-               max_iterations: int | None = None, capture_timezone: str | None = None) -> None:
+               max_iterations: int | None = None, capture_timezone: str | None = None,
+               checkpoint_path: Path | None = None) -> None:
     print(f"[feeder] Bắt đầu theo dõi: {watch_path}")
     print(f"[feeder] Gửi tới: {api_url}/predict | đổi đơn vị μs: {convert_units} | "
           f"chu kỳ kiểm tra: {poll_interval_sec}s")
     wait_for_file(watch_path, poll_interval_sec)
 
-    header: list[str] | None = None
-    n_lines_processed = 0  # không tính dòng header
-    n_sent = 0
-    run_id = str(uuid.uuid4())
-    local_offset = datetime.now().astimezone().strftime('%z')
-    capture_zone = capture_timezone or local_offset[:3] + ':' + local_offset[3:]
-    print(f'[feeder] Lượt: {run_id} — {watch_path.name}. File có sẵn sẽ được đọc lại từ đầu.')
-    iteration = 0
+    watch_path = watch_path.resolve()
+    checkpoint_path = (checkpoint_path or Path(str(watch_path)+'.feeder-state.json')).resolve()
+    if checkpoint_path == watch_path:
+        raise ValueError('Checkpoint không được trùng đường dẫn CSV.')
+    with checkpoint_lock(checkpoint_path):
+        _run_checkpointed(watch_path, api_url.rstrip('/'), poll_interval_sec, convert_units,
+                          max_iterations, capture_timezone, checkpoint_path)
 
+
+def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
+                      max_iterations, capture_timezone, checkpoint_path):
+    state = open_state(checkpoint_path, watch_path, api_url, convert_units, capture_timezone)
+    n_sent = 0
+    local_offset = datetime.now().astimezone().strftime('%z')
+    state['capture_zone'] = state['capture_zone'] or local_offset[:3] + ':' + local_offset[3:]
+    print(f"[feeder] Lượt: {state['run_id']} — {watch_path.name}. Tiếp tục sau {state['acknowledged_rows']} dòng đã xác nhận.")
+    print(f'[feeder] Checkpoint: {checkpoint_path}')
+    iteration = 0
+    retry_delay = max(.01, poll_interval_sec)
     while max_iterations is None or iteration < max_iterations:
         iteration += 1
-        with open(watch_path, "r", encoding="utf-8-sig", newline="") as f:
-            reader = csv.reader(f)
-            all_rows = list(reader)
-
-        if not all_rows:
-            time.sleep(poll_interval_sec)
-            continue
-
-        if header is None:
-            header = all_rows[0]
-            print(f"[feeder] Đọc được header: {len(header)} cột")
-
-        data_rows = [row for row in all_rows[1:] if row]
-        new_rows = data_rows[n_lines_processed:]
-
-        for raw_row in new_rows:
-            if len(raw_row) != len(header):
-                break  # retry partial row next poll; never advance past it
-            row_dict = dict(zip(header, raw_row))
-            payload = row_to_payload(row_dict, header, convert_units)
-            n_lines_processed += 1
-
-            # Preserve packet time/IP separately; the live table sorts by API receive time.
-            params = {'source': 'feeder_live', **row_metadata(row_dict, run_id, watch_path.name, capture_zone)}
-
-            try:
-                r = requests.post(f"{api_url}/predict", json=payload, params=params, timeout=5)
-                if r.status_code == 200:
-                    body = r.json()
+        transient = False
+        with watch_path.open('rb') as stream:
+            if state['identity'] is None:
+                state['identity'] = identity(stream)
+                state['anchor'] = anchor(stream, 0)
+                save_checkpoint(checkpoint_path, state)  # Stable run before first send.
+            validate_file(stream, state)
+            stream.seek(state['offset'])
+            for _ in range(100):  # Bounded batch, no full-file reread every poll.
+                raw_row = read_record(stream)
+                if raw_row is None:
+                    break
+                if state['header'] is None:
+                    if not raw_row:
+                        raise ValueError('CSV cần header ở dòng đầu.')
+                    if len(set(raw_row)) != len(raw_row):
+                        raise ValueError('CSV có cột trùng tên.')
+                    state['header'] = raw_row
+                elif raw_row:
+                    header = state['header']
+                    number = state['acknowledged_rows'] + 1
+                    if len(raw_row) != len(header):
+                        raise ValueError(f'Dòng dữ liệu #{number} sai số cột; checkpoint giữ nguyên, không bỏ qua.')
+                    row_dict = dict(zip(header, raw_row))
+                    payload = row_to_payload(row_dict, header, convert_units)
+                    if any(not math.isfinite(value) for value in payload.values()):
+                        raise ValueError(f'Dòng #{number} có NaN/Infinity; checkpoint giữ nguyên.')
+                    params = {'source': 'feeder_live', **row_metadata(row_dict, state['run_id'], watch_path.name, state['capture_zone'])}
+                    key = f"feeder:{state['run_id']}:{number}"
+                    try:
+                        r = requests.post(f'{api_url}/predict', json=payload, params=params,
+                                          headers={'Idempotency-Key': key}, timeout=15)
+                        if r.status_code in (408, 425, 429) or r.status_code >= 500:
+                            raise requests.RequestException(f'HTTP {r.status_code}')
+                        if r.status_code != 200:
+                            raise RuntimeError(f'Dòng #{number}: HTTP {r.status_code}: {r.text[:200]}. Checkpoint giữ nguyên.')
+                        if r.headers.get('Idempotency-Key') != key:
+                            raise RuntimeError('API chưa xác nhận chống gửi trùng. Cần restart API bản mới; checkpoint giữ nguyên.')
+                        body = r.json()
+                        if not body.get('flow_id') or 'predicted_label' not in body:
+                            raise requests.RequestException('Phản hồi API chưa đủ thông tin xác nhận')
+                    except requests.RequestException as exc:
+                        print(f'[feeder] Dòng #{number}: chờ gửi lại ({exc}), giữ checkpoint; thử sau {retry_delay:.2f}s.')
+                        transient = True
+                        break
+                    state['acknowledged_rows'] = number
                     n_sent += 1
-                    print(f"[feeder] Dòng mới #{n_lines_processed}: GỬI OK -> "
+                    print(f"[feeder] Dòng mới #{number}: GỬI OK -> "
                           f"flow_id={body['flow_id']}, predicted_label={body['predicted_label']}, "
                           f"is_alert={body['is_alert']}, explanation_status={body['explanation_status']}")
-                else:
-                    print(f"[feeder] Dòng mới #{n_lines_processed}: LỖI {r.status_code} -> {r.text[:200]}")
-            except requests.exceptions.RequestException as e:
-                print(f"[feeder] Dòng mới #{n_lines_processed}: KHÔNG GỬI ĐƯỢC -> {e}")
-
-        time.sleep(poll_interval_sec)
-
-    print(f"[feeder] Dừng sau {iteration} lần kiểm tra. Tổng dòng đã xử lý: {n_lines_processed}, gửi OK: {n_sent}.")
+                state['offset'] = stream.tell()
+                state['anchor'] = anchor(stream, state['offset'])
+                save_checkpoint(checkpoint_path, state)
+        if transient:
+            time.sleep(retry_delay)
+            retry_delay = min(30., retry_delay*2)
+        else:
+            retry_delay = max(.01, poll_interval_sec)
+            time.sleep(poll_interval_sec)
+    print(f"[feeder] Dừng sau {iteration} lần kiểm tra. Đã xác nhận: {state['acknowledged_rows']}; gửi OK phiên này: {n_sent}.")
 
 
 def main():
@@ -190,12 +221,20 @@ def main():
     parser.add_argument("--convert-units", action="store_true", default=cfg["feeder"]["convert_seconds_to_microseconds"])
     parser.add_argument("--max-iterations", type=int, default=None, help="Dừng sau N lần kiểm tra (dùng khi test; để trống = chạy mãi)")
     parser.add_argument('--capture-timezone', default=None, help='Múi giờ timestamp CSV, ví dụ +07:00; mặc định giờ máy bắt')
+    parser.add_argument('--checkpoint', type=Path, default=None, help='Mặc định <CSV>.feeder-state.json; giữ file này để tiếp tục sau restart')
     args = parser.parse_args()
 
     watch_path = Path(args.watch)
     api_url = f"http://{cfg['api']['host']}:{cfg['api']['port']}"
     api_url = os.environ.get('IDS_API_URL', api_url)
-    run_feeder(watch_path, api_url, cfg["feeder"]["poll_interval_sec"], args.convert_units, args.max_iterations, args.capture_timezone)
+    try:
+        run_feeder(watch_path, api_url, cfg["feeder"]["poll_interval_sec"], args.convert_units,
+                   args.max_iterations, args.capture_timezone, args.checkpoint)
+    except KeyboardInterrupt:
+        print('[feeder] Đã dừng. Chạy lại cùng lệnh để tiếp tục từ checkpoint.')
+    except (ValueError, RuntimeError) as exc:
+        print(f'[feeder] DỪNG: {exc}')
+        raise SystemExit(2) from exc
 
 
 if __name__ == "__main__":

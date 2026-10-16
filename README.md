@@ -9,6 +9,8 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 
 ## 1. Cấu trúc dự án
 
+**RQ3 ổn định vận hành v2:** capture sửa window đầu bằng 0; feeder tiếp tục từ checkpoint và chống gửi trùng khi mất ACK/restart; API lưu prediction/cảnh báo nguyên khối; SHAP bị ngắt được phục hồi từ DB, queue RAM vẫn 200. Có bản thử nghiệm quy ước train, chưa chứng nhận đầy đủ ngữ nghĩa hoặc sửa hết LIME. [Cách áp dụng, kiến trúc và kiểm thử](RQ3_IDS_System/docs/stability_update_20261016.md).
+
 **Đọc SHAP/LIME dễ hiểu:** đã có giải nghĩa tiếng Việt đủ 78 đặc trưng, diễn giải từng mục Top-5 và thông báo LIME suy biến bằng lời. [Hướng dẫn đọc](RQ3_IDS_System/docs/reading_shap_lime.md).
 
 **Bổ sung LIME/đối chứng:** cảnh báo khi mẫu lân cận suy biến, không dùng Top-5 bằng 0/R² giả tốt; tab đối chiếu 78 đặc trưng với nền LIME và tập B có nhãn. [Giải thích kỹ thuật, giới hạn và test](RQ3_IDS_System/docs/lime_validity_and_comparison.md).

@@ -122,7 +122,7 @@ def scan(path):
 def fixture_worker():
     from importlib.metadata import version
     sys.path.insert(0, str(RQ3))
-    from app.capture_adapter import ProjectFlow, EXTRACTOR_VERSION
+    from app.capture_adapter import ProjectFlowV1 as ProjectFlow, V1_VERSION as EXTRACTOR_VERSION
     from cicflowmeter.features.context import PacketDirection as D
     from scapy.all import Ether, IP, TCP, UDP, Raw
 

@@ -11,7 +11,8 @@ from scapy.all import Ether, IP, IPv6, TCP, UDP, Raw, rdpcap, wrpcap
 
 RQ3 = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RQ3/'app'))
-from capture_adapter import ProjectFlowSession, EXTRACTOR_VERSION, statistics
+from capture_adapter import (ProjectFlowSession, EXTRACTOR_VERSION, statistics,
+                             ProjectFlowV1, TrainCandidateFlow, CANDIDATE_VERSION)
 
 
 def packet(when, direction='f', flags='A', payload=0, udp=False):
@@ -143,6 +144,7 @@ class AdapterTests(unittest.TestCase):
                 text=True,encoding='utf-8',errors='replace',timeout=30,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
             self.assertEqual(proc.returncode,0,proc.stdout+proc.stderr)
+            self.assertNotIn(b'\r\r\n',target.read_bytes())
             with target.open(newline='') as stream:
                 rows=list(csv.DictReader(stream))
             self.assertEqual(len(rows),1)
@@ -157,6 +159,47 @@ class AdapterTests(unittest.TestCase):
         session.process(Ether()/IP())
         self.assertEqual(session.n_ignored,2)
         self.assertFalse(session.get_flows())
+
+    def test_first_zero_window_preserved_both_directions(self):
+        packets = [packet(0), packet(.1), packet(.2,'b'), packet(.3,'b')]
+        for p,window in zip(packets, [0,4096,0,8192]):
+            p[TCP].window = window
+        session,decoded = self.feed(packets)
+        data = session.get_flows()[0].get_data()
+        self.assertEqual((data['init_fwd_win_byts'],data['init_bwd_win_byts']), (0,0))
+        # Historical baseline remains reproducible, including its known defect.
+        from cicflowmeter.features.context import PacketDirection as D
+        old = ProjectFlowV1(decoded[0],D.FORWARD)
+        old.add_packet(decoded[1],D.FORWARD)
+        self.assertEqual(old.get_data()['init_fwd_win_byts'],4096)
+
+    def test_experimental_conventions_are_explicit_and_limited(self):
+        import math
+        from cicflowmeter.features.context import PacketDirection as D
+        session,decoded = self.feed([packet(0),packet(.1,payload=100),packet(.2,'b')])
+        baseline = session.get_flows()[0].get_data()
+        candidate = TrainCandidateFlow(decoded[0],D.FORWARD)
+        candidate.add_packet(decoded[1],D.FORWARD)
+        candidate.add_packet(decoded[2],D.REVERSE)
+        result = candidate.get_data()
+        self.assertAlmostEqual(result['fwd_pkt_len_std'],100/math.sqrt(2))
+        self.assertEqual(result['down_up_ratio'],0)
+        self.assertEqual(result['extractor_version'],CANDIDATE_VERSION)
+        allowed = {'fwd_pkt_len_std','bwd_pkt_len_std','down_up_ratio',
+                   'init_fwd_win_byts','init_bwd_win_byts','extractor_version'}
+        self.assertTrue({k for k in baseline if baseline[k] != result[k]} <= allowed)
+        _,udp = self.feed([packet(0,udp=True)])
+        value = TrainCandidateFlow(udp[0],D.FORWARD).get_data()
+        self.assertEqual((value['init_fwd_win_byts'],value['init_bwd_win_byts']),(-1,-1))
+
+    def test_cli_refuses_existing_output(self):
+        path = self.folder/'protected.csv'
+        path.write_text('existing evidence\n')
+        proc = subprocess.run([sys.executable,str(RQ3/'scripts/run_live_capture.py'),
+            '--pcap-input',str(self.folder/'missing.pcap'),'--output',str(path)],
+            capture_output=True,timeout=30)
+        self.assertNotEqual(proc.returncode,0)
+        self.assertEqual(path.read_text(),'existing evidence\n')
 
 
 if __name__=='__main__':

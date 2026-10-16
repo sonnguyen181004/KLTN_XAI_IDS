@@ -2,6 +2,8 @@
 
 Ngày cập nhật: 16/10/2026, GMT+7. Phiên bản: `rq3-cfm-0.5.0-fixes-v1`, dựa trên Python CICFlowMeter 0.5.0. Mã sửa nằm trong `app/capture_adapter.py`; không sửa site-packages.
 
+**Tài liệu phiên bản lịch sử:** mặc định hiện tại đã chuyển sang v2 sửa thêm window=0. Xem [bản v2 và cơ chế phục hồi](stability_update_20261016.md); dùng `--extractor project-v1` để tái lập bản được mô tả tại đây. Số liệu/JSON v1 bên dưới được giữ nguyên.
+
 ## Hành vi đã sửa
 
 1. Mỗi packet được đưa vào flow đúng một lần; constructor đã giữ gói đầu thì session không thêm lại. Bulk cũng nhận gói đầu đúng một lần.

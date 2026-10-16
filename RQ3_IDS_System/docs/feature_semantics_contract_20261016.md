@@ -2,6 +2,8 @@
 
 Ngày 16/10/2026. Trạng thái: **đã thu hẹp các quy ước; chưa chứng nhận tương thích V3 và chưa đổi đầu vào production**.
 
+**Bước triển khai tiếp theo đã có:** [v2 và candidate thử nghiệm](stability_update_20261016.md). V2 sửa lỗi initial window=0; candidate chỉ thay ba nhóm quy ước được nêu rõ, chưa chứng nhận tương thích toàn bộ. Báo cáo và JSON tại đây giữ kết quả audit v1; stage23 chọn class v1 tường minh khi tái lập.
+
 Đây là bước tiếp nối [audit baseline](feature_compatibility_audit_20261016.md) và [adapter v1](capture_adapter_v1.md), không thay thế bằng chứng trước sửa. Script mới kiểm tra quan hệ từng dòng trên **toàn bộ 2.800.000 train + 700.000 test**, không lấy mẫu. Test từng được dùng trong tuning RQ1; việc đọc lại này không làm nó thành tập đánh giá độc lập.
 
 ## Kết quả có thể khẳng định từ dữ liệu hiện có

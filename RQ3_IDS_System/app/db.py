@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import time
 from pathlib import Path
 
 SCHEMA_SQL = """
@@ -92,7 +93,8 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     for table, fields in {
         'FlowRecord': {'capture_run_id': 'TEXT', 'run_name': 'TEXT', 'src_ip': 'TEXT',
                        'dst_ip': 'TEXT', 'src_port': 'INTEGER', 'flow_timestamp_utc': 'TEXT',
-                       'extractor_version': 'TEXT'},
+                       'extractor_version': 'TEXT', 'ingestion_key': 'TEXT',
+                       'ingestion_hash': 'TEXT', 'ingestion_response_json': 'TEXT'},
         'AlertRecord': {'explanation_status': "TEXT DEFAULT 'unknown_legacy'"},
         'Reliability': {'lime_local_r2': 'REAL', 'lime_diagnostics_json': 'TEXT'},
     }.items():
@@ -103,6 +105,7 @@ def init_db(db_path: str | Path) -> sqlite3.Connection:
     conn.execute('CREATE INDEX IF NOT EXISTS idx_flow_received ON FlowRecord(received_at)')
     conn.execute('CREATE INDEX IF NOT EXISTS idx_flow_run ON FlowRecord(capture_run_id, received_at)')
     conn.execute('CREATE INDEX IF NOT EXISTS idx_alert_flow ON AlertRecord(flow_id)')
+    conn.execute('CREATE UNIQUE INDEX IF NOT EXISTS idx_flow_ingestion_key ON FlowRecord(ingestion_key) WHERE ingestion_key IS NOT NULL')
     conn.commit()
     return conn
 
@@ -138,6 +141,68 @@ def get_connection(db_path: str | Path) -> sqlite3.Connection:
 def list_tables(conn: sqlite3.Connection) -> list[str]:
     cur = conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
     return [r[0] for r in cur.fetchall()]
+
+
+class IngestionConflict(ValueError):
+    pass
+
+
+def ingestion_response(conn, key, fingerprint):
+    if key is None:
+        return None
+    row = conn.execute('''SELECT f.ingestion_hash, f.ingestion_response_json, a.explanation_status
+        FROM FlowRecord f LEFT JOIN AlertRecord a ON a.flow_id=f.flow_id
+        WHERE f.ingestion_key=?''', (key,)).fetchone()
+    if row is None:
+        return None
+    if row[0] != fingerprint:
+        raise IngestionConflict('Idempotency-Key đã dùng cho dữ liệu/metadata khác.')
+    body = json.loads(row[1])
+    body['explanation_status'] = row[2]
+    return body
+
+
+def persist_prediction(conn, body, features, metadata, received_at, predicted_at, key, fingerprint, start_time):
+    """Atomic Flow + Prediction + Alert + Timing + receipt in existing six tables.
+
+    BEGIN IMMEDIATE serializes competing keys across API threads/processes.
+    Inference happens before this short transaction. Only its winner enqueues XAI.
+    """
+    conn.execute('BEGIN IMMEDIATE')
+    try:
+        existing = ingestion_response(conn, key, fingerprint)
+        if existing is not None:
+            conn.rollback()
+            return existing, False
+        fid = body['flow_id']
+        conn.execute('''INSERT INTO FlowRecord
+            (flow_id,received_at,source,flow_timestamp,features_json,capture_run_id,run_name,
+             src_ip,dst_ip,src_port,flow_timestamp_utc,extractor_version,ingestion_key,ingestion_hash)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+            (fid, received_at, metadata['source'], metadata['flow_timestamp'], json.dumps(features),
+             metadata['capture_run_id'], metadata['run_name'], metadata['src_ip'], metadata['dst_ip'],
+             metadata['src_port'], metadata['flow_timestamp_utc'], metadata['extractor_version'], key, fingerprint))
+        conn.execute('INSERT INTO Prediction VALUES (?,?,?,?,?)',
+                     (fid, body['predicted_label'], json.dumps(body['probabilities']), body['model_version'], predicted_at))
+        if body['alert_id']:
+            conn.execute('''INSERT INTO AlertRecord
+                (alert_id,flow_id,group_key,predicted_label,created_at,explanation_status) VALUES (?,?,?,?,?,?)''',
+                (body['alert_id'],fid,json.dumps([metadata['capture_run_id'],metadata['src_ip'],metadata['dst_ip'],
+                 features.get('Dst Port'),body['predicted_label']]),body['predicted_label'],predicted_at,'pending_dispatch'))
+        # Total covers normalization, inference and DB inserts, before final commit
+        # and queue dispatch. SHAP/LIME have their own measurements.
+        body['timing_ms']['total'] = round((time.perf_counter()-start_time)*1000, 3)
+        for step, duration in body['timing_ms'].items():
+            conn.execute('INSERT INTO Timing (flow_id,step,duration_ms,recorded_at) VALUES (?,?,?,?)',
+                         (fid,step,duration,predicted_at))
+        if key is not None:
+            conn.execute('UPDATE FlowRecord SET ingestion_response_json=? WHERE flow_id=?',
+                         (json.dumps(body),fid))
+        conn.commit()
+        return body, True
+    except Exception:
+        conn.rollback()
+        raise
 
 
 def table_columns(conn: sqlite3.Connection, table: str) -> list[str]:

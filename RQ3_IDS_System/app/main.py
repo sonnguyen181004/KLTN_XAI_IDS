@@ -18,7 +18,7 @@ from typing import Dict, Optional
 
 import numpy as np
 import yaml
-from fastapi import FastAPI, HTTPException, Query, Depends
+from fastapi import FastAPI, HTTPException, Query, Depends, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -78,6 +78,8 @@ explain_queue = ExplainQueue(
     reliability_scorer=reliability_scorer,
     db_module=db,
     db_path=DB_PATH,
+    recovery_feature_names=detector.feature_names,
+    model_version=detector.model_version,
 )
 
 # Bước 9 — LIME theo yêu cầu. Nền 2.000 dòng tính sẵn ở scripts/stage09_compute_lime_background.py
@@ -121,6 +123,7 @@ def health():
         "n_features_expected": len(detector.feature_names),
         "n_classes": len(detector.class_names),
         "class_names": detector.class_names,
+        "ingestion_idempotency": True,
     }
 
 
@@ -131,7 +134,8 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
             src_ip: Optional[str] = None, dst_ip: Optional[str] = None,
             src_port: Optional[int] = Query(None, ge=0, le=65535),
             capture_timezone: Optional[str] = None,
-            extractor_version: Optional[str] = Query(None, max_length=128)):
+            extractor_version: Optional[str] = Query(None, max_length=128),
+            idempotency_key: Optional[str] = Header(None, alias='Idempotency-Key', min_length=1, max_length=256)):
     """`source`/`flow_timestamp` là 2 tham số query TÙY CHỌN, KHÔNG thuộc 78 đặc
     trưng — thêm sau khi test thực tế: khi phát lại CSV/PCAP cũ, mọi flow được XỬ
     LÝ gần như cùng lúc (lúc bạn bấm gửi), nếu chỉ lưu "lúc xử lý" thì Dashboard
@@ -162,70 +166,42 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
             raise HTTPException(status_code=422, detail={"reason": e.reason, **e.details})
         t_normalize_ms = (time.perf_counter() - t0) * 1000
 
-        # Phải ghi FlowRecord TRƯỚC Timing, vì Timing.flow_id tham chiếu khóa ngoại
-        # tới FlowRecord.flow_id — ghi ngược thứ tự sẽ vi phạm FOREIGN KEY constraint.
-        # Persist the same 78-column vector the detector sees. Numeric CSV
-        # metadata (e.g. src_port) must not leak into the feature contract.
-        db.insert_flow(conn, flow_id, received_at, source, normalized.iloc[0].to_dict(),
-                       label_true=None, flow_timestamp=flow_timestamp)
-        conn.execute('UPDATE FlowRecord SET capture_run_id=?, run_name=?, src_ip=?, dst_ip=?, src_port=?, flow_timestamp_utc=?, extractor_version=? WHERE flow_id=?',
-                     (capture_run_id, run_name, src_ip, dst_ip, src_port, utc_time, extractor_version, flow_id))
-        conn.commit()
-        db.insert_timing(conn, flow_id, "normalize", t_normalize_ms, now_iso())
+        features = normalized.iloc[0].to_dict()
+        metadata = dict(source=source, flow_timestamp=flow_timestamp, flow_timestamp_utc=utc_time,
+                        capture_run_id=capture_run_id, run_name=run_name, src_ip=src_ip,
+                        dst_ip=dst_ip, src_port=src_port, extractor_version=extractor_version)
+        fingerprint = hashlib.sha256(json.dumps({'features': features, 'metadata': metadata},
+            sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+        headers = {'Idempotency-Key': idempotency_key} if idempotency_key else {}
+        existing = db.ingestion_response(conn, idempotency_key, fingerprint)
+        if existing is not None:
+            return JSONResponse(existing, headers={**headers, 'Idempotency-Replayed': 'true'})
 
-        # ---- Tầng 3: dự đoán ---------------------------------------------------------
+        # Tầng 3. Commit core records together before asynchronous explanation.
         t0 = time.perf_counter()
         result = detector.predict_flow(normalized)
         t_predict_ms = (time.perf_counter() - t0) * 1000
-        db.insert_timing(conn, flow_id, "predict", t_predict_ms, now_iso())
-
-        db.insert_prediction(
-            conn, flow_id, result["predicted_label"], result["probabilities"],
-            result["model_version"], now_iso(),
-        )
-
-        # ---- Luật tạo cảnh báo: nhãn khác Benign thì tạo Alert NGAY --------------------
-        # QUAN TRỌNG (đúng kiến trúc Làn B): tới đây là XONG phần API phải làm. KHÔNG
-        # gọi SHAP ở đây — chỉ đưa việc vào hàng đợi rồi trả lời ngay, để "cảnh báo hiện
-        # lên dashboard ngay, phần giải thích nối thêm vào khi tính xong" (tài liệu kiến
-        # trúc, Làn B / bước "Vào hàng đợi"). Nếu hàng đợi đầy, giải thích bị bỏ nhưng
-        # Alert vẫn đã được tạo và trả về — không mất cảnh báo.
-        alert_id = None
-        explanation_status = None
-        if result["predicted_label"] != "Benign":
-            alert_id = str(uuid.uuid4())
-            db.insert_alert(
-                conn, alert_id, flow_id,
-                group_key=json.dumps([capture_run_id, src_ip, dst_ip, flow.get('Dst Port'), result['predicted_label']]),
-                predicted_label=result["predicted_label"],
-                created_at=now_iso(),
-            )
-            explanation_status = explain_queue.submit(alert_id, flow_id, result["predicted_label"], normalized)
-
-        t_total_ms = (time.perf_counter() - t_start) * 1000
-        db.insert_timing(conn, flow_id, "total", t_total_ms, now_iso())
+        alert_id = str(uuid.uuid4()) if result['predicted_label'] != 'Benign' else None
+        body = dict(flow_id=flow_id, **result, is_alert=alert_id is not None, alert_id=alert_id,
+                    explanation_status='pending_dispatch' if alert_id else None,
+                    timing_ms={'normalize': round(t_normalize_ms, 3), 'predict': round(t_predict_ms, 3)})
+        body, created = db.persist_prediction(conn, body, features, metadata, received_at, now_iso(),
+                                             idempotency_key, fingerprint, t_start)
+        if created and alert_id:
+            try:
+                body['explanation_status'] = explain_queue.submit(alert_id, flow_id, result['predicted_label'], normalized)
+            except Exception as exc:
+                # Core prediction is durable. Do not convert a dispatch failure
+                # into a failed ingestion acknowledgement; expose it explicitly.
+                conn.execute("UPDATE AlertRecord SET explanation_status='failed' WHERE alert_id=?", (alert_id,))
+                conn.commit()
+                body['explanation_status'] = 'failed'
+                print(f'[predict] SHAP dispatch failed for {alert_id}: {exc}')
+        return JSONResponse(body, headers={**headers, 'Idempotency-Replayed': 'false' if created else 'true'})
+    except db.IngestionConflict as exc:
+        raise HTTPException(409, str(exc)) from exc
     finally:
         conn.close()
-
-    timing_ms = {
-        "normalize": round(t_normalize_ms, 3),
-        "predict": round(t_predict_ms, 3),
-        "total": round(t_total_ms, 3),
-    }
-
-    return JSONResponse({
-        "flow_id": flow_id,
-        "predicted_label": result["predicted_label"],
-        "probabilities": result["probabilities"],
-        "model_version": result["model_version"],
-        "is_alert": alert_id is not None,
-        "alert_id": alert_id,
-        # SHAP không còn tính ngay trong request này nữa (xem app/explain_queue.py) —
-        # "queued" = đang xếp hàng tính nền, "dropped_queue_full" = hàng đợi đầy (bỏ
-        # giải thích, GIỮ cảnh báo), None = Benign, không cần giải thích.
-        "explanation_status": explanation_status,
-        "timing_ms": timing_ms,
-    })
 
 
 class ExplainRequest(BaseModel):
@@ -397,4 +373,6 @@ def explain_queue_status():
         "n_queued": explain_queue.n_queued,
         "n_processed": explain_queue.n_processed,
         "n_dropped": explain_queue.n_dropped,
+        "n_recovered": explain_queue.n_recovered,
+        "recovery_pending": explain_queue.recovery_pending(),
     }
