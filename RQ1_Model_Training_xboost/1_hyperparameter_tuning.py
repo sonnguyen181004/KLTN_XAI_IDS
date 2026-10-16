@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
+from ids_metrics import ids_detection_metrics
 
 base_dir = r"c:\Users\LOQ\Downloads\SELF_KLTN"
 data_dir = os.path.join(base_dir, "CICID-2018_processed")
@@ -82,11 +83,10 @@ for i, cfg in enumerate(configs, 1):
     test_prec, test_rec, test_f1, _ = precision_recall_fscore_support(y_test, y_test_pred, average='macro')
     test_prec, test_rec, test_f1 = test_prec * 100, test_rec * 100, test_f1 * 100
     
-    # Tính FPR Benign
-    cm = confusion_matrix(y_test, y_test_pred)
-    fp_benign = cm[:, benign_idx].sum() - cm[benign_idx, benign_idx]
-    tn_benign = cm.sum() - (cm[benign_idx, :].sum() + cm[:, benign_idx].sum() - cm[benign_idx, benign_idx])
-    fpr_benign = (fp_benign / (fp_benign + tn_benign)) * 100
+    # Attack là positive: FP = Benign thật bị báo thành bất kỳ lớp tấn công.
+    cm = confusion_matrix(y_test, y_test_pred, labels=np.arange(len(le.classes_)))
+    detection = ids_detection_metrics(cm, benign_idx)
+    fpr_benign = detection['fpr_pct']
     
     tuning_results.append({
         'Cấu hình': f"Depth={depth}, LR={lr}",
@@ -96,6 +96,11 @@ for i, cfg in enumerate(configs, 1):
         'Test Prec (%) [Sub-1.1]': round(test_prec, 2),
         'Test F1 (%) [Sub-1.1]': round(test_f1, 2),
         'FPR Benign (%) [Sub-1.2]': round(fpr_benign, 4),
+        'FNR Attack (%)': round(detection['fnr_pct'], 4),
+        'FP (Benign thành Attack)': detection['fp'],
+        'TN (Benign thành Benign)': detection['tn'],
+        'FN (Attack thành Benign)': detection['fn'],
+        'TP (Attack thành Attack)': detection['tp'],
         'Ghi chú': desc
     })
     
@@ -117,6 +122,7 @@ print("\n" + "*"*80)
 print(f"  👑 CẤU HÌNH VÔ ĐỊCH ĐƯỢC CHỌN: {best_row['Cấu hình']}")
 print(f"     • Macro F1-score: {best_row['Test F1 (%) [Sub-1.1]']}% (Cao nhất)")
 print(f"     • Macro Precision: {best_row['Test Prec (%) [Sub-1.1]']}%")
-print(f"     • Tỷ lệ Cảnh báo sai FPR: {best_row['FPR Benign (%) [Sub-1.2]']}% (Thấp nhất)")
+print(f"     • Tỷ lệ Cảnh báo sai FPR: {best_row['FPR Benign (%) [Sub-1.2]']}% (cấu hình chọn theo Macro F1)")
+print(f"     • Tỷ lệ bỏ sót tấn công FNR: {best_row['FNR Attack (%)']}%")
 print(f"     • Thời gian chạy: {best_row['Thời gian (s)']} giây")
 print("*"*80)

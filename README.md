@@ -61,7 +61,7 @@ SELF_KLTN/
 - **Kết quả trên test set:** Accuracy 97,91% · Macro Precision 90,84% · Macro Recall 83,99% · **Macro F1 85,81%** · thời gian huấn luyện ≈ 2,67 phút.
 - **Tuning:** 7 cấu hình; cấu hình depth 12 / lr 0,08 đạt F1 85,95% nhưng bản depth 8 được giữ làm mô hình giải thích.
 - **Hạn chế cần nói rõ:** test set được dùng để chọn cấu hình (không có validation riêng) nên số liệu hơi lạc quan.
-- **Về "FPR":** con số 5,7481% trong bảng RQ1 thực chất là tỉ lệ *bỏ sót* (tấn công bị dự đoán thành Benign). Tỉ lệ báo động giả thật sự (Benign bị báo là tấn công) = 1.139 / 490.000 ≈ **0,2324%**.
+- **Đính chính FPR (16/10/2026):** code và bảng kết quả đã tách FPR = 1.139 / 490.000 ≈ **0,2324%** (Benign bị báo thành Attack) với FNR = 12.071 / 210.000 ≈ **5,7481%** (Attack bị bỏ sót thành Benign). Bảng tuning cũ được đổi tên cột sai thành FNR, không suy đoán FPR của từng cấu hình. Xem [định nghĩa và giới hạn](RQ1_Model_Training_xboost/FPR_CORRECTION.md). Đây là số liệu test dataset, không phải FPR traffic live.
 
 Chạy lại:
 

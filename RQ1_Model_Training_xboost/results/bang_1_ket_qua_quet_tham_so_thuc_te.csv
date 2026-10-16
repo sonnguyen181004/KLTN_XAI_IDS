@@ -1,4 +1,4 @@
-﻿Cấu hình,Thời gian (s),Train F1 (%),Test Acc (%),Test Prec (%) [Sub-1.1],Test F1 (%) [Sub-1.1],FPR Benign (%) [Sub-1.2],Ghi chú
+﻿Cấu hình,Thời gian (s),Train F1 (%),Test Acc (%),Test Prec (%) [Sub-1.1],Test F1 (%) [Sub-1.1],FNR Attack (%) [đính chính tên cột FPR cũ],Ghi chú
 "Depth=4, LR=0.05",158.63,86.3,97.78,91.04,84.56,6.1148,"Cây nông, học chậm"
 "Depth=6, LR=0.05",150.98,87.59,97.85,91.03,85.27,5.9671,"Cây trung bình, học chậm"
 "Depth=6, LR=0.08",139.49,88.27,97.88,90.83,85.68,5.8824,"Cây trung bình, học chuẩn"

@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, precision_recall_fscore_support
+from ids_metrics import ids_detection_metrics
 
 base_dir = r"c:\Users\LOQ\Downloads\SELF_KLTN"
 data_dir = os.path.join(base_dir, "CICID-2018_processed")
@@ -63,11 +64,14 @@ prec, rec, f1, _ = precision_recall_fscore_support(y_test, y_pred, average='macr
 prec, rec, f1 = prec * 100, rec * 100, f1 * 100
 
 # Tính FPR trên Benign cho Sub-RQ 1.2
-cm = confusion_matrix(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred, labels=np.arange(len(le.classes_)))
 benign_idx = list(le.classes_).index('Benign')
-fp_benign = cm[:, benign_idx].sum() - cm[benign_idx, benign_idx]
-tn_benign = cm.sum() - (cm[benign_idx, :].sum() + cm[:, benign_idx].sum() - cm[benign_idx, benign_idx])
-fpr_benign = (fp_benign / (fp_benign + tn_benign)) * 100
+detection = ids_detection_metrics(cm, benign_idx)
+fp_benign, tn_benign = detection['fp'], detection['tn']
+fpr_benign = detection['fpr_pct']
+# Lưu ma trận có nhãn để tính lại metric mà không cần huấn luyện lại.
+pd.DataFrame(cm, index=le.classes_, columns=le.classes_).to_csv(
+    os.path.join(results_dir, 'confusion_matrix_values.csv'), encoding='utf-8-sig')
 
 # Báo cáo chi tiết 15 phân lớp
 report_dict = classification_report(y_test, y_pred, target_names=le.classes_, output_dict=True)
@@ -83,6 +87,7 @@ summary_metrics = {
         'Macro Recall',
         'Macro F1-score [Sub-RQ 1.1]',
         'Tỷ lệ Cảnh báo sai FPR trên Benign [Sub-RQ 1.2]',
+        'Tỷ lệ bỏ sót tấn công FNR (Attack thành Benign)',
         'Thời gian Huấn luyện'
     ],
     'Kết quả XGBoost Tối ưu': [
@@ -91,6 +96,7 @@ summary_metrics = {
         f"{rec:.2f}%",
         f"{f1:.2f}%",
         f"{fpr_benign:.4f}% (FP={fp_benign}, TN={tn_benign})",
+        f"{detection['fnr_pct']:.4f}% (FN={detection['fn']}, TP={detection['tp']})",
         f"{train_duration/60:.2f} phút ({train_duration:.2f}s)"
     ]
 }
