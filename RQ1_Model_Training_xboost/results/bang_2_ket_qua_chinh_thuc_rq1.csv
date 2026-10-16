@@ -3,5 +3,6 @@
 Macro Precision [Sub-RQ 1.1],90.84%
 Macro Recall,83.99%
 Macro F1-score [Sub-RQ 1.1],85.81%
-Tỷ lệ Cảnh báo sai FPR trên Benign [Sub-RQ 1.2],"5.7481% (FP=12071, TN=197929)"
+Tỷ lệ Cảnh báo sai FPR trên Benign [Sub-RQ 1.2],"0.2324% (FP=1139, TN=488861)"
+Tỷ lệ bỏ sót tấn công FNR (Attack thành Benign),"5.7481% (FN=12071, TP=197929)"
 Thời gian Huấn luyện,2.67 phút (160.33s)
