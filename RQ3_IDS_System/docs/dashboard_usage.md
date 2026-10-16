@@ -10,64 +10,209 @@ UI gồm **Giám sát flow**, **Hướng dẫn live**, **Nạp CSV / PCAP**. Tab
 
 Chạy hai lệnh API/UI bên dưới từ thư mục RQ3_IDS_System, mở http://127.0.0.1:8501. Muốn xem lại PCAP: Nạp CSV / PCAP → Phát lại PCAP → chọn file → trích xuất/gửi → Giám sát flow. Không cần reset DB. Muốn live: mở Hướng dẫn live và dùng CSV mới. Model/luật cảnh báo không thay đổi theo tab.
 
-- [Chạy và đọc UI](#run-ui)
+- [Chuẩn bị và chạy API/UI](#start-api-ui)
+- [Test CSV](#test-csv) · [Test PCAP](#test-pcap) · [Realtime liên tục](#test-live)
+- [Tiếp tục phiên/checkpoint](#resume)
 - [Hiểu tên đặc trưng và SHAP/LIME](#read-xai)
 
 ---
 
 <a id="run-ui"></a>
 
-# Dashboard IDS mới — 16/10/2026
+## 1. Chuẩn bị trong VS Code
 
-## Chạy trong VS Code
+Hướng dẫn khớp code đến commit `b24f93c` ngày 16/10/2026. **Giữ cách chạy terminal; nút Bắt đầu/Dừng capture trên UI để sau.** Live mặc định chạy liên tục tới khi bạn dừng, không cần giới hạn 60 giây.
 
-**Bản hiện hành:** capture mặc định `rq3-cfm-0.5.0-fixes-v2`, feeder có checkpoint/chống gửi trùng, SHAP có phục hồi sau restart. Xem [hướng dẫn nâng cấp và kết quả](operations.md#stability-v2). Restart API/UI và dùng CSV mới cho phiên nâng cấp. Timeout vẫn duration 90 giây/idle 240 giây hoặc flush lúc dừng; chưa chứng nhận tương thích đầy đủ train/V3.
+1. VS Code → **File → Open Folder** → chọn `C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System`.
+2. **Terminal → New Terminal**, chọn PowerShell. Bấm **+** để mở các terminal khác; mỗi terminal phải ở thư mục RQ3_IDS_System.
+3. Nếu đang kích hoạt `cicflowmeter_capture_demo\.venv` cũ, chạy `deactivate` trước; chỉ dùng lệnh này khi môi trường đó đang kích hoạt. Dùng Python đã chạy API thành công; capture có Python riêng.
+4. Không cài lại, tạo lại nền LIME hoặc train model mỗi lần test.
 
-Không cần xóa DB hoặc file dữ liệu cũ. Bản cập nhật không đổi model, luật dự đoán hay luật nhánh A/B.
-Nếu API/Streamlit cũ đang chạy, dùng Ctrl+C trong đúng terminal của từng tiến trình rồi chạy lại.
-Không cần dừng bộ bắt traffic chỉ để cập nhật màn hình. Feeder cùng checkpoint tiếp tục cùng lượt sau restart; muốn lượt mới phải dùng CSV/checkpoint mới.
-
-Tất cả terminal dưới đây đặt tại thư mục `C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System`.
-
-Terminal 1 — API (Python đã cài requirements):
+Kiểm tra môi trường khi cần (không bật server):
 
 ```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python -c "import sys; print(sys.executable); import fastapi, streamlit, xgboost, shap, lime; print('API/UI imports OK')"
+.\.venv_capture\Scripts\python.exe -c "from importlib.metadata import version; print('cicflowmeter', version('cicflowmeter'))"
+Test-Path data\train_stats.json
+Test-Path data\lime_background.npy
+Test-Path data\clean_holdout_set.csv
+```
+
+Model/encoder phải tồn tại theo `config.yaml`. Thiếu thư viện API thì cài `python -m pip install -r requirements.txt` trong môi trường đã chọn, không tự nâng phiên bản. Capture dùng `.venv_capture` với CICFlowMeter 0.5.0 và `requirements-capture.txt` riêng. Nếu thiếu nền/thống kê, xem phần chuẩn bị README; không ghi đè chúng khi chỉ muốn xem UI.
+
+| Cách test | Terminal giữ chạy | Nguồn trên UI |
+|---|---|---|
+| CSV qua UI | 1: API, 2: Dashboard | `csv_upload` |
+| PCAP/PCAPNG qua UI | 1: API, 2: Dashboard | `pcap_replay` |
+| Traffic live | 1: API, 2: Dashboard, 3: capture, 4: feeder | `feeder_live` |
+
+<a id="start-api-ui"></a>
+
+## 2. Bật API và Dashboard — dùng chung cho ba cách test
+
+**Terminal 1 — API/model:**
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Terminal 2 — giao diện:
+Đợi `Application startup complete`, giữ terminal chạy. Chỉ một API process cho mỗi DB; không thêm `--workers` hoặc `--reload` khi demo.
+
+**Terminal 2 — Dashboard:**
 
 ```powershell
-python -m streamlit run app/dashboard.py
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
 ```
 
-Mở http://localhost:8501. Khi cần cài đủ thư viện: `python -m pip install -r requirements.txt`.
-Lần API mới khởi động sẽ tự thêm cột và index vào DB hiện có; không xóa bản ghi cũ.
+Mở **http://127.0.0.1:8501** bằng trình duyệt. API docs: http://127.0.0.1:8000/docs. Kiểm tra API từ terminal phụ: `Invoke-RestMethod http://127.0.0.1:8000/health`.
 
-## Một lượt live mới, tránh trộn dữ liệu cũ
+UI gồm **Giám sát flow · Hướng dẫn live · Nạp CSV / PCAP**. Tab Hướng dẫn live chỉ hướng dẫn terminal, chưa bật/dừng capture. Nếu server cũ đang chạy, dừng đúng terminal cũ trước; không mở thêm cùng cổng. Restart không xóa lịch sử DB.
 
-Nếu terminal capture không nhận Ctrl+C ở bản cũ, khởi chạy phiên mới sau cập nhật script. Bản mới tránh `join()` vô hạn, xử lý yêu cầu dừng rồi flush. Có thể thêm `--seconds 60` vào lệnh capture để tự dừng sau một phút; dùng tên CSV mới và cùng tên đó cho feeder. Xem [chi tiết sửa dừng capture](operations.md). Không cần đổi model hoặc reset DB.
+<a id="test-csv"></a>
 
-### Giới hạn hàng đợi SHAP
+## 3. Test CSV có đặc trưng sẵn
 
-Cập nhật 16/10/2026: `api.max_explain_queue` tăng từ 50 lên **200 tác vụ chờ**, ngoài tác vụ worker đang xử lý. Khởi động lại API để áp dụng; dashboard đọc giới hạn từ `/explain_queue_status`, nên sẽ hiện `…/200` sau khi API mới lên.
+1. Giữ API/UI chạy; không cần capture hoặc feeder.
+2. Vào **Nạp CSV / PCAP → CSV đặc trưng → Chọn CSV**.
+3. File mẫu sẵn: `RQ3_IDS_System\data\clean_holdout_set.csv`. Không chọn file JSON hoặc PCAP vào tab CSV.
+4. Chọn ô **Đổi giây → micro giây (CSV CICFlowMeter thật)** theo nguồn file:
 
-Đây không phải giới hạn số flow được bắt, dự đoán hoặc lịch sử. Đầy queue thì SHAP mới bị bỏ (`dropped_queue_full`), prediction/alert vẫn còn. Việc đang chờ bị ngắt do restart được khôi phục dần từ DB; việc đã dropped/failed không tự retry. Backlog DB hiển thị riêng với queue RAM 200. Chạy một API process cho mỗi DB. Bảng vẫn 50 flow/trang; tăng queue không làm SHAP tính nhanh hơn, chưa đo tải để kết luận 200 tối ưu.
+| Loại CSV | Đổi đơn vị |
+|---|---|
+| Tập A/B, `clean_holdout_set.csv` hoặc dữ liệu thời gian đã là micro giây | **Không tích** |
+| CSV từ adapter Python CICFlowMeter 0.5.0 của dự án, thời gian còn là giây | **Tích** |
+| CSV từ extractor khác/không biết đơn vị | Xác minh trước; không mặc định mọi CSV CICFlowMeter đều cần đổi |
 
-Terminal 3, quyền Administrator nếu môi trường bắt gói yêu cầu. Đổi tên file cho **mỗi lần demo**:
+5. Chọn **Múi giờ timestamp trong CSV**: `+07:00` nếu biết là giờ Việt Nam/Thái Lan, `+00:00` nếu UTC; không rõ thì giữ **Không rõ**.
+6. Bấm **Gửi CSV vào /predict** một lần, đợi số flow thành công/dòng lỗi; mở **Chi tiết lỗi gửi** nếu có.
+7. Sang **Giám sát flow**, chọn đúng lượt tên file, Nguồn = `csv_upload`, thời gian = **Toàn bộ lượt**; bỏ **Chỉ cảnh báo** để thấy Benign.
+8. Bấm một dòng để xem dự đoán, SHAP; LIME chỉ chạy khi yêu cầu trên flow cảnh báo.
+
+File cần UTF-8 và đủ 78 đặc trưng tên chuẩn hoặc tên mapping hỗ trợ, không có NaN/Infinity. IP/timestamp chỉ hiện nếu file cung cấp; dataset không có IP là bình thường. Không suy ra IP từ 78 đặc trưng. Upload không tự trở thành phép đo FPR chỉ vì CSV có cột nhãn; không coi nhãn dự đoán là ground truth.
+
+Refresh không tự gửi lại; **bấm gửi lần nữa tạo lượt mới**, có thể lặp nội dung. Upload UI chưa có checkpoint phục hồi qua restart trình duyệt như feeder.
+
+<a id="test-pcap"></a>
+
+## 4. Test PCAP/PCAPNG đã ghi
+
+1. Giữ API/UI chạy. Không cần terminal capture/feeder cho cách này.
+2. **Nạp CSV / PCAP → PCAP đã ghi → Chọn PCAP**.
+3. Chọn file, ví dụ `C:\Users\LOQ\Downloads\SELF_KLTN\tesst2.pcapng` hoặc `test.pcapng`.
+4. Bấm **Trích xuất và gửi**. UI tự chạy Python trong `.venv_capture`, trích flow bằng project v2 rồi gửi cùng `/predict`.
+5. Đợi số flow thành công/lỗi, sang **Giám sát flow**, chọn lượt tên PCAP và Nguồn = `pcap_replay`.
+6. Xem IP/cổng, thời điểm gói đầu khác lúc API nhận, nhãn/xác suất và SHAP/LIME của flow đã chọn.
+
+Đây là **đọc file offline**, không phát gói ra mạng bằng tcpreplay. UI tự đổi giây→micro giây cho CSV extractor sinh; không dùng ô đổi đơn vị của tab CSV. Timestamp PCAP được extractor chuyển theo múi giờ máy chạy, UI hiển thị mốc đã biết ở GMT+7.
+
+Giới hạn trích xuất trên UI là **120 giây xử lý**, không phải thời lượng traffic trong file. Nếu vượt, thử file nhỏ hơn hoặc trích offline bằng CLI với tên CSV mới:
 
 ```powershell
-.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_ui_01.csv
+.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --pcap-input ..\tesst2.pcapng --output data\replay_review_01.csv
 ```
 
-Terminal 4:
+Đợi xong rồi upload CSV này theo mục 3, tích đổi đơn vị. Lượt đó có nguồn `csv_upload` (không phải `pcap_replay`), cần ghi đúng nguồn gốc khi báo cáo. CLI này không có timeout subprocess 120 giây của UI. Không dùng `--overwrite` để ghi đè file feeder đang theo dõi.
+
+Nếu cần tự tạo PCAP: dùng Wireshark chọn đúng card → Start → thao tác trên máy → Stop → Save As .pcapng, rồi upload theo các bước trên. Chỉ bắt mạng bạn được phép kiểm thử.
+
+<a id="test-live"></a>
+
+## 5. Test realtime liên tục — đến khi chủ động dừng
+
+Giữ terminal 1/API và 2/UI, mở thêm terminal 3 và 4. **Không thêm `--seconds`: không giới hạn 60 giây.**
+
+Xem card đang dùng:
 
 ```powershell
-python app\feeder.py --watch data\live_ui_01.csv --convert-units --capture-timezone +07:00
+Get-NetAdapter | Select-Object Name,Status,InterfaceDescription
 ```
 
-Tên Wi-Fi phải đúng interface trên máy. Feeder mặc định lấy múi giờ máy; tham số +07:00 chỉ đúng nếu timestamp CSV là giờ Việt Nam/Thái Lan.
-Feeder sinh `capture_run_id` và lưu trong `<CSV>.feeder-state.json`. Khởi động lại cùng lệnh **tiếp tục cùng lượt từ dòng đã được xác nhận**, không tự gửi lại từ đầu. Giữ checkpoint khi tiếp tục; chọn `--checkpoint` mới nếu chủ động phát lại toàn bộ. File CSV phải chỉ append, không ghi đè khi đang theo dõi. CSV tải lên/PCAP phát lại trên UI vẫn có mã lượt riêng mỗi lần gửi.
+Thay `Wi-Fi` nếu đang dùng card khác. Npcap cần sẵn sàng; nếu thiếu quyền, dừng đúng tiến trình rồi mở VS Code bằng **Run as administrator** và chạy lại. Không tắt bảo mật hoặc thay ExecutionPolicy toàn máy.
+
+**Terminal 3 — capture:**
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_review_01.csv
+```
+
+**Terminal 4 — feeder:**
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python app\feeder.py --watch data\live_review_01.csv --convert-units --capture-timezone +07:00
+```
+
+- Cả hai phải cùng đường dẫn CSV. Nếu tên đã có dữ liệu, đổi **cả hai lệnh** sang `live_review_02.csv` hoặc tên mới.
+- `+07:00` chỉ đúng nếu timestamp capture theo giờ Việt Nam/Thái Lan.
+- Lướt web **trên laptop đang capture**. Traffic nền vẫn có khi chưa thao tác; laptop không tự nhìn thấy toàn bộ traffic của mọi máy chung Wi-Fi/hotspot.
+- Capture báo `[capture] receiving_started`; chế độ này không in từng packet, UI chưa có bộ đếm packet trực tiếp.
+- Feeder báo `Dòng mới #…: GỬI OK` khi API đã trả kết quả.
+- UI chọn lượt `live_review_01.csv`, Nguồn = `feeder_live`, **Toàn bộ lượt**. Lượt chỉ hiện khi API nhận flow; bấm **Làm mới ngay** nếu danh sách chưa cập nhật.
+
+### Vì sao lướt web mà chưa thấy flow?
+
+Dự đoán **theo flow**, không từng packet. Adapter xuất khi flow có duration đạt 90 giây, idle đạt 240 giây hoặc flush lúc dừng. **Không phải cứ 90 giây từ lúc bật là mọi flow đều xuất**; flow ngắn ngừng có gói có thể phải chờ idle. Chưa dùng đóng TCP làm điểm xuất riêng.
+
+Kiểm tra ở terminal phụ:
+
+```powershell
+Get-Item data\live_review_01.csv | Select-Object Length,LastWriteTime
+Get-Content data\live_review_01.csv.feeder-state.json
+Invoke-RestMethod http://127.0.0.1:8000/explain_queue_status
+```
+
+`acknowledged_rows` là số dòng đã được API xác nhận. CSV 0 byte có thể là chưa xuất flow, không đủ để khẳng định không bắt được gói. API khỏe cũng không chứng minh capture còn chạy.
+
+### Dừng đúng thứ tự
+
+1. Bấm vào **terminal 3/capture**, Esc nếu đang chọn chữ, nhấn **Ctrl+C một lần**.
+2. Đợi yêu cầu dừng, `[capture] receiving_stopped`, số packet/flow và **Đã dừng. Kiểm tra file…**. Bản từ `b24f93c` tránh join vô hạn; chỉ áp dụng cho capture khởi chạy mới.
+3. **Giữ feeder** tới khi gửi hết CSV đã flush. Có thể đối chiếu `acknowledged_rows` với `exported_flows` của capture nếu CSV chỉ do phiên hiện tại tạo.
+4. Ctrl+C **terminal 4/feeder**. Giữ API/UI nếu tiếp tục xem; nếu nghỉ, đợi SHAP hoàn tất khi cần rồi Ctrl+C UI và API.
+5. Không dùng thùng rác/Stop-Process làm cách dừng thường lệ: flow trong RAM có thể mất.
+
+Nếu vẫn không dừng, kiểm tra đúng terminal và giữ log để chẩn đoán. Báo lỗi “thread còn chạy/chưa thể ghi nốt an toàn” nghĩa là chưa xác nhận flush thành công. `--seconds N` chỉ là tùy chọn kiểm thử, không bắt buộc.
+
+<a id="resume"></a>
+
+## 6. Tiếp tục hoặc tạo phiên mới
+
+- **Feeder ngắt:** chạy lại cùng CSV/API/đơn vị/múi giờ và checkpoint. Tiếp tục từ dòng đã xác nhận, retry cùng khóa không tạo flow trùng.
+- **API ngắt:** bật lại API, giữ feeder/checkpoint. Lỗi kết nối tạm được thử lại; SHAP đang chờ bị ngắt khôi phục dần từ DB.
+- **Capture đã dừng:** phiên mới dùng CSV mới. Chỉ muốn gửi nốt CSV cũ thì chạy feeder, không khởi chạy capture ghi đè.
+- **Phát lại CSV có chủ đích:** dùng checkpoint mới chưa tồn tại, ví dụ thêm `--checkpoint data\replay_again_01.feeder-state.json`. Đây là lượt mới, có thể lặp nội dung.
+- **Sau reset DB:** checkpoint cũ vẫn nhớ các dòng đã gửi. Test UI tạo lượt mới; feeder phát lại CSV cũ cần checkpoint mới. Không xóa checkpoint khi feeder đang chạy.
+- Không cần reset DB mỗi lần test, chỉ lọc lượt. Sao lưu nhất quán trước mọi reset có chủ đích.
+
+## 7. Lỗi thường gặp
+
+| Hiện tượng | Kiểm tra / xử lý |
+|---|---|
+| Không mở được UI | Terminal UI còn chạy không, đúng cổng 8501 không |
+| UI không kết nối API | API có startup complete không; gọi `/health`, kiểm tra đúng Python |
+| Cổng bận/DB có worker khác | Không bật API thứ hai; xác minh tiến trình cũ, không tắt toàn bộ Python |
+| CSV có dữ liệu, chưa `GỬI OK` | Kiểm tra cùng đường dẫn capture/feeder, log lỗi và API/checkpoint |
+| Không thấy lượt live | Chưa nhận flow hoặc lọc nhầm; Làm mới ngay, chọn đúng lượt/nguồn |
+| Feeder DỪNG/HTTP 422 | Xem cột, NaN/Infinity, đơn vị; con trỏ giữ nguyên, không tự bỏ dòng |
+| File thay đổi/truncate | Không ghi đè CSV đang theo dõi; tạo phiên CSV mới |
+| Thiếu IP | Nguồn có cung cấp metadata IP không; không suy ra từ vector feature |
+| Queue đầy | 200 chỉ giới hạn SHAP chờ; vẫn lưu prediction/alert, dropped không tự retry |
+| LIME không có biểu đồ | Đọc trạng thái/chẩn đoán; thiếu lân cận không có nghĩa chưa dự đoán |
+| Hulk khi lướt web | Nhãn model chưa xác minh; kiểm tra feature/train–capture, không tính FPR live khi thiếu nhãn thật |
+| Cảnh báo phiên bản sklearn/model | Giới hạn môi trường đã biết; không tự nâng/gỡ thư viện hoặc train lại để che cảnh báo |
+
+## 8. Checklist xem kết quả
+
+- Đúng lượt/nguồn, bỏ **Chỉ cảnh báo** để thấy cả Benign.
+- Có số gửi thành công/lỗi; không chỉ nhìn packet capture.
+- Chọn flow xem IP nếu có, thời gian gói đầu/API nhận, xác suất 15 lớp.
+- Cảnh báo có SHAP tự động; Benign không cần cảnh báo/SHAP/LIME theo kiến trúc hiện tại.
+- Yêu cầu LIME thủ công; suy biến thì giữ thông báo, không coi Top-5 bằng 0 là bằng chứng.
+- Test pipeline chạy được không tự chứng minh accuracy/FPR ngoài thực tế.
 
 ## Đọc màn hình
 
@@ -183,8 +328,8 @@ Các chi tiết khác biệt extractor được ghi chú, không giả định m
 
 - Header dùng header IPv4 trong extractor hiện tại.
 - Seg Size Avg sao chép Pkt Len Mean; Subflow sao chép tổng gói/byte tương ứng.
-- `CWE Flag Count` trong dataset liên quan CWR, nhưng extractor Python 0.5.0 hiện sao chép Fwd URG Flags vào cột xuất tương ứng. UI cảnh báo để không diễn giải nhầm thành phép đếm CWR độc lập.
-- Cách tính đặc trưng/cờ live có thể khác dataset; bản này không sửa extractor hay đánh giá lại khả năng tổng quát hóa model.
+- `CWE Flag Count` trong dataset liên quan CWR. Lỗi sao chép Fwd URG Flags thuộc upstream Python 0.5.0/legacy; adapter project v1/v2 đã sửa đếm CWR độc lập. Xem phiên bản extractor của flow, không áp nhận định baseline cho mọi phiên mới.
+- Các khác biệt ngữ nghĩa còn lại phải đối chiếu [hợp đồng đặc trưng](feature_compatibility.md); giao diện giải nghĩa không chứng nhận khả năng tổng quát hóa của model.
 
 ## 5. Kiểm thử và chạy lại
 

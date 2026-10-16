@@ -6,7 +6,22 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 - [Capture v2, phục hồi và kiểm thử](#stability-v2)
 
-## Áp dụng trên máy người dùng — 16/10/2026
+## Commit đã đối chiếu — 16/10/2026
+
+Đối chiếu `git log`, danh sách file thay đổi và code hiện tại; đây không phải một lần chạy lại toàn bộ benchmark. Không đổi code runtime/model trong đợt cập nhật hướng dẫn này.
+
+| Commit | Nội dung đã lưu | Giới hạn cần giữ rõ |
+|---|---|---|
+| `8d1a8a7` | SHAP queue 50 → 200 | Không phải giới hạn số flow; chưa kết luận 200 tối ưu |
+| `f831347`, `c64e7bb` | Audit feature và quan hệ từng dòng train/test | Chưa chứng nhận tương thích đầy đủ train–PCAP |
+| `28f68cf` | Adapter v1 và kiểm thử capture/live | Baseline lịch sử, mặc định hiện tại là v2 |
+| `795b7de` | Capture v2, CSV Windows, checkpoint/idempotency, lưu giao dịch và phục hồi SHAP | Candidate chỉ opt-in; LIME không tự hết suy biến |
+| `d411a49` | Gộp 11 Markdown thành 5, ba tab UI và hướng dẫn live | Chưa có nút điều khiển capture |
+| `b24f93c` | Chờ capture đáp ứng tín hiệu dừng, flush và test | Stage20 PASS 15; phím Ctrl+C trên mọi VS Code/Npcap chưa được chứng nhận |
+
+**Chốt theo yêu cầu hiện tại:** tự chạy API/UI/capture/feeder bằng terminal VS Code, live liên tục không cần `--seconds`. Hoãn nút Bắt đầu/Dừng trên UI. Xem [hướng dẫn hiện hành](dashboard_usage.md#run-ui), không dùng PID hoặc số flow trong nhật ký dưới đây làm trạng thái hiện tại.
+
+## Nhật ký áp dụng trên máy người dùng — 16/10/2026
 
 ### Sửa capture không phản hồi Ctrl+C
 
@@ -14,20 +29,24 @@ Phiên live chờ `sniffer.join()` vô hạn trong main thread; đây là điể
 
 Giữ nguyên công thức feature, extractor version v2, timeout flow 90s/240s và model/XAI. Stage20 hiện PASS 15 test, gồm tín hiệu phát bằng `signal.raise_signal`, hẹn giờ, lỗi sniffer, khôi phục handler và CLI PCAP thật; chưa phải kiểm thử end-to-end phím Ctrl+C trong mọi phiên terminal VS Code/Npcap. Bản sửa chỉ có hiệu lực khi khởi chạy capture mới.
 
-Để test ngắn có thời hạn:
+Lệnh chạy live thường dùng, không đặt giới hạn thời gian:
 
 ```powershell
-.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_manual_02.csv --seconds 60
+.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_manual_02.csv
 ```
 
-Chạy feeder theo đúng CSV đó. Nếu tên đã dùng, đổi tên ở cả capture và feeder. Đợi capture báo `receiving_stopped` và ghi nốt flow; đợi feeder gửi hết trước khi dừng feeder. Không đóng cưỡng bức terminal trừ khi chấp nhận mất flow chưa xuất.
+Chạy feeder theo đúng CSV đó. Nếu tên đã dùng, đổi tên ở cả capture và feeder. Đợi capture báo `receiving_stopped` và ghi nốt flow; đợi feeder gửi hết trước khi dừng feeder. Không đóng cưỡng bức terminal trừ khi chấp nhận mất flow chưa xuất. `--seconds N` chỉ là tùy chọn kiểm thử có thời hạn, không bắt buộc và không dùng trong quy trình live mặc định.
+
+### Phiên mở UI trước lần reset DB — thông tin lịch sử
+
+Các số đếm và PID dưới đây là ảnh chụp của lần mở UI trước; DB sau đó đã được reset theo yêu cầu, người dùng tự nạp/test lại. Không suy ra số flow hiện tại hoặc dừng tiến trình theo PID cũ.
 
 - Bật API tại `127.0.0.1:8000` và Streamlit tại `127.0.0.1:8501`; health xác nhận model `52eb5a671ee82109`, 78 đặc trưng, 15 lớp, idempotency và queue 200. Không chạy thêm API cùng DB.
 - Không reset DB, không gửi thêm flow và không tự bật capture. DB hiện có 176 flow/88 cảnh báo; worker tự tiếp tục các SHAP bị ngắt theo cơ chế phục hồi v2. Việc cập nhật giải thích không phải tạo thêm traffic.
 - Có bản sao SQLite nhất quán `data/ids_system_backup_ui_20261016_112528.db`, không đưa vào Git. Bản sao được tạo sau lúc API khởi động (lần sao lưu trước bị quyền sandbox chặn), vì vậy có thể đã chứa một phần trạng thái SHAP được phục hồi.
 - UI được mở và kiểm tra trên trình duyệt: thấy ba tab, dữ liệu lịch sử/biểu đồ và hướng dẫn live. Kiểm thử tự động Stage14 dùng DB tạm, không nạp fixture vào DB này. Đây chưa phải nghiệm thu mọi kích thước màn hình hoặc điều khiển capture trực tiếp.
 - Stage14 sau thay UI PASS, gồm assertion ba tab/lệnh capture, regression CSV/PCAP, chọn flow và LIME. Kiểm tra liên kết tới file cục bộ của năm tài liệu PASS. Sau startup, 50 tác vụ SHAP được phục hồi hoàn tất, backlog về 0; không tự thử lại các việc đã dropped.
-- Hai dịch vụ được bật nền để xem lại. Muốn chuyển sang chạy terminal VS Code, dừng đúng hai tiến trình này trước; không dừng toàn bộ Python. PID của phiên mở này: API `17032`, UI `45184` (phải xác minh command line trước khi dừng; PID có thể được tái sử dụng về sau).
+- Hai dịch vụ từng được bật nền để xem lại rồi chuyển về hướng dẫn tự chạy terminal theo yêu cầu. PID chỉ thuộc phiên lịch sử: API `17032`, UI `45184`; không dùng chúng làm lệnh dừng hiện tại vì PID có thể tái sử dụng.
 
 ---
 

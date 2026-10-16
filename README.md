@@ -255,66 +255,84 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 
 **Đối chiếu ngữ nghĩa tiếp theo:** [kiểm tra toàn bộ 3,5 triệu dòng train/test](RQ3_IDS_System/docs/feature_compatibility.md#semantics) đã phân biệt được sample SD độ dài, floor Down/Up, window thiếu=-1 và quan hệ hai mean n/n+1. Capture v1 chưa theo các quy ước này; subflow packet lại khớp tổng trên dữ liệu đủ điều kiện. Chưa đổi model/LIME hay ép cờ/bulk; cần nguồn preprocessing/cặp PCAP–CSV gốc trước khi chứng nhận tương thích.
 
-### 5.2 Cách chạy
+### 5.2 Chạy trong VS Code
 
-Chuẩn bị 1 lần (cần Python có `fastapi`, `pandas`, `streamlit`... — xem `RQ3_IDS_System/requirements.txt`):
+**Tự chạy bằng terminal, không có dịch vụ được hướng dẫn này tự mở sẵn.** Nút bật/dừng capture trên UI được hoãn; tab Hướng dẫn live hiện chỉ đưa các bước terminal. Dùng [hướng dẫn chi tiết CSV/PCAP/live](RQ3_IDS_System/docs/dashboard_usage.md) làm nguồn thao tác chính.
 
-```powershell
-cd RQ3_IDS_System
-python scripts\stage08_compute_train_stats.py      # tạo data\train_stats.json (cần cho bước 8)
-python scripts\stage09_compute_lime_background.py  # tạo data\lime_background.npy (cần cho bước 9)
-```
+Mở folder `C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System` trong VS Code. Nếu đang dùng venv cũ của `cicflowmeter_capture_demo`, deactivate venv đó trước; dùng Python API đã cài `requirements.txt`, capture dùng `.venv_capture` riêng. Không cần cài lại cho mỗi lần test.
 
-Mở **2 terminal** riêng, cả hai `cd RQ3_IDS_System`:
+**Terminal 1 — API:**
 
 ```powershell
-# Terminal 1 — API
-python -m uvicorn app.main:app --port 8000
-
-# Terminal 2 — Dashboard
-python -m streamlit run app\dashboard.py
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Dashboard tự mở `http://localhost:8501`. Swagger UI (test API thủ công, không cần Dashboard) ở `http://localhost:8000/docs`.
+Đợi `Application startup complete`. Một API process cho mỗi DB, không mở chồng lên cổng đang dùng.
 
-### 5.3 Cách test
+**Terminal 2 — UI:**
 
-- **Cách nhanh nhất — ngay trên Dashboard:** mục "Nạp dữ liệu vào hệ thống" có 2 tab:
-  - *Gửi file CSV*: dùng `data\samples\sample_attack.json` (qua Swagger) hoặc `data\clean_holdout_set.csv` (toàn bộ qua Dashboard) để có dữ liệu mẫu ngay, không cần bắt gói gì.
-  - *Phát lại PCAP*: xem mục 5.4 bên dưới để có file `.pcap`.
-- **Test từng bước bằng script** (mỗi bước đều có, tự bật server con + chạy thật + in `[PASS]`/`[FAIL]`, không cần tự tay bật server):
-  ```powershell
-  cd RQ3_IDS_System
-  python scripts\stage06_test_api.py
-  python scripts\stage07_test_shap.py
-  python scripts\stage07b_test_async_queue.py
-  python scripts\stage08_test_reliability.py
-  python scripts\stage09_test_lime.py
-  python scripts\stage11_test_branch.py
-  python scripts\stage12_test_alerts.py
-  python scripts\stage13_test_dashboard.py
-  ```
-- **Xem lượt mới:** chọn Lượt dữ liệu ở sidebar, không cần xóa DB. Nếu chủ động reset, phải dừng đúng API/feeder và sao lưu SQLite nhất quán trước; DB chứa lịch sử, không phải file có thể xóa tùy ý. Checkpoint cũ không tự phát lại dữ liệu sau reset; xem [vận hành](RQ3_IDS_System/docs/operations.md).
-
-### 5.4 Bắt traffic thật bằng Wireshark để test tab "Phát lại PCAP"
-
-Không cần chạy `run_live_capture.py` trực tiếp (cần Npcap + quyền Administrator) — dùng Wireshark (giao diện quen thuộc hơn) để bắt rồi đưa file vào Dashboard:
-
-1. Mở **Wireshark**, chọn đúng card mạng đang dùng (Wi-Fi hoặc Ethernet) ở màn hình chọn interface.
-2. Bấm nút **Start capturing** (hình cá mập xanh). Lướt web bình thường (mở vài trang) trong khoảng **15–60 giây**.
-3. Bấm **Stop capturing** (hình vuông đỏ).
-4. **File → Save As**, chọn định dạng **`.pcapng`** hoặc **`.pcap`** (cả 2 đều đọc được), lưu vào máy.
-5. Vào Dashboard (`http://localhost:8501`), mục "Nạp dữ liệu vào hệ thống" → tab **"Phát lại file PCAP"** → kéo thả file vừa lưu → bấm **"Trích xuất + gửi vào /predict"**.
-6. Hệ thống tự chạy CICFlowMeter trích đặc trưng (không cần cài gì thêm ngoài môi trường `.venv_capture` đã có sẵn trong `RQ3_IDS_System/`), gửi từng flow vào model, bảng cảnh báo + bảng "Tất cả flow" (kể cả Benign) tự cập nhật ngay bên dưới.
-
-**Lưu ý đọc kết quả:** mốc traffic gốc lấy từ CICFlowMeter khác lúc API xử lý sau upload. Nếu thấy Hulk khi duyệt web, xem audit mục 5.1: phải kiểm tra cả tính đúng đặc trưng extractor và khả năng tổng quát hóa của model, chưa thể khẳng định chỉ do model. PCAP chưa có nhãn xác minh không đủ để tính FPR live.
-
-**Không có Wireshark / muốn test nhanh không cần bắt gói thật:**
 ```powershell
-cd RQ3_IDS_System
-.venv_capture\Scripts\python.exe scripts\make_synthetic_pcap.py data\my_test.pcap
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
 ```
-Tạo 1 file `.pcap` giả lập (6 gói TCP, không bắt gói thật nào, không cần quyền Admin) để test luồng PCAP ngay.
+
+Mở http://127.0.0.1:8501. API docs ở http://127.0.0.1:8000/docs. Giữ hai terminal chạy.
+
+Chỉ khi khởi tạo môi trường mới và **thiếu** các file nền (cần model/dataset theo config), mới chạy:
+```powershell
+python scripts\stage08_compute_train_stats.py
+python scripts\stage09_compute_lime_background.py
+```
+Không chạy lại các bước này hoặc train lại chỉ để mở UI; giữ nền RQ2 hiện hành.
+
+### 5.3 Test CSV và PCAP — chỉ cần API/UI
+
+| Nguồn | Thao tác đúng tên UI hiện tại | Đơn vị / lưu ý |
+|---|---|---|
+| CSV | **Nạp CSV / PCAP → CSV đặc trưng → Chọn CSV → Gửi CSV vào /predict** | `data\clean_holdout_set.csv`: không tích đổi đơn vị. CSV do Python extractor của dự án xuất theo giây: tích đổi giây→micro giây; CSV khác phải xác minh |
+| PCAP/PCAPNG | **Nạp CSV / PCAP → PCAP đã ghi → Chọn PCAP → Trích xuất và gửi** | Tự trích/đổi đơn vị; đọc offline, không phát gói ra mạng; timeout trích xuất trên UI 120 giây |
+
+Sau khi gửi, mở **Giám sát flow**, chọn đúng lượt và nguồn `csv_upload`/`pcap_replay`; bỏ **Chỉ cảnh báo** để thấy cả Benign. Bấm flow xem IP nếu có, thời gian, xác suất, SHAP và LIME theo yêu cầu. JSON mẫu không phải file upload CSV.
+
+Xem từng bước, timestamp, file mẫu và xử lý PCAP lớn: [CSV](RQ3_IDS_System/docs/dashboard_usage.md#test-csv), [PCAP](RQ3_IDS_System/docs/dashboard_usage.md#test-pcap). Mỗi lần bấm gửi tạo lượt mới, refresh không tự gửi lại. Không cần reset DB để tách phiên.
+
+### 5.4 Realtime liên tục — thêm capture và feeder
+
+**Terminal 3 — capture:**
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_review_01.csv
+```
+
+**Terminal 4 — feeder:**
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+python app\feeder.py --watch data\live_review_01.csv --convert-units --capture-timezone +07:00
+```
+
+Không có `--seconds`: chạy liên tục tới khi chủ động dừng, **không bắt buộc 60 giây**. Xem đúng card qua `Get-NetAdapter`; chỉ bắt mạng được phép, Npcap/quyền bắt phải sẵn sàng. Đổi tên CSV ở cả hai lệnh cho mỗi phiên mới; không ghi đè file đang theo dõi.
+
+Lướt web trên máy capture; chọn lượt `live_review_01.csv` và nguồn `feeder_live` trên UI. Flow chỉ tới model sau khi được xuất: duration 90s, idle 240s hoặc flush lúc dừng; không phải dự đoán từng packet. Lượt chỉ xuất hiện sau khi API nhận flow.
+
+**Dừng:** Ctrl+C capture → đợi ghi nốt và “Đã dừng” → giữ feeder tới khi gửi hết → Ctrl+C feeder. Giữ API/UI để xem kết quả, hoặc dừng sau đó. Bản sửa Ctrl+C `b24f93c` chỉ áp dụng cho tiến trình mới. Xem [hướng dẫn live và chẩn đoán](RQ3_IDS_System/docs/dashboard_usage.md#test-live), [tiếp tục từ checkpoint](RQ3_IDS_System/docs/dashboard_usage.md#resume).
+
+### 5.5 Kiểm thử và giới hạn hiện hành
+
+Các bộ dưới đây dùng file/DB tạm, không cần tự bật API phục vụ test; đây là lệnh **tùy chọn cho kiểm thử kỹ thuật**, không phải bước bắt buộc khi demo:
+
+```powershell
+# Chạy từ RQ3_IDS_System
+python scripts\stage14_test_dashboard_redesign.py
+.\.venv_capture\Scripts\python.exe scripts\stage20_test_capture_adapter.py
+python scripts\stage24_test_ingestion_recovery.py
+```
+
+Bằng chứng trước đợt cập nhật hướng dẫn: Stage14 API/UI/CSV/PCAP PASS; Stage20 sau sửa Ctrl+C PASS 15 test; Stage24 phục hồi/idempotency PASS. Xem [vận hành và commit](RQ3_IDS_System/docs/operations.md). Đợt sửa tài liệu không tự bật server/capture, không reset DB hay chạy lại thí nghiệm.
+
+Giữ XGBoost RQ1/78 feature, LIME khóa RQ2, A/B chỉ trình bày. LIME có thể không đủ lân cận; nhãn Hulk không chứng minh tấn công. Chưa chứng nhận đầy đủ tương thích train–PCAP và chưa có FPR live từ traffic không có ground truth.
 
 ---
 
