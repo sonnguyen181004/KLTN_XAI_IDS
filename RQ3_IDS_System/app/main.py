@@ -6,6 +6,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+from ipaddress import ip_address
 import sys
 import threading
 import time
@@ -16,12 +18,14 @@ from typing import Dict, Optional
 
 import numpy as np
 import yaml
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import db  # noqa: E402
+import monitoring
+from flow_metadata import timestamp_utc
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
 from predict import Detector  # noqa: E402
 from explain_shap import ShapExplainer  # noqa: E402
@@ -46,8 +50,8 @@ def now_iso() -> str:
 cfg = load_config()
 detector = Detector(REPO_ROOT / cfg["paths"]["model"], REPO_ROOT / cfg["paths"]["label_encoder"])
 shap_explainer = ShapExplainer(detector.model, detector.class_names)
-DB_PATH = REPO_ROOT / cfg["paths"]["sqlite_db"]
-db.init_db(DB_PATH)  # chạy 1 lần lúc khởi động để chắc chắn đủ bảng
+DB_PATH = Path(os.environ.get('IDS_DB_PATH', str(REPO_ROOT / cfg['paths']['sqlite_db'])))
+db.init_db(DB_PATH).close()
 
 # Bước 8 — thống kê train tính sẵn 1 lần (median toàn cục + số mẫu/lớp), xem
 # scripts/stage08_compute_train_stats.py. Phải chạy script đó trước khi bật server.
@@ -113,11 +117,17 @@ def health():
         "model_version": detector.model_version,
         "n_features_expected": len(detector.feature_names),
         "n_classes": len(detector.class_names),
+        "class_names": detector.class_names,
     }
 
 
 @app.post("/predict")
-def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optional[str] = None):
+def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optional[str] = None,
+            capture_run_id: Optional[str] = Query(None, max_length=128),
+            run_name: Optional[str] = Query(None, max_length=200),
+            src_ip: Optional[str] = None, dst_ip: Optional[str] = None,
+            src_port: Optional[int] = Query(None, ge=0, le=65535),
+            capture_timezone: Optional[str] = None):
     """`source`/`flow_timestamp` là 2 tham số query TÙY CHỌN, KHÔNG thuộc 78 đặc
     trưng — thêm sau khi test thực tế: khi phát lại CSV/PCAP cũ, mọi flow được XỬ
     LÝ gần như cùng lúc (lúc bạn bấm gửi), nếu chỉ lưu "lúc xử lý" thì Dashboard
@@ -125,6 +135,13 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
     THẬT đã xảy ra, gây khó hiểu khi xem bảng cảnh báo. `source` cho biết flow tới
     từ đâu (csv_upload/pcap_replay/feeder_live/api) để phân biệt các đợt gửi khác
     nhau trên Dashboard."""
+    try:
+        src_ip = str(ip_address(src_ip)) if src_ip else None
+        dst_ip = str(ip_address(dst_ip)) if dst_ip else None
+        utc_time = timestamp_utc(flow_timestamp, capture_timezone)
+    except ValueError as exc:
+        raise HTTPException(422, f'Metadata không hợp lệ: {exc}') from exc
+    received_at = now_iso()
     flow_id = str(uuid.uuid4())
     t_start = time.perf_counter()
     # Mở 1 connection RIÊNG cho request này (xem lý do trong app/db.py::get_connection).
@@ -143,7 +160,10 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
 
         # Phải ghi FlowRecord TRƯỚC Timing, vì Timing.flow_id tham chiếu khóa ngoại
         # tới FlowRecord.flow_id — ghi ngược thứ tự sẽ vi phạm FOREIGN KEY constraint.
-        db.insert_flow(conn, flow_id, now_iso(), source, flow, label_true=None, flow_timestamp=flow_timestamp)
+        db.insert_flow(conn, flow_id, received_at, source, flow, label_true=None, flow_timestamp=flow_timestamp)
+        conn.execute('UPDATE FlowRecord SET capture_run_id=?, run_name=?, src_ip=?, dst_ip=?, src_port=?, flow_timestamp_utc=? WHERE flow_id=?',
+                     (capture_run_id, run_name, src_ip, dst_ip, src_port, utc_time, flow_id))
+        conn.commit()
         db.insert_timing(conn, flow_id, "normalize", t_normalize_ms, now_iso())
 
         # ---- Tầng 3: dự đoán ---------------------------------------------------------
@@ -169,7 +189,7 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
             alert_id = str(uuid.uuid4())
             db.insert_alert(
                 conn, alert_id, flow_id,
-                group_key=result["predicted_label"],  # chưa có IP/port để gộp theo cặp IP, dùng tạm nhãn dự đoán
+                group_key=json.dumps([capture_run_id, src_ip, dst_ip, flow.get('Dst Port'), result['predicted_label']]),
                 predicted_label=result["predicted_label"],
                 created_at=now_iso(),
             )
@@ -244,6 +264,7 @@ def explain(req: ExplainRequest):
                 conn, req.alert_id,
                 lime_top5_json=json.dumps(lime_result["top_k"]),
                 agreement_jaccard5=agreement,
+                lime_local_r2=lime_result['local_r2'],
             )
             db.insert_timing(conn, alert["flow_id"], "lime", t_lime_ms, now_iso())
         finally:
@@ -265,26 +286,36 @@ def explain(req: ExplainRequest):
 def list_alerts(
     since: Optional[str] = None, until: Optional[str] = None,
     label: Optional[str] = None, branch: Optional[str] = None,
+    capture_run_id: Optional[str] = None, source: Optional[str] = None,
+    limit: int = Query(200, ge=1, le=1000), offset: int = Query(0, ge=0),
 ):
     """Bước 12 — Tầng 6: danh sách Alert kèm trạng thái giải thích, lọc theo
-    thời gian (`since`/`until`, ISO 8601, so sánh chuỗi vì `created_at` luôn ghi
-    cùng định dạng UTC ISO), nhãn (`label` = predicted_label) và nhánh (`branch`
+    thời gian nhận (`since`/`until`, ISO 8601 có múi giờ),
+    nhãn (`label` = predicted_label) và nhánh (`branch`
     = 'A'/'B', đúng bảng API trong tài liệu kiến trúc)."""
     if branch is not None and branch not in ("A", "B"):
         raise HTTPException(status_code=422, detail="branch chỉ nhận 'A' hoặc 'B'")
 
     conn = db.get_connection(DB_PATH)
     try:
-        alerts = db.get_alerts(conn, since=since, until=until, label=label, branch=branch)
+        result = monitoring.flows(conn, monitor_filters(since, until, label, branch,
+                                  source, capture_run_id, True, None), limit, offset)
     finally:
         conn.close()
-    return {"count": len(alerts), "alerts": alerts}
+    # Preserve completed explanation names for existing /alerts consumers.
+    for alert in result['flows']:
+        if alert['shap_top5']:
+            alert['explanation_status'] = 'shap_and_lime' if alert['lime_top5'] else 'shap_only'
+    return {'count': result['count'], 'alerts': result['flows']}
 
 
 @app.get("/flows")
 def list_flows(
     since: Optional[str] = None, until: Optional[str] = None,
-    label: Optional[str] = None, limit: int = 200,
+    label: Optional[str] = None, limit: int = Query(200, ge=1, le=1000),
+    offset: int = Query(0, ge=0), capture_run_id: Optional[str] = None,
+    source: Optional[str] = None, branch: Optional[str] = Query(None, pattern='^[AB]$'),
+    alerts_only: bool = False, group_key: Optional[str] = None,
 ):
     """Bổ sung ngoài 4 điểm gọi gốc trong tài liệu kiến trúc (POST /predict, POST
     /explain, GET /alerts, GET /health) — theo yêu cầu thực tế khi test: `GET
@@ -293,10 +324,53 @@ def list_flows(
     bình thường để biết hệ thống có đang hoạt động, không chỉ thấy mỗi cảnh báo."""
     conn = db.get_connection(DB_PATH)
     try:
-        flows = db.get_flows(conn, since=since, until=until, label=label, limit=limit)
+        result = monitoring.flows(conn, monitor_filters(since, until, label, branch, source,
+                                  capture_run_id, alerts_only, group_key), limit, offset)
     finally:
         conn.close()
-    return {"count": len(flows), "flows": flows}
+    return result
+
+
+def monitor_filters(since: Optional[str] = None, until: Optional[str] = None,
+                    label: Optional[str] = None, branch: Optional[str] = Query(None, pattern='^[AB]$'),
+                    source: Optional[str] = None, capture_run_id: Optional[str] = None,
+                    alerts_only: bool = False, group_key: Optional[str] = None):
+    try:
+        times = {key: timestamp_utc(value) for key, value in [('since', since), ('until', until)]}
+        if (since and not times['since']) or (until and not times['until']):
+            raise ValueError('Mốc lọc phải kèm múi giờ')
+        if times['since'] and times['until'] and times['since'] > times['until']:
+            raise ValueError('Từ thời gian phải trước Đến thời gian')
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return dict(**times, label=label, branch=branch, source=source,
+                capture_run_id=capture_run_id, alerts_only=alerts_only, group_key=group_key)
+
+
+def read_monitor(function, *args):
+    conn = db.get_connection(DB_PATH)
+    try:
+        return function(conn, *args)
+    finally:
+        conn.close()
+
+
+@app.get('/runs')
+def list_runs():
+    return read_monitor(monitoring.runs)
+
+
+@app.get('/dashboard/summary')
+def dashboard_summary(filters: dict = Depends(monitor_filters)):
+    return read_monitor(monitoring.summary, filters)
+
+
+@app.get('/flows/{flow_id}')
+def flow_detail(flow_id: str):
+    result = read_monitor(monitoring.detail, flow_id)
+    if result is None:
+        raise HTTPException(404, 'Không có flow này')
+    return result
 
 
 @app.get("/explain_queue_status")

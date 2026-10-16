@@ -8,3 +8,6 @@ joblib==1.6.0
 scikit-learn==1.9.1
 xgboost==3.4.1
 streamlit==1.65.0
+altair==6.3.0
+shap==0.52.0
+lime==0.2.0.1
