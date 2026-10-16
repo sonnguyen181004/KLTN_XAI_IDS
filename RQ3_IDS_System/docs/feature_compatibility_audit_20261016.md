@@ -82,6 +82,8 @@ Audit trước xác nhận trích lại cùng extractor cho cùng kết quả v�
 
 ## Việc tiếp theo
 
+**Cập nhật sau adapter v1:** [audit ngữ nghĩa từng dòng train/test](feature_semantics_contract_20261016.md) bổ sung bằng chứng sample SD độ dài, floor ratio, missing window, quan hệ mean n/n+1 và subflow. Các số baseline/ma trận ở trên được giữ nguyên; không phải trạng thái hiện hành của từng lỗi đã sửa.
+
 1. Tạo adapter/extractor trong mã dự án có phiên bản và regression fixture; không sửa trực tiếp site-packages. Sửa nhóm lỗi tái hiện được: đếm gói đầu, CWR, IAT một khoảng, active/idle và flow key có protocol.
 2. Chốt hợp đồng length/header/std/subflow/window/timeout dựa trên nguồn train, lấy original CSV/PCAP hoặc pipeline preprocessing để xử lý phần chưa rõ. Giữ raw và transformed features để truy vết; không tự clip cờ >1 về 1 hoặc zero bulk.
 3. Trích lại PCAP vào lượt thử nghiệm riêng, so sánh feature/dự đoán/SHAP/LIME với bản cũ. Giữ model làm baseline; nếu đổi định nghĩa đầu vào phải ghi rõ phiên bản và chạy lại đánh giá.

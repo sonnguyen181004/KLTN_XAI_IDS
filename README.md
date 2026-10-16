@@ -247,6 +247,8 @@ Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiế
 
 **Đính chính và sửa extractor 16/10/2026:** audit đã tái hiện 5 lỗi Python CICFlowMeter 0.5.0; [adapter có phiên bản v1](RQ3_IDS_System/docs/capture_adapter_v1.md) đã sửa đếm lặp gói đầu, CWR, IAT một khoảng, Active/Idle và khóa flow thiếu protocol. CLI/PCAP UI mặc định dùng bản mới; metadata phiên bản đi vào DB/UI. Còn khác biệt length/header và miền cờ/bulk so với train; hai PCAP trích lại vẫn có 8 dự đoán Hulk và LIME chưa đạt. Chưa thể quy hết cho model hoặc tuyên bố đầu vào đã tương thích V3. Xem [audit trước sửa](RQ3_IDS_System/docs/feature_compatibility_audit_20261016.md), [ma trận 78 cột trước sửa](RQ3_IDS_System/docs/feature_compatibility_matrix_20261016.md).
 
+**Đối chiếu ngữ nghĩa tiếp theo:** [kiểm tra toàn bộ 3,5 triệu dòng train/test](RQ3_IDS_System/docs/feature_semantics_contract_20261016.md) đã phân biệt được sample SD độ dài, floor Down/Up, window thiếu=-1 và quan hệ hai mean n/n+1. Capture v1 chưa theo các quy ước này; subflow packet lại khớp tổng trên dữ liệu đủ điều kiện. Chưa đổi model/LIME hay ép cờ/bulk; cần nguồn preprocessing/cặp PCAP–CSV gốc trước khi chứng nhận tương thích.
+
 ### 5.2 Cách chạy
 
 Chuẩn bị 1 lần (cần Python có `fastapi`, `pandas`, `streamlit`... — xem `RQ3_IDS_System/requirements.txt`):

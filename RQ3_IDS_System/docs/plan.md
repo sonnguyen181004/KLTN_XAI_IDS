@@ -4,6 +4,8 @@
 
 ## 0. Bức tranh tổng thể
 
+**Hợp đồng ngữ nghĩa đặc trưng (16/10/2026):** [audit quan hệ từng dòng train/test](feature_semantics_contract_20261016.md) đã kiểm tra toàn bộ 3,5 triệu dòng. Xác minh sample SD độ dài trong trường hợp hai packet phân biệt được, floor Down/Up và window thiếu=-1; phát hiện thêm quan hệ hai mean dùng n/n+1. Capture v1 còn khác các quy ước này và ghi đè initial window=0. Subflow packet lại khớp tổng trên toàn bộ tập đủ điều kiện, không được mặc định coi sai. Đã có script/JSON tái lập, chưa đổi runtime/model/LIME; còn thiếu nguồn preprocessing/cặp original PCAP–CSV để chứng nhận tương thích.
+
 **Bản sửa capture v1 (16/10/2026):** [triển khai và kết quả kiểm tra](capture_adapter_v1.md). Đã sửa 5 lỗi được audit tái hiện trong adapter thuộc mã dự án; CLI/UI PCAP dùng bản mới mặc định. Có version metadata qua CSV→API→DB→UI, giữ đúng 78 đặc trưng lưu. Test fixture/API/UI PASS; hai PCAP đối chiếu chưa đổi nhãn, LIME còn suy biến. Thử Wi-Fi thật trên DB tạm được ghi riêng trong tài liệu. Phần audit và ma trận dưới đây mô tả baseline trước sửa, không thay chứng cứ lịch sử.
 
 **Audit đặc trưng 16/10/2026:** đã đối chiếu đủ 78 tên/thứ tự cột, quét train 2,8 triệu dòng và nhóm cờ/bulk/active/idle trên daily cleaned 15.589.784 dòng; 8 fixture xác nhận lỗi extractor (lặp gói đầu, CWR, IAT, active/idle, protocol trong khóa flow). Xem [báo cáo tương thích](feature_compatibility_audit_20261016.md) và [ma trận 78 cột](feature_compatibility_matrix_20261016.md). Chưa sửa extractor hoặc train model. Các nhận định lịch sử dưới đây quy cảnh báo Hulk hoàn toàn cho model/dịch chuyển môi trường cần đọc theo kết luận audit mới; chưa xác minh quan hệ nhân quả đó.
