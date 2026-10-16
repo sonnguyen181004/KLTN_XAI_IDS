@@ -69,6 +69,7 @@ def show_detail(flow_id):
         st.write(f"Đích: {flow['dst_ip'] or 'Không được cung cấp'} : {flow['dst_port'] if flow['dst_port'] is not None else '?'}")
         st.write(f"Protocol: {flow['protocol']} · Nguồn dữ liệu: {flow['source']}")
         st.write('Lượt: ' + (flow['run_name'] or 'Lịch sử chưa gắn lượt'))
+        st.caption('Bộ trích xuất: ' + (flow.get('extractor_version') or 'Nguồn chưa cung cấp phiên bản'))
     with right:
         st.write('Gói đầu tiên của flow: ' + local_time(flow['flow_timestamp_utc'] or flow['flow_timestamp']))
         st.write('API nhận: ' + local_time(flow['received_at']))
@@ -203,7 +204,7 @@ def monitor():
         st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
         st.write('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']))
         if not stats['last_received_at'] or (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() > 30:
-            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: CICFlowMeter cần đóng/hết hạn flow và ghi CSV. API không biết chắc bộ bắt còn chạy hay đã dừng.')
+            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: adapter v1 ghi khi flow đạt thời lượng 90 giây, idle 240 giây hoặc khi dừng bắt để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; nguồn khác có thể dùng timeout khác.')
         if not stats['flows']:
             st.info('Không có flow khớp bộ lọc. Thử chọn Tất cả lịch sử hoặc bỏ bớt bộ lọc.')
             return

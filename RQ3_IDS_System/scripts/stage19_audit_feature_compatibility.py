@@ -92,7 +92,7 @@ def capture_worker(output):
             if name == 'tcp_six_packets':
                 replay = Path(folder)/'production.csv'
                 proc = subprocess.run([sys.executable, str(RQ3/'scripts/run_live_capture.py'),
-                    '--pcap-input', str(path), '--output', str(replay)], capture_output=True,
+                    '--pcap-input', str(path), '--output', str(replay), '--extractor', 'legacy'], capture_output=True,
                     text=True, encoding='utf-8', errors='replace', timeout=30,
                     creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
                 assert proc.returncode == 0, proc.stderr

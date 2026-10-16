@@ -2,6 +2,8 @@
 
 ## Chạy trong VS Code
 
+**Capture mới:** mặc định dùng `rq3-cfm-0.5.0-fixes-v1`, xem [cách áp dụng và kiểm chứng](capture_adapter_v1.md). Cần restart API/UI để có cột metadata phiên bản, rồi khởi động lại capture/feeder với file CSV mới. Bản v1 dùng timeout duration 90 giây/idle 240 giây hoặc flush lúc dừng; không hứa dự đoán ngay sau mỗi packet/FIN. Các quy ước chưa chứng nhận tương thích train và LIME còn hạn chế được ghi trong tài liệu này.
+
 Không cần xóa DB hoặc file dữ liệu cũ. Bản cập nhật không đổi model, luật dự đoán hay luật nhánh A/B.
 Nếu API/Streamlit cũ đang chạy, dùng Ctrl+C trong đúng terminal của từng tiến trình rồi chạy lại.
 Không cần dừng bộ bắt traffic chỉ để cập nhật màn hình; muốn có mã lượt mới cần khởi động lại feeder.
@@ -60,7 +62,7 @@ Tab **Đối chứng đặc trưng**: chọn tên đặc trưng để đọc gi�
 
 Chi tiết nguyên nhân và giới hạn: [LIME validity và đối chứng](lime_validity_and_comparison.md).
 
-**Cập nhật audit đặc trưng:** Python extractor hiện có lỗi đã tái hiện và một số quy ước khác train; xem [báo cáo tương thích](feature_compatibility_audit_20261016.md). UI có đầy đủ kết quả hoặc SHAP cộng đúng không bảo đảm đặc trưng PCAP đã đúng. Chưa sửa extractor ở bước audit; cần ghi giới hạn này khi demo traffic thật.
+**Cập nhật audit đặc trưng:** [audit trước sửa](feature_compatibility_audit_20261016.md) ghi nhận lỗi Python extractor; adapter v1 đã sửa 5 lỗi kiểm chứng được, còn quy ước khác train chưa xác minh đầy đủ. UI có đủ kết quả hoặc SHAP cộng đúng không chứng nhận mọi đặc trưng PCAP tương thích dataset V3.
 
 - Mặc định là **lượt nhận dữ liệu gần nhất**, không mặc định tất cả lịch sử. Nếu upload CSV/PCAP hoặc có nguồn khác gửi sau đó, chọn cố định lượt live của bạn trong sidebar. Danh sách lựa chọn lượt cập nhật khi bấm Làm mới ngay.
 - Mọi chỉ số/biểu đồ lấy toàn bộ phạm vi bộ lọc; bảng phân trang 50 flow. Thời gian là lúc API nhận, mới nhất trước.
@@ -83,7 +85,7 @@ Test tự tạo DB tạm và API cổng riêng rồi dừng tiến trình đó. 
 Đã PASS: migration 2 lần giữ dữ liệu cũ; 205 flow fixture kiểm tra tổng số/phân trang; timezone; API lọc/404/422; dự đoán bằng model thật; metadata không đổi xác suất; SHAP bất đồng bộ; Benign và cảnh báo; AppTest chọn lượt/chi tiết/LIME/giữ lựa chọn; CSV không gửi lại khi refresh; PCAP thật qua CICFlowMeter rồi /predict; feeder gặp dòng trống không gửi lặp.
 `stage13_test_dashboard.py` chuyển tiếp sang bộ test cô lập này, không còn phụ thuộc dropdown cũ.
 
-Đây là kiểm thử chức năng, không phải đánh giá lại accuracy hay xác nhận traffic tấn công. Chưa chạy lại một phiên bắt Wi-Fi live sau cập nhật hoặc kiểm tra thao tác chuột trên trình duyệt thật; cần bạn mở UI và demo lượt live mới.
+Đây là kiểm thử chức năng, không phải đánh giá lại accuracy hay xác nhận traffic tấn công. Sau bản capture v1 đã kiểm tra Wi-Fi thật 20s/100s qua feeder/API và AppTest UI trên DB tạm: phiên 100s có 88 flow lên trong lúc vẫn bắt. Xem [báo cáo capture v1](capture_adapter_v1.md). Chưa nghiệm thu thao tác chuột trên trình duyệt thật với phiên Wi-Fi này; AppTest xác minh trạng thái render và dữ liệu, không thay kiểm tra trực quan đầy đủ.
 
 Đã chạy thêm `stage04_test_normalize.py` và `stage05_test_predict.py`: PASS; 50/50 flow đối chiếu khớp dự đoán RQ2. Runtime vẫn cảnh báo model/LabelEncoder được lưu từ phiên bản thư viện khác; không thay hoặc huấn luyện lại model trong lần chỉnh UI này.
 

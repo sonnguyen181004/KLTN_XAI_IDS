@@ -2,6 +2,8 @@
 
 ## Phạm vi và cách làm
 
+**Sau sửa 5 lỗi capture:** xem [kết quả adapter v1](capture_adapter_v1.md). Hai PCAP trích lại bằng v1 vẫn giữ 8 nhãn Hulk và 8 LIME thiếu neighborhood. Script stage17 dùng baseline legacy cho phép so sánh với DB cũ; dữ liệu demo không bị tự thay bằng kết quả v1.
+
 **Cập nhật sau kiểm tra ngữ nghĩa:** [stage19](feature_compatibility_audit_20261016.md) đã tái hiện lỗi Python extractor bằng PCAP nhỏ. Kết quả trích lại 92/92 ở báo cáo này chỉ là nhất quán với cùng implementation, không xác nhận đặc trưng đúng; chưa quy toàn bộ cảnh báo nhầm cho model. Cờ 0/1 và bulk hằng 0 cũng có trên toàn bộ daily cleaned, không chỉ tập con train.
 
 Đọc snapshot toàn bộ các flow nguồn `pcap_replay` trong DB ở chế độ `mode=ro`. Không gọi `/predict` hoặc `/explain`, không sửa kết quả demo. Nạp đúng model/encoder hiện tại, tính lại dự đoán 92 flow; tính SHAP/LIME cho cả 8 cảnh báo trong bộ nhớ. Trích lại hai PCAP gốc bằng cùng CICFlowMeter vào thư mục tạm rồi đối chiếu 78 đặc trưng cùng metadata IP/cổng.

@@ -130,7 +130,8 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
             run_name: Optional[str] = Query(None, max_length=200),
             src_ip: Optional[str] = None, dst_ip: Optional[str] = None,
             src_port: Optional[int] = Query(None, ge=0, le=65535),
-            capture_timezone: Optional[str] = None):
+            capture_timezone: Optional[str] = None,
+            extractor_version: Optional[str] = Query(None, max_length=128)):
     """`source`/`flow_timestamp` là 2 tham số query TÙY CHỌN, KHÔNG thuộc 78 đặc
     trưng — thêm sau khi test thực tế: khi phát lại CSV/PCAP cũ, mọi flow được XỬ
     LÝ gần như cùng lúc (lúc bạn bấm gửi), nếu chỉ lưu "lúc xử lý" thì Dashboard
@@ -163,9 +164,12 @@ def predict(flow: Dict[str, float], source: str = "api", flow_timestamp: Optiona
 
         # Phải ghi FlowRecord TRƯỚC Timing, vì Timing.flow_id tham chiếu khóa ngoại
         # tới FlowRecord.flow_id — ghi ngược thứ tự sẽ vi phạm FOREIGN KEY constraint.
-        db.insert_flow(conn, flow_id, received_at, source, flow, label_true=None, flow_timestamp=flow_timestamp)
-        conn.execute('UPDATE FlowRecord SET capture_run_id=?, run_name=?, src_ip=?, dst_ip=?, src_port=?, flow_timestamp_utc=? WHERE flow_id=?',
-                     (capture_run_id, run_name, src_ip, dst_ip, src_port, utc_time, flow_id))
+        # Persist the same 78-column vector the detector sees. Numeric CSV
+        # metadata (e.g. src_port) must not leak into the feature contract.
+        db.insert_flow(conn, flow_id, received_at, source, normalized.iloc[0].to_dict(),
+                       label_true=None, flow_timestamp=flow_timestamp)
+        conn.execute('UPDATE FlowRecord SET capture_run_id=?, run_name=?, src_ip=?, dst_ip=?, src_port=?, flow_timestamp_utc=?, extractor_version=? WHERE flow_id=?',
+                     (capture_run_id, run_name, src_ip, dst_ip, src_port, utc_time, extractor_version, flow_id))
         conn.commit()
         db.insert_timing(conn, flow_id, "normalize", t_normalize_ms, now_iso())
 

@@ -2,6 +2,8 @@
 
 Ngày kiểm tra: 16/10/2026, GMT+7. Model hiện tại: `52eb5a671ee82109`. Extractor cài trong `.venv_capture`: Python CICFlowMeter 0.5.0.
 
+**Đã có bước sửa sau audit:** [adapter v1](capture_adapter_v1.md) sửa 5 lỗi tái hiện được và là mặc định capture mới. Báo cáo/ma trận này giữ nguyên chứng cứ baseline trước sửa; script stage19 dùng `--extractor legacy` ở phép kiểm tra production baseline. Không dùng các nhận định lịch sử này để bỏ qua các thay đổi phiên bản.
+
 **Kết luận:** ánh xạ tên và thứ tự đủ 78 cột, nhưng chưa đạt tương thích ngữ nghĩa. Đã tái hiện lỗi extractor bằng PCAP có thể đếm độc lập. Vì vậy chưa được quy toàn bộ cảnh báo nhầm cho dịch chuyển phân bố hoặc lượng dữ liệu train ít. Chưa sửa extractor, adapter, model, cấu hình LIME hoặc kết quả DB trong bước kiểm tra này.
 
 ## Phạm vi và bằng chứng
