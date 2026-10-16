@@ -1,31 +1,7 @@
 """Descriptive comparisons only; never alter features, predictions or A/B rules."""
 import numpy as np
 import pandas as pd
-from normalize import TIME_COLUMNS
-
-MEANINGS = {
-    'Dst Port': 'Cổng đích; không tự xác định loại ứng dụng hay tấn công',
-    'Protocol': 'Mã giao thức IP (ví dụ TCP=6, UDP=17)',
-    'Flow Duration': 'Thời lượng flow',
-    'FIN Flag Cnt': 'Đặc trưng cờ FIN; đối chiếu cách đếm giữa extractor và dataset',
-    'Fwd Pkt Len Max': 'Độ dài gói lớn nhất theo chiều forward',
-    'Fwd IAT Min': 'Khoảng cách thời gian nhỏ nhất giữa gói forward',
-    'Fwd Seg Size Min': 'Kích thước segment/header nhỏ nhất chiều forward theo extractor',
-    'Bwd Blk Rate Avg': 'Tốc độ bulk trung bình chiều backward theo extractor',
-    'Bwd Byts/b Avg': 'Số byte trung bình mỗi bulk chiều backward',
-}
-
-
-def unit(name):
-    if name in TIME_COLUMNS:
-        return 'µs'
-    if name == 'Dst Port':
-        return 'mã cổng'
-    if name == 'Protocol':
-        return 'mã giao thức'
-    if 'Flag' in name or name.endswith('Flags'):
-        return 'số đếm/cờ (cần đối chiếu extractor)'
-    return 'theo định nghĩa đặc trưng; không tự đổi đơn vị'
+from feature_help import describe
 
 
 class FeatureReference:
@@ -57,7 +33,8 @@ class FeatureReference:
             scale = float(bg.std())
             constant = bool(np.ptp(bg) == 0)
             mismatch = constant and value != float(bg[0])
-            result.append(dict(feature=name, value=value, unit=unit(name), meaning=MEANINGS.get(name, 'Xem định nghĩa extractor/dataset; không suy ra ngưỡng từ tên'),
+            help_info = describe(name)
+            result.append(dict(feature=name, value=value, unit=help_info['unit'], meaning=help_info['meaning'],
                 background=self.stats(bg), background_min=float(bg.min()), background_max=float(bg.max()),
                 constant_background=constant, constant_mismatch=bool(mismatch),
                 background_scaled_deviation=float((value - bg.mean()) / (scale if scale > 0 else 1)),

@@ -44,11 +44,13 @@ Feeder mới tự sinh một `capture_run_id`, hiện trong log. Khởi động 
 
 ### LIME và đối chứng đặc trưng (bổ sung)
 
+**Cách đọc mới:** ngay dưới biểu đồ SHAP/LIME có “Đọc từng đặc trưng bằng lời”. Mở một mục để xem tên tiếng Việt, ý nghĩa, giá trị flow và hướng tác động tới lớp đang giải thích. Tab Đối chứng ưu tiên tra cứu một đặc trưng; bảng thống kê và chẩn đoán được thu gọn. Xem [hướng dẫn đọc SHAP/LIME](reading_shap_lime.md).
+
 Sau cập nhật, khởi động lại API và Streamlit. Không cần xóa DB hoặc upload lại PCAP chỉ để xem đối chứng.
 Chọn flow → **LIME theo yêu cầu** → **Yêu cầu / kiểm tra lại LIME** để bổ sung chẩn đoán cho kết quả cũ.
 Nếu LIME suy biến, UI hiện cảnh báo thay vì biểu đồ toàn số 0 và R²=1 gây hiểu nhầm. Chạy lại cùng dữ liệu/config không đảm bảo hết suy biến.
 
-Tab **Đối chứng đặc trưng**: xem đủ 78 giá trị, nền LIME min/max/median, Benign và lớp dự đoán P05/median/P95 kèm cỡ mẫu, SHAP/LIME Top-5. Chọn đặc trưng để xem biểu đồ đối chiếu median. Các hàng đầu ưu tiên lệch mẫu nền, **không phải thứ hạng SHAP**. Mẫu tham chiếu theo lớp lấy từ tập B nhỏ, không đại diện toàn bộ lớp hay chứng minh tấn công.
+Tab **Đối chứng đặc trưng**: chọn tên đặc trưng để đọc giải nghĩa và giá trị, ưu tiên tên xuất hiện trong SHAP/LIME. Mở “So sánh số liệu tham chiếu” để xem P05/median/P95 của nền LIME, Benign và lớp dự đoán kèm cỡ mẫu. “Tra cứu toàn bộ 78 đặc trưng” và “Chẩn đoán lệch mẫu nền” nằm trong phần mở rộng. Bảng chẩn đoán xếp theo lệch mẫu nền, **không phải thứ hạng SHAP**. Mẫu theo lớp lấy từ tập B nhỏ, không đại diện toàn bộ lớp hay chứng minh tấn công.
 
 Chi tiết nguyên nhân và giới hạn: [LIME validity và đối chứng](lime_validity_and_comparison.md).
 
