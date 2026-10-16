@@ -8,6 +8,20 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Áp dụng trên máy người dùng — 16/10/2026
 
+### Sửa capture không phản hồi Ctrl+C
+
+Phiên live chờ `sniffer.join()` vô hạn trong main thread; đây là điểm có thể trì hoãn xử lý Ctrl+C trong môi trường Windows/Python đang dùng. Đã thay bằng vòng chờ ngắn 0,1 giây, handler SIGINT/SIGBREAK chỉ yêu cầu dừng, `stop(join=False)` rồi đợi thread kết thúc trước khi flush CSV. Handler giữ trong lúc cleanup để Ctrl+C lặp không ngắt giữa chừng. Chờ shutdown tối đa 15 giây; nếu thread vẫn chạy thì báo lỗi, không giả định đã dừng an toàn hoặc flush đồng thời với thread.
+
+Giữ nguyên công thức feature, extractor version v2, timeout flow 90s/240s và model/XAI. Stage20 hiện PASS 15 test, gồm tín hiệu phát bằng `signal.raise_signal`, hẹn giờ, lỗi sniffer, khôi phục handler và CLI PCAP thật; chưa phải kiểm thử end-to-end phím Ctrl+C trong mọi phiên terminal VS Code/Npcap. Bản sửa chỉ có hiệu lực khi khởi chạy capture mới.
+
+Để test ngắn có thời hạn:
+
+```powershell
+.\.venv_capture\Scripts\python.exe scripts\run_live_capture.py --interface "Wi-Fi" --output data\live_manual_02.csv --seconds 60
+```
+
+Chạy feeder theo đúng CSV đó. Nếu tên đã dùng, đổi tên ở cả capture và feeder. Đợi capture báo `receiving_stopped` và ghi nốt flow; đợi feeder gửi hết trước khi dừng feeder. Không đóng cưỡng bức terminal trừ khi chấp nhận mất flow chưa xuất.
+
 - Bật API tại `127.0.0.1:8000` và Streamlit tại `127.0.0.1:8501`; health xác nhận model `52eb5a671ee82109`, 78 đặc trưng, 15 lớp, idempotency và queue 200. Không chạy thêm API cùng DB.
 - Không reset DB, không gửi thêm flow và không tự bật capture. DB hiện có 176 flow/88 cảnh báo; worker tự tiếp tục các SHAP bị ngắt theo cơ chế phục hồi v2. Việc cập nhật giải thích không phải tạo thêm traffic.
 - Có bản sao SQLite nhất quán `data/ids_system_backup_ui_20261016_112528.db`, không đưa vào Git. Bản sao được tạo sau lúc API khởi động (lần sao lưu trước bị quyền sandbox chặn), vì vậy có thể đã chứa một phần trạng thái SHAP được phục hồi.

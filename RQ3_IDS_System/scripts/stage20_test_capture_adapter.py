@@ -6,6 +6,9 @@ import sys
 import tempfile
 import threading
 import unittest
+import signal
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from scapy.all import Ether, IP, IPv6, TCP, UDP, Raw, rdpcap, wrpcap
 
@@ -200,6 +203,50 @@ class AdapterTests(unittest.TestCase):
             capture_output=True,timeout=30)
         self.assertNotEqual(proc.returncode,0)
         self.assertEqual(path.read_text(),'existing evidence\n')
+
+    def test_signal_stop_stays_responsive_and_flushes_once(self):
+        import run_live_capture as cli
+        for sig in (signal.SIGINT, getattr(signal, 'SIGBREAK', signal.SIGINT)):
+            with self.subTest(signal=sig):
+                calls = []
+                state = {'alive': True}
+                sniffer = SimpleNamespace(running=True, stop_cb=lambda: None,
+                    thread=SimpleNamespace(is_alive=lambda: state['alive']))
+                sniffer.start = lambda: calls.append('start')
+                def stop(join):
+                    self.assertFalse(join)
+                    state['alive'] = False
+                    calls.append('stop')
+                sniffer.stop = stop
+                sniffer.join = lambda timeout: calls.append(('join', timeout))
+                def cleanup():
+                    self.assertFalse(state['alive'])
+                    # Repeated Ctrl+C during final export must not abort cleanup.
+                    signal.raise_signal(sig)
+                    calls.append('flush')
+                previous = signal.getsignal(sig)
+                with patch.object(cli.time, 'sleep', side_effect=lambda _: signal.raise_signal(sig)):
+                    cli.wait_for_capture(sniffer, cleanup=cleanup)
+                self.assertEqual(calls, ['start', 'stop', ('join', 0), 'flush'])
+                self.assertEqual(signal.getsignal(sig), previous)
+
+    def test_timed_capture_stop_and_error_propagation(self):
+        import run_live_capture as cli
+        state = {'alive': True}
+        sniffer = SimpleNamespace(running=True, stop_cb=lambda: None,
+            thread=SimpleNamespace(is_alive=lambda: state['alive']), start=lambda: None)
+        sniffer.stop = lambda join: state.update(alive=False)
+        sniffer.join = lambda timeout: None
+        with patch.object(cli.time, 'monotonic', side_effect=[0, 2, 2, 2, 2]):
+            cli.wait_for_capture(sniffer, seconds=1)
+        self.assertFalse(state['alive'])
+        def fail(timeout):
+            raise RuntimeError('capture failed')
+        sniffer.join = fail
+        before = signal.getsignal(signal.SIGINT)
+        with self.assertRaisesRegex(RuntimeError, 'capture failed'):
+            cli.wait_for_capture(sniffer)
+        self.assertEqual(signal.getsignal(signal.SIGINT), before)
 
 
 if __name__=='__main__':

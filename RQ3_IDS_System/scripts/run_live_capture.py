@@ -28,8 +28,10 @@ thư viện) đã tự bỏ qua mọi gói không phải TCP/UDP, đúng việc 
 from __future__ import annotations
 
 import argparse
+import signal
 import sys
 import time
+import threading
 from pathlib import Path
 
 for _stream in (sys.stdout, sys.stderr):
@@ -66,6 +68,59 @@ def create_replay_sniffer(pcap_path: str, output: str, extractor='project'):
     return sniffer, session
 
 
+def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None):
+    """Keep Python's main thread responsive; never block in Thread.join().
+
+    Windows/Python capture environments can defer Ctrl+C while joining a native
+    thread indefinitely. Signal handlers request a stop, including while draining,
+    rather than raising another KeyboardInterrupt halfway through CSV export.
+    """
+    requested = stop_event if stop_event is not None else threading.Event()
+    previous = {}
+    def request_stop(signum, frame):
+        if not requested.is_set():
+            print('\nNhận yêu cầu dừng, đang dừng capture và ghi nốt flow...', flush=True)
+        requested.set()
+    for signum in (signal.SIGINT, getattr(signal, 'SIGBREAK', None)):
+        if signum is not None:
+            previous[signum] = signal.signal(signum, request_stop)
+    deadline = time.monotonic() + seconds if seconds > 0 else None
+    try:
+        sniffer.start()
+        announced = False
+        stop_deadline = None
+        while sniffer.thread.is_alive():
+            if sniffer.running and not announced:
+                print('[capture] receiving_started', flush=True)
+                announced = True
+            if requested.is_set() or (deadline is not None and time.monotonic() >= deadline):
+                if stop_deadline is None:
+                    stop_deadline = time.monotonic() + 15
+                if time.monotonic() >= stop_deadline:
+                    raise RuntimeError('Không nhận được tín hiệu sẵn sàng dừng từ capture sau 15 giây.')
+                # Scapy installs stop_cb during startup; don't call stop before it exists.
+                if hasattr(sniffer, 'stop_cb') and sniffer.running:
+                    if not requested.is_set():
+                        print(f'\nĐã đủ {seconds} giây, tự dừng...', flush=True)
+                    sniffer.stop(join=False)
+                    break
+            time.sleep(0.1)
+        # Bound shutdown without interruptible join/lock ownership side effects.
+        limit = time.monotonic() + 15
+        while sniffer.thread.is_alive():
+            if time.monotonic() >= limit:
+                raise RuntimeError('Capture chưa dừng sau 15 giây; không flush CSV khi thread còn ghi. Không coi phiên này đã dừng an toàn.')
+            time.sleep(0.1)
+        sniffer.join(timeout=0)  # Thread ended; propagate Scapy's stored exception.
+    finally:
+        try:
+            if cleanup is not None:
+                cleanup()
+        finally:
+            for signum, handler in previous.items():
+                signal.signal(signum, handler)
+
+
 def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)
@@ -78,6 +133,8 @@ def main():
     parser.add_argument("--seconds", type=int, default=0,
                          help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
     args = parser.parse_args()
+    if args.seconds < 0:
+        parser.error('--seconds phải >= 0')
     if Path(args.output).exists() and Path(args.output).stat().st_size and not args.overwrite:
         parser.error('CSV đầu ra đã có dữ liệu. Chọn tên mới; --overwrite chỉ dành cho ghi đè có chủ đích.')
     print('Extractor: ' + (LEGACY_VERSION if args.extractor == 'legacy' else PROJECT_MODES[args.extractor].extractor_version))
@@ -108,30 +165,15 @@ def main():
         _start_periodic_gc(session, interval=GC_INTERVAL)
         sniffer = AsyncSniffer(iface=args.interface, filter='ip and (tcp or udp)',
                                prn=session.process, store=False)
-    sniffer.start()
-    print('[capture] receiving_started', flush=True)
-
-    try:
-        if is_replay:
-            # Đọc file xong là hết gói để đọc, scapy tự dừng — không cần Ctrl+C.
-            sniffer.join()
-            print("\nĐã đọc hết file pcap.")
-        elif args.seconds > 0:
-            time.sleep(args.seconds)
-            print(f"\nĐã đủ {args.seconds} giây, tự dừng...")
-            sniffer.stop()
-        else:
-            sniffer.join()
-    except KeyboardInterrupt:
-        print("\nNhận Ctrl+C, đang dừng...")
-        sniffer.stop()
-    finally:
-        sniffer.join()
-        print('[capture] receiving_stopped', flush=True)
+    def finish_capture():
         gc_stop = getattr(session, "_gc_stop", None)
         if gc_stop:
             gc_stop.set()
             session._gc_thread.join(timeout=3)
+        # Never race a still-running capture thread with final CSV export.
+        if sniffer.thread and sniffer.thread.is_alive():
+            raise RuntimeError('Thread capture còn chạy; chưa thể ghi nốt an toàn.')
+        print('[capture] receiving_stopped', flush=True)
         # Project v1 ghi CSV khi chạm timeout (duration >=90s / idle >=240s),
         # hoặc khi dừng và flush; chưa triển khai TCP close handshake riêng.
         # Dừng sớm (ví dụ test vài chục giây) mà
@@ -145,6 +187,10 @@ def main():
                   f'exported_flows={session.n_exported} ignored_packets={session.n_ignored}')
         print(f"Đã ép ghi nốt {n_remaining} flow còn đang mở lúc dừng.")
         print(f"Đã dừng. Kiểm tra file: {args.output}")
+
+    wait_for_capture(sniffer, 0 if is_replay else args.seconds, cleanup=finish_capture)
+    if is_replay:
+        print("\nĐã đọc hết file pcap.")
 
 
 if __name__ == "__main__":
