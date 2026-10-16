@@ -4,6 +4,8 @@
 
 ## 0. Bức tranh tổng thể
 
+**Audit đặc trưng 16/10/2026:** đã đối chiếu đủ 78 tên/thứ tự cột, quét train 2,8 triệu dòng và nhóm cờ/bulk/active/idle trên daily cleaned 15.589.784 dòng; 8 fixture xác nhận lỗi extractor (lặp gói đầu, CWR, IAT, active/idle, protocol trong khóa flow). Xem [báo cáo tương thích](feature_compatibility_audit_20261016.md) và [ma trận 78 cột](feature_compatibility_matrix_20261016.md). Chưa sửa extractor hoặc train model. Các nhận định lịch sử dưới đây quy cảnh báo Hulk hoàn toàn cho model/dịch chuyển môi trường cần đọc theo kết luận audit mới; chưa xác minh quan hệ nhân quả đó.
+
 **Cập nhật hàng đợi 16/10/2026:** tăng `api.max_explain_queue` từ 50 lên **200 tác vụ SHAP chờ**, ngoài tác vụ đang chạy. Cần restart API để áp dụng. Giữ chính sách đầy queue thì bỏ SHAP mới, giữ dự đoán/cảnh báo; dashboard lấy dung lượng từ API. Các con số maxsize=50 ở nhật ký Bước 7b dưới đây là bằng chứng của cấu hình lịch sử, không phải giới hạn hiện hành. Chưa có benchmark kết luận 200 tối ưu hoặc cơ chế phục hồi queue sau restart.
 
 **Khối hiển thị dễ hiểu:** [Hướng dẫn đọc đặc trưng, SHAP và LIME](reading_shap_lime.md). Tên/giá trị/đơn vị được giải nghĩa bằng tiếng Việt; đây là tầng trình bày, không thay logic dự đoán hoặc số liệu nghiên cứu.

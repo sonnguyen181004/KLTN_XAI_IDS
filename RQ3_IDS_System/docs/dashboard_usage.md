@@ -60,6 +60,8 @@ Tab **Đối chứng đặc trưng**: chọn tên đặc trưng để đọc gi�
 
 Chi tiết nguyên nhân và giới hạn: [LIME validity và đối chứng](lime_validity_and_comparison.md).
 
+**Cập nhật audit đặc trưng:** Python extractor hiện có lỗi đã tái hiện và một số quy ước khác train; xem [báo cáo tương thích](feature_compatibility_audit_20261016.md). UI có đầy đủ kết quả hoặc SHAP cộng đúng không bảo đảm đặc trưng PCAP đã đúng. Chưa sửa extractor ở bước audit; cần ghi giới hạn này khi demo traffic thật.
+
 - Mặc định là **lượt nhận dữ liệu gần nhất**, không mặc định tất cả lịch sử. Nếu upload CSV/PCAP hoặc có nguồn khác gửi sau đó, chọn cố định lượt live của bạn trong sidebar. Danh sách lựa chọn lượt cập nhật khi bấm Làm mới ngay.
 - Mọi chỉ số/biểu đồ lấy toàn bộ phạm vi bộ lọc; bảng phân trang 50 flow. Thời gian là lúc API nhận, mới nhất trước.
 - Chọn dòng bảng để mở chi tiết. Flow đang đọc được giữ qua lần làm mới; đổi phạm vi sẽ chọn lại. Có nút tạm dừng tự làm mới.
