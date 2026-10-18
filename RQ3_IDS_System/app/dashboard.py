@@ -179,6 +179,20 @@ live, capture_help, upload = st.tabs(['Giám sát flow', 'Hướng dẫn live', 
 
 @st.fragment(run_every=None if paused else '5s')
 def monitor():
+    with st.expander('Dung lượng lưu trữ · chỉ theo dõi, không tự xóa'):
+        try:
+            storage = get('/storage_status')
+            free_gib = storage['free_bytes'] / 1024**3
+            st.caption(f"Ổ chứa DB còn {free_gib:.2f} GiB · cập nhật cùng bảng flow")
+            if storage['low_space']:
+                st.warning('Dung lượng trống thấp hơn ngưỡng cảnh báo. Backup và kiểm tra ổ đĩa; hệ thống không tự xóa lịch sử.')
+            st.dataframe([{'Nhóm': k, 'MiB': round(v / 1024**2, 2)}
+                          for k, v in storage['bytes_by_group'].items()], hide_index=True)
+            st.caption('Chỉ tính file trực tiếp trong thư mục DB: không gồm thư mục con, backup/CSV ở nơi khác. Số liệu đang ghi có thể thay đổi.')
+            if storage.get('scan_errors'):
+                st.warning('Một số file không đọc được dung lượng; thống kê chưa đầy đủ.')
+        except (requests.RequestException, KeyError):
+            st.warning('Chưa đọc được dung lượng. Kiểm tra API/restart sau cập nhật; không coi là còn đủ dung lượng.')
     try:
         current_runs = get('/runs')['runs']
         selected_run = current_runs[0]['capture_run_id'] if choice == '__latest__' and current_runs else choice

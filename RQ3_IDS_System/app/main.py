@@ -25,6 +25,7 @@ from pydantic import BaseModel
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import db  # noqa: E402
 import monitoring
+from storage import storage_status
 from flow_metadata import timestamp_utc
 from feature_reference import FeatureReference
 from normalize import normalize_flow, FlowValidationError  # noqa: E402
@@ -112,6 +113,14 @@ def jaccard_at_k(rank_a: list[str], rank_b: list[str], k: int) -> float:
 
 
 app = FastAPI(title="RQ3 IDS System API")
+
+
+@app.get('/storage_status')
+def get_storage_status():
+    try:
+        return storage_status(DB_PATH, cfg.get('storage', {}).get('warning_free_bytes', 1073741824))
+    except OSError:
+        raise HTTPException(status_code=503, detail='Không đọc được tình trạng lưu trữ; không phải dung lượng bằng 0.')
 
 
 @app.get("/health")

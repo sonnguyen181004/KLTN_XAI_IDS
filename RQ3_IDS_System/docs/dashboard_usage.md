@@ -8,6 +8,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Bắt đầu ở đây
 
+**HT3.6 — lưu trữ:** trong tab Giám sát flow, mở **Dung lượng lưu trữ · chỉ theo dõi, không tự xóa** để xem dung lượng trống và các nhóm DB/CSV/log/checkpoint. Chỉ thống kê file trực tiếp trong thư mục DB, không đại diện mọi vị trí capture/backup. Dưới 1 GiB hiển thị cảnh báo; API không đọc được thì hiển thị chưa rõ, không báo đủ dung lượng. Mục này cập nhật cùng bảng flow (tạm dừng tự làm mới cũng dừng cập nhật). Restart API/UI sau khi cập nhật code; không reset DB. Backup/verify/restore qua CLI theo [HT3.6 trong vận hành](operations.md#ht36--dung-lượng-backup-và-khôi-phục-an-toàn-18102026), chưa có nút sửa/xóa dữ liệu trên UI.
+
 UI gồm **Giám sát flow**, **Hướng dẫn live**, **Nạp CSV / PCAP**. Tab Hướng dẫn live chỉ cung cấp các bước/lệnh terminal; chưa điều khiển start/stop capture. Giám sát vẫn dùng chung cho cả ba nguồn, chọn Nguồn và Lượt dữ liệu ở sidebar để không trộn phiên. Chọn một flow để xem xác suất, SHAP, LIME theo yêu cầu, đối chứng đặc trưng và timing.
 
 Chạy hai lệnh API/UI bên dưới từ thư mục RQ3_IDS_System, mở http://127.0.0.1:8501. Muốn xem lại PCAP: Nạp CSV / PCAP → Phát lại PCAP → chọn file → trích xuất/gửi → Giám sát flow. Không cần reset DB. Muốn live: mở Hướng dẫn live và dùng CSV mới. Model/luật cảnh báo không thay đổi theo tab.

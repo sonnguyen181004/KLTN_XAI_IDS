@@ -3,6 +3,10 @@
 
 seed: 42
 
+# Cảnh báo quan sát, không phải quota hoặc lệnh tự xóa. Không thay cap capture.
+storage:
+  warning_free_bytes: 1073741824  # 1 GiB trên ổ chứa DB
+
 # Đường dẫn tính từ gốc repo (SELF_KLTN/), không phải từ RQ3_IDS_System/
 paths:
   model: "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl"
