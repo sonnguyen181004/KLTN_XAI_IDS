@@ -1,0 +1,3423 @@
+{
+  "model_version": "52eb5a671ee82109",
+  "baseline_mode": "project-v2",
+  "candidate_mode": "project-v3",
+  "warning": "No confirmed ground truth; changes are not accuracy/FPR measurements. LIME uses identical per-pair diagnostic seed, not saved DB alert IDs.",
+  "runs": [
+    {
+      "file": "tesst2.pcapng",
+      "source_sha256": "bf06d31a01cbfd387f797c3aafd702afd43fe72a5f73c2f2b130bcb4b01d05b0",
+      "comparison_run_id": "8daf95ae-1571-47ad-a843-398cb61b9cbd",
+      "baseline": {
+        "flow_count": 59,
+        "labels": {
+          "Benign": 56,
+          "DoS attacks-Hulk": 3
+        },
+        "packet_total": 637.0,
+        "repeat_csv_identical": true,
+        "end_reasons": {
+          "not_recorded": 59
+        },
+        "alert_xai": [
+          {
+            "flow_index": 1,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9701392650604248,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 14.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 2.4183473405292208e-90,
+              "min_other_distance": 67.28327371995312,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.36014018767157e-88
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 1.705673130708429e-88
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 2.882704055464237e-89
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.8685395848695e-89
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 2.7887951484423735e-89
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 7,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7252411246299744,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.2722384929656982
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6818297505378723
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6127.0,
+                "phi": -0.2324749231338501
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 65535.0,
+                "phi": -0.18035061657428741
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 24,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9707248210906982,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 1.2,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23738478124141693
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000005118497,
+              "max_other_weight": 1.8375859114223554e-11,
+              "min_other_distance": 23.28785093918711,
+              "raw_local_r2": 2.6897915839096953e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.591040948296844e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.586935918802404e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.758842794601266e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 8.006878708116567e-10
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 4.921306337163367e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          }
+        ],
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-fixes-v2"
+        ]
+      },
+      "candidate": {
+        "flow_count": 61,
+        "labels": {
+          "DoS attacks-Hulk": 3,
+          "Benign": 58
+        },
+        "packet_total": 637.0,
+        "repeat_csv_identical": true,
+        "end_reasons": {
+          "tcp_rst_observed": 3,
+          "flush": 58
+        },
+        "alert_xai": [
+          {
+            "flow_index": 0,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9702227711677551,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.973936080932617
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.9220553636550903
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 14.0,
+                "phi": -0.2944587469100952
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.2396582067012787
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.79714198384791e-89,
+              "min_other_distance": 66.95548172345313,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.6697199721946883e-87
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 1.2181917690929768e-87
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 1.9037798681325283e-88
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 1.8701127532706364e-88
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.8572834450229958e-88
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 9,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7252411246299744,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.2722384929656982
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6818297505378723
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6127.0,
+                "phi": -0.2324749231338501
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 65535.0,
+                "phi": -0.18035061657428741
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 26,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9707248210906982,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 1.2,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23738478124141693
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000005118497,
+              "max_other_weight": 1.8375859114223554e-11,
+              "min_other_distance": 23.28785093918711,
+              "raw_local_r2": 2.6897915839096953e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.591040948296844e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.586935918802404e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.758842794601266e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 8.006878708116567e-10
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 4.921306337163367e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          }
+        ],
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-lifecycle-v3"
+        ]
+      },
+      "matched_flows": [
+        {
+          "pair_id": "01895afee87915cd",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9712615013122559
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9712615013122559
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "0eb55c489bc5f5af",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9707248210906982,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 1.2,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23738478124141693
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000005118497,
+              "max_other_weight": 1.8375859114223554e-11,
+              "min_other_distance": 23.28785093918711,
+              "raw_local_r2": 2.6897915839096953e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.591040948296844e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.586935918802404e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.758842794601266e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 8.006878708116567e-10
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 4.921306337163367e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9707248210906982,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.968958854675293
+              },
+              {
+                "feature": "Fwd IAT Min",
+                "value": 1.2,
+                "phi": -0.751857340335846
+              },
+              {
+                "feature": "Dst Port",
+                "value": 14133.0,
+                "phi": -0.7468020915985107
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 501.0,
+                "phi": -0.23738478124141693
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000005118497,
+              "max_other_weight": 1.8375859114223554e-11,
+              "min_other_distance": 23.28785093918711,
+              "raw_local_r2": 2.6897915839096953e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.591040948296844e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.586935918802404e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.758842794601266e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 8.006878708116567e-10
+                },
+                {
+                  "feature_desc": "Pkt Len Min",
+                  "weight": 4.921306337163367e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "11465acf52391421",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7252411246299744,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.2722384929656982
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6818297505378723
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6127.0,
+                "phi": -0.2324749231338501
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 65535.0,
+                "phi": -0.18035061657428741
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.7252411246299744,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1454.0,
+                "phi": 2.2722384929656982
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6818297505378723
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6127.0,
+                "phi": -0.2324749231338501
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 65535.0,
+                "phi": -0.18035061657428741
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 1264390241.0065267,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "17292bbcd656f5b7",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9891513586044312
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9891513586044312
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "1a16509671f9622e",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9396049380302429
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9396049380302429
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "1d3d1a212cc862b1",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9864285588264465
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9864285588264465
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "264500e0eb03e2c6",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9758198261260986
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9758198261260986
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "269a89f4d6e69458",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9913860559463501
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9913860559463501
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "28aaa4ced64cb021",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9946289658546448
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9946289658546448
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "2a1b4be70f1573ae",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9580371975898743
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9580371975898743
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "301641d8ded56db7",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9709869623184204
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9709869623184204
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "323f245b14e08b5c",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9672612547874451
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9672612547874451
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "343ae584a5417b68",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "3e92d4c2a3b12bb5",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9582052826881409
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9582052826881409
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "40868fbef2f8686d",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9652782678604126
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9652782678604126
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "40da568a7a540aa7",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4203c84fab1c0af5",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9956012964248657
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9956012964248657
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "42a7d6ed9b0b17ca",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9737246036529541
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9737246036529541
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4e75d4d43d7584cf",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9763393402099609
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9763393402099609
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4ee430bd7ec7d505",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9971689581871033
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9971689581871033
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "56e92292bbae2fdf",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9820116758346558
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9820116758346558
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5a9dec5fd6425751",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.976635217666626
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.976635217666626
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5aeccbb0168f5d6c",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9903094172477722
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9903094172477722
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5afc70270108ce62",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9750128388404846
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9750128388404846
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5b915b550d004f8d",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9696327447891235
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5da7663b449469d8",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9330214262008667
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9330214262008667
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "656f29cb5166f50b",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.967284083366394
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.967284083366394
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "6c14a54cd4dfcb66",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9637017250061035
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9637017250061035
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "71abe17bd44ca153",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "71fb5e9e4c7fb2e6",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9454524517059326
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9454524517059326
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "7276c57513fe4126",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9664688110351562
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9664688110351562
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "73bc631c9320fce5",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9833183288574219
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9833183288574219
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "82c8caea9aff8ccc",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9769709706306458
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9769709706306458
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "82ec9c34d5c507f0",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.975547730922699
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.975547730922699
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "8d012c5b53f88776",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9712496995925903
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9712496995925903
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "912f0dffe5b4aa67",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9513256549835205
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "91cb9a0a735f075b",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9930532574653625
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9930532574653625
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "95f663e549ae4351",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "96cc5ba5dbb91e9a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9766126871109009
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9766126871109009
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "9b9e23cd39126401",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9160967469215393
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9160967469215393
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "9d6954f2021c7e96",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9681513905525208
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9681513905525208
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a49f9ac6cff69f2d",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9634478092193604
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9634478092193604
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ab2589ebf5565c81",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9710595011711121
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9710595011711121
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ada2630904169ae0",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9711957573890686
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9711957573890686
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "b709b5a1b031b005",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9445956349372864
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9445956349372864
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "bc9e999fdd777b8a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9742320775985718
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9742320775985718
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c1a8b233bdaf38f1",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9743364453315735
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9743364453315735
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c262838269168d84",
+          "changed_features": [
+            "Flow Duration",
+            "Tot Bwd Pkts",
+            "TotLen Bwd Pkts",
+            "Bwd Pkt Len Mean",
+            "Bwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Std",
+            "Bwd IAT Min",
+            "Bwd Header Len",
+            "Fwd Pkts/s",
+            "Bwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "RST Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Bwd Seg Size Avg",
+            "Subflow Bwd Pkts",
+            "Subflow Bwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9701392650604248,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 14.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 2.4183473405292208e-90,
+              "min_other_distance": 67.28327371995312,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.36014018767157e-88
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 1.705673130708429e-88
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 2.882704055464237e-89
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 2.8685395848695e-89
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 2.7887951484423735e-89
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9702227711677551,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.973936080932617
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.9220553636550903
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 14.0,
+                "phi": -0.2944587469100952
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.2396582067012787
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.79714198384791e-89,
+              "min_other_distance": 66.95548172345313,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.6697199721946883e-87
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 1.2181917690929768e-87
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 1.9037798681325283e-88
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 1.8701127532706364e-88
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.8572834450229958e-88
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c72b18ec196b4caa",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.979282796382904
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.979282796382904
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c7a4281808e8d86b",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9841436147689819
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9841436147689819
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ca242ff55181356b",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9722579121589661
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9722579121589661
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d69e02f3d0341a5f",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9654223322868347
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9654223322868347
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d9ee857acab49e81",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9655319452285767
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9655319452285767
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "da9bafaefd2cc6d0",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9685153961181641
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9685153961181641
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "eb687767f19d0abb",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.977929949760437
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.977929949760437
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f2b7b804d13c052a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9710794687271118
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9710794687271118
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f787c6ed2ec5cee8",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9660316109657288
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9660316109657288
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fb8f9f59ec3d2b0e",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9791475534439087
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9791475534439087
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fddc0ed4574208ad",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9664322733879089
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9664322733879089
+          },
+          "label_changed": false
+        }
+      ],
+      "ambiguous_or_unmatched_keys": 1,
+      "supported_packet_oracle": 637,
+      "matched_count": 59,
+      "changed_labels": 0,
+      "changed_vectors": 1
+    },
+    {
+      "file": "test.pcapng",
+      "source_sha256": "229d5d05ffd167aa5c28eb672728290f688c46f2152137ee9145e1ace1646705",
+      "comparison_run_id": "75b6d701-327f-4d8d-8c7c-5a4f14eb77d7",
+      "baseline": {
+        "flow_count": 33,
+        "labels": {
+          "Benign": 28,
+          "DoS attacks-Hulk": 5
+        },
+        "packet_total": 511.0,
+        "repeat_csv_identical": true,
+        "end_reasons": {
+          "not_recorded": 33
+        },
+        "alert_xai": [
+          {
+            "flow_index": 3,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9732859134674072,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771475791931152
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.087133526802063
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.2396582067012787
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.21119962632656097
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 3.878869306094098e-49,
+              "min_other_distance": 49.452302790508526,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 7.000041192509215e-47
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 5.206752514622428e-47
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1103001510292141e-47
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.0186979068230678e-47
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 5.949212190868329e-48
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 4,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9696980714797974,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 6.95707946107923e-101,
+              "min_other_distance": 71.13036978994732,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 9.501681030322365e-99
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 6.322578497432458e-99
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 1.2009404615634127e-99
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1317907728565596e-99
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 1.0982571774253827e-99
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 9,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9331679940223694,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.973891496658325
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.923297643661499
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.3599399924278259
+              },
+              {
+                "feature": "Bwd IAT Min",
+                "value": 235.6,
+                "phi": -0.2240319550037384
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.2254047564177127e-29,
+              "min_other_distance": 38.216432054976345,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.231569816580984e-28
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0210312615110608e-28
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 7.972041551174988e-29
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -3.269028655506331e-29
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 3.179948846120721e-29
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 11,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.975837230682373,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771833419799805
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.1117918491363525
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.2408888339996338
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.23519796133041382
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.000000000043833,
+              "max_other_weight": 1.4926638886124515e-12,
+              "min_other_distance": 24.44177854738727,
+              "raw_local_r2": 2.5376899914775208e-08,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.0044594601908313e-10
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.72822998676084e-10
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.1370909498018203e-10
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 8.25739502776227e-11
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 6.508225336182039e-11
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 29,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.758594274520874,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.355480194091797
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6000420451164246
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6304.0,
+                "phi": -0.22880612313747406
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.21672390401363373
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107669618,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          }
+        ],
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-fixes-v2"
+        ]
+      },
+      "candidate": {
+        "flow_count": 38,
+        "labels": {
+          "DoS attacks-Hulk": 5,
+          "Benign": 33
+        },
+        "packet_total": 511.0,
+        "repeat_csv_identical": true,
+        "end_reasons": {
+          "tcp_fin_ack_observed": 2,
+          "tcp_rst_observed": 8,
+          "flush": 28
+        },
+        "alert_xai": [
+          {
+            "flow_index": 0,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9331679940223694,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.973891496658325
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.923297643661499
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.3599399924278259
+              },
+              {
+                "feature": "Bwd IAT Min",
+                "value": 235.6,
+                "phi": -0.2240319550037384
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.2254047564177127e-29,
+              "min_other_distance": 38.216432054976345,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.231569816580984e-28
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0210312615110608e-28
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 7.972041551174988e-29
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -3.269028655506331e-29
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 3.179948846120721e-29
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 1,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9735614061355591,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771475791931152
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.087133526802063
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.2396582067012787
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.21119962632656097
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 2.1929130047244218e-48,
+              "min_other_distance": 49.066551458454626,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 3.6689052852256896e-46
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.7287609703690713e-46
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 5.336245686422408e-47
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 3.064795484493054e-47
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 2.536465506469122e-47
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 4,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9719549417495728,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771785736083984
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.1117918491363525
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.2404676079750061
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.2354368269443512
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000007381904,
+              "max_other_weight": 1.5553538126226373e-11,
+              "min_other_distance": 23.366263500804337,
+              "raw_local_r2": 3.8500024424070745e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 6.708994448925841e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 3.896060070340998e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.9131205313995257e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 1.0935582009299892e-09
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 6.273882386469062e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 6,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.758594274520874,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.355480194091797
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6000420451164246
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6304.0,
+                "phi": -0.22880612313747406
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.21672390401363373
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107669618,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          {
+            "flow_index": 7,
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9697725176811218,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 6.916871275730974e-100,
+              "min_other_distance": 70.77528503768796,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 7.094820233243695e-98
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.7154639136221295e-98
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 9.202316401147586e-99
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 8.291459935386795e-99
+                },
+                {
+                  "feature_desc": "Active Max",
+                  "weight": 8.020340618575555e-99
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          }
+        ],
+        "extractor_versions": [
+          "rq3-cfm-0.5.0-lifecycle-v3"
+        ]
+      },
+      "matched_flows": [
+        {
+          "pair_id": "03495e3baaf86166",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9670676589012146
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9670676589012146
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "05e3c813640ffac6",
+          "changed_features": [
+            "Flow Duration",
+            "Tot Fwd Pkts",
+            "TotLen Fwd Pkts",
+            "Fwd Pkt Len Mean",
+            "Fwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Fwd IAT Tot",
+            "Fwd IAT Mean",
+            "Fwd IAT Std",
+            "Fwd IAT Max",
+            "Fwd Header Len",
+            "Fwd Pkts/s",
+            "Bwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "RST Flag Cnt",
+            "ACK Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Fwd Seg Size Avg",
+            "Subflow Fwd Pkts",
+            "Subflow Fwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.975837230682373,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771833419799805
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.1117918491363525
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.2408888339996338
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.23519796133041382
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.000000000043833,
+              "max_other_weight": 1.4926638886124515e-12,
+              "min_other_distance": 24.44177854738727,
+              "raw_local_r2": 2.5376899914775208e-08,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.0044594601908313e-10
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.72822998676084e-10
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.1370909498018203e-10
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 8.25739502776227e-11
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 6.508225336182039e-11
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9719549417495728,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 1.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771785736083984
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.1117918491363525
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.2404676079750061
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 255.0,
+                "phi": -0.2354368269443512
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0000000007381904,
+              "max_other_weight": 1.5553538126226373e-11,
+              "min_other_distance": 23.366263500804337,
+              "raw_local_r2": 3.8500024424070745e-07,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 6.708994448925841e-09
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 3.896060070340998e-09
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.9131205313995257e-09
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 1.0935582009299892e-09
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 6.273882386469062e-10
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "133ea2ca92352971",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9766572713851929
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9766572713851929
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "24535556640b2dd1",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9954867959022522
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9954867959022522
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "32c565d056c2a65e",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9331679940223694,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.973891496658325
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.923297643661499
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.3599399924278259
+              },
+              {
+                "feature": "Bwd IAT Min",
+                "value": 235.6,
+                "phi": -0.2240319550037384
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.2254047564177127e-29,
+              "min_other_distance": 38.216432054976345,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.231569816580984e-28
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0210312615110608e-28
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 7.972041551174988e-29
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -3.269028655506331e-29
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 3.179948846120721e-29
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9331679940223694,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 93.0,
+                "phi": 2.973891496658325
+              },
+              {
+                "feature": "Dst Port",
+                "value": 10549.0,
+                "phi": -0.923297643661499
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 17.0,
+                "phi": -0.3599399924278259
+              },
+              {
+                "feature": "Bwd IAT Min",
+                "value": 235.6,
+                "phi": -0.2240319550037384
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 1.2254047564177127e-29,
+              "min_other_distance": 38.216432054976345,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.231569816580984e-28
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 1.0210312615110608e-28
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 7.972041551174988e-29
+                },
+                {
+                  "feature_desc": "Bwd Pkts/s",
+                  "weight": -3.269028655506331e-29
+                },
+                {
+                  "feature_desc": "Fwd Seg Size Avg",
+                  "weight": 3.179948846120721e-29
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "33d3b93aacb53468",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9591697454452515
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9591697454452515
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "4d6083eaa01fdbb7",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9726355075836182
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9726355075836182
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "51cf1822b0c73a06",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9732583165168762
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9732583165168762
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "526ecae09669cecd",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9875859022140503
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9875859022140503
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "538342236711e35a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9734628796577454
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9734628796577454
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "5fe58e95816db848",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9799903035163879
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9799903035163879
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "62aadad759e6a5b5",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9784367680549622
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9784367680549622
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "64082f94d105ba61",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9558324217796326
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9558324217796326
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "73d0986ca34ef06f",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9813058972358704
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9813058972358704
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "7639908247aa70a5",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9985311031341553
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9985311031341553
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "78517bd709854765",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9738775491714478
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9738775491714478
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "80dfad36cabb683e",
+          "changed_features": [
+            "Flow Duration",
+            "Tot Bwd Pkts",
+            "TotLen Bwd Pkts",
+            "Bwd Pkt Len Mean",
+            "Bwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Flow IAT Min",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Std",
+            "Bwd IAT Min",
+            "Bwd Header Len",
+            "Fwd Pkts/s",
+            "Bwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "RST Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Bwd Seg Size Avg",
+            "Subflow Bwd Pkts",
+            "Subflow Bwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9696980714797974,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 6.95707946107923e-101,
+              "min_other_distance": 71.13036978994732,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 9.501681030322365e-99
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 6.322578497432458e-99
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 1.2009404615634127e-99
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1317907728565596e-99
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 1.0982571774253827e-99
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9697725176811218,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.970515012741089
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.8214022517204285
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.2904139757156372
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 252.0,
+                "phi": -0.245673269033432
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 6.916871275730974e-100,
+              "min_other_distance": 70.77528503768796,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 7.094820233243695e-98
+                },
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 4.7154639136221295e-98
+                },
+                {
+                  "feature_desc": "Active Min",
+                  "weight": 9.202316401147586e-99
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 8.291459935386795e-99
+                },
+                {
+                  "feature_desc": "Active Max",
+                  "weight": 8.020340618575555e-99
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "86352110813de537",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9641744494438171
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9641744494438171
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "918ecb85ec7bd48e",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9579676985740662
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9579676985740662
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a55766ec5e8c728a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.991923987865448
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.991923987865448
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "a851ee88a217de83",
+          "changed_features": [
+            "Flow Duration",
+            "Tot Bwd Pkts",
+            "TotLen Bwd Pkts",
+            "Bwd Pkt Len Mean",
+            "Bwd Pkt Len Std",
+            "Flow Byts/s",
+            "Flow Pkts/s",
+            "Flow IAT Mean",
+            "Flow IAT Std",
+            "Bwd IAT Tot",
+            "Bwd IAT Mean",
+            "Bwd IAT Std",
+            "Bwd Header Len",
+            "Fwd Pkts/s",
+            "Bwd Pkts/s",
+            "Pkt Len Mean",
+            "Pkt Len Std",
+            "Pkt Len Var",
+            "RST Flag Cnt",
+            "Down/Up Ratio",
+            "Pkt Size Avg",
+            "Bwd Seg Size Avg",
+            "Subflow Bwd Pkts",
+            "Subflow Bwd Byts",
+            "Active Mean",
+            "Active Max",
+            "Active Min"
+          ],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9732859134674072,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771475791931152
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.087133526802063
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.2396582067012787
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.21119962632656097
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 3.878869306094098e-49,
+              "min_other_distance": 49.452302790508526,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 7.000041192509215e-47
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 5.206752514622428e-47
+                },
+                {
+                  "feature_desc": "RST Flag Cnt",
+                  "weight": 1.1103001510292141e-47
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 1.0186979068230678e-47
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 5.949212190868329e-48
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.9735614061355591,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 78.0,
+                "phi": 2.9771475791931152
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -1.087133526802063
+              },
+              {
+                "feature": "Init Fwd Win Byts",
+                "value": 253.0,
+                "phi": -0.2396582067012787
+              },
+              {
+                "feature": "Fwd Seg Size Min",
+                "value": 20.0,
+                "phi": -0.21119962632656097
+              }
+            ],
+            "shap_additivity_error": 2.86102294921875e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1000,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 2.1929130047244218e-48,
+              "min_other_distance": 49.066551458454626,
+              "raw_local_r2": 0.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "FIN Flag Cnt",
+                  "weight": 3.6689052852256896e-46
+                },
+                {
+                  "feature_desc": "ACK Flag Cnt",
+                  "weight": 2.7287609703690713e-46
+                },
+                {
+                  "feature_desc": "Fwd PSH Flags",
+                  "weight": 5.336245686422408e-47
+                },
+                {
+                  "feature_desc": "PSH Flag Cnt",
+                  "weight": 3.064795484493054e-47
+                },
+                {
+                  "feature_desc": "Active Mean",
+                  "weight": 2.536465506469122e-47
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "aaa67330ee2dc62c",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9568110108375549
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9568110108375549
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "acf7520b30b10e31",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9702500104904175
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9702500104904175
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "b3cbd100c6201063",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9732477068901062
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "c7cd4a6ecdeb588b",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9813297390937805
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9813297390937805
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "ceba0376df8c76b8",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9763473868370056
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9763473868370056
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d4e47fe008c770d9",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.758594274520874,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.355480194091797
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6000420451164246
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6304.0,
+                "phi": -0.22880612313747406
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.21672390401363373
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107669618,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "candidate": {
+            "predicted_label": "DoS attacks-Hulk",
+            "probability": 0.758594274520874,
+            "shap_top5": [
+              {
+                "feature": "FIN Flag Cnt",
+                "value": 2.0,
+                "phi": 5.8652215003967285
+              },
+              {
+                "feature": "Fwd Pkt Len Max",
+                "value": 1117.0,
+                "phi": 2.355480194091797
+              },
+              {
+                "feature": "Dst Port",
+                "value": 443.0,
+                "phi": -0.6000420451164246
+              },
+              {
+                "feature": "TotLen Bwd Pkts",
+                "value": 6304.0,
+                "phi": -0.22880612313747406
+              },
+              {
+                "feature": "Tot Fwd Pkts",
+                "value": 15.0,
+                "phi": -0.21672390401363373
+              }
+            ],
+            "shap_additivity_error": 1.9073486328125e-06,
+            "lime_status": "insufficient_neighborhood",
+            "lime_diagnostics": {
+              "samples": 1000,
+              "nonzero_weights": 1,
+              "effective_sample_size": 1.0,
+              "max_other_weight": 0.0,
+              "min_other_distance": 3299346.107669618,
+              "raw_local_r2": 1.0,
+              "raw_top_k": [
+                {
+                  "feature_desc": "Dst Port",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Protocol",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Flow Duration",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Fwd Pkts",
+                  "weight": 0.0
+                },
+                {
+                  "feature_desc": "Tot Bwd Pkts",
+                  "weight": 0.0
+                }
+              ],
+              "status": "insufficient_neighborhood"
+            }
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d5b519dceadeb9ae",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9876202940940857
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9876202940940857
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "d858a16ebca3bb84",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9541257619857788
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9541257619857788
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "e3de4d7f40bb1d8d",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9605482220649719
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9605482220649719
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "eacb4aa3e2626448",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9623894691467285
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9623894691467285
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "f337a2731766c07a",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9987934827804565
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9987934827804565
+          },
+          "label_changed": false
+        },
+        {
+          "pair_id": "fbf853077c8d3f8d",
+          "changed_features": [],
+          "baseline": {
+            "predicted_label": "Benign",
+            "probability": 0.9760068655014038
+          },
+          "candidate": {
+            "predicted_label": "Benign",
+            "probability": 0.9760068655014038
+          },
+          "label_changed": false
+        }
+      ],
+      "ambiguous_or_unmatched_keys": 3,
+      "supported_packet_oracle": 511,
+      "matched_count": 33,
+      "changed_labels": 0,
+      "changed_vectors": 3
+    }
+  ],
+  "code_sha256": {
+    "app/capture_adapter.py": "56c8f3d945ff864d07b74f1061fd879f41eb1e923efd7cba1b91a6c24cc73b73",
+    "app/capture_lifecycle.py": "44587e85b2ea0313d93d52f937c40593b8df49a9ec6507265a8f31c5b3f6940c",
+    "scripts/run_live_capture.py": "435aee4742b24f3573c757f50e67019e5630f5349ffc2690c1e831e654a05d42",
+    "scripts/stage21_compare_capture_versions.py": "199be23d57edd87421ba1e974963ba417aba99e968c8d1087c5a45c68d15dab4"
+  }
+}

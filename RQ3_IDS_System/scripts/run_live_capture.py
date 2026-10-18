@@ -1,4 +1,4 @@
-"""Bắt/đọc traffic bằng adapter có phiên bản `rq3-cfm-0.5.0-fixes-v2` mặc định.
+"""Bắt/đọc traffic bằng adapter `rq3-cfm-0.5.0-lifecycle-v3` mặc định.
 `--extractor legacy` giữ đường baseline Python CICFlowMeter 0.5.0 cũ.
 
 Đường legacy GỌI THẲNG hàm `create_sniffer()` bằng
@@ -46,7 +46,7 @@ from capture_adapter import (ProjectFlowSession, ProjectFlow, ProjectFlowV1,
                              TrainCandidateFlow, EXTRACTOR_VERSION, LEGACY_VERSION)
 from capture_lifecycle import LifecycleFlow, LifecycleSession
 
-PROJECT_MODES = {'project': ProjectFlow, 'project-v1': ProjectFlowV1,
+PROJECT_MODES = {'project': LifecycleFlow, 'project-v1': ProjectFlowV1,
                  'project-v2': ProjectFlow, 'project-v3': LifecycleFlow,
                  'train-candidate': TrainCandidateFlow}
 
@@ -55,7 +55,7 @@ def make_session(output, extractor):
     kwargs = dict(output_mode='csv', output=output, fields=None, verbose=False)
     if extractor == 'legacy':
         return FlowSession(**kwargs)
-    if extractor == 'project-v3':
+    if extractor in ('project', 'project-v3'):
         return LifecycleSession(**kwargs)
     return ProjectFlowSession(**kwargs, flow_class=PROJECT_MODES[extractor])
 
@@ -132,7 +132,7 @@ def main():
     group.add_argument("--pcap-input", help="Đọc lại 1 file .pcap đã ghi sẵn (nguồn 2 — phát lại), thay vì bắt sống")
     parser.add_argument("--output", required=True, help="Đường dẫn file CSV để ghi flow ra")
     parser.add_argument('--extractor', choices=[*PROJECT_MODES, 'legacy'], default='project',
-                        help='project: v2; project-v1/legacy: baseline; train-candidate: thử nghiệm một phần quy ước train')
+                        help='project/project-v3: lifecycle v3; project-v2/project-v1/legacy: baseline; train-candidate: quy ước train thử nghiệm')
     parser.add_argument('--overwrite', action='store_true', help='Cho phép ghi đè CSV có sẵn; không dùng khi feeder đang theo dõi')
     parser.add_argument("--seconds", type=int, default=0,
                          help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
@@ -178,8 +178,8 @@ def main():
         if sniffer.thread and sniffer.thread.is_alive():
             raise RuntimeError('Thread capture còn chạy; chưa thể ghi nốt an toàn.')
         print('[capture] receiving_stopped', flush=True)
-        # Project v1 ghi CSV khi chạm timeout (duration >=90s / idle >=240s),
-        # hoặc khi dừng và flush; chưa triển khai TCP close handshake riêng.
+        # V3 exports on age/idle, observed TCP close, new SYN, or final flush.
+        # V1/V2 preserve their historical timeout-only policy.
         # Dừng sớm (ví dụ test vài chục giây) mà
         # không gọi flush_flows() thì mọi flow còn "đang mở" (phần lớn traffic
         # HTTPS/keep-alive) sẽ KHÔNG được ghi ra — file CSV trông như trống dù đã bắt
@@ -188,7 +188,8 @@ def main():
         session.flush_flows()
         if args.extractor != 'legacy':
             print(f'[capture] accepted_packets={session.packets_count} exported_packets={session.n_exported_packets} '
-                  f'exported_flows={session.n_exported} ignored_packets={session.n_ignored}')
+                  f'exported_flows={session.n_exported} ignored_packets={session.n_ignored} '
+                  f'late_packets={getattr(session, "n_late", 0)}')
         print(f"Đã ép ghi nốt {n_remaining} flow còn đang mở lúc dừng.")
         print(f"Đã dừng. Kiểm tra file: {args.output}")
 

@@ -210,7 +210,7 @@ def monitor():
         st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
         st.write('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']))
         if not stats['last_received_at'] or (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() > 30:
-            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: adapter project ghi khi flow đạt thời lượng 90 giây, idle 240 giây hoặc khi dừng bắt để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; nguồn khác có thể dùng timeout khác.')
+            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: project v3 xuất khi tuổi flow đạt 90 giây, quan sát đóng TCP/mở phiên mới hoặc dừng để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; bản v2/nguồn khác có thể dùng chính sách khác.')
         if not stats['flows']:
             st.info('Không có flow khớp bộ lọc. Thử chọn Tất cả lịch sử hoặc bỏ bớt bộ lọc.')
             return
@@ -281,7 +281,7 @@ with capture_help:
     st.code('python app\\feeder.py --watch data\\live_review_01.csv --convert-units --capture-timezone +07:00', language='powershell')
     st.write('4. Mở tab Giám sát flow, chọn Nguồn = feeder_live và chọn đúng lượt live_review_01.csv. Dữ liệu CSV/PCAP đã nạp vẫn giữ trong lịch sử.')
     st.caption('Chỉ bắt trên máy/mạng bạn được phép kiểm thử. +07:00 phải khớp múi giờ timestamp capture. Có traffic nền ngay cả khi chưa mở trình duyệt.')
-    st.warning('Chưa có flow mới không đồng nghĩa mất kết nối: project xuất khi đạt duration 90 giây, idle 240 giây hoặc flush lúc dừng. Ctrl+C capture để ghi nốt, đợi feeder gửi hết rồi mới dừng feeder.')
+    st.warning('Project v3 xuất flow khi tuổi tính từ packet đầu đạt 90 giây, quan sát đóng TCP/mở phiên mới hoặc flush lúc dừng; không dự đoán từng packet. Packet lệch thời gian được tách riêng, có lý do trong CSV. Ctrl+C capture để ghi nốt, đợi feeder gửi hết rồi mới dừng feeder. Đây không phải chứng nhận đầu vào khớp train.')
     st.write('Feeder bị ngắt: chạy lại cùng lệnh và giữ checkpoint để tiếp tục. Không ghi đè CSV. Queue 200 chỉ giới hạn SHAP đang chờ, không giới hạn số flow được dự đoán/lưu.')
 with upload:
     st.caption('CSV có đặc trưng sẵn hoặc PCAP qua extractor đều gửi về cùng /predict. Sau khi nạp, mở Giám sát flow để xem lượt tương ứng; không cần xóa lịch sử.')

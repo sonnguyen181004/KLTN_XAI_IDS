@@ -2,7 +2,7 @@
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
-> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+> Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 ## Trạng thái hiện tại và thứ tự làm tiếp
 
@@ -17,7 +17,7 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 | Bước | Mục đích và phạm vi | Nghiệm thu / tài liệu tương ứng | Tiến độ |
 |---|---|---|---|
 | HT1 | Chốt hợp đồng dữ liệu, thời gian và trạng thái; phân biệt code đang có với thiết kế cần thêm | Đối chiếu code, ghi hợp đồng trong `operations.md`; không sửa runtime | Hoàn tất đặc tả 18/10/2026; xem nhật ký HT1 bên dưới |
-| HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | Đang làm: HT2.1 xong 18/10; chưa sửa runtime, chưa chứng nhận tương thích |
+| HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | HT2.1–HT2.4 triển khai và kiểm thử xong 18/10; v3 mặc định. Chứng nhận train–PCAP còn bị chặn do thiếu nguồn preprocessing/extractor lịch sử |
 | HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Chưa bắt đầu; kế thừa checkpoint/idempotency v2 |
 | HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | Chưa bắt đầu |
 | HT5 | Hoàn thiện logic đánh giá và XAI | Nhãn thật có nguồn, nhận xét analyst, tham chiếu RQ2, chẩn đoán SHAP/LIME; cập nhật `xai_validation.md` | Chưa bắt đầu |
@@ -27,6 +27,8 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 Nếu một bước lớn cần chia nhỏ, ghi HT2.1, HT2.2… với phạm vi và commit riêng trước khi làm; không gộp thay đổi phương pháp với sửa UI. Điều tra thiếu nguồn train không ngăn các bước vận hành độc lập, nhưng phải ghi rõ phần bị chặn và được thống nhất trước khi chuyển bước. Không đánh dấu tương thích hoàn toàn hoặc hoàn thành E4 chỉ vì sửa cờ TCP. Mỗi bước sau phải cập nhật lại trạng thái ở bảng này.
 
 ### Nhật ký HT2.1 — 18/10/2026
+
+**Tổng kết HT2.4 (18/10):** áp dụng lifecycle v3 cho CLI/live và PCAP UI; sửa biên GC trễ, FIN padding, policy watermark session; kiểm thử Stage26 22/22, Stage20 21/21, Stage23 self-test 3/3, Stage14 API/UI với model thật và DB tạm. Hai lượt Stage21 được lưu JSON riêng, không ghi đè; lượt `lifecycle_v3_final_evidence_20261018.json` là nghiệm thu cuối. README, hướng dẫn UI, vận hành, tương thích và XAI được đồng bộ, không thêm Markdown. Commit: `feat(rq3): validate and enable lifecycle v3 capture`. Không train model, reset DB, bật Wi-Fi thật hay push. **HT2 hoàn tất phần triển khai/kiểm chứng khả thi; không đánh dấu tương thích train hoàn toàn.** Nợ chứng nhận dữ liệu vẫn ghi mở; không lấy nhãn ít/nhiều hơn làm FPR. Dừng tại HT2; HT3 giao nhận/phục hồi/tài nguyên là bước tiếp theo, chưa triển khai trong lượt này.
 
 **Tiếp nối HT2.2 (18/10):** thêm adapter lifecycle v3 opt-in với biên timeout nhất quán và late packet có lý do xuất, giữ mặc định v2 ở commit này. Mục đích, chính sách và nguồn Word đã kiểm tra nằm ở đầu `feature_compatibility.md`. Stage26 8/8 PASS; baseline Stage20 được chạy lại trước commit. Commit: `fix(rq3): version deterministic flow timeout and late-packet policy`. Tiếp tục TCP lifecycle và đối chiếu PCAP trong cùng HT2, chưa chuyển HT3.
 

@@ -2,12 +2,30 @@
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
-> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+> Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 - [Capture v2, phục hồi và kiểm thử](#stability-v2)
 - [Hợp đồng dữ liệu và trạng thái HT1](#contract-ht1)
 
 ## Cập nhật kiểm chứng HT2.1 — 18/10/2026
+
+**Hiện hành HT2.4:** lệnh cũ không cần đổi: `project` mặc định trỏ lifecycle v3 cho cả CLI live và UI PCAP. Dùng CSV tên mới; không ghi đè CSV đang có feeder theo dõi. Bản v2 chọn bằng `--extractor project-v2`; v1 và train-candidate vẫn tách biệt. CSV thêm `flow_end_reason` (metadata, không phải cột model), dòng kết thúc CLI có `late_packets`; lý do chưa được truyền qua API/UI. Phiên đang chạy không tự nâng cấp: dừng capture/flush, đợi feeder gửi hết rồi dừng feeder, khởi động lượt mới. Không reset DB.
+
+V3 dùng tuổi tối đa 90s từ packet đầu (kể cả flow im lặng), kiểm tra cùng biên `>=` trước admission và trong GC. Idle 240s là dự phòng, bị tuổi 90s chi phối ở mặc định. Xuất sớm khi quan sát RST, FIN/ACK đủ hai chiều, SYN mở phiên mới; packet trễ được giữ trong flow một packet có lý do. Clock PCAP dùng timestamp gói; live có GC clock máy. Clock máy lệch/nhảy và mất gói capture chưa được chứng nhận ở HT2, thuộc nghiệm thu vận hành sau này. Không bảo đảm độ trễ end-to-end chỉ từ timeout.
+
+Lệnh kiểm tra HT2 từ thư mục `RQ3_IDS_System`:
+
+```powershell
+.\.venv_capture\Scripts\python.exe scripts\stage20_test_capture_adapter.py
+.\.venv_capture\Scripts\python.exe scripts\stage26_test_capture_lifecycle.py
+python scripts\stage23_audit_feature_semantics.py --self-test
+python scripts\stage21_compare_capture_versions.py --baseline project-v2 --candidate project-v3 --output docs\lifecycle_review_NEW.json
+python -B scripts\stage14_test_dashboard_redesign.py
+```
+
+Stage21 dùng PCAP/model thật nhưng CSV tạm, không gửi API; từ HT2 từ chối ghi đè JSON bằng chứng. Stage14 mở server/DB tạm và đóng khi xong. Không dùng tên bằng chứng đã có. `stage25_audit_flag_sensitivity.py` được ghim explicit `project-v2` để tái lập thí nghiệm cờ lịch sử. Kết quả và commit HT2.4 ghi tại `plan.md`, không suy ra FPR từ số nhãn cảnh báo.
+
+Đoạn HT2.1 dưới đây là trạng thái trước khi thay default:
 
 Không đổi cách chạy hệ thống. Stage20 hiện có **21 test PASS**, gồm sáu characterization mới ghi lại giới hạn vòng đời v2; đây không phải bản sửa capture mới. Stage25 kiểm tra model thật trên hai PCAP: nhị phân hóa cờ trong bộ nhớ không đổi nhãn/xác suất/lá của 92 flow; không áp dụng phép biến đổi này vào runtime. Stage23 self-test 3/3 PASS; chưa chạy full scan mới hoặc benchmark live. Xem [bằng chứng, lệnh tái lập và việc tiếp theo](feature_compatibility.md#ht21). Các số 13/15 test và phiên live ngày 16/10 bên dưới vẫn là lịch sử.
 

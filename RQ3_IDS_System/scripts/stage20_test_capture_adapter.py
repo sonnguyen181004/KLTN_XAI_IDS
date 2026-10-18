@@ -207,7 +207,7 @@ class AdapterTests(unittest.TestCase):
         for i in range(2):
             target=self.folder/f'cli{i}.csv'
             proc=subprocess.run([sys.executable,str(RQ3/'scripts/run_live_capture.py'),
-                '--pcap-input',str(path),'--output',str(target)],capture_output=True,
+                '--pcap-input',str(path),'--output',str(target),'--extractor','project-v2'],capture_output=True,
                 text=True,encoding='utf-8',errors='replace',timeout=30,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
             self.assertEqual(proc.returncode,0,proc.stdout+proc.stderr)

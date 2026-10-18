@@ -1,5 +1,26 @@
 # Tương thích đặc trưng train và capture
 
+## HT2.4 — nghiệm thu và áp dụng lifecycle v3 (18/10/2026)
+
+**Mục đích:** chốt bản phân flow có kiểm thử, áp dụng cùng đường live/PCAP và giữ bằng chứng model/XAI. Commit: `feat(rq3): validate and enable lifecycle v3 capture`.
+
+- Mặc định `project` nay là v3; `project-v3` alias tường minh, `project-v2` giữ nguyên baseline. Không sửa model, 78 cột/thứ tự, cờ, công thức v2 hay cấu hình RQ2.
+- Hoàn thiện trong nghiệm thu: bỏ Ethernet padding khỏi số sequence FIN, chọn lý do timeout theo deadline đến trước (không phụ thuộc GC chạy trễ), dùng watermark timestamp **toàn session** cho packet trễ để kết quả không tùy flow cũ còn trong bộ nhớ hay đã được GC. Đây là policy bảo thủ: packet của tuple khác nhưng timestamp lùi cũng được tách riêng; chưa có reorder buffer. Ghi rõ giới hạn này thay vì ép thời gian về 0.
+- Stage26 **22/22 PASS**; Stage20 **21/21 PASS** giữ các characterization v2; Stage23 self-test **3/3 PASS**. Stage14 kiểm tra model/API/UI trên DB tạm, thêm assert PCAP lưu version v3 và đủ 78 đặc trưng. Có kiểm tra đóng/flush, lỗi writer, GC đồng thời; không thay thế benchmark dài hạn/tải cao.
+- Stage21 trích mỗi PCAP/bản hai lần, yêu cầu CSV giống hệt; kiểm tra số packet bằng bộ đọc Scapy độc lập; normalize/predict mọi flow, SHAP/LIME mọi cảnh báo (kể cả flow không ghép cặp). Ghép theo tuple+timestamp chỉ là đối chiếu, không coi flow mới là false positive hoặc ground truth.
+- Bằng chứng cuối: `lifecycle_v3_final_evidence_20261018.json` (checksum code/PCAP/model version). `lifecycle_v3_evidence_20261018.json` là lượt trước kiểm tra padding/GC cuối cùng, giữ để truy vết, không thay thế bản cuối. Script từ chối ghi đè bằng chứng.
+
+**Điều kiện còn thiếu để chứng nhận tương thích:** pipeline tạo daily/train Parquet, commit/cấu hình extractor lịch sử hoặc cặp PCAP–CSV gốc. Ma trận 78 cột và các sai khác SD/mean/window/bulk trước đây vẫn có hiệu lực; HT2 không tự điều chỉnh công thức theo suy đoán. Không tuyên bố đã giải quyết báo nhầm hoặc hoàn thành E4. Kiểm thử Wi-Fi dài hạn, tài nguyên, giao nhận khi lỗi thuộc HT3/HT7; chưa chạy trong HT2.
+
+Kết quả Stage21 cuối (v2 → v3):
+
+| PCAP | Packet IPv4 TCP/UDP bảo toàn | Số flow | Nhãn v3 | Cặp đối chiếu / đổi vector / đổi nhãn |
+|---|---:|---:|---|---|
+| `test.pcapng` | 511/511 | 33 → 38 | 33 Benign, 5 Hulk | 33 / 3 / 0 |
+| `tesst2.pcapng` | 637/637 | 59 → 61 | 58 Benign, 3 Hulk | 59 / 1 / 0 |
+
+Hai PCAP có tổng 1.148 packet; 92 flow baseline thành 99 flow v3. Bảy flow bổ sung đều dự đoán Benign; không gọi đây là giảm FPR. Mọi CSV lặp cùng mode giống byte; 8 cảnh báo được tính lại SHAP/LIME, sai số cộng dồn SHAP lớn nhất khoảng `2.862e-6`, cả 8 LIME `insufficient_neighborhood`. Không có packet trễ ở hai PCAP này; policy late được kiểm bằng fixture, không suy rộng từ PCAP. Có cảnh báo artifact pickle XGBoost/LabelEncoder khác phiên bản thư viện; chưa chuyển đổi artifact trong HT2.
+
 ## HT2.2 — timeout và packet lệch thời gian (18/10/2026)
 
 ### HT2.3 — kết thúc và tái sử dụng phiên TCP
@@ -19,7 +40,7 @@
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
-> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+> Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 - [Hợp đồng ngữ nghĩa và bằng chứng train](#semantics)
 - [Lịch sử adapter v1](#adapter-v1)

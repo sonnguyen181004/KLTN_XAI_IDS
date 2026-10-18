@@ -7,6 +7,7 @@ This operational policy is NOT historical CICFlowMeter/train parity.
 import math
 
 from scapy.layers.inet import IP, TCP, UDP
+from scapy.packet import Padding
 from cicflowmeter.features.context import PacketDirection
 
 from capture_adapter import ProjectFlow, ProjectFlowSession, packet_key
@@ -48,7 +49,8 @@ class LifecycleFlow(ProjectFlow):
             self.handshake_only = False
         if flags & 1:
             # FIN consumes one sequence number; payload/SYN consume space too.
-            self.fin_ends.setdefault(direction, (int(tcp.seq) + len(tcp.payload) + 1 + bool(flags & 2)) % (2**32))
+            payload_len = len(tcp.payload) - (len(tcp[Padding]) if Padding in tcp else 0)
+            self.fin_ends.setdefault(direction, (int(tcp.seq) + payload_len + 1 + bool(flags & 2)) % (2**32))
         if flags & 16 and other in self.fin_ends:
             if (int(tcp.ack) - self.fin_ends[other]) % (2**32) < 2**31:
                 self.fin_acked.add(other)
@@ -78,10 +80,10 @@ class LifecycleSession(ProjectFlowSession):
 
     def _expiry(self, flow, now):
         # Both GC and packet admission use precisely the same >= boundaries.
-        if now - float(flow.latest_timestamp) >= self.idle_timeout:
-            return 'idle_timeout'
-        if now - float(flow.start_timestamp) >= self.max_age:
-            return 'active_timeout'
+        deadline, reason = min((float(flow.latest_timestamp) + self.idle_timeout, 'idle_timeout'),
+                               (float(flow.start_timestamp) + self.max_age, 'active_timeout'))
+        if now >= deadline:
+            return reason
         return None
 
     def _export(self, key, reason):
@@ -105,7 +107,7 @@ class LifecycleSession(ProjectFlowSession):
             flow = self.flows.get(existing)
             # Preserve arrival evidence without contaminating IAT/bulk/windows.
             # A standalone late flow is an explicit segmentation limitation.
-            late = timestamp < (float(flow.latest_timestamp) if flow else self._packet_watermark)
+            late = timestamp < self._packet_watermark
             if late:
                 late_key = (*key, 'late', self.packets_count)
                 self.flows[late_key] = LifecycleFlow(packet, PacketDirection.FORWARD)

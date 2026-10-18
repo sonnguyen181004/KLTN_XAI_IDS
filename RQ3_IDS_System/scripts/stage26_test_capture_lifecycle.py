@@ -2,12 +2,14 @@
 import csv
 import tempfile
 import unittest
+import threading
 from pathlib import Path
 from unittest.mock import patch
 
 from stage20_test_capture_adapter import packet
 from capture_lifecycle import LifecycleSession, LIFECYCLE_VERSION
 from scapy.layers.inet import TCP
+from scapy.packet import Padding
 
 
 def tcp_packet(when, direction='f', flags='A', seq=0, ack=0, payload=0):
@@ -176,6 +178,71 @@ class LifecycleTests(unittest.TestCase):
         s = self.session()
         s.process(packet(0)); s.process(packet(1, udp=True))
         self.assertEqual(len(self.rows(s)), 2)
+
+    def test_default_cli_selects_v3_and_keeps_v2_explicit(self):
+        from run_live_capture import make_session
+        for mode, expected in [('project', True), ('project-v3', True), ('project-v2', False)]:
+            s = make_session(str(Path(self.tmp.name)/f'{mode}.csv'), mode)
+            self.sessions.append(s)
+            self.assertEqual(isinstance(s, LifecycleSession), expected)
+
+    def test_gc_and_packet_admission_are_atomic(self):
+        s = self.session()
+        errors = []
+        def gc():
+            try:
+                for _ in range(100):
+                    s.garbage_collect(1700000000)
+            except Exception as error:
+                errors.append(error)
+        thread = threading.Thread(target=gc)
+        thread.start()
+        for i in range(100):
+            s.process(packet(i / 10))
+        thread.join(timeout=5)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(errors, [])
+        self.assertEqual(len(self.rows(s)), 1)
+
+    def test_write_failure_retains_late_reason_on_flush(self):
+        s = self.session(); s.process(packet(2))
+        with patch.object(s.output_writer, 'write', side_effect=OSError('disk full')):
+            with self.assertRaises(OSError):
+                s.process(packet(1))
+        self.assertEqual(s.packets_count, 2)
+        self.assertIn('late_packet', [r['flow_end_reason'] for r in self.rows(s)])
+
+    def test_expiry_reason_uses_earliest_deadline_even_when_gc_is_delayed(self):
+        results = []
+        for gc_first in (False, True):
+            s = self.session(); s.process(packet(0))
+            if gc_first:
+                s.garbage_collect(1700000090)
+            s.process(packet(300))
+            results.append(self.rows(s))
+        self.assertEqual(results[0], results[1])
+        self.assertEqual(results[0][0]['flow_end_reason'], 'active_timeout')
+
+    def test_late_policy_is_independent_of_gc_and_other_tuple(self):
+        results = []
+        for gc_first in (False, True):
+            s = self.session(); s.process(packet(0))
+            s.process(packet(10, udp=True))
+            if gc_first:
+                s.garbage_collect(1700000090)
+            s.process(packet(2))
+            rows = self.rows(s)
+            self.assertEqual(s.n_late, 1)
+            self.assertEqual(sum(r['flow_end_reason'] == 'late_packet' for r in rows), 1)
+
+    def test_ethernet_padding_does_not_consume_tcp_sequence_space(self):
+        s = self.session()
+        p = tcp_packet(0, flags='FA', seq=100) / Padding(b'\x00' * 6)
+        p.time = 1700000000
+        s.process(p)
+        s.process(tcp_packet(1, 'b', 'FA', seq=200, ack=101))
+        s.process(tcp_packet(2, flags='A', ack=201))
+        self.assertEqual(self.rows(s)[0]['flow_end_reason'], 'tcp_fin_ack_observed')
 
 
 if __name__ == '__main__':
