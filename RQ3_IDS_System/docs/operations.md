@@ -1,5 +1,15 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT3.7 — nâng trần buffer mặc định cho live thật (18/10/2026)
+
+**Mục đích:** mặc định cũ (20.000 packet đang giữ / 32MiB) chạm trần chỉ sau ~54 giây traffic nền bình thường (đo thật bằng Stage22 trên Wi-Fi thật, không phát tấn công), vì nhiều flow mở đồng thời (app nền giữ kết nối lâu) khiến packet dồn lại chờ flush trước khi đủ 76 flow xuất. Mặc định này không đủ cho một phiên demo/live thực tế.
+
+- Đổi mặc định `max_buffered_packets` 20.000 → **80.000**, `max_buffered_bytes` 32MiB → **96MiB (100.663.296 byte)**. Sửa đúng 2 nơi giữ mặc định: `app/capture_lifecycle.py` (class `LifecycleSession`) và `scripts/run_live_capture.py` (cờ CLI `--max-buffered-packets`/`--max-buffered-bytes`). Mọi đường gọi capture (terminal thủ công, nút Start qua `capture_supervisor.py`, `ingestion_ui.py`) đều không truyền cờ riêng nên kế thừa đúng mặc định mới. Không đổi `max_open_flows`, timeout 90s/240s, model hay 78 đặc trưng.
+- **Kiểm chứng bằng soak 20 phút thật trên Wi-Fi thật** (Stage22, không phát traffic tấn công, DB/API cô lập): PASS, chạy đủ 1.202,16s, peak buffer 39.319/80.000 (**49%**, dư địa gấp đôi so với lượt thử nghiệm cũ 50.000/64MiB chỉ còn dư 3%). Packet nhận=xuất=CSV=427.635 khớp tuyệt đối; flow CSV=API=1.636 khớp; SHAP 137/137 xử lý, 0 rớt hàng đợi, 0 lỗi feeder. RAM đỉnh: API 466MB, capture 149MB, feeder 97MB.
+- **Hồi quy sau khi đổi mặc định — tất cả PASS, không có thay đổi hành vi khác:** Stage20 22/22, Stage26 22/22, Stage28 5/5, Stage29 6/6, Stage14 (toàn bộ, gồm model thật/CSV/PCAP/LIME/storage/feeder).
+- Nhãn của lượt soak 20 phút (chỉ để tham khảo khối lượng, không phải FPR): 1.499 Benign, 133 DoS attacks-Hulk (8,1%), 4 Infilteration — xác nhận báo nhầm Benign→tấn công (HT2.1, chưa giải quyết) vẫn xảy ra ở quy mô lớn hơn, độc lập với thay đổi cap này.
+- **Chưa chứng nhận**: chạy nhiều giờ liên tục, traffic nặng hơn nhiều so với mẫu đo (streaming/video call/di chuyển file lớn), hoặc máy có ít RAM hơn máy đã đo. Nếu một phiên demo thực tế vẫn chạm cap 80.000, cần đo lại thời lượng/traffic cụ thể trước khi nâng tiếp, không tự tăng vô hạn.
+
 ## Sửa chặn nhầm trình duyệt local — 18/10/2026
 
 Streamlit 1.65.0 cố ý trả `st.context.ip_address=None` cho loopback; guard cũ từ chối None nên nút bị chặn dù chạy đúng lệnh. Guard mới bắt buộc `server.address` là địa chỉ IP loopback tường minh, sau đó chấp nhận None hoặc IP loopback, vẫn từ chối IP remote/không hợp lệ. Không dựa riêng vào context IP làm xác thực; giữ API token/Host/client/Origin guard. Không triển khai UI điều khiển sau proxy/tunnel hoặc ra LAN vì listener local không xác thực người dùng qua proxy.

@@ -82,8 +82,8 @@ class LifecycleFlow(ProjectFlow):
 
 class LifecycleSession(ProjectFlowSession):
     def __init__(self, *args, max_age=90., idle_timeout=240.,
-                 max_open_flows=4096, max_buffered_packets=20000,
-                 max_buffered_bytes=33554432, min_free_disk_bytes=268435456, **kwargs):
+                 max_open_flows=4096, max_buffered_packets=80000,
+                 max_buffered_bytes=100663296, min_free_disk_bytes=268435456, **kwargs):
         if not all(math.isfinite(x) and x > 0 for x in (max_age, idle_timeout)):
             raise ValueError('Timeouts must be positive and finite')
         for limit in (max_open_flows, max_buffered_packets, max_buffered_bytes, min_free_disk_bytes):

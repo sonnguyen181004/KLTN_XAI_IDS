@@ -150,8 +150,8 @@ def main():
                         help='project/project-v3: lifecycle v3; project-v2/project-v1/legacy: baseline; train-candidate: quy ước train thử nghiệm')
     parser.add_argument('--overwrite', action='store_true', help='Cho phép ghi đè CSV có sẵn; không dùng khi feeder đang theo dõi')
     parser.add_argument('--max-open-flows', type=int, default=4096, help='Giới hạn flow mở, chỉ v3')
-    parser.add_argument('--max-buffered-packets', type=int, default=20000, help='Giới hạn packet đang giữ, chỉ v3')
-    parser.add_argument('--max-buffered-bytes', type=int, default=33554432, help='Giới hạn byte gói, không phải RAM RSS, chỉ v3')
+    parser.add_argument('--max-buffered-packets', type=int, default=80000, help='Giới hạn packet đang giữ, chỉ v3')
+    parser.add_argument('--max-buffered-bytes', type=int, default=100663296, help='Giới hạn byte gói, không phải RAM RSS, chỉ v3')
     parser.add_argument('--min-free-disk-bytes', type=int, default=268435456, help='Dừng nếu ổ CSV còn dưới ngưỡng byte trống, chỉ v3')
     parser.add_argument("--seconds", type=int, default=0,
                          help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
