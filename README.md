@@ -1,5 +1,12 @@
 # KLTN_XAI_IDS
 
+## Bộ tài liệu đọc hiểu hệ thống — 18/10/2026
+
+- [Quyển 1 — Hiểu và sử dụng IDS RQ3 (PDF, 21 trang)](RQ3_IDS_System/docs/handbooks/01_Hieu_va_su_dung_he_thong_IDS_RQ3.pdf): IDS/SOC, vị trí cảm biến mạng so với endpoint/EDR/SIEM, kiến trúc, phần đã làm/chưa làm, chạy API/UI, test realtime/CSV/PCAP, đọc Dashboard/XAI, 15 nhãn và từ điển 78 đặc trưng.
+- [Quyển 2 — Hạn chế model, SHAP, LIME và realtime (PDF, 11 trang)](RQ3_IDS_System/docs/handbooks/02_Han_che_model_SHAP_LIME_va_realtime_RQ3.pdf): model học gì, nhầm Benign/Hulk, lệch đặc trưng, SHAP không phải quan hệ nhân quả, LIME suy biến, FPR/ground truth, độ trễ, cap và các bước kiểm chứng tiếp theo.
+
+Hai PDF đã được kiểm tra trình bày bằng ảnh trang. DOCX cùng tên được giữ cùng thư mục để chỉnh sửa, **chưa xác minh bố cục Word** vì môi trường không có bộ render Word/LibreOffice; PDF được dàn từ nội dung, không phải bản render Word. Nội dung đối chiếu mã nguồn và bằng chứng tại snapshot `a680823`, không thay model, DB hoặc cấu hình runtime. Trạng thái mới hơn cần đối chiếu `docs/plan.md` và `docs/operations.md`.
+
 ## Chạy nhanh trên VS Code — hiện hành 18/10/2026
 
 Giữ pipeline: **Wi-Fi → capture → flow/78 đặc trưng → CSV → feeder → API/XGBoost → SHAP/LIME → UI**. Nút Realtime chỉ thay việc tự mở hai terminal capture/feeder; API quản lý vòng đời worker, không thay model/logic dự đoán.

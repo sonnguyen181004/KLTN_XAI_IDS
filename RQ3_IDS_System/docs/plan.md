@@ -1,5 +1,18 @@
 # Kiến trúc, tiến độ và kế hoạch RQ3
 
+## Bộ tài liệu tổng hợp cho người đọc — 18/10/2026
+
+**Mục đích:** gom kiến thức và hướng dẫn thành hai quyển dễ đọc, không tạo thêm nhiều file Markdown và không đánh đồng giải thích model với bằng chứng tấn công.
+
+- [Quyển 1: hiểu và sử dụng](handbooks/01_Hieu_va_su_dung_he_thong_IDS_RQ3.pdf), 21 trang: vị trí IDS trong SOC, khác EDR/SIEM, kiến trúc thực tế, chức năng và giới hạn, thao tác API/UI/realtime/CSV/PCAP, cách đọc flow/XAI, thuật ngữ, 15 nhãn và 78 đặc trưng.
+- [Quyển 2: hạn chế và kiểm chứng](handbooks/02_Han_che_model_SHAP_LIME_va_realtime_RQ3.pdf), 11 trang: học thống kê/argmax, Benign–Hulk, giả thuyết cờ nhị phân và bằng chứng phản bác trong phạm vi đã thử, giới hạn SHAP/LIME, FPR, latency, cap, đánh giá và hướng cải thiện có tiêu chí.
+
+**Nguồn và phạm vi:** đối chiếu source snapshot `a680823`, tài liệu vận hành/XAI/feature compatibility, bằng chứng PCAP và test live hiện có, tài liệu gốc NIST/Microsoft/SHAP/LIME. Không chạy lại capture, không reset DB, không đổi model hoặc chuẩn hóa. Test Stage14 được nhắc là kết quả đã chạy trước đợt biên soạn, không phải phép đo FPR mới.
+
+**Kiểm tra tài liệu:** hai PDF tổng 32 trang đã rasterize bằng Poppler và kiểm tra trực quan; sửa lỗi glyph số mũ, kiểm tra phụ lục và bảng. DOCX lưu để chỉnh sửa nhưng chưa xác minh bố cục Word: renderer thiếu LibreOffice/Word. PDF được dàn riêng từ nội dung DOCX bằng ReportLab, không chứng nhận Word layout. Hai script `scripts/build_reader_handbooks.py` và `scripts/export_reader_handbooks_pdf.py` giữ nguồn nội dung/tái tạo; cần bundled Python có python-docx/ReportLab/pypdf và font Arial trên Windows. Không đưa ảnh QA tạm hoặc tài liệu người dùng `ttrinhbcao.docx` vào commit.
+
+**Tiến độ:** hoàn tất bộ tài liệu đọc hiểu ở snapshot nêu trên; README có liên kết. Đây là hoàn thiện tài liệu, không đóng các hạng mục còn mở về tương thích train–capture, ground truth, tải cao/độ trễ, môi trường model hoặc kiểm thử browser thật.
+
 ## Hotfix local UI — 18/10/2026
 
 Đã sửa guard chặn nhầm IP None của Streamlit 1.65.0 bằng yêu cầu listener loopback tường minh; giữ token và guard API. Stage37 5/5 PASS (fixture/AppTest, chưa browser/NIC thật). Mục đích: cho nút điều khiển sử dụng đúng pipeline capture/CSV/feeder hiện có, không thay kiến trúc dự đoán hoặc model. Tiếp theo người dùng restart UI và test lại; cảnh báo lệch phiên bản model/encoder còn cần kiểm chứng riêng. Xem nhật ký vận hành.
