@@ -14,6 +14,7 @@ from scapy.packet import Padding
 from cicflowmeter.features.context import PacketDirection
 
 from capture_adapter import ProjectFlow, ProjectFlowSession, packet_key
+from capture_packet_record import PacketRecord
 
 LIFECYCLE_VERSION = 'rq3-cfm-0.5.0-lifecycle-v3'
 
@@ -35,6 +36,7 @@ class LifecycleFlow(ProjectFlow):
         self.handshake_only = True
         self.tcp_end = None
         self._observe_tcp(packet, direction)
+        self.packets[-1] = (PacketRecord.from_packet(packet), direction)
 
     def new_connection(self, packet, direction):
         if TCP not in packet or int(packet[TCP].flags) & 0x12 != 0x02:
@@ -70,6 +72,7 @@ class LifecycleFlow(ProjectFlow):
     def add_packet(self, packet, direction):
         super().add_packet(packet, direction)
         self._observe_tcp(packet, direction)
+        self.packets[-1] = (PacketRecord.from_packet(packet), direction)
 
     def get_data(self, include_fields=None):
         data = super().get_data()

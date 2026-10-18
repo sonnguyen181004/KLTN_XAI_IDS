@@ -686,6 +686,15 @@ Khi bắt đầu triển khai, cập nhật checkbox và nhật ký này sau t�
 
 ### Ổn định vận hành sau audit
 
+#### HT3.5 — tối ưu lưu trữ packet (18/10/2026)
+
+- Mục đích: giảm RAM mỗi packet mà không bỏ gói, đổi timeout, chia flow hay công thức 78 đặc trưng.
+- Đã thay Scapy/payload giữ lâu dài bằng immutable slotted record sau xử lý packet gốc. Không thay cap mặc định; trần số packet vẫn còn, chưa phải bộ tính thống kê O(1).
+- Stage30: 2 PCAP/1.148 packet/99 flow khớp CSV từng byte, vector chuẩn hóa và dự đoán model thật giống chính xác. Test 1.000 packet payload 1.200 byte: retained Python allocation giảm 5.635.553 → 370.351 byte (~93,4%), không phải RSS realtime.
+- Hồi quy Stage20 21/21, Stage26 22/22, Stage28 5/5, Stage29 6/6 PASS. Stage29 drain 3.200 packet, buffer về 0, giữ semantics quá tải/lỗi disk.
+- Bằng chứng `packet_record_validation_20261018.json`; live smoke riêng và giới hạn cập nhật trong operations.md. Chưa coi soak 20 phút trước là kiểm chứng dài hạn cho bản tối ưu mới. Bước sau: đo tải dài/dư địa cap, nghiên cứu thống kê cộng dồn có oracle tương thích; retention/backup và hard-kill còn mở.
+- Smoke sau tối ưu 120s PASS: 9.352 packet/193 flow đối soát khớp, SHAP 41/41, không dropped, UI AppTest đạt, peak RSS lấy mẫu ~131,2 MiB. Lượt smoke đầu lỗi quyền thay file JSON đã lưu riêng; harness thêm retry nguyên tử có giới hạn và test lỗi nhất thời/kéo dài PASS. Bước HT3.5 hoàn thành trong phạm vi parity + giảm bộ nhớ + smoke; HT3 tổng thể chưa đóng. Commit dự kiến: `perf(rq3): retain compact packet records without changing features`.
+
 #### HT3.4 — kiểm thử 20 phút 18/10/2026: PASS phạm vi thử, HT3 tổng thể còn mở
 
 Mục đích: đo ổn định capture → CSV → API/UI với DB riêng, giữ nguyên model/SHAP/LIME. Lượt 20 phút đầu dừng sau khoảng 2 phút vì cap 20.000 packet: nhận/xuất 29.160 packet, CSV 176 flow; chưa đối soát API cuối lượt. Snapshot cuối API 85 flow, SHAP 37/37, dropped=0. Bằng chứng: `live_20min_ht3_20261018.json`.
