@@ -293,6 +293,17 @@ python -u RQ3_IDS_System/scripts/stage22_test_live_pipeline.py --interface Wi-Fi
 
 Không ghi đè output cũ, không xóa DB demo. JSON chỉ lưu số liệu tổng hợp; CSV/DB thô tạm được dọn sau test. Cap byte không giới hạn RSS của đối tượng Scapy. Thành công 20 phút chưa chứng nhận chạy nhiều giờ hoặc không mất gói tại NIC.
 
+**Kết quả lượt thử lại: PASS**, bằng chứng `live_20min_ht3_retry_20261018.json`. Capture process chạy 1.202,61 giây với yêu cầu sniff 1.200 giây; cả lượt gồm khởi động, drain và kiểm tra khoảng 20 phút 39,5 giây. Exit 0, không chạm cap; đã xác nhận không còn python.exe sau test.
+
+- Packet nhận = xuất = tổng CSV: 176.425; flow CSV = API: 1.225; 1.142 flow tới API khi còn sniff.
+- SHAP xử lý 251/251, hàng đợi 0/200, dropped=0, recovery_pending=0; feeder_error_count=0.
+- Đủ 78 đặc trưng, 15 xác suất; metadata IP/version và đổi đơn vị duration đạt; Dashboard Streamlit AppTest đạt (không thay thế thao tác trình duyệt thủ công).
+- Peak RSS trong các mẫu: capture 522,9 MiB, API 463,1 MiB, feeder 97,7 MiB. CPU tích lũy cao nhất quan sát: capture 124,55 giây CPU, API 1.300,67, feeder 7,80; đây không phải phần trăm CPU hay toàn bộ CPU giai đoạn drain. Mẫu cuối ở 1.194,3 giây; RSS giữa các lần lấy mẫu có thể cao hơn.
+- Peak open flows=113; peak buffered packets=48.495/50.000 (96,99%); limit_rejected=0, buffered_packet_bytes cuối=0. Dư địa còn thấp, không nâng mặc định hoặc bỏ giới hạn dựa vào một lượt PASS.
+- Nhãn model: 974 Benign, 250 Hulk, 1 Infilteration; chưa có ground truth nên không quy thành FPR/độ chính xác hoặc xác nhận tấn công.
+
+Mục tiêu kiểm thử đã đạt trong tải quan sát này, không đóng toàn bộ HT3. Bước tiếp theo cần đánh giá cách giảm lưu packet trong RAM/dư địa bộ đệm mà giữ đúng định nghĩa đặc trưng, rồi kiểm thử hồi quy và tải dài; retention/backup và hard-kill vẫn là giới hạn mở. Không đổi model/RQ1/RQ2, không ảnh hưởng DB demo.
+
 - Stage20: 13 fixture/regression test PASS, gồm zero window cả hai chiều, baseline v1, candidate chỉ đổi nhóm được phép, chống ghi đè và các test packet/flow trước đó.
 - Stage24: API/model/SQLite thật trên DB tạm; gửi trùng đồng thời, xung đột khóa, rollback giữa giao dịch, mất kết nối, mất ACK sau commit, restart API/feeder, dòng trống/dở dang, khóa feeder, lỗi input và truncate. Có mô phỏng việc SHAP bị ngắt bằng trạng thái DB sau khi dừng API, xác nhận phục hồi khi restart và giữ các việc dropped.
 - Stage14: hồi quy API/UI/CSV/PCAP và LIME qua model thật, Streamlit AppTest; dữ liệu cô lập.

@@ -686,11 +686,15 @@ Khi bắt đầu triển khai, cập nhật checkbox và nhật ký này sau t�
 
 ### Ổn định vận hành sau audit
 
-#### HT3.4 — kiểm thử dài 18/10/2026: chưa nghiệm thu
+#### HT3.4 — kiểm thử 20 phút 18/10/2026: PASS phạm vi thử, HT3 tổng thể còn mở
 
 Mục đích: đo ổn định capture → CSV → API/UI với DB riêng, giữ nguyên model/SHAP/LIME. Lượt 20 phút đầu dừng sau khoảng 2 phút vì cap 20.000 packet: nhận/xuất 29.160 packet, CSV 176 flow; chưa đối soát API cuối lượt. Snapshot cuối API 85 flow, SHAP 37/37, dropped=0. Bằng chứng: `live_20min_ht3_20261018.json`.
 
-Stage22 bổ sung RSS/CPU/queue, trạng thái ghi nguyên tử và đối soát CSV đã flush khi chạm cap (toàn bài vẫn FAIL). Thử tiếp cap riêng 50.000 packet / 64 MiB packet bytes; chưa đổi mặc định runtime. RSS đo trước khoảng 286 MiB, không đồng nhất với packet bytes. Kết quả lượt mới ghi riêng; chưa đánh dấu hoàn tất.
+Stage22 bổ sung RSS/CPU/queue, trạng thái ghi nguyên tử và đối soát CSV đã flush khi chạm cap (toàn bài vẫn FAIL nếu capture chạm cap). Công cụ và bằng chứng lượt đầu: commit `4621669`.
+
+Lượt thử lại PASS với cap riêng 50.000 packet / 64 MiB packet bytes: capture 1.202,61 giây gồm khởi động/dừng; 176.425 packet nhận/xuất/tổng CSV khớp, 1.225 flow CSV/API khớp, 1.142 flow tới API khi còn sniff. SHAP 251/251, queue/recovery/dropped=0, feeder không lỗi; 78 đặc trưng/15 xác suất, metadata IP/version, đổi đơn vị và Streamlit AppTest đạt. Bằng chứng: `live_20min_ht3_retry_20261018.json`. Tiến trình test đã kết thúc exit 0; kiểm tra sau test không còn python.exe.
+
+Peak RSS lấy mẫu capture khoảng 522,9 MiB; peak buffer 48.495/50.000 packet (96,99%), cuối lượt buffer byte=0. Không đổi cap mặc định, model hoặc SHAP/LIME. HT3 chưa đóng: cần xử lý dư địa bộ đệm và benchmark dài/tải cao, retention/backup và giới hạn mất dữ liệu RAM khi hard-kill. PASS vận hành không chứng minh dự đoán chính xác/FPR hoặc không mất gói tại NIC.
 
 - [x] Capture v2 bảo toàn initial window=0; candidate quy ước train tách phiên bản và đối chiếu hai PCAP.
 - [x] Feeder đọc tăng dần, checkpoint sau ACK, backoff, khóa, xử lý dòng dở dang và phát hiện truncate.
