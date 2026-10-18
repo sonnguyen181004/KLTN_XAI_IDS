@@ -17,7 +17,7 @@ import uuid
 
 RQ3 = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RQ3/'app'))
-from worker_control import WorkerControl, write_control as save_checkpoint
+from worker_control import WorkerControl, read_control, write_control as save_checkpoint
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -75,6 +75,13 @@ class WorkerTests(unittest.TestCase):
             with self.assertRaises(PermissionError):
                 save_checkpoint(self.root/'unused', {})
             self.assertEqual(write.call_count, 6)
+        with patch('worker_control.Path.read_text', side_effect=[PermissionError(), '{}']) as read:
+            self.assertEqual(read_control(self.root/'unused'), {})
+            self.assertEqual(read.call_count, 2)
+        with patch('worker_control.Path.read_text', side_effect=PermissionError()) as read:
+            with self.assertRaises(PermissionError):
+                read_control(self.root/'unused')
+            self.assertEqual(read.call_count, 6)
 
     def test_lease_renewed_during_read_is_not_future(self):
         worker = WorkerControl(self.folder('renew'), self.token, 'capture')
@@ -127,6 +134,8 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(capture['state'], 'finished')
         self.assertTrue(capture['flushed'])
         self.assertGreater(capture['rows'], 0)
+        self.assertEqual(capture['rows'], capture['exported_flows'])
+        self.assertEqual(capture['buffered_packets'], 0)
         self.assertEqual(capture['csv_size'], csv.stat().st_size)
         self.assertNotEqual(capture['pid'], os.getpid())
         server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)

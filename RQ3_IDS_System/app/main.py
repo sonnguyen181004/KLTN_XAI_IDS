@@ -12,6 +12,8 @@ import sys
 import threading
 import time
 import uuid
+import asyncio
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
@@ -112,7 +114,29 @@ def jaccard_at_k(rank_a: list[str], rank_b: list[str], k: int) -> float:
     return len(sa & sb) / len(union) if union else float("nan")
 
 
-app = FastAPI(title="RQ3 IDS System API")
+capture_supervisor = None
+CONTROL_TOKEN = os.environ.get('IDS_CAPTURE_CONTROL_TOKEN', '')
+
+
+@asynccontextmanager
+async def lifespan(app):
+    global capture_supervisor
+    if len(CONTROL_TOKEN) >= 32:
+        from capture_supervisor import CaptureSupervisor
+        # Use the actual listening URL (set explicitly for a non-default port).
+        capture_supervisor = CaptureSupervisor(
+            os.environ.get('IDS_CAPTURE_SESSION_DIR', str(RQ3_ROOT/'data/capture_sessions')),
+            os.environ.get('IDS_CAPTURE_API_URL', f"http://127.0.0.1:{cfg['api']['port']}"))
+    try:
+        yield
+    finally:
+        if capture_supervisor:
+            await asyncio.to_thread(capture_supervisor.close)
+
+
+app = FastAPI(title="RQ3 IDS System API", lifespan=lifespan)
+from capture_routes import control_router
+app.include_router(control_router(lambda: capture_supervisor, CONTROL_TOKEN))
 
 
 @app.get('/storage_status')

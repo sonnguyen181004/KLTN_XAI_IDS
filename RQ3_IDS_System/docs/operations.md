@@ -1,5 +1,27 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT4.4 hiện hành — API/UI điều khiển và nghiệm thu (18/10/2026)
+
+**Mục đích:** dùng nút UI thay hai terminal capture/feeder, không đổi tầng chuẩn hóa/model/XAI/DB thật. `/capture/status`, `/capture/start`, `/capture/stop`, `/capture/reconcile` chỉ bật khi API có `IDS_CAPTURE_CONTROL_TOKEN` >=32 ký tự; UI dùng cùng token qua header server-side. API kiểm tra client loopback, Host local, token constant-time, từ chối Origin/cross-site; UI từ chối browser IP không local/không xác minh được. Chỉ bind API/UI `127.0.0.1`, không deploy qua proxy/LAN; token không bảo vệ một UI cố ý công khai như hệ thống đăng nhập. API một worker, không reload khi capture. Không có token: prediction và UI cũ vẫn chạy, control disabled.
+
+`IDS_CAPTURE_SESSION_DIR` mặc định `data/capture_sessions` (Git ignore), tách journal/control/CSV/checkpoint/log theo run UUID. `IDS_CAPTURE_API_URL` phải trỏ đúng API loopback đang chạy (mặc định 8000); đổi port phải đổi biến này. API giữ single-owner OS lock suốt lifespan; một API khác cùng registry không được sở hữu. UI chỉ GET mỗi 3s, POST khi bấm; không giữ process/PID, start retry cùng request ID không spawn lại. CSV/PCAP/biểu đồ/XAI tiếp tục dùng API dự đoán cũ; mã lượt dự đoán từ checkpoint dùng nút **Xem flow của phiên này**.
+
+Stop là bất đồng bộ: starting/running → stopping → draining → completed chỉ khi hai exit=0, CSV/ACK khớp. Không tự dừng sau 60s; cap/disk guard vẫn có thể dừng phiên lỗi. **Dừng capture và đợi completed trước khi tắt API**; API shutdown khi feeder chưa gửi hết có thể làm phiên failed, không hứa flush/ACK thành công khi kill API. Journal unknown sau restart phải đối soát; worker cũ còn sống/không chứng minh được thì khóa giữ nguyên. Không tự nhận nuôi PID, không tự kill/giải phóng spawn gap. CSV/checkpoint/log giữ để kiểm tra, không tự xóa/rotation.
+
+Sửa phát hiện khi nghiệm thu: latch lỗi health đầu tiên ngay cả khi lần kiểm tra cuối thành công; lỗi đó không được biến thành thoát an toàn. Read/write file control retry PermissionError có giới hạn (6 lần, tổng chờ 0,3s). Wrapper không ghi đè lỗi worker bằng SystemExit chung chung; registry giữ reason lỗi đầu tiên, supervisor lưu `supervisor_error.json`. UI hiển thị error_message thực, không gán cứng giải thích. Counter cuối capture được chốt lại sau flush (sửa độ trễ telemetry ghi nhận ở smoke test).
+
+### Kết quả test và giới hạn
+
+Rà soát cuối bổ sung test race worker exit/Popen poll: đọc final report sau khi xác nhận exit, cho tối đa 5s để launcher reaped nếu worker vừa biến mất giữa hai lần đọc OS. Không dùng race này để bỏ kiểm tra identity hoặc báo completed sớm. Stage36 tăng từ 6 lên 7 test PASS; Stage33 xác nhận lỗi rollback không ghi đè nguyên nhân đầu tiên.
+
+- Stage36 7/7 process fixture; Stage37 4/4 auth/Host/Origin/client/UI refresh/buttons; Stage14 model/CSV/PCAP/SHAP/LIME/UI PASS trên DB tạm. Stage20 22/22, Stage33/35 12/12 mỗi bộ, Stage34 9/9. Stage37/38 AppTest mock kiểm tra IP browser vì không có kết nối browser thật; API vẫn kiểm tra HTTP/token thật trong Stage38. Chưa QA thủ công trên nhiều kích thước trình duyệt.
+- `live_ht4_control_20261018.json`: **FAIL**, yêu cầu 30s, lỗi ~25,1s do cap 20.000 buffered packet. Log: nhận=xuất 20.056 packet, 57 flow CSV, limit_rejected=1, feeder ACK=7 rồi abort. CSV còn giữ, không báo dữ liệu đầy đủ. Cap giữ nguyên, không dùng nhãn làm FPR.
+- `live_ht4_stop_smoke_20261018.json`: **FAIL**, yêu cầu 10s, phát hiện dừng sớm ở lần kiểm tra 5s, không cap; log 1.539 packet/14 flow, không đủ log nguyên nhân đầu tiên. Không khẳng định retry file là nguyên nhân gốc đã chứng minh; latch health được chứng minh riêng bằng test.
+- `live_ht4_stop_diagnostic_20261018.json`: **FAIL ở harness trước capture**, AppTest thiếu browser IP thật nên không có widget. Không tính là lượt Wi-Fi đã chạy; sửa mock test thay vì nới guard thật.
+- `live_ht4_stop_retry_20261018.json`: **PASS smoke** sau cửa sổ running 10,034s; stop/drain 2,133s; 267 packet nhận=xuất, limit_rejected=0; 19 flow CSV=API=ACK; hai worker exit0; SHAP queued=processed=1, dropped=0, queue cuối0. UI Start/Stop/refresh qua AppTest, Wi-Fi/model/API thật. Telemetry snapshot trước flush từng chậm hơn counter cuối log; đã sửa và thêm assertion fixture. Không thay kết quả lịch sử.
+
+Mọi lượt dùng API/DB riêng trong Temp, API test đã dừng; raw CSV/log còn trong evidence_directory của từng JSON để chẩn đoán, không đưa vào Git. Chưa chứng nhận chịu tải dài hạn: thất bại cap 30s vẫn mở. Không dùng PASS 10s thay cho FAIL 30s. Không reset DB thật hoặc đổi model. Commit: `feat(rq3): expose local capture controls and realtime dashboard`.
+
 ## HT4.3b — supervisor nối registry và worker (18/10/2026)
 
 Mục đích: quản lý vòng đời ở backend, không phụ thuộc Streamlit. `CaptureSupervisor` dùng một thread điều phối + ownership registry. `managed_worker.py` báo PID/birth/token rồi đợi gate; phía cha đọc OS birth và parent PID (hỗ trợ launcher venv Windows) trước attach/release. Một CSV/checkpoint/thư mục control riêng cho mỗi run. Không dùng shell, không nhận lệnh tùy ý từ UI. `status()` bỏ worker token, liên kết lượt feeder bằng checkpoint.

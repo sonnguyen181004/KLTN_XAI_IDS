@@ -91,6 +91,7 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None, health_c
         if signum is not None:
             previous[signum] = signal.signal(signum, request_stop)
     deadline = time.monotonic() + seconds if seconds > 0 else None
+    health_error = None
     try:
         sniffer.start()
         announced = False
@@ -99,7 +100,9 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None, health_c
             if health_check is not None:
                 try:
                     health_check()
-                except Exception:
+                except Exception as exc:
+                    if health_error is None:
+                        health_error = exc
                     requested.set()  # Drain safely, then re-raise the stored failure.
             if sniffer.running and not announced:
                 print('[capture] receiving_started', flush=True)
@@ -125,6 +128,8 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None, health_c
         sniffer.join(timeout=0)  # Thread ended; propagate Scapy's stored exception.
         if health_check is not None:
             health_check()
+        if health_error is not None:
+            raise health_error
     finally:
         try:
             if cleanup is not None:
@@ -224,7 +229,9 @@ def main():
     def managed_health():
         check_health(session)
         if control:
-            command = control.tick('capturing' if sniffer.running else 'starting')
+            command = control.tick('capturing' if sniffer.running else 'starting',
+                accepted_packets=session.packets_count, exported_flows=session.n_exported,
+                buffered_packets=session.packets_count-session.n_exported_packets)
             if command.get('action') == 'stop':
                 managed_stop.set()
     try:
@@ -232,10 +239,12 @@ def main():
                          cleanup=finish_capture, health_check=managed_health)
         if control:
             control.finish(True, flushed=True, rows=session.n_exported,
-                           csv_size=Path(args.output).stat().st_size)
+                           csv_size=Path(args.output).stat().st_size,
+                           accepted_packets=session.packets_count, exported_flows=session.n_exported,
+                           buffered_packets=session.packets_count-session.n_exported_packets)
     except BaseException as exc:
         if control:
-            control.finish(False, flushed=False, error_type=type(exc).__name__)
+            control.finish(False, flushed=False, error_type=type(exc).__name__, error_message=str(exc)[:600])
         raise
     print(f"Đã dừng an toàn. Kiểm tra file: {args.output}")
     if is_replay:

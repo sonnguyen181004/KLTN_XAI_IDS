@@ -39,7 +39,12 @@ def main():
         runpy.run_path(target, run_name='__main__')
     except BaseException as exc:
         if not isinstance(exc, SystemExit) or exc.code not in (None, 0):
-            control.finish(False, error_type=type(exc).__name__)
+            try:
+                previous = json.loads((Path(args.control_dir)/'status.json').read_text(encoding='utf-8'))
+            except (OSError, ValueError):
+                previous = {}
+            if previous.get('state') != 'failed':
+                control.finish(False, error_type=type(exc).__name__, error_message=str(exc)[:600])
         raise
 
 

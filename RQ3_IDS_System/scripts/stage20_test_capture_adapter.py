@@ -294,6 +294,20 @@ class AdapterTests(unittest.TestCase):
                 self.assertEqual(calls, ['start', 'stop', ('join', 0), 'flush'])
                 self.assertEqual(signal.getsignal(sig), previous)
 
+    def test_transient_health_error_is_latched_after_safe_flush(self):
+        import run_live_capture as cli
+        state = {'alive': True}
+        sniffer = SimpleNamespace(running=True, stop_cb=lambda: None,
+            thread=SimpleNamespace(is_alive=lambda: state['alive']), start=lambda: None)
+        sniffer.stop = lambda join: state.update(alive=False)
+        sniffer.join = lambda timeout: None
+        flushed = []
+        with patch.object(cli, 'check_health', side_effect=[PermissionError('control read failed'), None]) as check:
+            with self.assertRaisesRegex(PermissionError, 'control read failed'):
+                cli.wait_for_capture(sniffer, cleanup=lambda: flushed.append(True), health_check=check)
+        self.assertEqual(flushed, [True])
+        self.assertFalse(state['alive'])
+
     def test_timed_capture_stop_and_error_propagation(self):
         import run_live_capture as cli
         state = {'alive': True}
