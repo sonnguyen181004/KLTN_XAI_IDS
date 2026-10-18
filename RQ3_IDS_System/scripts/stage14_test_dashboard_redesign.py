@@ -118,9 +118,9 @@ def main():
                 with patch.dict(os.environ, {'IDS_API_URL': url}):
                     at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)
                     assert not at.exception, at.exception
-                    assert {'Giám sát flow', 'Hướng dẫn live', 'Nạp CSV / PCAP'} <= {tab.label for tab in at.tabs}
+                    assert {'Giám sát flow', 'Realtime', 'Nạp CSV / PCAP'} <= {tab.label for tab in at.tabs}
                     assert any('Ổ chứa DB còn' in item.value for item in at.caption)
-                    assert any('chưa có nút bật hoặc tắt' in item.value for item in at.info)
+                    assert any('Phương án terminal thủ công' in item.value for item in at.info)
                     assert any('run_live_capture.py' in item.value for item in at.code)
                     assert {'Xu hướng & nhãn dự đoán', 'Tiến độ giải thích trong phạm vi'} <= {tab.label for tab in at.tabs}
                     assert any('Tỷ lệ cảnh báo không phải FPR' in item.value for item in at.caption)

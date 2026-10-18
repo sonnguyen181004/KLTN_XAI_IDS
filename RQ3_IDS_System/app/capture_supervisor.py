@@ -7,16 +7,24 @@ import sys
 import threading
 import time
 import uuid
+from ipaddress import ip_address
+from urllib.parse import urlsplit
 
 from capture_registry import CaptureRegistry, CaptureConflict
 from process_identity import birth_of, probe_identity, parent_of
-from worker_control import write_control
+from worker_control import write_control, read_control
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class CaptureSupervisor:
     def __init__(self, folder, api_url, *, capture_python=None, capture_script=None):
+        parsed = urlsplit(api_url)
+        host = parsed.hostname
+        if (parsed.scheme != 'http' or not host or parsed.username or parsed.password or
+                parsed.path not in ('', '/') or parsed.query or parsed.fragment or
+                (host != 'localhost' and not ip_address(host).is_loopback)):
+            raise ValueError('Managed feeder requires a loopback HTTP API URL')
         self.registry = CaptureRegistry(folder)
         self.folder = self.registry.folder
         self.api_url = api_url
@@ -40,6 +48,14 @@ class CaptureSupervisor:
                     worker.pop('worker_token', None)
                 state['unresolved_launches'] = list(state.pop('launch_intents', {}))
                 state['active'] = self.registry.active() is not None
+                state['telemetry'] = {}
+                for role in ('capture', 'feeder'):
+                    try:
+                        telemetry = json.loads((self.folder/state['run_id']/role/'status.json').read_text(encoding='utf-8'))
+                        state['telemetry'][role] = {k: telemetry.get(k) for k in
+                            ('state', 'error_message', 'accepted_packets', 'exported_flows', 'buffered_packets', 'acknowledged')}
+                    except (OSError, ValueError):
+                        pass
                 checkpoint = self.folder/state['run_id']/'flows.csv.feeder-state.json'
                 try:
                     saved = json.loads(checkpoint.read_text(encoding='utf-8'))
@@ -83,7 +99,7 @@ class CaptureSupervisor:
 
     @staticmethod
     def _report(worker):
-        report = json.loads((worker['folder']/'status.json').read_text(encoding='utf-8'))
+        report = read_control(worker['folder']/'status.json')
         if report.get('worker_token') != worker['token'] or report.get('role') != worker['role']:
             raise RuntimeError('Worker status identity mismatch')
         return report
@@ -173,7 +189,14 @@ class CaptureSupervisor:
                     if code is not None:
                         if probe_identity(worker['identity'])['status'] not in ('absent', 'reused'):
                             raise RuntimeError('Launcher exited but worker not proven gone')
+                        # The last report must be read AFTER exit, not before poll:
+                        # the worker may have finished between those two reads.
+                        report = self._report(worker)
+                        if any(report.get(k) != v for k, v in worker['identity'].items()):
+                            raise RuntimeError('Final report identity mismatch')
                         good = report.get('state') == 'finished'
+                        if not good and report.get('error_message'):
+                            self.registry.fail(run, f"{role}: {report['error_message']}")
                         self.registry.observe_exit(run, role, worker['identity'], code,
                             flushed=good and report.get('flushed') is True,
                             rows=report.get('rows') if good else None,
@@ -186,8 +209,16 @@ class CaptureSupervisor:
                             self._send(workers['feeder'], 'drain', rows=report['rows'], csv_size=size)
                             stopping_at = time.monotonic()
                         continue
-                    if probe_identity(worker['identity'])['status'] != 'alive':
+                    observed = probe_identity(worker['identity'])['status']
+                    if observed in ('absent', 'reused'):
+                        # Normal exit may race Popen.poll (especially venv launcher).
+                        worker.setdefault('gone_since', time.monotonic())
+                        if time.monotonic()-worker['gone_since'] > 5:
+                            raise RuntimeError('Worker gone but launcher not reaped')
+                        continue
+                    if observed != 'alive':
                         raise RuntimeError('Live worker OS identity unavailable')
+                    worker.pop('gone_since', None)
                     age = time.monotonic()-report['heartbeat_monotonic']
                     if not 0 <= age < 90:
                         raise RuntimeError('Worker heartbeat stale')
@@ -205,6 +236,7 @@ class CaptureSupervisor:
         except BaseException as exc:
             self.error = f'{type(exc).__name__}: {exc}'
             try:
+                write_control(self.folder/run/'supervisor_error.json', dict(error=self.error))
                 self.registry.fail(run, self.error)
                 # Cooperative rollback only; no terminate/kill by PID.
                 for role, worker in workers.items():

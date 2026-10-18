@@ -1,0 +1,21 @@
+{
+  "started_at": "2026-10-18T06:33:48.627714+00:00",
+  "requested_seconds": 30,
+  "interface": "Wi-Fi",
+  "evidence_directory": "C:\\Users\\LOQ\\AppData\\Local\\Temp\\ids_live_control_2rf4k6ga",
+  "status": "failed",
+  "scope": "real Wi-Fi/API/model/AppTest smoke test; not FPR or long-duration certification",
+  "error": "RuntimeError: Capture stopped before requested test duration",
+  "isolated_api_stopped": true,
+  "finished_at": "2026-10-18T06:34:28.717213+00:00",
+  "observed_running_seconds_before_failure": 25.1,
+  "verified_failure_cause": "Capture buffer cap reached; default 20000 buffered packets retained unchanged",
+  "packet_counters_from_capture_log": {
+    "accepted_packets": 20056,
+    "exported_packets": 20056,
+    "exported_flows": 57,
+    "limit_rejected": 1,
+    "peak_buffered_packets": 20000
+  },
+  "acknowledged_before_feeder_abort": 7
+}

@@ -1,5 +1,7 @@
 # Hướng dẫn chạy và đọc giao diện IDS
 
+**Đọc hướng dẫn hiện hành tại [Bắt đầu/Dừng Realtime](#capture-control).** Những mô tả “chưa có nút” ở nhật ký mốc cũ không còn là trạng thái UI hiện tại. Điều khiển đã có nhưng chưa chứng nhận chạy lâu/tải cao; xem đầy đủ giới hạn bên dưới.
+
 **HT3 (18/10/2026):** capture v3 có cap 4096 flow mở / 20000 packet đang giữ / 32 MiB byte packet và bảo vệ dung lượng ổ CSV. Đây không phải giới hạn tổng traffic của lượt. Nếu CLI báo quá tải/lỗi writer, phiên không đầy đủ: xem lỗi terminal, không coi UI còn hiển thị dữ liệu cũ là capture đang khỏe. UI PCAP không gửi dữ liệu khi lệnh trích xuất thất bại. Các counter cap hiện ở terminal, chưa có panel telemetry capture. Queue SHAP vẫn 200, bỏ giải thích khi đầy nhưng giữ cảnh báo; recovery được xen kẽ khi traffic mới vẫn đến. Xem tham số và xử lý lỗi trong [vận hành](operations.md).
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
@@ -7,6 +9,41 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 > Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 ## Bắt đầu ở đây
+
+<a id="capture-control"></a>
+
+### Hiện hành: chạy nút Bắt đầu/Dừng trong tab Realtime
+
+Đã tích hợp điều khiển, các đoạn “chưa có nút” trong nhật ký phía dưới mô tả mốc cũ. Chỉ cần **hai terminal API + UI**, không mở capture/feeder riêng khi dùng nút. Backend tự tạo CSV/checkpoint/lượt mới, không reset DB. Giữ cap mặc định; có thể dừng lỗi khi tải cao: lượt 30s đã chạm cap, smoke 10s mới PASS, chưa phải chứng nhận chạy lâu.
+
+1. Mở VS Code bằng quyền Administrator nếu Npcap yêu cầu. Hai terminal đều ở `C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System`; dùng Python có dependencies API/UI đã cài và `.venv_capture` hiện có. Không mở API thứ hai cùng DB/registry.
+2. Terminal API, tạo token riêng cho lần chạy (không commit token):
+
+```powershell
+$env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
+$env:IDS_CAPTURE_CONTROL_TOKEN
+$env:IDS_CAPTURE_API_URL = 'http://127.0.0.1:8000'
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+Dòng thứ hai hiển thị token để bạn sao chép vào terminal UI. Không chia sẻ/chụp token; không dùng `--reload` hoặc nhiều worker khi bắt mạng.
+
+3. Terminal UI, thay placeholder bằng **đúng token vừa tạo**, không tạo token khác:
+
+```powershell
+$env:IDS_CAPTURE_CONTROL_TOKEN = 'DAN_TOKEN_TU_TERMINAL_API_VAO_DAY'
+$env:IDS_API_URL = 'http://127.0.0.1:8000'
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
+```
+
+4. Mở `http://127.0.0.1:8501` trên chính máy → **Realtime** → nhập interface đúng (ví dụ `Wi-Fi`, xem `Get-NetAdapter`) → **Bắt đầu capture**. Đợi “Đang bắt”; chưa có flow ngay không phải lỗi vì đang gom packet. Traffic nền cũng được bắt. UI hiển thị packet/flow/ACK và heartbeat thực, không suy ra từ lịch sử cũ.
+5. Lướt web bình thường; bấm **Xem flow của phiên này** rồi tab **Giám sát flow** để xem biểu đồ/chi tiết/SHAP/LIME. Nguồn live là `feeder_live`; lượt CSV/PCAP vẫn được giữ riêng. Nếu sidebar đang lọc nhãn/thời gian/nguồn khác, đổi lại cho phù hợp.
+6. Bấm **Dừng capture** và đợi **Đã hoàn tất**. “Đang gửi nốt flow” chưa phải xong. Không đóng API trước khi drain xong. Nút không giới hạn 60 giây nhưng cap tài nguyên/lỗi có thể dừng sớm. Failed nghĩa là phiên chưa đầy đủ; không dùng số flow hiển thị để kết luận không mất dữ liệu.
+7. Sau API restart, phiên cũ có thể là **Cần đối soát**. Bấm **Đối soát sau restart** chỉ kiểm tra OS, không kill/start lại. Nếu vẫn unknown, giữ journal/CSV và xem lỗi/log trong `data/capture_sessions/<run_id>/`; không xóa file để ép mở khóa. Retry cùng lệnh Start không tạo process trùng, refresh chỉ đọc trạng thái.
+
+Control chưa bật/token sai: kiểm tra cùng token ở cả hai terminal rồi restart API/UI; model/DB không cần reset. Không đưa API/UI control lên LAN/proxy. Cách terminal thủ công bên dưới vẫn dùng được **thay thế**, không chạy đồng thời với nút.
+
+### Nhật ký các mốc trước (không phải trạng thái hiện hành)
 
 **HT4.3b:** supervisor backend đã nối capture/feeder, kiểm thử riêng bằng fixture. API/UI nối ở mốc kế tiếp; đây không phải bằng chứng đã bắt mạng thật. State worker không nằm trong Streamlit; CSV/checkpoint/log thuộc phiên do backend quản lý.
 

@@ -274,7 +274,7 @@ def main():
         print('[feeder] Đã dừng. Chạy lại cùng lệnh để tiếp tục từ checkpoint.')
     except (ValueError, RuntimeError, OSError) as exc:
         if control:
-            control.finish(False, error_type=type(exc).__name__)
+            control.finish(False, error_type=type(exc).__name__, error_message=str(exc)[:600])
         print(f'[feeder] DỪNG: {exc}')
         raise SystemExit(2) from exc
 

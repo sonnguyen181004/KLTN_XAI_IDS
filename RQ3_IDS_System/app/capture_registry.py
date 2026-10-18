@@ -155,7 +155,7 @@ class CaptureRegistry:
 
     def fail(self, run_id, reason):
         def action(state):
-            state.update(status='failed', reason=str(reason))
+            state.update(status='failed', reason=state.get('reason') or str(reason))
         return self._mutate(run_id, action)
 
     def finalize_failed_start(self, run_id):
@@ -246,11 +246,11 @@ class CaptureRegistry:
                 if exit_code == 0 and flushed is True and rows is not None and state['status'] == 'stopping':
                     state['status'] = 'draining'
                 else:
-                    state.update(status='failed', reason='capture_exit_without_safe_stop_flush')
+                    state.update(status='failed', reason=state.get('reason') or 'capture_exit_without_safe_stop_flush')
             else:
                 state['feeder_result'] = dict(acknowledged=acknowledged)
                 if exit_code != 0 or state['status'] != 'draining':
-                    state.update(status='failed', reason='feeder_exit_before_drain_or_with_error')
+                    state.update(status='failed', reason=state.get('reason') or 'feeder_exit_before_drain_or_with_error')
         return self._mutate(run_id, action)
 
     def finalize(self, run_id):

@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**HT4.4 hiện hành — 18/10/2026:** đã nối API + tab **Realtime** với Bắt đầu/Dừng/Đối soát, state do API sở hữu, không spawn khi refresh. Bật opt-in bằng cùng `IDS_CAPTURE_CONTROL_TOKEN` ở API/UI, chạy cả hai trên loopback, 1 API worker; [hướng dẫn chạy](RQ3_IDS_System/docs/dashboard_usage.md#capture-control). Kiểm thử UI/API/CSV/PCAP/model PASS; Wi-Fi smoke test 10,034s PASS, 267 packet/19 flow CSV=API=ACK, dừng/drain 2,133s. **Lượt 30s FAIL ở khoảng 25s do chạm cap 20.000 packet đang giữ**; chưa chứng nhận ổn định dài hạn/tải cao, không tăng cap/model. Chi tiết và các lần thất bại được giữ trong [vận hành](RQ3_IDS_System/docs/operations.md). Các mốc phía dưới là nhật ký lịch sử.
+
 **HT4.3b — 18/10/2026:** supervisor đã nối registry/worker, bootstrap xác minh PID từ OS trước release, start idempotent, stop/flush/drain và rollback khởi động lỗi. Stage36 6/6 PASS bằng process thật/sniffer fixture, không phải nghiệm thu NIC. Giữ launch gap mơ hồ ở unknown, không kill PID. Phần API/UI được triển khai ở mốc kế tiếp; xem [vận hành](RQ3_IDS_System/docs/operations.md).
 
 **HT4.3a — 18/10/2026:** thêm xác minh PID/thời điểm tạo từ OS và đối soát registry sau restart. Worker còn sống/không xác minh được hoặc có cửa sổ spawn chưa ghi nhận PID → giữ khóa; chỉ giải phóng khi đủ bằng chứng worker cũ đã mất, luôn ghi failed chứ không giả completed. Stage35 12/12 PASS. Đây là phần phục hồi trước supervisor, **chưa nối API/UI hoặc tự chạy capture**; tiếp theo HT4.3b launcher + vòng giám sát. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).

@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'app'))
 from capture_supervisor import CaptureSupervisor
 from capture_registry import CaptureConflict
+from process_identity import probe_identity
 from stage34_test_worker_control import Handler
 
 
@@ -108,6 +109,23 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(state['status'], 'running')
         self.assertTrue(self.supervisor.close())
         self.assertFalse(self.supervisor.thread.is_alive())
+
+    def test_os_exit_poll_race_does_not_falsely_fail_stop(self):
+        self.supervisor.start('exit-race', 'fixture')
+        state = self.wait({'running', 'failed', 'unknown'})
+        self.assertEqual(state['status'], 'running')
+        injected = []
+        def probe(identity):
+            actual = probe_identity(identity)
+            if self.supervisor.stop_event.is_set() and not injected and actual['status'] == 'alive':
+                injected.append(True)
+                return dict(status='absent')
+            return actual
+        with patch('capture_supervisor.probe_identity', side_effect=probe):
+            self.supervisor.stop(state['run_id'])
+            result = self.wait({'completed', 'failed', 'unknown'})
+        self.assertTrue(injected)
+        self.assertEqual(result['status'], 'completed', self.supervisor.status())
 
 
 if __name__ == '__main__':

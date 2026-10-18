@@ -104,6 +104,7 @@ class RegistryTests(unittest.TestCase):
 
     def test_capture_crash_never_completes_or_releases_live_feeder(self):
         run, identities = self.ready()
+        self.registry.fail(run, 'fixture original failure')
         self.registry.observe_exit(run, 'capture', identities['capture'], 1)
         with self.assertRaises(CaptureConflict):
             self.registry.finalize(run)
@@ -111,6 +112,7 @@ class RegistryTests(unittest.TestCase):
             self.registry.reserve('new', 'fixture-interface')
         self.registry.observe_exit(run, 'feeder', identities['feeder'], 1)
         self.assertEqual(self.registry.finalize(run)['status'], 'failed')
+        self.assertEqual(self.registry.read(run)['reason'], 'fixture original failure')
 
     def test_ack_mismatch_not_completed(self):
         run, identities = self.ready()

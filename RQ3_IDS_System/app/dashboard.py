@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / 'app'))
 from ingestion_ui import render_ingestion
 from xai_reading_ui import explain_top_features, lime_problem, feature_guide
 from dashboard_format import endpoint, protocol_text, bounded_page
+from capture_ui import render_capture
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
@@ -180,7 +181,7 @@ with st.sidebar:
     st.caption(f"Model: {'Đã nạp' if health['model_loaded'] else 'LỖI'} · {health['n_classes']} lớp")
     st.caption('Phiên bản: ' + health['model_version'])
 
-live, capture_help, upload = st.tabs(['Giám sát flow', 'Hướng dẫn live', 'Nạp CSV / PCAP'])
+live, capture_help, upload = st.tabs(['Giám sát flow', 'Realtime', 'Nạp CSV / PCAP'])
 
 
 @st.fragment(run_every=None if paused else '5s')
@@ -320,8 +321,10 @@ def monitor():
 with live:
     monitor()
 with capture_help:
+    render_capture(API)
+    st.divider()
     st.subheader('Bắt traffic trên máy → gom flow → dự đoán')
-    st.info('Tab này hướng dẫn chạy capture/feeder trong terminal, chưa có nút bật hoặc tắt bộ bắt. API nhận flow không đủ để xác nhận capture còn đang chạy.')
+    st.info('Phương án terminal thủ công bên dưới chỉ dùng khi không chạy phiên bằng nút điều khiển. Không bật hai cách cùng lúc. API nhận flow không đủ để xác nhận capture còn đang chạy.')
     st.write('1. Trong VS Code, mở hai terminal tại thư mục RQ3_IDS_System. API và Dashboard giữ chạy; không bật thêm API thứ hai cùng DB.')
     st.write('2. Chọn đúng interface và tên CSV mới cho mỗi phiên. Thay live_review_01.csv nếu tên này đã dùng.')
     st.code('.\\.venv_capture\\Scripts\\python.exe scripts\\run_live_capture.py --interface "Wi-Fi" --output data\\live_review_01.csv', language='powershell')

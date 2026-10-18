@@ -24,6 +24,16 @@ def write_control(path, value):
             time.sleep(.02 * (attempt + 1))
 
 
+def read_control(path):
+    for attempt in range(6):
+        try:
+            return json.loads(Path(path).read_text(encoding='utf-8'))
+        except PermissionError:
+            if attempt == 5:
+                raise
+            time.sleep(.02 * (attempt + 1))
+
+
 def process_birth():
     if os.name == 'nt':
         kernel = ctypes.WinDLL('kernel32', use_last_error=True)
@@ -51,7 +61,7 @@ class WorkerControl:
         self.tick('starting', force=True)
 
     def _read(self, name):
-        value = json.loads((self.folder/name).read_text(encoding='utf-8'))
+        value = read_control(self.folder/name)
         if not isinstance(value, dict) or value.get('worker_token') != self.token:
             raise RuntimeError('Worker control token mismatch')
         return value
