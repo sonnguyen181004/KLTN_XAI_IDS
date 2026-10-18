@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'app'))
 from ingestion_ui import render_ingestion
 from xai_reading_ui import explain_top_features, lime_problem, feature_guide
+from dashboard_format import endpoint, protocol_text, bounded_page
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
@@ -59,7 +60,8 @@ def show_detail(flow_id):
     flow = get('/flows/' + flow_id)
     reference = get('/flows/' + flow_id + '/comparison')
     st.subheader('Chi tiết flow đang chọn')
-    st.caption('Flow ID: ' + flow_id)
+    with st.expander('Mã flow đầy đủ · có thể sao chép'):
+        st.code(flow_id, language=None)
     cols = st.columns(3)
     cols[0].metric('Dự đoán', flow['predicted_label'])
     cols[1].metric('Xác suất lớp thắng', f"{flow['confidence']:.2%}" if flow['confidence'] is not None else 'Chưa có')
@@ -67,9 +69,9 @@ def show_detail(flow_id):
     st.caption('Xác suất do model trả về, không phải bằng chứng tấn công đã xác nhận. Giờ hiển thị GMT+7.')
     left, right = st.columns(2)
     with left:
-        st.write(f"Nguồn: {flow['src_ip'] or 'Không được cung cấp'} : {flow['src_port'] if flow['src_port'] is not None else '?'}")
-        st.write(f"Đích: {flow['dst_ip'] or 'Không được cung cấp'} : {flow['dst_port'] if flow['dst_port'] is not None else '?'}")
-        st.write(f"Protocol: {flow['protocol']} · Nguồn dữ liệu: {flow['source']}")
+        st.write('Nguồn: ' + endpoint(flow['src_ip'], flow['src_port']))
+        st.write('Đích: ' + endpoint(flow['dst_ip'], flow['dst_port']))
+        st.write(f"Giao thức: {protocol_text(flow['protocol'])} · Nguồn dữ liệu: {flow['source']}")
         st.write('Lượt: ' + (flow['run_name'] or 'Lịch sử chưa gắn lượt'))
         st.caption('Bộ trích xuất: ' + (flow.get('extractor_version') or 'Nguồn chưa cung cấp phiên bản'))
         if (flow.get('extractor_version') or '').startswith('rq3-train-conventions-experimental'):
@@ -87,7 +89,12 @@ def show_detail(flow_id):
     prediction, shap_tab, lime_tab, comparison, reliability, raw = st.tabs(
         ['Xác suất các lớp', 'SHAP tự động', 'LIME theo yêu cầu', 'Đối chứng đặc trưng', 'Đánh giá giải thích', 'Đặc trưng và thời gian'])
     with prediction:
-        bars([{'Lớp': k, 'Xác suất': v} for k, v in flow['probabilities'].items()], 'Lớp', 'Xác suất')
+        probabilities = pd.DataFrame([{'Lớp': k, 'Xác suất': v} for k, v in flow['probabilities'].items()])
+        st.altair_chart(alt.Chart(probabilities).mark_bar().encode(
+            y=alt.Y('Lớp:N', sort='-x', title=None),
+            x=alt.X('Xác suất:Q', scale=alt.Scale(domain=[0, 1]), axis=alt.Axis(format='.0%')),
+            tooltip=['Lớp', alt.Tooltip('Xác suất:Q', format='.2%')]
+        ).properties(height=340), width='stretch')
         st.caption(f"Model: {flow['model_version']} · Nhãn thật: {flow['label_true'] or 'Không biết (traffic thật không có nhãn xác nhận)'}")
     with shap_tab:
         if flow.get('shap_top5'):
@@ -170,7 +177,6 @@ with st.sidebar:
     alerts_only = st.checkbox('Chỉ cảnh báo')
     paused = st.checkbox('Tạm dừng tự làm mới')
     st.button('Làm mới ngay')
-    page = st.number_input('Trang (50 flow/trang)', min_value=1, value=1, step=1)
     st.caption(f"Model: {'Đã nạp' if health['model_loaded'] else 'LỖI'} · {health['n_classes']} lớp")
     st.caption('Phiên bản: ' + health['model_version'])
 
@@ -207,6 +213,7 @@ def monitor():
         signature = str((params, window))
         if st.session_state.get('scope_signature') != signature:
             st.session_state['selected_flow'] = None
+            st.session_state['flow_page'] = 1
             st.session_state['scope_signature'] = signature
         now = datetime.now(timezone.utc)
         if window != 'Toàn bộ lượt':
@@ -214,7 +221,12 @@ def monitor():
             params['since'] = since.astimezone(timezone.utc).isoformat()
         stats = get('/dashboard/summary', params)
         queue = get('/explain_queue_status')
-        st.caption(f"Cập nhật: {local_time(now.isoformat())} · Lượt: {selected_run} · SHAP toàn hệ thống: {queue['qsize']}/{queue['maxsize']}")
+        display_run = next((r.get('run_name') or r['capture_run_id'] for r in current_runs if r['capture_run_id'] == selected_run), 'Tất cả lịch sử' if selected_run == '__all__' else 'Chưa có lượt')
+        st.subheader('Tổng quan trong phạm vi đang chọn')
+        st.caption(f"Cập nhật: {local_time(now.isoformat())} GMT+7 · Lượt: {display_run} · Nguồn: {source} · {window}")
+        with st.expander('Tình trạng xử lý toàn hệ thống · không theo bộ lọc'):
+            st.write(f"SHAP đang chờ: {queue['qsize']}/{queue['maxsize']} · Chờ phục hồi từ DB: {queue.get('recovery_pending', 0)}")
+            st.caption('API kết nối được không chứng minh capture đang chạy. Trạng thái tiến trình/heartbeat sẽ được bổ sung ở HT4; hiện chưa có dữ liệu xác minh.')
         if queue.get('recovery_pending'):
             st.caption(f"Đang chờ khôi phục SHAP từ DB: {queue['recovery_pending']} cảnh báo; xử lý dần khi hàng đợi hiện tại rảnh.")
         cols = st.columns(6)
@@ -222,24 +234,42 @@ def monitor():
                                   [stats['flows'], stats['benign'], stats['alerts'], stats['queued'], stats['processed'], f"{stats['dropped']} / {stats['failed']}"]):
             col.metric(title, val)
         st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
+        st.caption('Cảnh báo là dự đoán của model, không phải tấn công đã xác nhận. Tỷ lệ cảnh báo không phải FPR; cần ground truth để đánh giá báo nhầm.')
         st.write('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']))
         if not stats['last_received_at'] or (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() > 30:
             st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: project v3 xuất khi tuổi flow đạt 90 giây, quan sát đóng TCP/mở phiên mới hoặc dừng để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; bản v2/nguồn khác có thể dùng chính sách khác.')
         if not stats['flows']:
             st.info('Không có flow khớp bộ lọc. Thử chọn Tất cả lịch sử hoặc bỏ bớt bộ lọc.')
             return
-        left, right = st.columns(2)
+        charts, explanation_chart = st.tabs(['Xu hướng & nhãn dự đoán', 'Tiến độ giải thích trong phạm vi'])
+        with explanation_chart:
+            bars([{'Trạng thái': title, 'Số cảnh báo': stats[key]} for title, key in
+                  [('Chờ xử lý', 'queued'), ('Đã có SHAP', 'processed'), ('Bỏ do đầy queue', 'dropped'), ('Lỗi', 'failed')]],
+                 'Trạng thái', 'Số cảnh báo')
+            st.caption('Không tính Benign; trạng thái cũ/chưa xác định có thể không nằm trong bốn nhóm. Đây là số lượng, không phải chất lượng giải thích.')
+        left, right = charts.columns(2)
         with left:
             st.subheader('Flow được nhận theo phút')
             timeline = pd.DataFrame(stats['timeline'])
             timeline['Giờ GMT+7'] = timeline['minute'].map(local_time)
             st.altair_chart(alt.Chart(timeline).mark_bar().encode(
                 x=alt.X('Giờ GMT+7:O', sort=list(dict.fromkeys(timeline['Giờ GMT+7'])), title=None),
-                y=alt.Y('count:Q', title='Số flow'), color=alt.Color('category:N', title='Kết quả'),
+                y=alt.Y('count:Q', title='Số flow'), color=alt.Color('category:N', title='Kết quả',
+                    scale=alt.Scale(domain=['Benign', 'Cảnh báo'], range=['#27a884', '#ed9851'])),
                 tooltip=['Giờ GMT+7', 'category', 'count']).properties(height=220), width='stretch')
         with right:
             st.subheader('Phân bố nhãn dự đoán')
-            bars(stats['labels'], 'label', 'count')
+            bars([{'Nhãn dự đoán': r['label'], 'Số flow': r['count']} for r in stats['labels']], 'Nhãn dự đoán', 'Số flow')
+        st.divider()
+        st.subheader('Lịch sử & phân tích flow')
+        current_page, pages = bounded_page(st.session_state.get('flow_page', 1), stats['flows'])
+        st.session_state['flow_page'] = current_page
+        def move_page(delta):
+            st.session_state['flow_page'] = min(pages, max(1, st.session_state['flow_page'] + delta))
+        previous, selector, following = st.columns([1, 2, 1])
+        previous.button('← Trang trước', disabled=current_page <= 1, on_click=move_page, args=(-1,))
+        page = selector.number_input('Trang (50 flow/trang)', min_value=1, max_value=pages, step=1, key='flow_page')
+        following.button('Trang sau →', disabled=current_page >= pages, on_click=move_page, args=(1,))
         result = get('/flows', {**params, 'limit': 50, 'offset': (page - 1) * 50})
         records = result['flows']
         st.subheader('Flow mới nhất trước')
@@ -252,7 +282,8 @@ def monitor():
                 if indices:
                     st.session_state['selected_flow'] = ids[indices[0]]
             table = [{'API nhận (GMT+7)': local_time(f['received_at']),
-                      'Nguồn IP': f['src_ip'] or 'Chưa có', 'Đích IP': f['dst_ip'] or 'Chưa có',
+                      'Nguồn →': endpoint(f['src_ip'], f['src_port']), 'Đích': endpoint(f['dst_ip'], f['dst_port']),
+                      'Giao thức': protocol_text(f['protocol']),
                       'Nhãn': f['predicted_label'], 'Xác suất': f"{f['confidence']:.2%}" if f['confidence'] is not None else 'Chưa có',
                       'SHAP': STATUS.get(f['explanation_status'], f['explanation_status']),
                       'Nhánh': f['branch'] or '—', 'Flow ID': f['flow_id'][:8]} for f in records]
@@ -278,6 +309,9 @@ def monitor():
                 if child and st.button('Mở flow trong nhóm'):
                     st.session_state['selected_flow'] = child['flow_id']
         if st.session_state.get('selected_flow'):
+            if st.session_state['selected_flow'] not in [f['flow_id'] for f in records]:
+                st.caption('Đang giữ flow đã chọn từ trang trước/lần làm mới trước; chọn một dòng để đổi flow.')
+            st.divider()
             show_detail(st.session_state['selected_flow'])
     except (requests.RequestException, ValueError) as exc:
         st.error(f'Không tải được dữ liệu: {exc}')

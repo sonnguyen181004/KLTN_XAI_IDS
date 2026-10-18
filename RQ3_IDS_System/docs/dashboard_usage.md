@@ -8,6 +8,14 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Bắt đầu ở đây
 
+### UI bước 1 — trình bày, chưa điều khiển capture (18/10/2026)
+
+Giữ ba tab chính để không đổi workflow nạp dữ liệu. Trong **Giám sát flow**, phần Tổng quan ghi tên lượt/nguồn/khoảng thời gian, 6 ô số liệu dùng toàn bộ bộ lọc. Hai tab biểu đồ: **Xu hướng & nhãn dự đoán** (Benign xanh, cảnh báo cam, có chú giải) và **Tiến độ giải thích trong phạm vi** (chờ/xong/bỏ/lỗi). Trạng thái SHAP toàn hệ thống được thu gọn, ghi rõ không theo bộ lọc; cảnh báo không phải ground truth/FPR.
+
+Phần **Lịch sử & phân tích flow** có Trang trước/Trang sau và nhập số trang ngay cạnh bảng. Đổi phạm vi đưa về trang 1; trang vượt giới hạn được chặn. Chuyển trang hoặc tự refresh giữ flow đã chọn, có lời nhắc nếu flow nằm ngoài trang hiện tại. Nguồn/đích hiển thị cả IP và cổng; thiếu dữ liệu ghi rõ, cổng 443 thay cho 443.0, giao thức TCP/UDP thay mã 6/17. Mã flow đầy đủ trong khung sao chép; biểu đồ xác suất dùng trục 0–100%. Giữ nguyên các tab SHAP/LIME/đối chứng/đánh giá/78 đặc trưng và timing.
+
+Không có nút capture hoạt động hoặc số liệu heartbeat giả. HT4 là bước backend riêng: API sở hữu tiến trình capture/feeder, có metadata bền và đối soát sau restart, khóa start trùng, stop/drain rõ trạng thái; Streamlit chỉ GET trạng thái và gửi lệnh, không làm chủ vòng đời tiến trình. Test HT4 riêng trước khi nối nút vào UI. Restart Streamlit để xem thay đổi, không cần reset DB hoặc train model.
+
 **HT3.6 — lưu trữ:** trong tab Giám sát flow, mở **Dung lượng lưu trữ · chỉ theo dõi, không tự xóa** để xem dung lượng trống và các nhóm DB/CSV/log/checkpoint. Chỉ thống kê file trực tiếp trong thư mục DB, không đại diện mọi vị trí capture/backup. Dưới 1 GiB hiển thị cảnh báo; API không đọc được thì hiển thị chưa rõ, không báo đủ dung lượng. Mục này cập nhật cùng bảng flow (tạm dừng tự làm mới cũng dừng cập nhật). Restart API/UI sau khi cập nhật code; không reset DB. Backup/verify/restore qua CLI theo [HT3.6 trong vận hành](operations.md#ht36--dung-lượng-backup-và-khôi-phục-an-toàn-18102026), chưa có nút sửa/xóa dữ liệu trên UI.
 
 UI gồm **Giám sát flow**, **Hướng dẫn live**, **Nạp CSV / PCAP**. Tab Hướng dẫn live chỉ cung cấp các bước/lệnh terminal; chưa điều khiển start/stop capture. Giám sát vẫn dùng chung cho cả ba nguồn, chọn Nguồn và Lượt dữ liệu ở sidebar để không trộn phiên. Chọn một flow để xem xác suất, SHAP, LIME theo yêu cầu, đối chứng đặc trưng và timing.
