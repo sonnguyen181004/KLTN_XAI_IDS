@@ -8,6 +8,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 HT3.1 (18/10): sửa kiểm tra ACK đầy đủ trước checkpoint và cấu hình poll; Stage27 5/5 PASS. Mục đích/giới hạn trong `operations.md`. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`. Tiếp tục HT3.2 lỗi capture nền và HT3.3 giới hạn tài nguyên; không coi fixture là nghiệm thu live dài hạn.
 
+HT3.2 (18/10): sửa lỗi nền capture bị che, dừng/flush có kiểm tra GC, không báo thành công khi writer lỗi. Stage28 4/4, Stage20 21/21, Stage24 recovery PASS. Không hứa phục hồi packet RAM sau kill. Commit: `fix(rq3): propagate capture background failures safely`; chi tiết trong `operations.md`.
+
 Đây là mục đọc trước; các nhật ký phía dưới giữ lại để truy vết, không phải danh sách việc chưa làm hôm nay.
 
 **Quyết định mới nhất (18/10/2026):** ưu tiên hoàn chỉnh logic, UI và realtime ổn định, chưa ưu tiên demo tấn công. Làm từng bước; mỗi bước ghi mục đích, thay đổi, kiểm tra, giới hạn và commit riêng, rồi dừng báo cáo trước bước kế tiếp. Không tự push. Hướng dẫn chạy terminal vẫn có hiệu lực; nút Start/Stop được đưa vào lộ trình sau bộ quản lý tiến trình, chưa triển khai. Không tự mở capture, reset DB hoặc đổi model để phục vụ cập nhật tài liệu.

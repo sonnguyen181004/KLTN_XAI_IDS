@@ -2,6 +2,12 @@
 
 ## HT3.1 — xác nhận giao nhận (18/10/2026)
 
+### HT3.2 — lỗi nền capture không được giả thành thành công
+
+Mục đích: chuyển lỗi GC/writer/callback về luồng điều khiển, kể cả khi Scapy bắt và chỉ log exception. Project capture dùng GC có trạng thái lỗi và callback bảo vệ; yêu cầu dừng capture khi lỗi, kiểm tra GC đã kết thúc trước flush, chỉ in “Đã dừng an toàn” khi toàn bộ quá trình thành công. Nếu lỗi ghi có thể để lại CSV dở, không tự retry/flush vì có nguy cơ nhân đôi hoặc nối sai dòng. Giữ file để kiểm tra, không tự xóa/ghi đè. Packet chưa xuất còn trong RAM **không được bảo đảm phục hồi sau kill/mất điện**; muốn phục hồi cần PCAP nguồn hoặc thiết kế spool riêng. Không gọi đây là exactly-once capture.
+
+Stage28 4/4 PASS: lỗi GC, lỗi callback, GC không dừng, dừng bình thường. Stage20 21/21 PASS gồm signal/flush; Stage24 PASS API restart, checkpoint, mất ACK, SHAP recovery. Legacy vẫn có GC upstream, không được chứng nhận có cùng bảo vệ lỗi nền. Commit: `fix(rq3): propagate capture background failures safely`.
+
 Mục đích: không tiến checkpoint khi phản hồi HTTP 200 thiếu/sai cấu trúc, tránh báo gửi thành công rồi lỗi khi đọc trường còn thiếu. Feeder kiểm tra đầy đủ các trường xác nhận, giữ khóa idempotency khi retry, từ chối poll không hữu hạn/không dương; lỗi I/O được báo dừng rõ. Stage27 5/5 PASS (ACK lỗi, HTTP 408/425/429/5xx, lỗi lưu checkpoint sau ACK, sai khóa xác nhận, poll sai). Stage24 kiểm chứng thực bằng server/DB tạm cho mất ACK, restart, giao dịch rollback và phục hồi SHAP. Không thay đổi API/model hoặc bỏ qua dòng lỗi. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`.
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
