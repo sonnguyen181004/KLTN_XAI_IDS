@@ -53,3 +53,34 @@ def probe_identity(identity):
                     observed_birth=actual)
     except (OSError, ValueError, IndexError) as exc:
         return dict(status='unknown', error_type=type(exc).__name__)
+
+
+def parent_of(pid):
+    """Read parent PID from OS, not a worker-supplied status field."""
+    if os.name != 'nt':
+        return int(Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[1])
+    class Entry(ctypes.Structure):
+        _fields_ = [('size', wintypes.DWORD), ('usage', wintypes.DWORD), ('pid', wintypes.DWORD),
+                    ('heap', ctypes.c_size_t), ('module', wintypes.DWORD), ('threads', wintypes.DWORD),
+                    ('parent', wintypes.DWORD), ('priority', wintypes.LONG), ('flags', wintypes.DWORD),
+                    ('exe', wintypes.WCHAR * 260)]
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel.Process32FirstW.argtypes = [wintypes.HANDLE, ctypes.POINTER(Entry)]
+    kernel.Process32NextW.argtypes = [wintypes.HANDLE, ctypes.POINTER(Entry)]
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    handle = kernel.CreateToolhelp32Snapshot(2, 0)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        entry = Entry()
+        entry.size = ctypes.sizeof(entry)
+        more = kernel.Process32FirstW(handle, ctypes.byref(entry))
+        while more:
+            if entry.pid == pid:
+                return entry.parent
+            more = kernel.Process32NextW(handle, ctypes.byref(entry))
+        raise ProcessLookupError(pid)
+    finally:
+        kernel.CloseHandle(handle)

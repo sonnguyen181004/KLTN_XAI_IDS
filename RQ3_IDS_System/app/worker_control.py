@@ -47,7 +47,7 @@ class WorkerControl:
         self.lease_timeout = lease_timeout
         self.identity = dict(pid=os.getpid(), birth_token=process_birth(), worker_token=token)
         self.last_write = 0.
-        self.report = dict(role=role, **self.identity, state='starting', sequence=0)
+        self.report = dict(role=role, **self.identity, parent_pid=os.getppid(), state='starting', sequence=0)
         self.tick('starting', force=True)
 
     def _read(self, name):
