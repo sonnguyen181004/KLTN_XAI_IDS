@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**HT4.3b — 18/10/2026:** supervisor đã nối registry/worker, bootstrap xác minh PID từ OS trước release, start idempotent, stop/flush/drain và rollback khởi động lỗi. Stage36 6/6 PASS bằng process thật/sniffer fixture, không phải nghiệm thu NIC. Giữ launch gap mơ hồ ở unknown, không kill PID. Phần API/UI được triển khai ở mốc kế tiếp; xem [vận hành](RQ3_IDS_System/docs/operations.md).
+
 **HT4.3a — 18/10/2026:** thêm xác minh PID/thời điểm tạo từ OS và đối soát registry sau restart. Worker còn sống/không xác minh được hoặc có cửa sổ spawn chưa ghi nhận PID → giữ khóa; chỉ giải phóng khi đủ bằng chứng worker cũ đã mất, luôn ghi failed chứ không giả completed. Stage35 12/12 PASS. Đây là phần phục hồi trước supervisor, **chưa nối API/UI hoặc tự chạy capture**; tiếp theo HT4.3b launcher + vòng giám sát. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).
 
 **HT4.2 — 18/10/2026:** đã thêm giao thức worker tùy chọn cho capture/feeder: heartbeat, lease chủ quản, dừng/flush và drain đối soát CSV–ACK. Stage34 9/9, Stage27 8/8, Stage33 12/12 PASS; không bắt Wi-Fi trong các test này. Chưa nối registry với bộ quản lý tiến trình/API, chưa bật nút UI. Lệnh terminal cũ giữ nguyên. Bước tiếp: HT4.3 supervisor, xử lý khởi động dở/restart và kiểm thử riêng trước khi nối UI. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).

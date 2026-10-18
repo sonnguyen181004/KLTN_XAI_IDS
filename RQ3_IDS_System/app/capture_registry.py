@@ -145,6 +145,31 @@ class CaptureRegistry:
             row = conn.execute('SELECT payload FROM sessions WHERE active=1').fetchone()
             return json.loads(row[0]) if row else None
 
+    def cancel_unspawned(self, run_id, role):
+        """Trusted launcher only: Popen raised without returning a process handle."""
+        def action(state):
+            if role in state['workers']:
+                raise CaptureConflict('Cannot cancel attached worker')
+            state['launch_intents'].pop(role, None)
+        return self._mutate(run_id, action)
+
+    def fail(self, run_id, reason):
+        def action(state):
+            state.update(status='failed', reason=str(reason))
+        return self._mutate(run_id, action)
+
+    def finalize_failed_start(self, run_id):
+        with self._guard, closing(self._connect()) as conn, conn:
+            self._check()
+            active, state = self._load(conn, run_id)
+            if not active:
+                return state
+            if (state['owner_epoch'] != self.owner_epoch or state['status'] != 'failed' or
+                    state.get('launch_intents') or any(w['exit_code'] is None for w in state['workers'].values())):
+                raise CaptureConflict('Startup failure still has unresolved processes')
+            self._save(conn, state, active=False)
+            return state
+
     def reconcile(self, run_id):
         """Explicit read-only OS reconciliation; never accepts HTTP-supplied evidence.
 

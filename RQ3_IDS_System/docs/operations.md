@@ -1,5 +1,15 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT4.3b — supervisor nối registry và worker (18/10/2026)
+
+Mục đích: quản lý vòng đời ở backend, không phụ thuộc Streamlit. `CaptureSupervisor` dùng một thread điều phối + ownership registry. `managed_worker.py` báo PID/birth/token rồi đợi gate; phía cha đọc OS birth và parent PID (hỗ trợ launcher venv Windows) trước attach/release. Một CSV/checkpoint/thư mục control riêng cho mỗi run. Không dùng shell, không nhận lệnh tùy ý từ UI. `status()` bỏ worker token, liên kết lượt feeder bằng checkpoint.
+
+Start trả trạng thái starting, retry request ID không spawn lại; sau readiness mới running. Stop hợp tác → capture flush/exit → kiểm tra CSV size → feeder drain → đối soát ACK và exit cả hai mới completed. Heartbeat timeout 90s (bao gồm HTTP timeout/backoff), readiness 45s, stop/drain tối đa 120s trước đường lỗi; thời lượng capture bình thường không giới hạn 60s. Lease 45s và rollback chờ tối đa 65s, không tự kill. Lỗi/thiếu bằng chứng giữ failed hoặc unknown, không giả completed. Unknown vẫn chặn phiên mới.
+
+Popen lỗi trước khi trả handle được hủy intent chưa spawn; worker đã attach phải reaped trước đóng failed. Crash/timeout giữa spawn và attach vẫn giữ intent unknown cần kiểm tra, chưa tự giải phóng. Không quản lý capture terminal bên ngoài; không chạy cả hai cách đồng thời. Log/CSV được giữ, chưa rotation tự động; cap/disk guard cũ giữ nguyên.
+
+Kiểm thử Stage36 **6/6 PASS** dùng sniffer fixture, worker process và HTTP ACK fixture: duplicate start, stop/drain, shutdown, lỗi script, interpreter thiếu, lỗi spawn đầu và spawn thứ hai/rollback. Không gọi fixture là test Wi-Fi/model. Stage33–35 giữ hợp đồng cũ; API/UI được nối ở mốc tiếp theo. Commit: `feat(rq3): supervise owned capture and feeder workers`.
+
 ## HT4.3a — định danh OS và đối soát sau restart (18/10/2026)
 
 **Mục đích:** ngăn start trùng/nhận nhầm PID cũ sau API restart trước khi mở điều khiển capture. Phạm vi là thư viện backend + test, chưa có supervisor khởi chạy hoặc endpoint/UI. Không đổi prediction DB 6 bảng, model, extractor, XAI hay cap; không chạy Wi-Fi hoặc sửa DB thật.

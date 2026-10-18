@@ -8,6 +8,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Bắt đầu ở đây
 
+**HT4.3b:** supervisor backend đã nối capture/feeder, kiểm thử riêng bằng fixture. API/UI nối ở mốc kế tiếp; đây không phải bằng chứng đã bắt mạng thật. State worker không nằm trong Streamlit; CSV/checkpoint/log thuộc phiên do backend quản lý.
+
 **Cập nhật HT4.3a (18/10):** đã kiểm thử đọc định danh process và đối soát phiên sau restart ở thư viện backend. Chưa gắn vào API/UI, chưa thay cách chạy terminal. Không hiển thị trạng thái “đang bắt” từ PID đơn lẻ hoặc dữ liệu flow cũ; nút capture vẫn chờ HT4.3b supervisor và kiểm thử tích hợp. Không cần reset DB/restart ứng dụng cho riêng thay đổi thư viện này.
 
 **Cập nhật HT4.2 (18/10):** code capture/feeder đã có giao thức điều khiển nội bộ được kiểm thử, nhưng chưa có supervisor/API nối vào UI. Chưa có nút Bắt đầu/Dừng hoạt động; tiếp tục dùng các lệnh terminal bên dưới, không tự thêm `--control-dir`/`--worker-token`. Không cần reset DB hay đổi model. Giao thức worker không phải trạng thái capture trực tiếp trên Dashboard; HT4.3 sẽ nối quản lý tiến trình trước khi mở nút.
