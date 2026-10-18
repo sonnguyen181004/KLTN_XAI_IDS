@@ -7,6 +7,10 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 - [Capture v2, phục hồi và kiểm thử](#stability-v2)
 - [Hợp đồng dữ liệu và trạng thái HT1](#contract-ht1)
 
+## Cập nhật kiểm chứng HT2.1 — 18/10/2026
+
+Không đổi cách chạy hệ thống. Stage20 hiện có **21 test PASS**, gồm sáu characterization mới ghi lại giới hạn vòng đời v2; đây không phải bản sửa capture mới. Stage25 kiểm tra model thật trên hai PCAP: nhị phân hóa cờ trong bộ nhớ không đổi nhãn/xác suất/lá của 92 flow; không áp dụng phép biến đổi này vào runtime. Stage23 self-test 3/3 PASS; chưa chạy full scan mới hoặc benchmark live. Xem [bằng chứng, lệnh tái lập và việc tiếp theo](feature_compatibility.md#ht21). Các số 13/15 test và phiên live ngày 16/10 bên dưới vẫn là lịch sử.
+
 <a id="contract-ht1"></a>
 
 ## HT1 — Hợp đồng dữ liệu và trạng thái (18/10/2026)

@@ -8,8 +8,69 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 - [Lịch sử adapter v1](#adapter-v1)
 - [Audit baseline trước sửa](#baseline-audit)
 - [Ma trận đủ 78 đặc trưng](#matrix-78)
+- [HT2.1: độ nhạy cờ TCP và vòng đời flow](#ht21)
 
 Stage19 mặc định chỉ xuất JSON bằng chứng; dùng `--matrix-output <đường-dẫn.md>` nếu cần xuất ma trận riêng có chủ đích. Script không tự tạo lại file tài liệu đã gộp hoặc ghi đè ma trận lịch sử bên dưới.
+
+<a id="ht21"></a>
+
+## HT2.1 — Điều tra nguồn train, độ nhạy cờ TCP và vòng đời flow (18/10/2026)
+
+**Mục đích:** chọn bước sửa có bằng chứng, không nhị phân hóa cờ chỉ để mong giảm Hulk; xác định hành vi capture v2 cần xử lý trước khi hoàn thiện realtime. Chỉ thêm kiểm thử/diagnostic/tài liệu, không đổi adapter mặc định, model, LIME, timeout, DB hoặc hai PCAP gốc. HT2 tổng thể chưa hoàn tất.
+
+### Truy vết nguồn và mức độ kết luận
+
+- Rà tên file/script hiện có và tên file mã trong `git log --all`: chưa tìm thấy script tạo daily cleaned hoặc split `train_set.parquet`/`test_set.parquet`. Hai script RQ1 `1_hyperparameter_tuning.py` và `2_train_optimal_model.py` đọc Parquet đã có; `stage03_build_clean_dataset.py` tạo tập B, không tạo dữ liệu train gốc.
+- Thư mục processed hiện có hai Parquet và hai báo cáo Word. HT2.1 chưa phân tích nội dung hai Word này; không tuyên bố đã loại trừ mọi thông tin nguồn trong tài liệu, bản sao bên ngoài hay dữ liệu không có trong Git. Truy vấn lịch sử đường dẫn Parquet không trả commit; không suy ra ngày/nguồn tạo từ điều đó.
+- Bằng chứng 0/1 của cờ và bulk hằng 0 trên daily cleaned/train/test kế thừa audit 16/10, **không quét lại toàn bộ 15,6 triệu dòng ở bước này**. Nó xác nhận miền giá trị khác, chưa xác định preprocessing hay extractor lịch sử nào gây ra.
+- Kiểm tra [BasicFlow.java chính thức](https://github.com/ahlashkari/CICFlowMeter/blob/master/src/main/java/cic/cs/unb/ca/jnetpcap/BasicFlow.java) tại nhánh `master` ngày 18/10: `firstPacket` và `addPacket` gọi `checkFlags`; bộ đếm tổng FIN/SYN/ACK… dùng `MutableInt.increment()` tăng giá trị và xuất giá trị đếm. Các trường cờ theo chiều có đường cập nhật riêng, không được gộp tất cả thành cùng một kết luận. Đây là bản nguồn tham khảo đang truy cập, chưa được xác minh là binary/commit tạo dataset 2018. Không lấy Java master làm oracle cho toàn bộ train.
+
+### Kiểm chứng trực tiếp giả thuyết “đếm cờ >1 làm model đổi nhánh”
+
+Thêm `scripts/stage25_audit_flag_sensitivity.py`. Script trích lại hai PCAP bằng project v2 vào thư mục tạm, chuẩn hóa bằng cùng feeder/normalize, nạp model thật và kiểm tra mọi ngưỡng split của 12 cột có `Flag` trong tên. Chỉ tạo bản sao vector **trong bộ nhớ**, đổi cờ nguyên không âm thành `(value > 0)`, rồi so cả xác suất 15 lớp và lá cây. Không tính FPR vì PCAP chưa có ground truth xác minh.
+
+Model `52eb5a671ee82109`: các cột cờ được dùng trong cây chỉ có ngưỡng `1`; các cột còn lại không có split. Với split số `x < 1`, giá trị nguyên dương 1 và 18 đi cùng nhánh; 0 giữ nguyên. Do đó phép nhị phân hóa này bảo toàn đường cây khi giữ nguyên các đặc trưng khác, với model hiện tại và miền cờ nguyên không âm đã kiểm tra. Không suy rộng sang model khác, cờ âm/NaN hoặc những phép biến đổi feature khác.
+
+| PCAP | Flow | Vector đổi vì nhị phân hóa cờ | Nhãn đổi | Chênh xác suất lớn nhất | Lá cây | Nhãn trước và sau |
+|---|---:|---:|---:|---:|---|---|
+| `test.pcapng` | 33 | 29 | 0 | 0 | Giống hoàn toàn | 28 Benign, 5 Hulk |
+| `tesst2.pcapng` | 59 | 45 | 0 | 0 | Giống hoàn toàn | 56 Benign, 3 Hulk |
+
+**Kết luận:** giả thuyết chỉ đổi count→has_flag sẽ giảm Hulk không được ủng hộ trên model/hai PCAP này; 74/92 vector đổi nhưng 92/92 dự đoán/xác suất/lá giữ nguyên. Chưa tìm ra nguyên nhân đầy đủ của 8 nhãn Hulk; chúng vẫn là dự đoán, không phải nhãn tấn công đã xác minh. Lệch cờ có thể tác động khoảng cách lấy mẫu LIME dù không đổi nhánh XGBoost; script này **không tính lại SHAP/LIME**, không kết luận hiệu ứng của phép biến đổi lên chúng.
+
+Bằng chứng aggregate và checksum model/encoder/PCAP/code: [flag_sensitivity_evidence_20261018.json](flag_sensitivity_evidence_20261018.json). Không chứa packet payload/IP hoặc từng vector cá nhân. Môi trường lần chạy: Python chính 3.14.7, XGBoost 3.4.1, sklearn 1.9.1, NumPy 2.5.3, pandas 3.0.6; capture Python 3.13.0, CICFlowMeter 0.5.0, Scapy 2.8.0, NumPy 2.5.4. Có cảnh báo pickle XGBoost và encoder sklearn được lưu bằng 1.8.0; ghi nhận giới hạn tái lập, chưa coi là nguyên nhân báo nhầm và không tự ghi đè artifacts.
+
+### Sáu fixture vòng đời v2 mới — xác nhận hành vi, chưa sửa lỗi
+
+| Fixture trong Stage20 | Quan sát tái hiện được | Ý nghĩa cho bước sửa tiếp |
+|---|---|---|
+| Một gói rồi im lặng | GC tại tuổi 90s/239s chưa xuất; đúng idle 240s xuất | Duration 90s là khoảng timestamp packet, không phải timer tuổi wall-clock cho mọi flow |
+| FIN hoặc RST | Flow vẫn mở cho đến timeout/flush | Chưa có state machine kết thúc TCP; cần thiết kế riêng cho FIN hai chiều, RST, retransmission |
+| Packet tại mốc duration | Chuỗi 0,89,90 xuất 3 packet; chuỗi 0,89,180 xuất một flow duration 180s | Gói kích hoạt được thêm trước kiểm tra; 90s không phải trần duration cứng |
+| Idle đúng 240s | Nếu GC chạy trước packet mới: 2 flow; nếu chưa chạy: 1 flow, đều bảo toàn 2 packet | `process` dùng `>240`, GC dùng `>=240`; segmentation phụ thuộc thứ tự GC tại ranh giới |
+| Tái sử dụng cùng tuple | SYN, SYN-ACK, RST, SYN mới vẫn thành một flow trước timeout | Kết nối mới có thể lẫn với kết nối trước; chỉ đổi timeout chưa đủ |
+| Packet timestamp 0,2,1 | `flow_iat_min` và `fwd_iat_min` bằng -1 | Active/Idle đã né gap âm nhưng IAT vẫn tính theo thứ tự nhận; cần chính sách rõ cho packet lệch thứ tự |
+
+Các test có tên `test_v2_*` ghi lại **baseline hiện hành**, không phải tiêu chí mong muốn cho adapter mới. PASS nghĩa tái hiện được giới hạn, không có nghĩa đã sửa. Khi sửa phiên bản mới phải giữ kiểm thử baseline tương ứng và thêm kỳ vọng mới; không đổi assertion cho đẹp kết quả.
+
+### Kiểm thử và tái lập
+
+Từ thư mục gốc, không cần chạy API/UI, không phát traffic:
+
+```powershell
+.\RQ3_IDS_System\.venv_capture\Scripts\python.exe -B RQ3_IDS_System/scripts/stage20_test_capture_adapter.py
+python -B RQ3_IDS_System/scripts/stage23_audit_feature_semantics.py --self-test
+python -B RQ3_IDS_System/scripts/stage25_audit_flag_sensitivity.py
+```
+
+Kết quả mới ngày 18/10: **Stage20 21/21 PASS** (15 cũ + 6 characterization), **Stage23 self-test 3/3 PASS**, Stage25 trích và so đủ 92 flow, 0 nhãn/xác suất đổi. Stage23 self-test chỉ kiểm tra công thức audit, không chạy full scan. Stage25 có `--output <JSON mới>` nếu muốn lưu lại; từ chối ghi đè bằng chứng cũ. Lượt này đã dùng tham số đó để tạo JSON liên kết phía trên. Không chạy lại stage14/24 hoặc bắt live ở HT2.1.
+
+### Quyết định sau HT2.1
+
+1. Không nhị phân hóa cờ trong runtime; không train lại và không thay LIME để tạo biểu đồ.
+2. Chưa chứng nhận tương thích train–PCAP. Cần đọc tiếp tài liệu nguồn và tìm preprocessing/bản extractor lịch sử hoặc cặp original PCAP–CSV. Không để việc thiếu nguồn chặn kiểm thử vòng đời độc lập.
+3. **HT2.2 đề xuất:** chốt chính sách vòng đời trước khi sửa: ranh giới idle nhất quán, packet lệch thứ tự, giới hạn duration, FIN/RST và tuple tái sử dụng. Triển khai từng phần có version, kiểm thử bảo toàn packet, đối chiếu lại hai PCAP; không gộp mọi thay đổi vào một commit lớn. Ưu tiên lỗi ranh giới idle đã có fixture nhỏ tái hiện.
+4. HT2.1 không hoàn thành E2/E3/E4/E5; đây là bằng chứng chẩn đoán và regression phục vụ chúng. Xem tiến độ trong [plan.md](plan.md).
 
 ---
 

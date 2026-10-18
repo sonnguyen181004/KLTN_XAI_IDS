@@ -136,6 +136,70 @@ class AdapterTests(unittest.TestCase):
         self.assertFalse(errors)
         self.assertEqual(sum(len(f.packets) for f in session.get_flows()),100)
 
+    # HT2.1 characterization of v2, NOT desired future semantics. A future
+    # versioned lifecycle fix must deliberately revise these expectations.
+    def test_v2_quiet_flow_uses_idle_not_wall_clock_age(self):
+        session = self.session()
+        session.process(packet(0))
+        session.garbage_collect(1700000090)
+        self.assertEqual(session.n_exported, 0)
+        session.garbage_collect(1700000239)
+        self.assertEqual(session.n_exported, 0)
+        session.garbage_collect(1700000240)
+        self.assertEqual((session.n_exported, session.n_exported_packets), (1, 1))
+
+    def test_v2_fin_and_rst_do_not_close_flow(self):
+        for ending in ('FA', 'RA'):
+            with self.subTest(ending=ending):
+                session = self.session()
+                for p in [packet(0, flags='S'), packet(1, 'b', 'SA'), packet(2, flags=ending)]:
+                    session.process(p)
+                self.assertEqual(session.n_exported, 0)
+                self.assertEqual(len(session.get_flows()), 1)
+                session.flush_flows()
+                self.assertEqual(session.n_exported_packets, 3)
+
+    def test_v2_duration_boundary_includes_triggering_packet(self):
+        for end in (90, 180):
+            with self.subTest(end=end):
+                session = self.session()
+                for when in (0, 89, end):
+                    session.process(packet(when))
+                self.assertEqual(session.n_exported_packets, 3)
+                self.assertFalse(session.get_flows())
+                with Path(session.output).open(newline='') as stream:
+                    row = next(csv.DictReader(stream))
+                self.assertEqual(float(row['flow_duration']), end)
+
+    def test_v2_idle_exact_boundary_depends_on_gc_order(self):
+        no_gc, with_gc = self.session(), self.session()
+        for session in (no_gc, with_gc):
+            session.process(packet(0))
+        with_gc.garbage_collect(1700000240)
+        for session in (no_gc, with_gc):
+            session.process(packet(240))
+            session.flush_flows()
+            self.assertEqual(session.n_exported_packets, 2)
+        # process uses >240 before admission, GC uses >=240: segmentation differs.
+        self.assertEqual(no_gc.n_exported, 1)
+        self.assertEqual(with_gc.n_exported, 2)
+
+    def test_v2_reused_tuple_syn_is_merged_before_timeout(self):
+        session = self.session()
+        for p in [packet(0, flags='S'), packet(1, 'b', 'SA'),
+                  packet(2, flags='RA'), packet(3, flags='S')]:
+            session.process(p)
+        self.assertEqual(len(session.get_flows()), 1)
+        self.assertEqual(len(session.get_flows()[0].packets), 4)
+
+    def test_v2_out_of_order_packet_can_produce_negative_iat(self):
+        session = self.session()
+        for when in (0, 2, 1):
+            session.process(packet(when))
+        data = session.get_flows()[0].get_data()
+        self.assertEqual(data['flow_iat_min'], -1)
+        self.assertEqual(data['fwd_iat_min'], -1)
+
     def test_production_cli_offline_is_reproducible_and_versioned(self):
         path=self.folder/'cli.pcap'
         wrpcap(str(path),[packet(0,flags='S'),packet(.1,'b','SA'),packet(.2)])
