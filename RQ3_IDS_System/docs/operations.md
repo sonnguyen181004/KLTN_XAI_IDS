@@ -1,5 +1,9 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT3.1 — xác nhận giao nhận (18/10/2026)
+
+Mục đích: không tiến checkpoint khi phản hồi HTTP 200 thiếu/sai cấu trúc, tránh báo gửi thành công rồi lỗi khi đọc trường còn thiếu. Feeder kiểm tra đầy đủ các trường xác nhận, giữ khóa idempotency khi retry, từ chối poll không hữu hạn/không dương; lỗi I/O được báo dừng rõ. Stage27 5/5 PASS (ACK lỗi, HTTP 408/425/429/5xx, lỗi lưu checkpoint sau ACK, sai khóa xác nhận, poll sai). Stage24 kiểm chứng thực bằng server/DB tạm cho mất ACK, restart, giao dịch rollback và phục hồi SHAP. Không thay đổi API/model hoặc bỏ qua dòng lỗi. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`.
+
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
 > Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.

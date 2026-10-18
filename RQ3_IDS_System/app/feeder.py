@@ -126,6 +126,8 @@ def row_to_payload(row: dict, header: list[str], convert_units: bool) -> dict:
 def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert_units: bool,
                max_iterations: int | None = None, capture_timezone: str | None = None,
                checkpoint_path: Path | None = None) -> None:
+    if not math.isfinite(poll_interval_sec) or poll_interval_sec <= 0:
+        raise ValueError('Chu kỳ kiểm tra phải hữu hạn và > 0.')
     print(f"[feeder] Bắt đầu theo dõi: {watch_path}")
     print(f"[feeder] Gửi tới: {api_url}/predict | đổi đơn vị μs: {convert_units} | "
           f"chu kỳ kiểm tra: {poll_interval_sec}s")
@@ -191,7 +193,11 @@ def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
                         if r.headers.get('Idempotency-Key') != key:
                             raise RuntimeError('API chưa xác nhận chống gửi trùng. Cần restart API bản mới; checkpoint giữ nguyên.')
                         body = r.json()
-                        if not body.get('flow_id') or 'predicted_label' not in body:
+                        if (not isinstance(body, dict)
+                            or not isinstance(body.get('flow_id'), str) or not body['flow_id']
+                            or not isinstance(body.get('predicted_label'), str) or not body['predicted_label']
+                            or type(body.get('is_alert')) is not bool
+                            or 'explanation_status' not in body):
                             raise requests.RequestException('Phản hồi API chưa đủ thông tin xác nhận')
                     except requests.RequestException as exc:
                         print(f'[feeder] Dòng #{number}: chờ gửi lại ({exc}), giữ checkpoint; thử sau {retry_delay:.2f}s.')
@@ -232,7 +238,7 @@ def main():
                    args.max_iterations, args.capture_timezone, args.checkpoint)
     except KeyboardInterrupt:
         print('[feeder] Đã dừng. Chạy lại cùng lệnh để tiếp tục từ checkpoint.')
-    except (ValueError, RuntimeError) as exc:
+    except (ValueError, RuntimeError, OSError) as exc:
         print(f'[feeder] DỪNG: {exc}')
         raise SystemExit(2) from exc
 
