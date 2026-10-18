@@ -1,5 +1,13 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## UI bước 1 — trực quan hóa trên API sẵn có (18/10/2026)
+
+Mục đích: đọc kết quả nhanh hơn, tách rõ phạm vi dữ liệu và tình trạng toàn hệ thống; không đổi schema, API prediction, model, extractor hoặc XAI. Thêm biểu đồ trạng thái SHAP theo bộ lọc, màu/chú giải Benign–cảnh báo, trục xác suất %, tên IP:cổng/giao thức dễ đọc; phân trang sát bảng có Trước/Sau, reset khi đổi scope và giữ flow khi refresh/chuyển trang. Không đoán capture sống từ API/flow mới, không đổi tỷ lệ cảnh báo thành FPR. Hướng dẫn ở dashboard_usage.md.
+
+HT4 chưa được gộp vào bước này: cần API sở hữu capture + feeder, lưu metadata phiên bền vững, đối soát PID/định danh tiến trình/heartbeat sau restart, chặn start đồng thời và test stop/drain/crash riêng. State trong RAM API không đủ cho restart; Streamlit chỉ giữ lựa chọn hiển thị, không sở hữu PID hoặc sinh process khi render. Chưa thêm nút Start/Stop và chưa thu telemetry chưa có từ backend.
+
+Kiểm thử 18/10: Stage32 **3/3 PASS** (định dạng, dữ liệu thiếu, giới hạn trang); Stage14 **PASS toàn bộ** trên DB tạm/model thật, bổ sung nút Trang sau/trước, trang cuối 205 flow, giữ lựa chọn và reset khi đổi lượt; giữ hồi quy CSV/PCAP/SHAP/LIME/storage. Đã kiểm tra render bằng AppTest, chưa duyệt thủ công nhiều kích thước trình duyệt. Commit: `feat(rq3): improve dashboard overview and flow navigation`.
+
 ## HT3.6 — dung lượng, backup và khôi phục an toàn (18/10/2026)
 
 **Mục đích:** quan sát tăng trưởng file và có snapshot SQLite kiểm chứng được, không đổi 6 bảng/model/SHAP/LIME, không tự xóa hoặc thay DB đang dùng.

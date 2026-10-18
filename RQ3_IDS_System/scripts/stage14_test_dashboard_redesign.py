@@ -122,8 +122,22 @@ def main():
                     assert any('Ổ chứa DB còn' in item.value for item in at.caption)
                     assert any('chưa có nút bật hoặc tắt' in item.value for item in at.info)
                     assert any('run_live_capture.py' in item.value for item in at.code)
+                    assert {'Xu hướng & nhãn dự đoán', 'Tiến độ giải thích trong phạm vi'} <= {tab.label for tab in at.tabs}
+                    assert any('Tỷ lệ cảnh báo không phải FPR' in item.value for item in at.caption)
+                    at.selectbox(key='run_choice').set_value('fixture').run(timeout=30)
+                    assert not at.exception, at.exception
+                    selected = at.session_state['selected_flow']
+                    next(b for b in at.button if b.label == 'Trang sau →').click().run(timeout=30)
+                    assert not at.exception and at.number_input(key='flow_page').value == 2
+                    assert at.session_state['selected_flow'] == selected
+                    next(b for b in at.button if b.label == '← Trang trước').click().run(timeout=30)
+                    assert not at.exception and at.number_input(key='flow_page').value == 1
+                    at.number_input(key='flow_page').set_value(5).run(timeout=30)
+                    assert not at.exception and at.number_input(key='flow_page').value == 5
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
                     assert not at.exception, at.exception
+                    assert at.number_input(key='flow_page').value == 1
+                    assert any('Giao thức: TCP' in item.value or 'Giao thức: UDP' in item.value for item in at.markdown)
                     at.session_state['selected_flow'] = real[0]['flow_id']
                     at.run(timeout=30)
                     assert not at.exception and any('Benign:' in item.value for item in at.info)
