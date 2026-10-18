@@ -10,6 +10,21 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Bắt đầu ở đây
 
+<a id="clean-retest"></a>
+
+### Test lại sau reset DB ngày 18/10/2026
+
+DB mặc định đã sạch (6 bảng bằng 0); lịch sử cũ có backup đã verify trong `backups/before_reset_20261018_user_retest_01`. API/UI chưa được mở sẵn. Mở VS Code tại thư mục RQ3_IDS_System và làm hai terminal theo mục ngay dưới. Nếu terminal tự kích hoạt venv demo capture cũ, chạy `deactivate` rồi chọn Python API/UI đã cài dependencies; không dùng `.venv_capture` để chạy API/UI.
+
+Test lần lượt, không nạp nhiều nguồn cùng lúc để dễ đối soát:
+
+1. **Realtime:** tab Realtime → `Wi-Fi` → Bắt đầu capture, đợi Đang bắt → lướt web → Dừng capture → đợi Đã hoàn tất → Xem flow của phiên này. Không cần mở terminal capture/feeder. Packet tăng nhưng CSV/API chưa tăng ngay có thể do flow chưa đóng/timeout; đây không phải dự đoán từng packet. Nếu Failed, đọc lỗi thật và giữ log, không coi đó là phiên đầy đủ hoặc tự tăng cap.
+2. **CSV:** Nạp CSV / PCAP → CSV đặc trưng → chọn CSV đủ 78 đặc trưng → chỉ bật đổi đơn vị nếu CSV thực sự dùng giây như output capture tương ứng → Gửi CSV vào /predict. Không áp dụng đổi đơn vị cho CSV dataset đã dùng micro giây. Xem số gửi thành công/lỗi rồi chọn đúng lượt trong Giám sát flow.
+3. **PCAP:** Nạp CSV / PCAP → PCAP đã ghi → chọn `test.pcapng` hoặc `tesst2.pcapng` trong thư mục SELF_KLTN → Trích xuất và gửi → đợi kết quả → Giám sát flow, chọn đúng lượt. Không cần bắt Wi-Fi khi phát lại PCAP.
+4. Chọn một flow, kiểm tra IP/cổng nếu nguồn có metadata, nhãn/xác suất, SHAP và LIME theo yêu cầu. LIME có cảnh báo suy biến phải giữ cảnh báo, không coi đó là giải thích hợp lệ; nhãn tấn công chưa phải ground truth/FPR.
+
+Không tiếp tục feeder dùng checkpoint cũ sau reset (ACK cũ có thể khiến bỏ qua dữ liệu). UI tạo lượt mới; không cần xóa CSV/PCAP để test lại. Các lượt mới được lưu chung DB và tách bằng bộ lọc lượt/nguồn; không tự xóa lịch sử giữa mỗi test.
+
 <a id="capture-control"></a>
 
 ### Hiện hành: chạy nút Bắt đầu/Dừng trong tab Realtime
@@ -20,17 +35,21 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 2. Terminal API, tạo token riêng cho lần chạy (không commit token):
 
 ```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+Remove-Item Env:IDS_DB_PATH -ErrorAction SilentlyContinue
+Remove-Item Env:IDS_CAPTURE_SESSION_DIR -ErrorAction SilentlyContinue
 $env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
 $env:IDS_CAPTURE_CONTROL_TOKEN
 $env:IDS_CAPTURE_API_URL = 'http://127.0.0.1:8000'
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
 ```
 
-Dòng thứ hai hiển thị token để bạn sao chép vào terminal UI. Không chia sẻ/chụp token; không dùng `--reload` hoặc nhiều worker khi bắt mạng.
+Dòng `$env:IDS_CAPTURE_CONTROL_TOKEN` hiển thị token để bạn sao chép vào terminal UI. Hai lệnh Remove-Item chỉ bỏ biến môi trường của terminal hiện tại để dùng DB/registry mặc định, không xóa file. Không chia sẻ/chụp token; không dùng `--reload` hoặc nhiều worker khi bắt mạng.
 
 3. Terminal UI, thay placeholder bằng **đúng token vừa tạo**, không tạo token khác:
 
 ```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
 $env:IDS_CAPTURE_CONTROL_TOKEN = 'DAN_TOKEN_TU_TERMINAL_API_VAO_DAY'
 $env:IDS_API_URL = 'http://127.0.0.1:8000'
 python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
