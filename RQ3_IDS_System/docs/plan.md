@@ -1,5 +1,14 @@
 # Kiến trúc, tiến độ và kế hoạch RQ3
 
+## Reset phục vụ người dùng tự kiểm thử — 18/10/2026
+
+- Mục đích: bắt đầu lịch sử sạch để kiểm tra UI, CSV/PCAP và điều khiển Realtime hiện hành; không phải sửa model hoặc nghiệm thu độ chính xác.
+- Đã kiểm tra không có API/UI/capture/feeder liên quan đang chạy; sao lưu SQLite nhất quán và verify trước khi reset DB mặc định.
+- Trước: 591 flow, 591 prediction, 73 alert, 73 reliability, 1994 timing, 0 data error. Sau: cả 6 bảng bằng 0, integrity/FK đạt, giữ nguyên schema/index/model và dữ liệu nguồn.
+- Backup: `RQ3_IDS_System/backups/before_reset_20261018_user_retest_01` (local, không commit). Không xóa checkpoint/CSV/PCAP; không mở dịch vụ thay người dùng. Registry capture mặc định chưa tồn tại tại thời điểm kiểm tra.
+- Đã cập nhật README, hướng dẫn UI và vận hành; bước tiếp theo là người dùng chạy API/UI, tạo lượt mới và kiểm tra từng nguồn theo [runbook](dashboard_usage.md#clean-retest). Không tiếp tục feeder checkpoint cũ sau reset.
+- Giới hạn vẫn giữ: smoke Wi-Fi ngắn PASS không thay thế nghiệm thu dài hạn; lượt 30s từng chạm cap. Không tăng cap hoặc đổi mô hình trong lần reset này.
+
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
 > Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.

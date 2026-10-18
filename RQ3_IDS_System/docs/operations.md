@@ -1,5 +1,26 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+<a id="reset-20261018"></a>
+
+## Reset lịch sử để tự test — 18/10/2026
+
+Theo yêu cầu người dùng, đã reset riêng `data/ids_system.db` sau khi kiểm tra không có tiến trình API/UI/capture/feeder liên quan hoặc listener 8000/8501. Giữ khóa worker DB trong thao tác bảo trì; backup bằng SQLite backup API, verify checksum/integrity/FK trước khi xóa trong transaction, đối chiếu số dòng với manifest và kiểm tra lại integrity/FK/số dòng trước commit.
+
+| Bảng | Trước | Sau |
+|---|---:|---:|
+| FlowRecord | 591 | 0 |
+| Prediction | 591 | 0 |
+| AlertRecord | 73 | 0 |
+| Reliability | 73 | 0 |
+| Timing | 1994 | 0 |
+| DataError | 0 | 0 |
+
+Backup đã verify: `backups/before_reset_20261018_user_retest_01/snapshot.db` và `manifest.json`, tính từ thư mục RQ3_IDS_System; được Git ignore. Lịch sử đã xóa có thể lấy lại từ backup này. Không xóa file DB/schema/index, model, CSV/PCAP, checkpoint hoặc backup cũ; chỉ reset sequence của Timing/DataError cùng lịch sử. Registry mặc định `data/capture_sessions/sessions.sqlite3` chưa tồn tại, không cần reset. Không tự khởi chạy dịch vụ sau thao tác.
+
+**Test lại phải tạo lượt mới:** nút Bắt đầu tạo CSV/checkpoint mới; CSV/PCAP tải lại qua UI. Không resume checkpoint feeder cũ vì ACK đã lưu vẫn có thể bỏ qua những dòng không còn trong DB vừa reset. Khi chạy API cho lượt test này, bỏ override `IDS_DB_PATH`/`IDS_CAPTURE_SESSION_DIR` cũ để dùng đúng mặc định (xem hướng dẫn UI).
+
+Nếu cần khôi phục, dừng hệ thống và dùng `scripts/manage_storage.py restore` theo mục backup/restore bên dưới: khôi phục vào **thư mục mới**, verify, rồi chủ động chọn `IDS_DB_PATH` trỏ đến bản khôi phục. Không ghi đè DB test đang có. Lần reset này không đo FPR, không chứng nhận live ổn định hơn, không tăng cap.
+
 ## HT4.4 hiện hành — API/UI điều khiển và nghiệm thu (18/10/2026)
 
 **Mục đích:** dùng nút UI thay hai terminal capture/feeder, không đổi tầng chuẩn hóa/model/XAI/DB thật. `/capture/status`, `/capture/start`, `/capture/stop`, `/capture/reconcile` chỉ bật khi API có `IDS_CAPTURE_CONTROL_TOKEN` >=32 ký tự; UI dùng cùng token qua header server-side. API kiểm tra client loopback, Host local, token constant-time, từ chối Origin/cross-site; UI từ chối browser IP không local/không xác minh được. Chỉ bind API/UI `127.0.0.1`, không deploy qua proxy/LAN; token không bảo vệ một UI cố ý công khai như hệ thống đăng nhập. API một worker, không reload khi capture. Không có token: prediction và UI cũ vẫn chạy, control disabled.

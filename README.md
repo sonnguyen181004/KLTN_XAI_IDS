@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**Reset để tự test — 18/10/2026:** DB mặc định đã được sao lưu/verify rồi xóa lịch sử theo yêu cầu; cả 6 bảng về 0. Không đổi model, không tự bật API/UI. Xem [chạy và test lại từ đầu](RQ3_IDS_System/docs/dashboard_usage.md#clean-retest) và [nhật ký reset/khôi phục](RQ3_IDS_System/docs/operations.md#reset-20261018).
+
 **HT4.4 hiện hành — 18/10/2026:** đã nối API + tab **Realtime** với Bắt đầu/Dừng/Đối soát, state do API sở hữu, không spawn khi refresh. Bật opt-in bằng cùng `IDS_CAPTURE_CONTROL_TOKEN` ở API/UI, chạy cả hai trên loopback, 1 API worker; [hướng dẫn chạy](RQ3_IDS_System/docs/dashboard_usage.md#capture-control). Kiểm thử UI/API/CSV/PCAP/model PASS; Wi-Fi smoke test 10,034s PASS, 267 packet/19 flow CSV=API=ACK, dừng/drain 2,133s. **Lượt 30s FAIL ở khoảng 25s do chạm cap 20.000 packet đang giữ**; chưa chứng nhận ổn định dài hạn/tải cao, không tăng cap/model. Chi tiết và các lần thất bại được giữ trong [vận hành](RQ3_IDS_System/docs/operations.md). Các mốc phía dưới là nhật ký lịch sử.
 
 **HT4.3b — 18/10/2026:** supervisor đã nối registry/worker, bootstrap xác minh PID từ OS trước release, start idempotent, stop/flush/drain và rollback khởi động lỗi. Stage36 6/6 PASS bằng process thật/sniffer fixture, không phải nghiệm thu NIC. Giữ launch gap mơ hồ ở unknown, không kill PID. Phần API/UI được triển khai ở mốc kế tiếp; xem [vận hành](RQ3_IDS_System/docs/operations.md).
@@ -33,7 +35,7 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 | Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
 | Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
-UI có Giám sát flow, Hướng dẫn live và Nạp CSV / PCAP; chưa có nút điều khiển capture. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
+UI hiện có Giám sát flow, Realtime và Nạp CSV / PCAP; nút điều khiển capture bật bằng token local theo hướng dẫn HT4.4. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
 
 **HT2 — 18/10/2026:** mặc định CLI/PCAP dùng `rq3-cfm-0.5.0-lifecycle-v3`: biên timeout nhất quán, nhận biết dấu hiệu đóng/mở TCP, tách rõ packet lệch timestamp. Không đổi model hoặc ép cờ nhị phân. Hai PCAP bảo toàn 1.148 packet; 99 flow thay cho 92 do phân phiên mới, không phải bằng chứng giảm FPR. Tra mục đích, kiểm thử và giới hạn ở [tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md); lịch sử/commit ở [tiến độ HT2](RQ3_IDS_System/docs/plan.md). Chọn `--extractor project-v2` nếu cần đối chiếu baseline; không trộn hai bản trong cùng CSV.
 
