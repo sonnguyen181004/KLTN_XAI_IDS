@@ -6,6 +6,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Trạng thái hiện tại và thứ tự làm tiếp
 
+HT3.1 (18/10): sửa kiểm tra ACK đầy đủ trước checkpoint và cấu hình poll; Stage27 5/5 PASS. Mục đích/giới hạn trong `operations.md`. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`. Tiếp tục HT3.2 lỗi capture nền và HT3.3 giới hạn tài nguyên; không coi fixture là nghiệm thu live dài hạn.
+
 Đây là mục đọc trước; các nhật ký phía dưới giữ lại để truy vết, không phải danh sách việc chưa làm hôm nay.
 
 **Quyết định mới nhất (18/10/2026):** ưu tiên hoàn chỉnh logic, UI và realtime ổn định, chưa ưu tiên demo tấn công. Làm từng bước; mỗi bước ghi mục đích, thay đổi, kiểm tra, giới hạn và commit riêng, rồi dừng báo cáo trước bước kế tiếp. Không tự push. Hướng dẫn chạy terminal vẫn có hiệu lực; nút Start/Stop được đưa vào lộ trình sau bộ quản lý tiến trình, chưa triển khai. Không tự mở capture, reset DB hoặc đổi model để phục vụ cập nhật tài liệu.
