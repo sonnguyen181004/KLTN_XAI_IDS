@@ -1,5 +1,14 @@
 # Tương thích đặc trưng train và capture
 
+## HT2.2 — timeout và packet lệch thời gian (18/10/2026)
+
+- **Mục đích:** bỏ phụ thuộc thứ tự GC/admission tại biên timeout; không để packet lệch thứ tự tạo IAT âm. Commit: `fix(rq3): version deterministic flow timeout and late-packet policy`.
+- **Triển khai:** `capture_lifecycle.py`, mode thử nghiệm `--extractor project-v3`; v1/v2 và mặc định `project` chưa đổi tại commit này. Cùng điều kiện `>=` trước admission và trong GC. Tuổi flow tối đa 90s tính từ packet đầu, kể cả flow im lặng; idle 240s là ngưỡng dự phòng (với mặc định tuổi 90s sẽ đến trước). Cửa sổ nửa mở: packet ở đúng biên thuộc flow mới. Đây là quy ước vận hành mới, không giả định tương đương train.
+- **Packet trễ:** nếu timestamp lùi so với packet cuối của tuple đang mở, xuất thành flow một packet có `flow_end_reason=late_packet`; nếu tuple không còn mở, đối chiếu watermark packet toàn session. Không sửa timestamp, không âm thầm bỏ packet, không sửa dòng đã xuất. Không dùng clock GC làm watermark packet. Giới hạn: flow một packet không tái dựng được phiên gốc và có thể làm thay đổi dự đoán; lý do xuất nằm trong CSV, chưa thêm vào schema API/UI.
+- **Kiểm tra:** Stage26 có 8 fixture về biên active/idle trước–sau GC, flow im lặng, late trong/sau flow, timestamp bằng nhau, lỗi writer và flush lặp; kiểm tra bảo toàn số packet xuất/nhận. Kiểm thử bằng packet tổng hợp, không phải chạy Wi-Fi dài hạn.
+- **Nguồn train:** đã đọc toàn bộ đoạn văn/bảng của hai báo cáo `Bao_Cao_Phan_Tich_Dataset_CICIDS2018.docx` và `Bao_Cao_Tong_Hop_Dataset_3.5M_CICIDS2018.docx` trong `dataset/CICID-2018_processed`. Báo cáo nêu lấy mẫu 3,5M, chia phân tầng 80/20, bỏ Timestamp; không cung cấp script tái tạo, phiên bản extractor hay bước nhị phân hóa cờ. Các khẳng định tương thích realtime trong báo cáo không thay thế được kiểm chứng công thức. Không sửa hai tài liệu nguồn trong bước này.
+- **Giữ nguyên:** 78 đầu vào, model, công thức đặc trưng v2, cấu hình SHAP/LIME. Chưa chứng nhận tương thích train, chưa kết luận giảm FPR hoặc hoàn tất E4.
+
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
 > Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.

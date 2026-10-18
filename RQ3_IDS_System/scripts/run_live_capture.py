@@ -44,8 +44,10 @@ from scapy.sendrecv import AsyncSniffer
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'app'))
 from capture_adapter import (ProjectFlowSession, ProjectFlow, ProjectFlowV1,
                              TrainCandidateFlow, EXTRACTOR_VERSION, LEGACY_VERSION)
+from capture_lifecycle import LifecycleFlow, LifecycleSession
 
 PROJECT_MODES = {'project': ProjectFlow, 'project-v1': ProjectFlowV1,
+                 'project-v2': ProjectFlow, 'project-v3': LifecycleFlow,
                  'train-candidate': TrainCandidateFlow}
 
 
@@ -53,6 +55,8 @@ def make_session(output, extractor):
     kwargs = dict(output_mode='csv', output=output, fields=None, verbose=False)
     if extractor == 'legacy':
         return FlowSession(**kwargs)
+    if extractor == 'project-v3':
+        return LifecycleSession(**kwargs)
     return ProjectFlowSession(**kwargs, flow_class=PROJECT_MODES[extractor])
 
 
