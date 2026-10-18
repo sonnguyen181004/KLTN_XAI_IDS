@@ -1,5 +1,9 @@
 # Kiến trúc, tiến độ và kế hoạch RQ3
 
+## Hotfix local UI — 18/10/2026
+
+Đã sửa guard chặn nhầm IP None của Streamlit 1.65.0 bằng yêu cầu listener loopback tường minh; giữ token và guard API. Stage37 5/5 PASS (fixture/AppTest, chưa browser/NIC thật). Mục đích: cho nút điều khiển sử dụng đúng pipeline capture/CSV/feeder hiện có, không thay kiến trúc dự đoán hoặc model. Tiếp theo người dùng restart UI và test lại; cảnh báo lệch phiên bản model/encoder còn cần kiểm chứng riêng. Xem nhật ký vận hành.
+
 ## Reset phục vụ người dùng tự kiểm thử — 18/10/2026
 
 - Mục đích: bắt đầu lịch sử sạch để kiểm tra UI, CSV/PCAP và điều khiển Realtime hiện hành; không phải sửa model hoặc nghiệm thu độ chính xác.

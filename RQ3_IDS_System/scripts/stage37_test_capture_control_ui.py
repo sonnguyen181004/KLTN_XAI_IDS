@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 from fastapi import FastAPI
 import asyncio
 import json
@@ -14,6 +15,7 @@ from streamlit.testing.v1 import AppTest
 APP = Path(__file__).resolve().parents[1]/'app'
 sys.path.insert(0, str(APP))
 from capture_routes import control_router
+from capture_ui import local_browser
 
 TOKEN = 'test-control-token-not-production-12345'
 
@@ -74,6 +76,15 @@ class FakeSupervisor:
 
 
 class ControlTests(unittest.TestCase):
+    def test_local_listener_and_streamlit_none_ip(self):
+        for address in ('127.0.0.1', '::1'):
+            for browser in (None, '127.0.0.1', '::1', '192.168.1.2', '', 'invalid'):
+                with self.subTest(address=address, browser=browser), patch('capture_ui.st.get_option', return_value=address), patch('capture_ui.st.context', SimpleNamespace(ip_address=browser)):
+                    self.assertEqual(local_browser(), browser in (None, '127.0.0.1', '::1'))
+        for address in (None, '', '0.0.0.0', '::', '192.168.1.2', 'localhost'):
+            with self.subTest(address=address), patch('capture_ui.st.get_option', return_value=address), patch('capture_ui.st.context', SimpleNamespace(ip_address=None)):
+                self.assertFalse(local_browser())
+
     def setUp(self):
         self.supervisor = FakeSupervisor()
         app = FastAPI()
@@ -109,11 +120,24 @@ class ControlTests(unittest.TestCase):
         def post(url, **kwargs):
             return self.client.post(url, json=kwargs.get('json'), headers=kwargs.get('headers'))
         code = f'import sys; sys.path.insert(0,{str(APP)!r})\nfrom capture_ui import render_capture\nrender_capture("http://127.0.0.1")'
-        with patch.dict(os.environ, {'IDS_CAPTURE_CONTROL_TOKEN': TOKEN}), patch('requests.get', side_effect=get), patch('requests.post', side_effect=post), patch('capture_ui.local_browser', return_value=True):
+        code = f'''import sys
+sys.path.insert(0, {str(APP)!r})
+from unittest.mock import patch
+from types import SimpleNamespace
+import streamlit as st
+from capture_ui import render_capture
+original_option = st.get_option
+def option(name):
+    return '127.0.0.1' if name == 'server.address' else original_option(name)
+with patch('capture_ui.st.get_option', side_effect=option), patch('capture_ui.st.context', SimpleNamespace(ip_address=None)):
+    render_capture('http://127.0.0.1')
+'''
+        with patch.dict(os.environ, {'IDS_CAPTURE_CONTROL_TOKEN': TOKEN}), patch('requests.get', side_effect=get), patch('requests.post', side_effect=post):
             ui = AppTest.from_string(code).run(timeout=10)
             ui.run()
             self.assertFalse(ui.exception)
             self.assertEqual(self.supervisor.starts, 0)
+            self.assertFalse(ui.error, [e.value for e in ui.error])
             next(b for b in ui.button if b.label == 'Bắt đầu capture').click().run()
             self.assertFalse(ui.exception)
             self.assertEqual(self.supervisor.starts, 1)

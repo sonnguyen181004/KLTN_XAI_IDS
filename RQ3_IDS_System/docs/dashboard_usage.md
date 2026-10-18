@@ -1,5 +1,7 @@
 # Hướng dẫn chạy và đọc giao diện IDS
 
+**Hotfix local 18/10/2026:** nếu từng thấy thông báo đỏ dù mở trên chính máy, đã sửa trường hợp Streamlit trả IP None cho localhost. Dừng riêng terminal UI bằng Ctrl+C rồi chạy lại lệnh Streamlit với `--server.address 127.0.0.1`; giữ cùng token API. Không cần reset DB hoặc mở thêm capture/feeder. Không chạy qua LAN/proxy/tunnel. Pipeline/model không đổi; xem kết quả test và giới hạn trong operations.md.
+
 **Đọc hướng dẫn hiện hành tại [Bắt đầu/Dừng Realtime](#capture-control).** Những mô tả “chưa có nút” ở nhật ký mốc cũ không còn là trạng thái UI hiện tại. Điều khiển đã có nhưng chưa chứng nhận chạy lâu/tải cao; xem đầy đủ giới hạn bên dưới.
 
 **HT3 (18/10/2026):** capture v3 có cap 4096 flow mở / 20000 packet đang giữ / 32 MiB byte packet và bảo vệ dung lượng ổ CSV. Đây không phải giới hạn tổng traffic của lượt. Nếu CLI báo quá tải/lỗi writer, phiên không đầy đủ: xem lỗi terminal, không coi UI còn hiển thị dữ liệu cũ là capture đang khỏe. UI PCAP không gửi dữ liệu khi lệnh trích xuất thất bại. Các counter cap hiện ở terminal, chưa có panel telemetry capture. Queue SHAP vẫn 200, bỏ giải thích khi đầy nhưng giữ cảnh báo; recovery được xen kẽ khi traffic mới vẫn đến. Xem tham số và xử lý lỗi trong [vận hành](operations.md).
