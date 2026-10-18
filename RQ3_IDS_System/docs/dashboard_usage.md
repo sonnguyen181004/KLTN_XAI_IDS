@@ -10,6 +10,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ### UI bước 1 — trình bày, chưa điều khiển capture (18/10/2026)
 
+Cập nhật HT4.1: đã có thư viện trạng thái bền/khóa sở hữu với test riêng, nhưng chưa nối API hoặc tiến trình thật. Không thay cách chạy terminal hiện tại; chưa có nút Start/Stop hoạt động. Trạng thái worker do Streamlit giữ vẫn không được dùng làm bằng chứng capture đang chạy.
+
 Giữ ba tab chính để không đổi workflow nạp dữ liệu. Trong **Giám sát flow**, phần Tổng quan ghi tên lượt/nguồn/khoảng thời gian, 6 ô số liệu dùng toàn bộ bộ lọc. Hai tab biểu đồ: **Xu hướng & nhãn dự đoán** (Benign xanh, cảnh báo cam, có chú giải) và **Tiến độ giải thích trong phạm vi** (chờ/xong/bỏ/lỗi). Trạng thái SHAP toàn hệ thống được thu gọn, ghi rõ không theo bộ lọc; cảnh báo không phải ground truth/FPR.
 
 Phần **Lịch sử & phân tích flow** có Trang trước/Trang sau và nhập số trang ngay cạnh bảng. Đổi phạm vi đưa về trang 1; trang vượt giới hạn được chặn. Chuyển trang hoặc tự refresh giữ flow đã chọn, có lời nhắc nếu flow nằm ngoài trang hiện tại. Nguồn/đích hiển thị cả IP và cổng; thiếu dữ liệu ghi rõ, cổng 443 thay cho 443.0, giao thức TCP/UDP thay mã 6/17. Mã flow đầy đủ trong khung sao chép; biểu đồ xác suất dùng trục 0–100%. Giữ nguyên các tab SHAP/LIME/đối chứng/đánh giá/78 đặc trưng và timing.

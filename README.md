@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**HT4.1 — 18/10/2026:** đã có nền tảng registry phiên bền vững/khóa sở hữu/chống start trùng, test fixture riêng. **Chưa tích hợp tiến trình/API**, chưa có nút capture; bước tiếp là HT4.2 giao thức worker và đối soát restart. Không cần đổi lệnh chạy hiện tại. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).
+
 **UI bước 1 — 18/10/2026:** tổng quan theo bộ lọc, biểu đồ xu hướng/nhãn và trạng thái SHAP, bảng IP:cổng/giao thức dễ đọc, phân trang cạnh bảng, xác suất %. Giữ đủ chi tiết XAI/78 đặc trưng. Chưa có nút Start/Stop: HT4 backend quản lý tiến trình và trạng thái bền vững là bước riêng. Xem [hướng dẫn UI](RQ3_IDS_System/docs/dashboard_usage.md); restart Streamlit, không reset DB.
 
 **HT3 — 18/10/2026:** đã sửa ACK/checkpoint, báo lỗi capture nền, thêm cap v3 (4096 flow mở / 20000 packet đang giữ / 32 MiB byte packet), bảo vệ dung lượng ổ CSV và tránh bỏ đói SHAP recovery. Quá tải dừng có lỗi, không âm thầm bỏ packet hoặc báo phiên đầy đủ. Cap không phải tổng traffic cả phiên hoặc RSS Python. Lượt Wi-Fi 20 phút với cap thử 50000/64 MiB đã PASS, chưa đổi mặc định. HT3.5 lưu packet gọn, giữ nguyên đặc trưng/dự đoán; giới hạn số packet vẫn còn. **HT3.6:** UI quan sát dung lượng, CLI backup SQLite nhất quán/verify/restore sang DB mới, không ghi đè lịch sử. Chưa tự xóa/retention/backup định kỳ; chưa chứng nhận nhiều giờ/tải cao. Xem lệnh và giới hạn trong [vận hành](RQ3_IDS_System/docs/operations.md). Restart API/UI để có panel mới; không reset DB, không train lại model.
