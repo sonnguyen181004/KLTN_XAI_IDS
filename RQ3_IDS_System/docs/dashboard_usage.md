@@ -52,7 +52,7 @@ Dòng `$env:IDS_CAPTURE_CONTROL_TOKEN` hiển thị token để bạn sao chép 
 
 ```powershell
 cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
-$env:IDS_CAPTURE_CONTROL_TOKEN = 'DAN_TOKEN_TU_TERMINAL_API_VAO_DAY'
+$env:IDS_CAPTURE_CONTROL_TOKEN = 'TOKEN_CUA_BAN'.Trim()
 $env:IDS_API_URL = 'http://127.0.0.1:8000'
 python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
 ```
