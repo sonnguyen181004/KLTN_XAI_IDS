@@ -1,0 +1,70 @@
+{
+  "model_version": "52eb5a671ee82109",
+  "scope": "In-memory flag sensitivity, no ground truth or accuracy claim",
+  "flag_split_thresholds": {
+    "Fwd PSH Flags": [
+      1.0
+    ],
+    "Bwd PSH Flags": [],
+    "Fwd URG Flags": [
+      1.0
+    ],
+    "Bwd URG Flags": [],
+    "FIN Flag Cnt": [
+      1.0
+    ],
+    "SYN Flag Cnt": [],
+    "RST Flag Cnt": [
+      1.0
+    ],
+    "PSH Flag Cnt": [
+      1.0
+    ],
+    "ACK Flag Cnt": [
+      1.0
+    ],
+    "URG Flag Cnt": [
+      1.0
+    ],
+    "CWE Flag Count": [],
+    "ECE Flag Cnt": [
+      1.0
+    ]
+  },
+  "positive_integer_to_one_preserves_all_flag_splits": true,
+  "pcaps": {
+    "test.pcapng": {
+      "flows": 33,
+      "changed_feature_rows": 29,
+      "changed_labels": 0,
+      "max_probability_difference": 0.0,
+      "identical_leaf_routes": true,
+      "predicted_counts": {
+        "Benign": 28,
+        "DoS attacks-Hulk": 5
+      }
+    },
+    "tesst2.pcapng": {
+      "flows": 59,
+      "changed_feature_rows": 45,
+      "changed_labels": 0,
+      "max_probability_difference": 0.0,
+      "identical_leaf_routes": true,
+      "predicted_counts": {
+        "Benign": 56,
+        "DoS attacks-Hulk": 3
+      }
+    }
+  },
+  "sha256": {
+    "RQ1_Model_Training_xboost\\saved_models\\best_xgboost_model.pkl": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+    "RQ1_Model_Training_xboost\\saved_models\\label_encoder.pkl": "909df601aaf46699ce243171274ff39af5ccd09c93b0930d9d78d71b8ac79397",
+    "RQ3_IDS_System\\scripts\\stage25_audit_flag_sensitivity.py": "73c3a52835017eec2425c82e6a44ae0cdb9572c98ff6203fb17e5de89fe511fa",
+    "RQ3_IDS_System\\app\\capture_adapter.py": "56c8f3d945ff864d07b74f1061fd879f41eb1e923efd7cba1b91a6c24cc73b73",
+    "RQ3_IDS_System\\scripts\\run_live_capture.py": "f9e9634596a71b761c4c17b639baa90514edb32f7a31bafb05f5cc564b57793f",
+    "RQ3_IDS_System\\app\\feeder.py": "136ddf5018590e83dddc30a1207aeb34ca3476cba966a4a0b9122ee30846e2cf",
+    "RQ3_IDS_System\\app\\normalize.py": "2494634dad4dd94e45e3ef8fddfd30880b1751d34c9bd70a05fa5e03779598bd",
+    "test.pcapng": "229d5d05ffd167aa5c28eb672728290f688c46f2152137ee9145e1ace1646705",
+    "tesst2.pcapng": "bf06d31a01cbfd387f797c3aafd702afd43fe72a5f73c2f2b130bcb4b01d05b0"
+  }
+}

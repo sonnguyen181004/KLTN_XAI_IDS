@@ -17,7 +17,7 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 | Bước | Mục đích và phạm vi | Nghiệm thu / tài liệu tương ứng | Tiến độ |
 |---|---|---|---|
 | HT1 | Chốt hợp đồng dữ liệu, thời gian và trạng thái; phân biệt code đang có với thiết kế cần thêm | Đối chiếu code, ghi hợp đồng trong `operations.md`; không sửa runtime | Hoàn tất đặc tả 18/10/2026; xem nhật ký HT1 bên dưới |
-| HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | Chưa bắt đầu trong lộ trình này; kế thừa audit cũ |
+| HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | Đang làm: HT2.1 xong 18/10; chưa sửa runtime, chưa chứng nhận tương thích |
 | HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Chưa bắt đầu; kế thừa checkpoint/idempotency v2 |
 | HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | Chưa bắt đầu |
 | HT5 | Hoàn thiện logic đánh giá và XAI | Nhãn thật có nguồn, nhận xét analyst, tham chiếu RQ2, chẩn đoán SHAP/LIME; cập nhật `xai_validation.md` | Chưa bắt đầu |
@@ -25,6 +25,17 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 | HT7 | Nghiệm thu toàn hệ thống | E5 đầy đủ, E1, kiểm thử sự cố/chạy lâu/tài nguyên; đồng bộ README và Word theo thực tế | Chưa bắt đầu |
 
 Nếu một bước lớn cần chia nhỏ, ghi HT2.1, HT2.2… với phạm vi và commit riêng trước khi làm; không gộp thay đổi phương pháp với sửa UI. Điều tra thiếu nguồn train không ngăn các bước vận hành độc lập, nhưng phải ghi rõ phần bị chặn và được thống nhất trước khi chuyển bước. Không đánh dấu tương thích hoàn toàn hoặc hoàn thành E4 chỉ vì sửa cờ TCP. Mỗi bước sau phải cập nhật lại trạng thái ở bảng này.
+
+### Nhật ký HT2.1 — 18/10/2026
+
+- **Mục đích:** kiểm chứng giả thuyết cờ TCP và các giới hạn vòng đời capture để chọn việc sửa có bằng chứng. Phạm vi điều tra nhỏ thuộc HT2, không phải hoàn thành toàn bộ HT2.
+- **Đã làm:** rà nguồn code/lịch sử preprocessing, kiểm tra đường đếm cờ Java tham khảo; thêm Stage25 đọc model và trích hai PCAP offline để so nhị phân hóa cờ trong bộ nhớ; thêm sáu fixture vòng đời v2 vào Stage20. Chi tiết và giới hạn nằm trong [báo cáo HT2.1](feature_compatibility.md#ht21).
+- **Kết quả quan trọng:** 74/92 vector đổi cờ nhưng 92/92 nhãn, xác suất và lá cây không đổi. Model dùng ngưỡng 1 tại các split cờ, nên không lấy count>1 làm nguyên nhân trực tiếp đã chứng minh cho Hulk. Tái hiện idle đúng 240s phụ thuộc thứ tự GC, FIN/RST chưa đóng flow, tuple tái sử dụng bị gộp và IAT âm khi packet lệch thứ tự.
+- **Kiểm tra mới:** Stage20 21/21 PASS; Stage23 self-test 3/3 PASS; Stage25 92 flow, 0 nhãn đổi. Test baseline PASS xác nhận cả hành vi chưa tốt, không chứng minh đã sửa. Có cảnh báo phiên bản pickle/encoder; không ghi đè model. Không chạy API/UI/capture live, không sửa DB hoặc dữ liệu đầu vào.
+- **Tài liệu:** cập nhật mục này, `feature_compatibility.md`, ghi chú `operations.md`; thêm một JSON tổng hợp có checksum, không thêm Markdown mới. Chỉ thêm diagnostic/test, giữ nguyên runtime và cấu hình.
+- **Commit của bước:** `git log --oneline --grep="test(rq3): audit flag sensitivity and capture lifecycle"`.
+- **Chưa giải quyết:** nguồn tạo Parquet còn thiếu; chưa đọc nội dung hai báo cáo Word trong thư mục processed ở bước này; chưa hoàn tất độ đúng đầu vào hay giảm báo nhầm. Không đánh dấu E4 hoàn tất.
+- **Tiếp theo:** HT2.2, ưu tiên sửa ranh giới idle nhất quán bằng adapter có version và đối chiếu PCAP; chốt riêng chính sách packet lệch thứ tự/TCP close trước khi triển khai các thay đổi tiếp theo. Dừng sau commit HT2.1 để báo cáo.
 
 ### Nhật ký HT1 — 18/10/2026
 
