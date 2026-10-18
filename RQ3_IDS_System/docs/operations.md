@@ -1,5 +1,20 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT4.1 — nền tảng trạng thái bền và ownership (18/10/2026)
+
+**Đã triển khai thư viện, CHƯA nối vào API/runtime.** `capture_registry.py` không sinh/kill tiến trình và không bắt mạng. Mục đích: có state machine kiểm thử được trước khi mở endpoint điều khiển. Runtime hiện tại vẫn dùng capture/feeder thủ công như trước, UI chưa có Start/Stop.
+
+- Một registry dùng khóa file OS cho một supervisor; thử tranh khóa từ process thứ hai bị từ chối. SQLite vận hành riêng `sessions.sqlite3` lưu phiên/command ID/trạng thái/định danh worker trong transaction; không thêm bảng vào DB dự đoán 6 bảng.
+- Reserve đồng thời: unique active-session + transaction/thread lock chỉ cấp một `start_granted=True`; retry cùng request ID trả phiên cũ với `False`, không được spawn lại. Cùng request ID khác interface bị từ chối. Chưa kiểm tra interface thực/Npcap ở bước này.
+- Hai worker capture/feeder có PID + birth token + worker token riêng. Mọi heartbeat/exit phải khớp cả ba, không dùng PID đơn lẻ. **Các giá trị này hiện là fixture đầu vào nội bộ, chưa có OS probe/heartbeat transport thật.** Supervisor tương lai phải tự xác minh, không lấy exit/flush/ACK từ payload người dùng.
+- `starting → running` chỉ khi cả hai worker đã ready; yêu cầu stop → `stopping`; capture exit 0 + flush + số dòng đã xuất → `draining`; chỉ completed khi hai worker được reap, code 0 và số dòng CSV bằng ACK feeder. SHAP hoàn tất là thông tin riêng, không điều kiện đồng nghĩa completed.
+- Capture/feeder thoát bất thường hoặc thiếu xác nhận → failed, vẫn chặn start mới khi chưa xác nhận cả hai worker đã thoát. Retry stop không chuyển trạng thái lỗi về running. Writer registry lỗi không ghi trạng thái thành công giả.
+- Reopen registry có phiên active → `unknown`, giữ dữ liệu cũ và chặn start/heartbeat/finalize. Không tự restart, không tự kill PID. Phiên completed/failed đã đóng giữ lịch sử và không chặn lượt mới. **Đối soát OS để thoát unknown, rollback khởi động dở/cancel trước attach chưa triển khai**; vì thế thư viện chưa được gắn vào API.
+
+Kiểm thử: `python scripts/stage33_test_capture_registry.py` **12/12 PASS** ngày 18/10/2026, dùng registry tạm, không DB thật/capture thật; fixture concurrency, khóa liên-process, restart, PID reuse/token sai, crash, stop lặp, ACK lệch, ghi lỗi và lịch sử completed. Đây không phải nghiệm thu toàn HT4 hoặc test tiến trình Npcap. Không chạy lại model/UI vì chưa có đường import runtime tới thư viện này.
+
+**HT4.2 tiếp theo:** giao thức quản lý worker thật (readiness/heartbeat/stop/flush/drain), định danh PID + thời điểm tạo + token được xác minh, xử lý startup một phần và supervisor restart; test process fixture riêng trước Wi-Fi. Sau đó mới nối API Start/Stop và cuối cùng UI. Endpoint phải kiểm tra nguồn gọi/quyền điều khiển local; khóa registry chỉ bảo vệ phiên do supervisor quản lý, chưa chặn capture terminal chạy ngoài hệ thống.
+
 ## UI bước 1 — trực quan hóa trên API sẵn có (18/10/2026)
 
 Mục đích: đọc kết quả nhanh hơn, tách rõ phạm vi dữ liệu và tình trạng toàn hệ thống; không đổi schema, API prediction, model, extractor hoặc XAI. Thêm biểu đồ trạng thái SHAP theo bộ lọc, màu/chú giải Benign–cảnh báo, trục xác suất %, tên IP:cổng/giao thức dễ đọc; phân trang sát bảng có Trước/Sau, reset khi đổi scope và giữ flow khi refresh/chuyển trang. Không đoán capture sống từ API/flow mới, không đổi tỷ lệ cảnh báo thành FPR. Hướng dẫn ở dashboard_usage.md.
