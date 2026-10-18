@@ -52,19 +52,19 @@ PROJECT_MODES = {'project': LifecycleFlow, 'project-v1': ProjectFlowV1,
                  'train-candidate': TrainCandidateFlow}
 
 
-def make_session(output, extractor):
+def make_session(output, extractor, limits=None):
     kwargs = dict(output_mode='csv', output=output, fields=None, verbose=False)
     if extractor == 'legacy':
         return FlowSession(**kwargs)
     if extractor in ('project', 'project-v3'):
-        return LifecycleSession(**kwargs)
+        return LifecycleSession(**kwargs, **(limits or {}))
     return ProjectFlowSession(**kwargs, flow_class=PROJECT_MODES[extractor])
 
 
-def create_replay_sniffer(pcap_path: str, output: str, extractor='project'):
+def create_replay_sniffer(pcap_path: str, output: str, extractor='project', limits=None):
     """Thay cho `create_sniffer(input_file=...)` — xem lý do ở docstring đầu file:
     bản gốc gắn cứng bộ lọc BPF cần `tcpdump`, Windows không có sẵn."""
-    session = make_session(output, extractor)
+    session = make_session(output, extractor, limits)
     # Offline PCAP clock can be years old; wall-clock GC would split flows
     # depending on CPU speed. Project session collects by packet timestamps.
     if extractor == 'legacy':
@@ -142,11 +142,19 @@ def main():
     parser.add_argument('--extractor', choices=[*PROJECT_MODES, 'legacy'], default='project',
                         help='project/project-v3: lifecycle v3; project-v2/project-v1/legacy: baseline; train-candidate: quy ước train thử nghiệm')
     parser.add_argument('--overwrite', action='store_true', help='Cho phép ghi đè CSV có sẵn; không dùng khi feeder đang theo dõi')
+    parser.add_argument('--max-open-flows', type=int, default=4096, help='Giới hạn flow mở, chỉ v3')
+    parser.add_argument('--max-buffered-packets', type=int, default=20000, help='Giới hạn packet đang giữ, chỉ v3')
+    parser.add_argument('--max-buffered-bytes', type=int, default=33554432, help='Giới hạn byte gói, không phải RAM RSS, chỉ v3')
+    parser.add_argument('--min-free-disk-bytes', type=int, default=268435456, help='Dừng nếu ổ CSV còn dưới ngưỡng byte trống, chỉ v3')
     parser.add_argument("--seconds", type=int, default=0,
                          help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
     args = parser.parse_args()
     if args.seconds < 0:
         parser.error('--seconds phải >= 0')
+    limits = dict(max_open_flows=args.max_open_flows, max_buffered_packets=args.max_buffered_packets,
+                  max_buffered_bytes=args.max_buffered_bytes, min_free_disk_bytes=args.min_free_disk_bytes)
+    if min(limits.values()) <= 0:
+        parser.error('Giới hạn capture phải > 0')
     if Path(args.output).exists() and Path(args.output).stat().st_size and not args.overwrite:
         parser.error('CSV đầu ra đã có dữ liệu. Chọn tên mới; --overwrite chỉ dành cho ghi đè có chủ đích.')
     print('Extractor: ' + (LEGACY_VERSION if args.extractor == 'legacy' else PROJECT_MODES[args.extractor].extractor_version))
@@ -161,7 +169,7 @@ def main():
         print("Hãy mở trình duyệt, lướt web bình thường trong lúc này. Nhấn Ctrl+C để dừng sớm.")
 
     if is_replay:
-        sniffer, session = create_replay_sniffer(args.pcap_input, args.output, args.extractor)
+        sniffer, session = create_replay_sniffer(args.pcap_input, args.output, args.extractor, limits)
     elif args.extractor == 'legacy':
         sniffer, session = create_sniffer(
             input_file=None,
@@ -173,7 +181,7 @@ def main():
             verbose=True,
         )
     else:
-        session = make_session(args.output, args.extractor)
+        session = make_session(args.output, args.extractor, limits)
         start_gc(session, interval=GC_INTERVAL)
         sniffer = AsyncSniffer(iface=args.interface, filter='ip and (tcp or udp)',
                                prn=guarded_process(session), store=False)
@@ -199,6 +207,11 @@ def main():
             print(f'[capture] accepted_packets={session.packets_count} exported_packets={session.n_exported_packets} '
                   f'exported_flows={session.n_exported} ignored_packets={session.n_ignored} '
                   f'late_packets={getattr(session, "n_late", 0)}')
+            if isinstance(session, LifecycleSession):
+                print(f'[capture] limit_rejected={session.n_limit_rejected} '
+                      f'peak_open_flows={session.peak_open_flows} '
+                      f'peak_buffered_packets={session.peak_buffered_packets} '
+                      f'buffered_packet_bytes={session.buffered_bytes}')
         print(f"Đã ép ghi nốt {n_remaining} flow còn đang mở lúc dừng.")
         check_health(session)
 

@@ -5,6 +5,9 @@ clamped, silently discarded, or appended to already exported records.
 This operational policy is NOT historical CICFlowMeter/train parity.
 """
 import math
+import shutil
+import time
+from pathlib import Path
 
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.packet import Padding
@@ -13,6 +16,11 @@ from cicflowmeter.features.context import PacketDirection
 from capture_adapter import ProjectFlow, ProjectFlowSession, packet_key
 
 LIFECYCLE_VERSION = 'rq3-cfm-0.5.0-lifecycle-v3'
+
+
+class CaptureLimitError(RuntimeError):
+    # Raised BEFORE admitting the triggering packet; buffered data can flush.
+    safe_to_flush = True
 
 
 class LifecycleFlow(ProjectFlow):
@@ -70,13 +78,56 @@ class LifecycleFlow(ProjectFlow):
 
 
 class LifecycleSession(ProjectFlowSession):
-    def __init__(self, *args, max_age=90., idle_timeout=240., **kwargs):
+    def __init__(self, *args, max_age=90., idle_timeout=240.,
+                 max_open_flows=4096, max_buffered_packets=20000,
+                 max_buffered_bytes=33554432, min_free_disk_bytes=268435456, **kwargs):
         if not all(math.isfinite(x) and x > 0 for x in (max_age, idle_timeout)):
             raise ValueError('Timeouts must be positive and finite')
+        for limit in (max_open_flows, max_buffered_packets, max_buffered_bytes, min_free_disk_bytes):
+            if type(limit) is not int or limit <= 0:
+                raise ValueError('Capture limits must be positive integers; unlimited is not supported')
         super().__init__(*args, flow_class=LifecycleFlow, **kwargs)
         self.max_age, self.idle_timeout = max_age, idle_timeout
         self.n_late = 0
         self._packet_watermark = float('-inf')
+        self.max_open_flows = max_open_flows
+        self.max_buffered_packets = max_buffered_packets
+        self.max_buffered_bytes = max_buffered_bytes
+        self.buffered_bytes = 0
+        self.n_limit_rejected = 0
+        self.peak_buffered_packets = 0
+        self.peak_open_flows = 0
+        self.min_free_disk_bytes = min_free_disk_bytes
+        self._next_disk_check = 0.
+
+    def _check_disk(self):
+        now = time.monotonic()
+        if now >= self._next_disk_check:
+            if shutil.disk_usage(Path(self.output).resolve().parent).free < self.min_free_disk_bytes:
+                raise OSError('Ổ đĩa CSV còn ít dung lượng hơn ngưỡng bảo vệ; dừng capture, không tự xóa dữ liệu.')
+            self._next_disk_check = now + 1.
+
+    def _capacity(self, packet, new_flow):
+        if (len(self.flows) + int(new_flow) > self.max_open_flows
+            or self.packets_count - self.n_exported_packets + 1 > self.max_buffered_packets
+            or self.buffered_bytes + len(packet) > self.max_buffered_bytes):
+            self.n_limit_rejected += 1
+            raise CaptureLimitError('Bộ đệm capture đạt giới hạn; dừng, ghi nốt flow đã nhận. '
+                                    'Packet kích hoạt chưa được nhận; phiên không đầy đủ.')
+
+    def _account_packet(self, packet, flow):
+        size = len(packet)
+        flow._resident_bytes = getattr(flow, '_resident_bytes', 0) + size
+        self.buffered_bytes += size
+        self.packets_count += 1
+        self.peak_buffered_packets = max(self.peak_buffered_packets, self.packets_count - self.n_exported_packets)
+        self.peak_open_flows = max(self.peak_open_flows, len(self.flows))
+
+    def _emit(self, key):
+        self._check_disk()
+        size = self.flows[key]._resident_bytes
+        super()._emit(key)
+        self.buffered_bytes -= size  # Only release accounting after successful export.
 
     def _expiry(self, flow, now):
         # Both GC and packet admission use precisely the same >= boundaries.
@@ -109,9 +160,10 @@ class LifecycleSession(ProjectFlowSession):
             # A standalone late flow is an explicit segmentation limitation.
             late = timestamp < self._packet_watermark
             if late:
+                self._capacity(packet, True)
                 late_key = (*key, 'late', self.packets_count)
                 self.flows[late_key] = LifecycleFlow(packet, PacketDirection.FORWARD)
-                self.packets_count += 1
+                self._account_packet(packet, self.flows[late_key])
                 self.n_late += 1
                 self._export(late_key, 'late_packet')
                 return None
@@ -128,12 +180,13 @@ class LifecycleSession(ProjectFlowSession):
             if flow is not None and flow.new_connection(packet, direction):
                 self._export(existing, 'tcp_new_syn')
                 flow = None
+            self._capacity(packet, flow is None)
             if flow is None:
                 existing = key
                 flow = self.flows[key] = LifecycleFlow(packet, PacketDirection.FORWARD)
             else:
                 flow.add_packet(packet, direction)
-            self.packets_count += 1
+            self._account_packet(packet, flow)
             self._packet_watermark = max(timestamp, self._packet_watermark)
             if flow.tcp_end:
                 self._export(existing, flow.tcp_end)

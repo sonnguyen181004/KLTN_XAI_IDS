@@ -77,5 +77,44 @@ class FeederFaults(unittest.TestCase):
                 feeder.run_feeder(self.csv, 'http://127.0.0.1:1', value, False, 1)
 
 
+class QueueLimits(unittest.TestCase):
+    def test_recovery_does_not_starve_under_continuous_new_tasks(self):
+        from explain_queue import ExplainQueue
+        with patch('explain_queue.threading.Thread.start'):
+            q = ExplainQueue(200, None, None, None, None)
+        for i in range(20):
+            q._q.put_nowait({'id': i})
+        with patch.object(q, '_take_recovery', return_value={'id': 'recovery'}) as take:
+            for _ in range(10):
+                _, from_memory = q._next_task()
+                self.assertTrue(from_memory)
+                q._q.task_done()
+            task, from_memory = q._next_task()
+            self.assertEqual(task['id'], 'recovery')
+            self.assertFalse(from_memory)
+            self.assertEqual(q.qsize(), 10)
+            self.assertEqual(take.call_count, 1)
+
+    def test_unlimited_queue_configuration_refused(self):
+        from explain_queue import ExplainQueue
+        for size in (0, -1, True, 1.5):
+            with self.assertRaises(ValueError):
+                ExplainQueue(size, None, None, None, None)
+
+    def test_queue_200_marks_overflow_without_removing_accepted_tasks(self):
+        from explain_queue import ExplainQueue
+        with patch('explain_queue.threading.Thread.start'):
+            q = ExplainQueue(200, None, None, None, None)
+        states = {}
+        with patch.object(q, '_set_status', side_effect=lambda key,status: states.update({key: status})):
+            for i in range(200):
+                self.assertEqual(q.submit(str(i), str(i), 'fixture', None), 'queued')
+            self.assertEqual(q.submit('overflow', 'overflow', 'fixture', None), 'dropped_queue_full')
+        self.assertEqual(q.qsize(), 200)
+        self.assertEqual(q.n_dropped, 1)
+        self.assertEqual(states['overflow'], 'dropped_queue_full')
+        self.assertEqual(sum(v == 'queued' for v in states.values()), 200)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1,5 +1,7 @@
 # Hướng dẫn chạy và đọc giao diện IDS
 
+**HT3 (18/10/2026):** capture v3 có cap 4096 flow mở / 20000 packet đang giữ / 32 MiB byte packet và bảo vệ dung lượng ổ CSV. Đây không phải giới hạn tổng traffic của lượt. Nếu CLI báo quá tải/lỗi writer, phiên không đầy đủ: xem lỗi terminal, không coi UI còn hiển thị dữ liệu cũ là capture đang khỏe. UI PCAP không gửi dữ liệu khi lệnh trích xuất thất bại. Các counter cap hiện ở terminal, chưa có panel telemetry capture. Queue SHAP vẫn 200, bỏ giải thích khi đầy nhưng giữ cảnh báo; recovery được xen kẽ khi traffic mới vẫn đến. Xem tham số và xử lý lỗi trong [vận hành](operations.md).
+
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
 > Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.

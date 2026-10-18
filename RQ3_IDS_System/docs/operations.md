@@ -1,5 +1,37 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT3.3 — giới hạn tài nguyên và phục hồi công bằng (18/10/2026)
+
+**Mục đích:** chặn bộ đệm tăng vô hạn, báo quá tải rõ ràng, tránh bỏ đói tác vụ SHAP cần phục hồi. Commit: `feat(rq3): bound capture resources and schedule SHAP recovery`.
+
+Mặc định v3, đổi qua CLI, không nhận 0/unlimited:
+
+| Tham số | Mặc định | Ý nghĩa |
+|---|---:|---|
+| `--max-open-flows` | 4096 | Flow đang giữ, không phải tổng flow cả lượt |
+| `--max-buffered-packets` | 20000 | Packet chưa xuất |
+| `--max-buffered-bytes` | 33554432 | Byte packet đang giữ, **không phải RSS** của Python |
+| `--min-free-disk-bytes` | 268435456 | Ngưỡng 256 MiB trống trên ổ CSV; kiểm tra trước export, cache tối đa 1 giây |
+
+Đạt giới hạn buffer: từ chối packet kích hoạt trước admission, dừng với exit code lỗi, flush phần đã nhận nếu writer còn an toàn. Không chia flow âm thầm để né cap, không báo phiên đầy đủ. CLI in `limit_rejected`, `peak_open_flows`, `peak_buffered_packets`, `buffered_packet_bytes`. Traffic sau khi dừng không có trong CSV. UI PCAP coi exit lỗi là trích xuất thất bại, không gửi CSV thiếu. V1/v2/legacy không có cap v3.
+
+Thiếu dung lượng hoặc writer lỗi: không retry ghi mù, không tự xóa lịch sử, không khẳng định flush thành công. Kiểm tra disk không bảo đảm chống mọi lỗi đầy ổ do tiến trình khác ghi đồng thời. CSV/DB vẫn tăng theo dữ liệu: chưa tự rotation/retention hoặc backup; cần theo dõi dung lượng, chọn lượt CSV mới. Packet RAM chưa xuất không được bảo đảm phục hồi sau kill/mất điện.
+
+SHAP giữ 200 tác vụ chờ + tối đa 1 đang xử lý. Đầy queue chỉ bỏ giải thích mới, giữ Prediction/Alert. Cấu hình maxsize <=0 bị từ chối. Sau 10 tác vụ RAM, worker kiểm tra một tác vụ recovery; khi queue trống cũng kiểm tra recovery. Công bằng theo số tác vụ, không phải cam kết độ trễ theo giây.
+
+**Kiểm thử:** Stage27 8/8, Stage28 5/5, Stage29 5 fixture PASS và fixture low-disk bổ sung PASS riêng (tổng 6); Stage26 22/22. Stage24 restart/mất ACK/rollback/chống trùng/recovery PASS; Stage14 API/UI với model thật và DB tạm PASS trong lượt HT3. Tải tổng hợp Stage29: 50 lần drain, nhận/xuất 3.200/3.200 packet, peak buffer 64, buffer rỗng sau mỗi drain; 125,169s với tracemalloc, peak cấp phát Python 10.042.600 byte. Không dùng đây làm throughput hoặc RSS thực tế. Cap là mức bảo vệ ban đầu, chưa tuning bằng Wi-Fi dài hạn.
+
+Lệnh từ thư mục `RQ3_IDS_System`:
+
+```powershell
+python scripts\stage27_test_feeder_faults.py
+python scripts\stage28_test_capture_health.py
+.\.venv_capture\Scripts\python.exe scripts\stage29_test_capture_limits.py
+python scripts\stage24_test_ingestion_recovery.py
+```
+
+Restart API để áp dụng scheduler; dừng/flush capture cũ rồi dùng lượt CSV mới để áp dụng cap. Không reset DB/xóa checkpoint. Chưa đóng nghiệm thu live dài hạn/RSS/CPU/tốc độ, retention/backup và độ bền packet RAM; không tuyên bố production-ready.
+
 ## HT3.1 — xác nhận giao nhận (18/10/2026)
 
 ### HT3.2 — lỗi nền capture không được giả thành thành công

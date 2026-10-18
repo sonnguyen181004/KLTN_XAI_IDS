@@ -25,6 +25,8 @@ def now_iso() -> str:
 class ExplainQueue:
     def __init__(self, maxsize: int, shap_explainer, reliability_scorer, db_module, db_path,
                  recovery_feature_names=None, model_version=None):
+        if type(maxsize) is not int or maxsize <= 0:
+            raise ValueError('SHAP queue maxsize must be a positive integer (not unlimited)')
         self._q: queue.Queue = queue.Queue(maxsize=maxsize)
         self.maxsize = maxsize
         self.shap_explainer = shap_explainer
@@ -35,6 +37,7 @@ class ExplainQueue:
         self.n_dropped = 0
         self.n_processed = 0
         self.n_recovered = 0
+        self._memory_since_recovery = 0
         self.recovery_feature_names = recovery_feature_names
         self.model_version = model_version
         if recovery_feature_names is not None:
@@ -129,20 +132,31 @@ class ExplainQueue:
         finally:
             conn.close()
 
+    def _next_task(self):
+        # Do not starve interrupted jobs while new traffic keeps RAM queue busy.
+        if self._memory_since_recovery >= 10:
+            self._memory_since_recovery = 0
+            task = self._take_recovery()
+            if task is not None:
+                return task, False
+        try:
+            task = self._q.get(timeout=1)
+            self._memory_since_recovery += 1
+            return task, True
+        except queue.Empty:
+            self._memory_since_recovery = 0
+            return self._take_recovery(), False
+
     def _run(self) -> None:
         while True:
-            from_memory = True
             try:
-                task = self._q.get(timeout=1)
-            except queue.Empty:
-                from_memory = False
-                try:
-                    task = self._take_recovery()
-                except Exception as exc:
-                    print(f'[explain_queue] Recovery failed: {exc}')
-                    continue
-                if task is None:
-                    continue
+                task, from_memory = self._next_task()
+            except Exception as exc:
+                print(f'[explain_queue] Recovery failed: {exc}')
+                time.sleep(1)
+                continue
+            if task is None:
+                continue
             try:
                 self._process(task)
             except Exception as e:  # noqa: BLE001 — worker nền không được chết vì 1 task lỗi
