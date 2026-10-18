@@ -2,6 +2,14 @@
 
 ## HT2.2 — timeout và packet lệch thời gian (18/10/2026)
 
+### HT2.3 — kết thúc và tái sử dụng phiên TCP
+
+- **Mục đích:** không gộp nhiều phiên cùng tuple; không kết thúc chỉ vì FIN một chiều. Commit: `fix(rq3): track observed TCP close and connection reuse`.
+- V3 ghi `tcp_rst_observed` sau khi nhận RST; `tcp_fin_ack_observed` chỉ sau khi thấy FIN hai chiều và ACK phủ số thứ tự cuối FIN tương ứng. Tính cả payload, SYN, FIN và vòng số thứ tự 32 bit. SYN cùng ISN trong phiên đang mở được giữ như retransmission; SYN khác ISN hoặc SYN sau dữ liệu midstream tách bằng `tcp_new_syn`. Hai SYN mở đồng thời được giữ cùng flow.
+- Đây là bộ gom flow thụ động theo dấu hiệu đã quan sát, **không phải TCP stack/reassembly hoàn chỉnh**: không xác minh tính hợp lệ RST, cửa sổ sequence, checksum hoặc TIME-WAIT; packet retransmission sau khi đã xuất sẽ thuộc flow khác. Mất gói có thể khiến thiếu ACK/FIN, lúc đó timeout/flush vẫn kết thúc. Không suy ra trạng thái máy đầu cuối từ riêng cờ đã bắt.
+- Tham khảo trạng thái TCP và FIN/ACK: [RFC 9293, mục 3.6](https://www.rfc-editor.org/rfc/rfc9293.html#section-3.6). Quy tắc phân flow là chính sách riêng đã version, không tuyên bố tái tạo CICFlowMeter2018.
+- **Kiểm thử:** Stage26 16/16 PASS, gồm FIN payload/wraparound/retransmission, half-close, RST, SYN mới/lặp, simultaneous open và TCP/UDP độc lập. Mỗi fixture đọc CSV và kiểm tra bảo toàn packet. Quét toàn bộ flow tối đa mỗi giây capture; tuple nhận packet vẫn kiểm tra timeout ngay tại admission. Chưa có benchmark tải dài hạn; mặc định CLI vẫn v2 ở commit này, chờ đối chiếu hai PCAP.
+
 - **Mục đích:** bỏ phụ thuộc thứ tự GC/admission tại biên timeout; không để packet lệch thứ tự tạo IAT âm. Commit: `fix(rq3): version deterministic flow timeout and late-packet policy`.
 - **Triển khai:** `capture_lifecycle.py`, mode thử nghiệm `--extractor project-v3`; v1/v2 và mặc định `project` chưa đổi tại commit này. Cùng điều kiện `>=` trước admission và trong GC. Tuổi flow tối đa 90s tính từ packet đầu, kể cả flow im lặng; idle 240s là ngưỡng dự phòng (với mặc định tuổi 90s sẽ đến trước). Cửa sổ nửa mở: packet ở đúng biên thuộc flow mới. Đây là quy ước vận hành mới, không giả định tương đương train.
 - **Packet trễ:** nếu timestamp lùi so với packet cuối của tuple đang mở, xuất thành flow một packet có `flow_end_reason=late_packet`; nếu tuple không còn mở, đối chiếu watermark packet toàn session. Không sửa timestamp, không âm thầm bỏ packet, không sửa dòng đã xuất. Không dùng clock GC làm watermark packet. Giới hạn: flow một packet không tái dựng được phiên gốc và có thể làm thay đổi dự đoán; lý do xuất nằm trong CSV, chưa thêm vào schema API/UI.

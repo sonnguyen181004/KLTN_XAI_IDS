@@ -7,6 +7,13 @@ from unittest.mock import patch
 
 from stage20_test_capture_adapter import packet
 from capture_lifecycle import LifecycleSession, LIFECYCLE_VERSION
+from scapy.layers.inet import TCP
+
+
+def tcp_packet(when, direction='f', flags='A', seq=0, ack=0, payload=0):
+    p = packet(when, direction, flags, payload)
+    p[TCP].seq, p[TCP].ack = seq, ack
+    return p
 
 
 class LifecycleTests(unittest.TestCase):
@@ -105,6 +112,70 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual(s.n_exported, 1)
         with self.assertRaises(RuntimeError):
             s.process(packet(1))
+
+    def test_rst_exports_packet_and_tuple_reuse_starts_new_flow(self):
+        s = self.session()
+        for p in (tcp_packet(0, flags='S', seq=10), tcp_packet(1, 'b', 'RA'), tcp_packet(2, flags='S', seq=20)):
+            s.process(p)
+        rows = self.rows(s)
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]['flow_end_reason'], 'tcp_rst_observed')
+        self.assertEqual(rows[0]['rst_flag_cnt'], '1')
+
+    def test_fin_waits_for_both_directions_and_ack(self):
+        s = self.session()
+        for p in (tcp_packet(0, flags='FA', seq=100), tcp_packet(1, 'b', 'A', ack=101),
+                  tcp_packet(2, 'b', 'FA', seq=200, ack=101)):
+            s.process(p)
+            self.assertEqual(s.n_exported, 0)
+        s.process(tcp_packet(3, flags='A', ack=201))
+        self.assertEqual(s.n_exported, 1)
+        self.assertEqual(self.rows(s)[0]['flow_end_reason'], 'tcp_fin_ack_observed')
+
+    def test_fin_payload_wraparound_and_retransmission(self):
+        s = self.session()
+        s.process(tcp_packet(0, flags='FA', seq=2**32-2, payload=2))
+        s.process(tcp_packet(1, flags='FA', seq=2**32-2, payload=2))
+        s.process(tcp_packet(2, 'b', 'FA', seq=99, ack=0))  # Does not cover FIN end=1.
+        s.process(tcp_packet(3, flags='A', ack=100))
+        self.assertEqual(s.n_exported, 0)
+        s.process(tcp_packet(4, 'b', 'A', ack=1))
+        self.assertEqual(self.rows(s)[0]['flow_end_reason'], 'tcp_fin_ack_observed')
+
+    def test_single_fin_and_midstream_data_do_not_close(self):
+        s = self.session()
+        s.process(tcp_packet(0, flags='FA', seq=100))
+        s.process(tcp_packet(1, 'b', 'PA', ack=101, payload=10))
+        self.assertEqual(s.n_exported, 0)
+        self.assertEqual(self.rows(s)[0]['flow_end_reason'], 'flush')
+
+    def test_syn_retransmission_and_different_isn(self):
+        s = self.session()
+        s.process(tcp_packet(0, flags='S', seq=10))
+        s.process(tcp_packet(1, flags='S', seq=10))
+        self.assertEqual(s.n_exported, 0)
+        s.process(tcp_packet(2, flags='S', seq=20))
+        rows = self.rows(s)
+        self.assertEqual([r['tot_fwd_pkts'] for r in rows], ['2', '1'])
+        self.assertEqual(rows[0]['flow_end_reason'], 'tcp_new_syn')
+
+    def test_midstream_new_syn_is_not_merged(self):
+        s = self.session()
+        s.process(tcp_packet(0, flags='PA', payload=10))
+        s.process(tcp_packet(1, flags='S', seq=50))
+        self.assertEqual(self.rows(s)[0]['flow_end_reason'], 'tcp_new_syn')
+
+    def test_simultaneous_open_is_not_split(self):
+        s = self.session()
+        s.process(tcp_packet(0, flags='S', seq=10))
+        s.process(tcp_packet(1, 'b', 'S', seq=20))
+        s.process(tcp_packet(2, flags='SA', seq=10, ack=21))
+        self.assertEqual(len(self.rows(s)), 1)
+
+    def test_tcp_and_udp_never_merge(self):
+        s = self.session()
+        s.process(packet(0)); s.process(packet(1, udp=True))
+        self.assertEqual(len(self.rows(s)), 2)
 
 
 if __name__ == '__main__':
