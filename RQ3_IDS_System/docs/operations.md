@@ -1,5 +1,22 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT4.2 — giao thức worker, chưa tích hợp supervisor (18/10/2026)
+
+**Mục đích:** chuẩn bị đường dừng/flush/drain có bằng chứng, độc lập refresh Streamlit. `app/worker_control.py` được capture và feeder dùng khi có cặp tham số nội bộ `--control-dir`/`--worker-token`; không có tham số này thì giữ workflow terminal cũ. Không đổi model/78 đặc trưng/SHAP/LIME, cap hoặc DB thật. Chưa có launcher, endpoint hay nút Start/Stop.
+
+- Mỗi worker dùng thư mục riêng do chủ quản tin cậy chuẩn bị. Chủ ghi atomic `lease.json` (`worker_token`, `monotonic`) và `command.json`; worker ghi atomic `status.json` gồm role, PID thực, thời điểm tạo OS, token, sequence, heartbeat và trạng thái. Token gắn phiên, không phải cơ chế xác thực mạng; thư mục phải có quyền truy cập phù hợp. Lease dùng đồng hồ monotonic cùng máy/lần boot, hết hạn 45 giây hoặc thời gian tương lai bị từ chối.
+- Capture lifecycle v3 nhận `action=stop`, dừng nhận rồi flush có kiểm tra; chỉ báo finished với `flushed`, `rows`, `csv_size` sau khi thành công. Lỗi lease/health đi qua cleanup và thoát lỗi, không báo hoàn tất giả. Lỗi khởi tạo có thể chỉ có exit code, chưa có status cuối. Không áp đặt thời lượng 60 giây; chế độ thủ công liên tục vẫn giữ nguyên.
+- Feeder nhận `abort` (thoát lỗi, giữ checkpoint) hoặc `drain` với kích thước/số dòng cuối do chủ quản cung cấp sau khi capture đóng file. Chỉ finished khi CSV không đổi kích thước, offset hết file và ACK khớp số dòng; thiếu CSV, dòng cuối dở hoặc lệch ACK đều thất bại. Retry/timeout HTTP và checkpoint hiện có giữ nguyên.
+- Heartbeat phát từ vòng xử lý, không có thread riêng giả khỏe. Feeder đang chờ HTTP/backoff có thể chậm heartbeat; supervisor tương lai phải tính cả request timeout/backoff, không dùng lease của chính nó làm bằng chứng worker sống. Status finished không đủ: phía cha còn phải xác minh identity OS, exit code cả hai process và đối soát flush/ACK. Windows venv có thể có launcher PID khác worker PID.
+
+**Kiểm thử:** `python scripts/stage34_test_worker_control.py` **9/9 PASS**: identity/token, lease cũ/tương lai, capture PCAP thật → CSV → feeder process/API ACK fixture, stop khi sniffer fixture đang chạy, abort, CSV rỗng/ACK lệch và dòng dở. `stage34_capture_fixture.py` chỉ thay sniffer bằng nguồn packet tổng hợp, không bắt NIC. Đây là test giao thức, không phải model accuracy hoặc nghiệm thu live. Stage27 **8/8**, Stage33 **12/12**, Stage20 **21/21**, Stage28 **5/5** PASS hồi quy.
+
+**Giới hạn/tiếp theo HT4.3:** registry HT4.1 chưa được nối với các worker này; chưa xác minh worker từ phía supervisor, chưa rollback startup một phần/reconcile sau restart, chưa bảo vệ endpoint điều khiển. Cần hoàn thiện các phần đó và test lỗi riêng trước khi bật UI. Không hướng dẫn người dùng tự dựng file điều khiển để thay workflow đã có. Không bắt Wi-Fi, reset DB, tăng cap hay push trong bước này. Commit: `feat(rq3): add managed worker heartbeat and graceful drain protocol`.
+
+Chạy lặp phát hiện race lease (lấy thời gian trước khi đọc lease vừa gia hạn) và Windows từ chối replace khi reader mở file. Đã lấy thời gian sau read, thêm `write_control` retry PermissionError tối đa 6 lần (tổng chờ 0,3 giây), vẫn ném lỗi nếu kéo dài. Chủ quản tương lai phải dùng helper này cho lease/command. Test bổ sung tái hiện race và retry hữu hạn; lỗi thread gia hạn fixture nay làm test thất bại, không bị bỏ qua.
+
+Hồi quy tích hợp Stage14 sau HT4.2: **PASS toàn bộ** trên DB tạm/model thật, gồm CSV/PCAP qua UI, feeder, SHAP/LIME, phân trang và storage. Không coi các nhãn trong test là FPR.
+
 ## HT4.1 — nền tảng trạng thái bền và ownership (18/10/2026)
 
 **Đã triển khai thư viện, CHƯA nối vào API/runtime.** `capture_registry.py` không sinh/kill tiến trình và không bắt mạng. Mục đích: có state machine kiểm thử được trước khi mở endpoint điều khiển. Runtime hiện tại vẫn dùng capture/feeder thủ công như trước, UI chưa có Start/Stop.

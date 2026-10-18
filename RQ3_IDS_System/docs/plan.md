@@ -6,6 +6,10 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Trạng thái hiện tại và thứ tự làm tiếp
 
+**HT4.2 (18/10) — giao thức worker đã triển khai:** capture/feeder hỗ trợ kênh điều khiển riêng tùy chọn, định danh PID + thời điểm tạo OS + token, heartbeat/lease, stop/flush và drain chỉ hoàn tất khi kích thước CSV và số ACK khớp. Mục đích: có đường dừng có kiểm chứng trước khi bật nút UI; không đổi model, đặc trưng, XAI, cap hoặc DB thật. Stage34 **9/9 PASS**, Stage27 **8/8**, Stage33 **12/12**, hồi quy Stage20 **21/21**, Stage28 **5/5**. Test worker dùng process thật/PCAP/sniffer fixture/API ACK giả lập, không nghiệm thu Wi-Fi hay chất lượng dự đoán. Commit: `feat(rq3): add managed worker heartbeat and graceful drain protocol`.
+
+**Tiếp theo HT4.3:** nối registry và worker bằng supervisor phía API; xác minh identity OS từ phía cha, xử lý khởi động một phần, đối soát restart/unknown và kết thúc cả hai process. Sau test riêng mới thêm endpoint có bảo vệ và UI Start/Stop. HT4.2 chưa hoàn thành toàn bộ phạm vi từng dự kiến cho HT4.2 trong nhật ký HT4.1 bên dưới; phần supervisor/reconciliation được tách sang HT4.3. Streamlit không sở hữu process.
+
 **HT4.1 (18/10) — nền tảng, chưa tích hợp runtime:** `capture_registry.py` có ownership OS lock, journal SQLite vận hành riêng, idempotent reserve/chống start đồng thời, identity worker, state stop/drain/completion và restart → unknown chặn start. Không đổi 6 bảng IDS/model/XAI, không sinh process hoặc thêm endpoint Start/Stop. Mục đích và giới hạn trong operations.md. Test Stage33 dùng fixture và process chỉ tranh khóa, không bắt mạng. Commit: `feat(rq3): add durable capture lifecycle registry foundation`. HT4.2 còn phải làm transport/OS identity thực, stop/drain worker thật, xử lý startup dở và reconciliation; HT4 tổng thể CHƯA hoàn thành, chưa bật nút UI.
 
 Nghiệm thu phạm vi HT4.1: **Stage33 12/12 PASS**, không thay runtime hiện hành; không gọi fixture identity/heartbeat là xác minh process thật. Chưa tích hợp API/UI, chưa cần người dùng restart hoặc đổi lệnh.
@@ -35,9 +39,9 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 | HT1 | Chốt hợp đồng dữ liệu, thời gian và trạng thái; phân biệt code đang có với thiết kế cần thêm | Đối chiếu code, ghi hợp đồng trong `operations.md`; không sửa runtime | Hoàn tất đặc tả 18/10/2026; xem nhật ký HT1 bên dưới |
 | HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | HT2.1–HT2.4 triển khai và kiểm thử xong 18/10; v3 mặc định. Chứng nhận train–PCAP còn bị chặn do thiếu nguồn preprocessing/extractor lịch sử |
 | HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Đã sửa HT3.1–3.3 và kiểm thử sự cố; còn nghiệm thu live dài hạn/RSS, retention và độ bền packet chưa xuất |
-| HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | Chưa bắt đầu |
+| HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | HT4.1 registry và HT4.2 giao thức worker đã kiểm thử riêng; còn supervisor/API/reconciliation/UI |
 | HT5 | Hoàn thiện logic đánh giá và XAI | Nhãn thật có nguồn, nhận xét analyst, tham chiếu RQ2, chẩn đoán SHAP/LIME; cập nhật `xai_validation.md` | Chưa bắt đầu |
-| HT6 | Hoàn thiện UI dựa trên API/trạng thái đã kiểm chứng | Tổng quan, realtime, CSV/PCAP, flow/cảnh báo, đánh giá; test thao tác và dữ liệu; cập nhật `dashboard_usage.md` | Chưa bắt đầu |
+| HT6 | Hoàn thiện UI dựa trên API/trạng thái đã kiểm chứng | Tổng quan, realtime, CSV/PCAP, flow/cảnh báo, đánh giá; test thao tác và dữ liệu; cập nhật `dashboard_usage.md` | UI bước 1 đã xong; điều khiển realtime chờ HT4 |
 | HT7 | Nghiệm thu toàn hệ thống | E5 đầy đủ, E1, kiểm thử sự cố/chạy lâu/tài nguyên; đồng bộ README và Word theo thực tế | Chưa bắt đầu |
 
 Nếu một bước lớn cần chia nhỏ, ghi HT2.1, HT2.2… với phạm vi và commit riêng trước khi làm; không gộp thay đổi phương pháp với sửa UI. Điều tra thiếu nguồn train không ngăn các bước vận hành độc lập, nhưng phải ghi rõ phần bị chặn và được thống nhất trước khi chuyển bước. Không đánh dấu tương thích hoàn toàn hoặc hoàn thành E4 chỉ vì sửa cờ TCP. Mỗi bước sau phải cập nhật lại trạng thái ở bảng này.
