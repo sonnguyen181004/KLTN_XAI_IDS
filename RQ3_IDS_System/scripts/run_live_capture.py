@@ -46,6 +46,7 @@ from capture_adapter import (ProjectFlowSession, ProjectFlow, ProjectFlowV1,
                              TrainCandidateFlow, EXTRACTOR_VERSION, LEGACY_VERSION)
 from capture_lifecycle import LifecycleFlow, LifecycleSession
 from capture_health import check_health, guarded_process, start_gc, stop_gc
+from worker_control import control_args, from_args
 
 PROJECT_MODES = {'project': LifecycleFlow, 'project-v1': ProjectFlowV1,
                  'project-v2': ProjectFlow, 'project-v3': LifecycleFlow,
@@ -135,6 +136,7 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None, health_c
 
 def main():
     parser = argparse.ArgumentParser()
+    control_args(parser)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--interface", help='Bắt SỐNG: tên interface, ví dụ "Wi-Fi" (xem bằng Get-NetAdapter)')
     group.add_argument("--pcap-input", help="Đọc lại 1 file .pcap đã ghi sẵn (nguồn 2 — phát lại), thay vì bắt sống")
@@ -149,6 +151,8 @@ def main():
     parser.add_argument("--seconds", type=int, default=0,
                          help="Chỉ áp dụng khi bắt SỐNG: tự dừng sau N giây (0 = chạy tới khi Ctrl+C)")
     args = parser.parse_args()
+    if args.control_dir and args.extractor not in ('project', 'project-v3'):
+        parser.error('Managed capture requires lifecycle v3')
     if args.seconds < 0:
         parser.error('--seconds phải >= 0')
     limits = dict(max_open_flows=args.max_open_flows, max_buffered_packets=args.max_buffered_packets,
@@ -168,6 +172,7 @@ def main():
         print(f"Bắt đầu bắt traffic trên interface '{args.interface}', ghi ra: {args.output}")
         print("Hãy mở trình duyệt, lướt web bình thường trong lúc này. Nhấn Ctrl+C để dừng sớm.")
 
+    control = from_args(args, 'capture')
     if is_replay:
         sniffer, session = create_replay_sniffer(args.pcap_input, args.output, args.extractor, limits)
     elif args.extractor == 'legacy':
@@ -215,8 +220,23 @@ def main():
         print(f"Đã ép ghi nốt {n_remaining} flow còn đang mở lúc dừng.")
         check_health(session)
 
-    wait_for_capture(sniffer, 0 if is_replay else args.seconds, cleanup=finish_capture,
-                     health_check=lambda: check_health(session))
+    managed_stop = threading.Event()
+    def managed_health():
+        check_health(session)
+        if control:
+            command = control.tick('capturing' if sniffer.running else 'starting')
+            if command.get('action') == 'stop':
+                managed_stop.set()
+    try:
+        wait_for_capture(sniffer, 0 if is_replay else args.seconds, stop_event=managed_stop,
+                         cleanup=finish_capture, health_check=managed_health)
+        if control:
+            control.finish(True, flushed=True, rows=session.n_exported,
+                           csv_size=Path(args.output).stat().st_size)
+    except BaseException as exc:
+        if control:
+            control.finish(False, flushed=False, error_type=type(exc).__name__)
+        raise
     print(f"Đã dừng an toàn. Kiểm tra file: {args.output}")
     if is_replay:
         print("\nĐã đọc hết file pcap.")

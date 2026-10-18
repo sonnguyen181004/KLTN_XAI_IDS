@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**HT4.2 — 18/10/2026:** đã thêm giao thức worker tùy chọn cho capture/feeder: heartbeat, lease chủ quản, dừng/flush và drain đối soát CSV–ACK. Stage34 9/9, Stage27 8/8, Stage33 12/12 PASS; không bắt Wi-Fi trong các test này. Chưa nối registry với bộ quản lý tiến trình/API, chưa bật nút UI. Lệnh terminal cũ giữ nguyên. Bước tiếp: HT4.3 supervisor, xử lý khởi động dở/restart và kiểm thử riêng trước khi nối UI. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).
+
 **HT4.1 — 18/10/2026:** đã có nền tảng registry phiên bền vững/khóa sở hữu/chống start trùng, test fixture riêng. **Chưa tích hợp tiến trình/API**, chưa có nút capture; bước tiếp là HT4.2 giao thức worker và đối soát restart. Không cần đổi lệnh chạy hiện tại. Chi tiết trong [vận hành](RQ3_IDS_System/docs/operations.md).
 
 **UI bước 1 — 18/10/2026:** tổng quan theo bộ lọc, biểu đồ xu hướng/nhãn và trạng thái SHAP, bảng IP:cổng/giao thức dễ đọc, phân trang cạnh bảng, xác suất %. Giữ đủ chi tiết XAI/78 đặc trưng. Chưa có nút Start/Stop: HT4 backend quản lý tiến trình và trạng thái bền vững là bước riêng. Xem [hướng dẫn UI](RQ3_IDS_System/docs/dashboard_usage.md); restart Streamlit, không reset DB.

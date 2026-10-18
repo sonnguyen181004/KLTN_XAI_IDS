@@ -8,6 +8,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Bắt đầu ở đây
 
+**Cập nhật HT4.2 (18/10):** code capture/feeder đã có giao thức điều khiển nội bộ được kiểm thử, nhưng chưa có supervisor/API nối vào UI. Chưa có nút Bắt đầu/Dừng hoạt động; tiếp tục dùng các lệnh terminal bên dưới, không tự thêm `--control-dir`/`--worker-token`. Không cần reset DB hay đổi model. Giao thức worker không phải trạng thái capture trực tiếp trên Dashboard; HT4.3 sẽ nối quản lý tiến trình trước khi mở nút.
+
 ### UI bước 1 — trình bày, chưa điều khiển capture (18/10/2026)
 
 Cập nhật HT4.1: đã có thư viện trạng thái bền/khóa sở hữu với test riêng, nhưng chưa nối API hoặc tiến trình thật. Không thay cách chạy terminal hiện tại; chưa có nút Start/Stop hoạt động. Trạng thái worker do Streamlit giữ vẫn không được dùng làm bằng chứng capture đang chạy.

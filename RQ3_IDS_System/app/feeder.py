@@ -93,8 +93,14 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def wait_for_file(path: Path, poll_s: float) -> None:
+def wait_for_file(path: Path, poll_s: float, control=None) -> None:
     while not path.exists():
+        if control:
+            command = control.tick('waiting_input')
+            if command.get('action') == 'abort':
+                raise RuntimeError('Managed feeder aborted before input')
+            if command.get('action') == 'drain':
+                raise RuntimeError('Cannot drain missing CSV')
         print(f"[feeder] Đang chờ file {path} xuất hiện (CICFlowMeter chưa ghi gì)...")
         time.sleep(poll_s)
 
@@ -125,13 +131,13 @@ def row_to_payload(row: dict, header: list[str], convert_units: bool) -> dict:
 
 def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert_units: bool,
                max_iterations: int | None = None, capture_timezone: str | None = None,
-               checkpoint_path: Path | None = None) -> None:
+               checkpoint_path: Path | None = None, control=None) -> None:
     if not math.isfinite(poll_interval_sec) or poll_interval_sec <= 0:
         raise ValueError('Chu kỳ kiểm tra phải hữu hạn và > 0.')
     print(f"[feeder] Bắt đầu theo dõi: {watch_path}")
     print(f"[feeder] Gửi tới: {api_url}/predict | đổi đơn vị μs: {convert_units} | "
           f"chu kỳ kiểm tra: {poll_interval_sec}s")
-    wait_for_file(watch_path, poll_interval_sec)
+    wait_for_file(watch_path, poll_interval_sec, control)
 
     watch_path = watch_path.resolve()
     checkpoint_path = (checkpoint_path or Path(str(watch_path)+'.feeder-state.json')).resolve()
@@ -139,11 +145,11 @@ def run_feeder(watch_path: Path, api_url: str, poll_interval_sec: float, convert
         raise ValueError('Checkpoint không được trùng đường dẫn CSV.')
     with checkpoint_lock(checkpoint_path):
         _run_checkpointed(watch_path, api_url.rstrip('/'), poll_interval_sec, convert_units,
-                          max_iterations, capture_timezone, checkpoint_path)
+                          max_iterations, capture_timezone, checkpoint_path, control)
 
 
 def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
-                      max_iterations, capture_timezone, checkpoint_path):
+                      max_iterations, capture_timezone, checkpoint_path, control=None):
     state = open_state(checkpoint_path, watch_path, api_url, convert_units, capture_timezone)
     n_sent = 0
     local_offset = datetime.now().astimezone().strftime('%z')
@@ -153,6 +159,9 @@ def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
     iteration = 0
     retry_delay = max(.01, poll_interval_sec)
     while max_iterations is None or iteration < max_iterations:
+        command = control.tick('sending', acknowledged=state['acknowledged_rows'], offset=state['offset']) if control else {}
+        if command.get('action') == 'abort':
+            raise RuntimeError('Managed feeder aborted; checkpoint retained')
         iteration += 1
         transient = False
         with watch_path.open('rb') as stream:
@@ -163,6 +172,10 @@ def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
             validate_file(stream, state)
             stream.seek(state['offset'])
             for _ in range(100):  # Bounded batch, no full-file reread every poll.
+                if control:
+                    command = control.tick('sending', acknowledged=state['acknowledged_rows'], offset=state['offset'])
+                    if command.get('action') == 'abort':
+                        raise RuntimeError('Managed feeder aborted; checkpoint retained')
                 raw_row = read_record(stream)
                 if raw_row is None:
                     break
@@ -211,6 +224,19 @@ def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
                 state['offset'] = stream.tell()
                 state['anchor'] = anchor(stream, state['offset'])
                 save_checkpoint(checkpoint_path, state)
+        if control and command.get('action') == 'drain':
+            expected_size, expected_rows = command.get('csv_size'), command.get('rows')
+            if any(type(v) is not int or v < 0 for v in (expected_size, expected_rows)):
+                raise RuntimeError('Invalid drain evidence')
+            if watch_path.stat().st_size != expected_size:
+                raise RuntimeError('CSV changed after capture closed it')
+            if not transient and state['offset'] == expected_size:
+                if state['acknowledged_rows'] != expected_rows:
+                    raise RuntimeError('CSV/ACK count mismatch during drain')
+                control.finish(True, acknowledged=state['acknowledged_rows'], offset=state['offset'])
+                return
+            if not transient and state['offset'] < expected_size and raw_row is None:
+                raise RuntimeError('Closed CSV contains incomplete final record')
         if transient:
             time.sleep(retry_delay)
             retry_delay = min(30., retry_delay*2)
@@ -223,22 +249,32 @@ def _run_checkpointed(watch_path, api_url, poll_interval_sec, convert_units,
 def main():
     cfg = load_config()
     parser = argparse.ArgumentParser(description="Feeder: theo dõi CSV, tự gửi flow mới vào /predict")
+    from worker_control import control_args, from_args
+    control_args(parser)
     parser.add_argument("--watch", type=str, default=str(REPO_ROOT / cfg["feeder"]["default_watch_csv"]))
     parser.add_argument("--convert-units", action="store_true", default=cfg["feeder"]["convert_seconds_to_microseconds"])
     parser.add_argument("--max-iterations", type=int, default=None, help="Dừng sau N lần kiểm tra (dùng khi test; để trống = chạy mãi)")
     parser.add_argument('--capture-timezone', default=None, help='Múi giờ timestamp CSV, ví dụ +07:00; mặc định giờ máy bắt')
     parser.add_argument('--checkpoint', type=Path, default=None, help='Mặc định <CSV>.feeder-state.json; giữ file này để tiếp tục sau restart')
     args = parser.parse_args()
+    if args.control_dir and args.max_iterations is not None:
+        parser.error('Managed feeder stops by drain/abort, not max-iterations')
 
     watch_path = Path(args.watch)
     api_url = f"http://{cfg['api']['host']}:{cfg['api']['port']}"
     api_url = os.environ.get('IDS_API_URL', api_url)
+    control = from_args(args, 'feeder')
     try:
         run_feeder(watch_path, api_url, cfg["feeder"]["poll_interval_sec"], args.convert_units,
-                   args.max_iterations, args.capture_timezone, args.checkpoint)
+                   args.max_iterations, args.capture_timezone, args.checkpoint, control)
     except KeyboardInterrupt:
+        if control:
+            control.finish(False, error_type='KeyboardInterrupt')
+            raise SystemExit(2)
         print('[feeder] Đã dừng. Chạy lại cùng lệnh để tiếp tục từ checkpoint.')
     except (ValueError, RuntimeError, OSError) as exc:
+        if control:
+            control.finish(False, error_type=type(exc).__name__)
         print(f'[feeder] DỪNG: {exc}')
         raise SystemExit(2) from exc
 
