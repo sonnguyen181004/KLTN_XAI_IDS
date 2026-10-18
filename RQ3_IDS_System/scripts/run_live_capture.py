@@ -45,6 +45,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'app'))
 from capture_adapter import (ProjectFlowSession, ProjectFlow, ProjectFlowV1,
                              TrainCandidateFlow, EXTRACTOR_VERSION, LEGACY_VERSION)
 from capture_lifecycle import LifecycleFlow, LifecycleSession
+from capture_health import check_health, guarded_process, start_gc, stop_gc
 
 PROJECT_MODES = {'project': LifecycleFlow, 'project-v1': ProjectFlowV1,
                  'project-v2': ProjectFlow, 'project-v3': LifecycleFlow,
@@ -68,11 +69,11 @@ def create_replay_sniffer(pcap_path: str, output: str, extractor='project'):
     # depending on CPU speed. Project session collects by packet timestamps.
     if extractor == 'legacy':
         _start_periodic_gc(session, interval=GC_INTERVAL)
-    sniffer = AsyncSniffer(offline=pcap_path, prn=session.process, store=False)
+    sniffer = AsyncSniffer(offline=pcap_path, prn=guarded_process(session), store=False)
     return sniffer, session
 
 
-def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None):
+def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None, health_check=None):
     """Keep Python's main thread responsive; never block in Thread.join().
 
     Windows/Python capture environments can defer Ctrl+C while joining a native
@@ -94,6 +95,11 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None):
         announced = False
         stop_deadline = None
         while sniffer.thread.is_alive():
+            if health_check is not None:
+                try:
+                    health_check()
+                except Exception:
+                    requested.set()  # Drain safely, then re-raise the stored failure.
             if sniffer.running and not announced:
                 print('[capture] receiving_started', flush=True)
                 announced = True
@@ -116,6 +122,8 @@ def wait_for_capture(sniffer, seconds=0, stop_event=None, cleanup=None):
                 raise RuntimeError('Capture chưa dừng sau 15 giây; không flush CSV khi thread còn ghi. Không coi phiên này đã dừng an toàn.')
             time.sleep(0.1)
         sniffer.join(timeout=0)  # Thread ended; propagate Scapy's stored exception.
+        if health_check is not None:
+            health_check()
     finally:
         try:
             if cleanup is not None:
@@ -166,18 +174,19 @@ def main():
         )
     else:
         session = make_session(args.output, args.extractor)
-        _start_periodic_gc(session, interval=GC_INTERVAL)
+        start_gc(session, interval=GC_INTERVAL)
         sniffer = AsyncSniffer(iface=args.interface, filter='ip and (tcp or udp)',
-                               prn=session.process, store=False)
+                               prn=guarded_process(session), store=False)
     def finish_capture():
-        gc_stop = getattr(session, "_gc_stop", None)
-        if gc_stop:
-            gc_stop.set()
-            session._gc_thread.join(timeout=3)
+        stop_gc(session)
         # Never race a still-running capture thread with final CSV export.
         if sniffer.thread and sniffer.thread.is_alive():
             raise RuntimeError('Thread capture còn chạy; chưa thể ghi nốt an toàn.')
         print('[capture] receiving_stopped', flush=True)
+        error = getattr(session, '_capture_error', None)
+        if error is not None and not getattr(error, 'safe_to_flush', False):
+            # A failed write may have left a partial row. Never retry it blindly.
+            check_health(session)
         # V3 exports on age/idle, observed TCP close, new SYN, or final flush.
         # V1/V2 preserve their historical timeout-only policy.
         # Dừng sớm (ví dụ test vài chục giây) mà
@@ -191,9 +200,11 @@ def main():
                   f'exported_flows={session.n_exported} ignored_packets={session.n_ignored} '
                   f'late_packets={getattr(session, "n_late", 0)}')
         print(f"Đã ép ghi nốt {n_remaining} flow còn đang mở lúc dừng.")
-        print(f"Đã dừng. Kiểm tra file: {args.output}")
+        check_health(session)
 
-    wait_for_capture(sniffer, 0 if is_replay else args.seconds, cleanup=finish_capture)
+    wait_for_capture(sniffer, 0 if is_replay else args.seconds, cleanup=finish_capture,
+                     health_check=lambda: check_health(session))
+    print(f"Đã dừng an toàn. Kiểm tra file: {args.output}")
     if is_replay:
         print("\nĐã đọc hết file pcap.")
 
