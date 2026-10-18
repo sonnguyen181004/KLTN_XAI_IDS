@@ -1,5 +1,19 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT4.3a — định danh OS và đối soát sau restart (18/10/2026)
+
+**Mục đích:** ngăn start trùng/nhận nhầm PID cũ sau API restart trước khi mở điều khiển capture. Phạm vi là thư viện backend + test, chưa có supervisor khởi chạy hoặc endpoint/UI. Không đổi prediction DB 6 bảng, model, extractor, XAI hay cap; không chạy Wi-Fi hoặc sửa DB thật.
+
+- `process_identity.birth_of` trên Windows mở handle chỉ query/synchronize, kiểm tra process đã thoát và đọc creation FILETIME; token tương thích `worker_control.process_birth`. Không gửi tín hiệu/kill. `probe_identity` phân biệt `alive`, `absent`, `reused`, `unknown`; thiếu quyền hoặc lỗi đọc không được coi là process đã mất. Nhánh Linux `/proc` có code nhưng chưa nghiệm thu Linux.
+- Registry có `begin_launch(run_id, role, worker_token)` phải commit **trước** spawn; nếu ghi lỗi, caller không được tạo process. `attach` chỉ nhận token khớp intent rồi xóa intent trong cùng transaction; caller tương lai vẫn phải xác minh OS và quan hệ process trước attach. Journal mới ghi version 1; không đổi schema bảng SQLite, metadata nằm trong payload.
+- `active()` đọc phiên chưa giải phóng. `reconcile(run_id)` chỉ áp dụng phiên unknown, tự đọc bằng chứng OS, không nhận PID/status từ UI. Nếu mọi worker đã absent/reused và không còn intent, giải phóng active với `failed/reconciled_workers_gone_outcome_unverified`. Không điền exit code giả, không báo completed hoặc suy ra flush/ACK. Gọi lại phiên đã đóng trả lịch sử, request ID cũ không được khởi chạy lại.
+- Worker còn sống, thiếu quyền kiểm tra hoặc intent chưa giải quyết → giữ unknown/chặn start. Journal cũ thiếu launch protocol và thiếu worker cũng bị chặn vì không chứng minh được đã spawn hay chưa. Journal mới chưa từng begin_launch có thể đóng failed an toàn sau restart. Lỗi lưu kết quả đối soát rollback, không giải phóng phiên.
+- **Giới hạn quan trọng:** crash giữa spawn và attach có thể để lại intent không có PID, chưa tự giải quyết. Không xóa journal/intent để ép mở khóa, không kill PID chưa xác minh. API chưa sử dụng thư viện nên chưa ảnh hưởng phiên terminal. Chưa có xác thực nguồn gọi hoặc bảo vệ endpoint, vì chưa mở endpoint. Vòng giám sát/lease, startup timeout/rollback, xác minh launcher venv và shutdown chờ HT4.3b.
+
+Kiểm thử: `python scripts/stage35_test_process_reconciliation.py` **12/12 PASS** trên Windows, dùng registry tạm và process con chờ stdin (không NIC): creation time thực, worker sống/thoát, PID reuse mô phỏng với process còn sống không bị tác động, access denied, spawn gap, legacy journal, token/intent sai, lỗi ghi và rollback. Fixture SQLite dùng explicit close để không giữ file khi dọn thư mục tạm. Hồi quy Stage33 **12/12 PASS**, Stage34 **9/9 PASS**. Không chạy lại Stage14/model vì không có đường import từ runtime/API vào registry thay đổi này; không coi đây là nghiệm thu live hay accuracy.
+
+Commit: `feat(rq3): reconcile capture journals against OS process identity`. Tiếp theo HT4.3b nối supervisor/worker với test riêng; sau đó mới nối API/UI. Nhật ký phía dưới giữ nguyên phạm vi các bước trước.
+
 ## HT4.2 — giao thức worker, chưa tích hợp supervisor (18/10/2026)
 
 **Mục đích:** chuẩn bị đường dừng/flush/drain có bằng chứng, độc lập refresh Streamlit. `app/worker_control.py` được capture và feeder dùng khi có cặp tham số nội bộ `--control-dir`/`--worker-token`; không có tham số này thì giữ workflow terminal cũ. Không đổi model/78 đặc trưng/SHAP/LIME, cap hoặc DB thật. Chưa có launcher, endpoint hay nút Start/Stop.

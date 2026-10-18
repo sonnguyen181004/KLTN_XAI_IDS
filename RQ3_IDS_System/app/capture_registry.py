@@ -1,8 +1,9 @@
-"""HT4.1 durable lifecycle foundation, NOT a process launcher or PID probe.
+"""HT4 durable lifecycle journal with explicit read-only OS reconciliation.
 
 The future API supervisor alone owns this registry. It must obtain identities,
 heartbeats and exit/flush/ACK evidence from owned workers, not HTTP payloads.
 No PID kill, capture startup, or recovery auto-restart is implemented here.
+Persist begin_launch before spawn; attach only after verifying OS identity.
 """
 from contextlib import closing
 from copy import deepcopy
@@ -14,6 +15,7 @@ import threading
 import uuid
 
 from ingestion_checkpoint import checkpoint_lock
+from process_identity import probe_identity
 
 
 class CaptureConflict(RuntimeError):
@@ -89,7 +91,7 @@ class CaptureRegistry:
             state = dict(run_id=uuid.uuid4().hex, request_id=request_id, interface=interface,
                          owner_epoch=self.owner_epoch, status='starting', reason=None,
                          created_at=now(), updated_at=now(), workers={}, capture_result=None,
-                         feeder_result=None)
+                         feeder_result=None, launch_journal_version=1, launch_intents={})
             conn.execute('INSERT INTO sessions VALUES (?,?,1,?)',
                          (state['run_id'], request_id, json.dumps(state)))
             return dict(deepcopy(state), start_granted=True)
@@ -118,9 +120,59 @@ class CaptureRegistry:
         def action(state):
             if state['status'] != 'starting' or role in state['workers']:
                 raise CaptureConflict('Worker cannot be replaced or attached after startup')
+            intent = state.get('launch_intents', {}).get(role)
+            if not intent or intent['worker_token'] != worker_token:
+                raise CaptureConflict('Persist matching launch intent before creating a worker')
             state['workers'][role] = dict(pid=pid, birth_token=birth_token, worker_token=worker_token,
                                           heartbeat_at=None, ready=False, exit_code=None)
+            del state['launch_intents'][role]
         return self._mutate(run_id, action)
+
+    def begin_launch(self, run_id, role, worker_token):
+        """Must commit BEFORE spawn. Unresolved intent blocks recovery after crash."""
+        if role not in ('capture', 'feeder') or not isinstance(worker_token, str) or not worker_token:
+            raise ValueError('Need worker role and token')
+        def action(state):
+            if (state['status'] != 'starting' or role in state['workers'] or
+                    role in state.get('launch_intents', {})):
+                raise CaptureConflict('Launch already attempted or startup closed')
+            state.setdefault('launch_intents', {})[role] = dict(worker_token=worker_token, at=now())
+        return self._mutate(run_id, action)
+
+    def active(self):
+        with self._guard, closing(self._connect()) as conn:
+            self._check()
+            row = conn.execute('SELECT payload FROM sessions WHERE active=1').fetchone()
+            return json.loads(row[0]) if row else None
+
+    def reconcile(self, run_id):
+        """Explicit read-only OS reconciliation; never accepts HTTP-supplied evidence.
+
+        Releases only as FAILED when all recorded identities are gone and no
+        unresolved spawn window exists. Cannot recover success from exit absence.
+        """
+        with self._guard, closing(self._connect()) as conn, conn:
+            self._check()
+            conn.execute('BEGIN IMMEDIATE')
+            active, state = self._load(conn, run_id)
+            if not active:
+                return state
+            if state['status'] != 'unknown':
+                raise CaptureConflict('Reconciliation requires an unknown session')
+            evidence = {role: probe_identity(worker) for role, worker in state['workers'].items()}
+            state['reconciliation'] = dict(at=now(), workers=evidence)
+            # Old journals lack a pre-spawn record; a missing worker is ambiguous.
+            ambiguous = bool(state.get('launch_intents')) or (
+                state.get('launch_journal_version') != 1 and len(state['workers']) != 2)
+            gone = all(item['status'] in ('absent', 'reused') for item in evidence.values())
+            if not ambiguous and gone:
+                state.update(status='failed', reason='reconciled_workers_gone_outcome_unverified')
+                self._save(conn, state, active=False)
+            else:
+                state['reason'] = ('unresolved_launch_requires_manual_reconciliation' if ambiguous
+                                   else 'worker_alive_or_identity_unverifiable')
+                self._save(conn, state, active=True)
+            return deepcopy(state)
 
     @staticmethod
     def _worker(state, role, identity):
