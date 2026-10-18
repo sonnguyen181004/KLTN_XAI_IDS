@@ -26,6 +26,7 @@ class RegistryTests(unittest.TestCase):
         identities = {}
         for role, pid in [('capture', 100), ('feeder', 101)]:
             identities[role] = dict(pid=pid, birth_token='birth-'+role, worker_token='token-'+role)
+            self.registry.begin_launch(run, role, identities[role]['worker_token'])
             self.registry.attach(run, role, **identities[role])
             self.registry.heartbeat(run, role, identities[role], ready=True)
         self.assertEqual(self.registry.read(run)['status'], 'running')
