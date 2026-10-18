@@ -8,7 +8,32 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 Đây là mục đọc trước; các nhật ký phía dưới giữ lại để truy vết, không phải danh sách việc chưa làm hôm nay.
 
-**Quyết định mới nhất (16/10/2026):** giữ cách chạy thủ công qua terminal VS Code; realtime không giới hạn 60 giây. Nút Bắt đầu/Dừng capture trên UI **hoãn theo yêu cầu**, chưa triển khai. Đợt hiện tại chỉ đối chiếu commit và cập nhật README/hướng dẫn CSV, PCAP, live trong các tài liệu đang có; không tự mở dịch vụ, reset DB hoặc đổi kiến trúc/model. Mốc code gần nhất `b24f93c`; xem [bảng commit](operations.md).
+**Quyết định mới nhất (18/10/2026):** ưu tiên hoàn chỉnh logic, UI và realtime ổn định, chưa ưu tiên demo tấn công. Làm từng bước; mỗi bước ghi mục đích, thay đổi, kiểm tra, giới hạn và commit riêng, rồi dừng báo cáo trước bước kế tiếp. Không tự push. Hướng dẫn chạy terminal vẫn có hiệu lực; nút Start/Stop được đưa vào lộ trình sau bộ quản lý tiến trình, chưa triển khai. Không tự mở capture, reset DB hoặc đổi model để phục vụ cập nhật tài liệu.
+
+### Lộ trình hoàn thiện hiện hành — thực hiện tuần tự
+
+Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bước 1–16 hoặc E1–E5 trong nhật ký nghiên cứu cũ. Bảng ưu tiên ngày 16/10 phía dưới được giữ làm lịch sử; nếu khác nhau, dùng bảng này.
+
+| Bước | Mục đích và phạm vi | Nghiệm thu / tài liệu tương ứng | Tiến độ |
+|---|---|---|---|
+| HT1 | Chốt hợp đồng dữ liệu, thời gian và trạng thái; phân biệt code đang có với thiết kế cần thêm | Đối chiếu code, ghi hợp đồng trong `operations.md`; không sửa runtime | Hoàn tất đặc tả 18/10/2026; xem nhật ký HT1 bên dưới |
+| HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | Chưa bắt đầu trong lộ trình này; kế thừa audit cũ |
+| HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Chưa bắt đầu; kế thừa checkpoint/idempotency v2 |
+| HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | Chưa bắt đầu |
+| HT5 | Hoàn thiện logic đánh giá và XAI | Nhãn thật có nguồn, nhận xét analyst, tham chiếu RQ2, chẩn đoán SHAP/LIME; cập nhật `xai_validation.md` | Chưa bắt đầu |
+| HT6 | Hoàn thiện UI dựa trên API/trạng thái đã kiểm chứng | Tổng quan, realtime, CSV/PCAP, flow/cảnh báo, đánh giá; test thao tác và dữ liệu; cập nhật `dashboard_usage.md` | Chưa bắt đầu |
+| HT7 | Nghiệm thu toàn hệ thống | E5 đầy đủ, E1, kiểm thử sự cố/chạy lâu/tài nguyên; đồng bộ README và Word theo thực tế | Chưa bắt đầu |
+
+Nếu một bước lớn cần chia nhỏ, ghi HT2.1, HT2.2… với phạm vi và commit riêng trước khi làm; không gộp thay đổi phương pháp với sửa UI. Điều tra thiếu nguồn train không ngăn các bước vận hành độc lập, nhưng phải ghi rõ phần bị chặn và được thống nhất trước khi chuyển bước. Không đánh dấu tương thích hoàn toàn hoặc hoàn thành E4 chỉ vì sửa cờ TCP. Mỗi bước sau phải cập nhật lại trạng thái ở bảng này.
+
+### Nhật ký HT1 — 18/10/2026
+
+- **Mục đích:** có một hợp đồng chung để API, capture, feeder và UI không diễn giải khác nhau về dữ liệu/trạng thái; tránh biến thiết kế tương lai thành lời khẳng định hệ thống đã có.
+- **Đã làm:** đối chiếu `normalize.py`, `flow_metadata.py`, `main.py`, `db.py`, `feeder.py`, `explain_queue.py`, `explain_lime.py`, `monitoring.py`, `dashboard.py` và capture v2; ghi [hợp đồng dữ liệu và trạng thái](operations.md#contract-ht1).
+- **Phạm vi thay đổi:** chỉ `plan.md` và `operations.md`; không thêm Markdown mới, không sửa Word gốc, model, code, config, DB hoặc PCAP. Word và README sẽ được đồng bộ khi các phần triển khai tương ứng được chốt, không ghi trước là đã có chức năng.
+- **Kiểm tra:** đối chiếu tên trường/trạng thái với code; kiểm tra `git diff --check`, liên kết nội bộ của phần mới và phạm vi diff trước commit. Đây là nghiệm thu đặc tả, không phải kiểm thử runtime mới hoặc chứng nhận tương thích 78 công thức.
+- **Commit của bước:** tra bằng `git log --oneline --grep="docs(rq3): define HT1 data and lifecycle contract"`; không ghi hash của chính commit vào nội dung commit đó.
+- **Tiếp theo:** HT2, bắt đầu bằng điều tra và chốt nhóm đặc trưng/vòng đời flow cần kiểm chứng; chưa tự nhị phân hóa cờ hoặc giảm timeout.
 
 | Ưu tiên | Công việc | Điều kiện hoàn tất |
 |---|---|---|

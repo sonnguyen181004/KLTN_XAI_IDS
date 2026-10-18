@@ -5,6 +5,85 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 > Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
 
 - [Capture v2, phục hồi và kiểm thử](#stability-v2)
+- [Hợp đồng dữ liệu và trạng thái HT1](#contract-ht1)
+
+<a id="contract-ht1"></a>
+
+## HT1 — Hợp đồng dữ liệu và trạng thái (18/10/2026)
+
+**Mục đích:** thống nhất ranh giới giữa capture, feeder, API, XAI và UI trước khi hoàn thiện realtime. Đây là đặc tả đối chiếu code hiện hành, không phải thông báo đã triển khai bộ quản lý capture. Tiến độ/commit từng bước nằm trong [kế hoạch](plan.md).
+
+### 1. Bất biến và trách nhiệm
+
+- CSV có đặc trưng và PCAP/live sau trích xuất đều gửi HTTP `/predict`. UI không gọi model hoặc ghi trực tiếp SQLite.
+- Model RQ1 và cấu hình LIME RQ2 giữ nguyên làm baseline. Nhãn khác `Benign` tạo alert; A/B chỉ đổi trình bày, không đổi nhãn hoặc che cảnh báo.
+- API lưu Flow/Prediction/Alert/Timing cùng giao dịch trước khi dispatch SHAP. SHAP nền; LIME theo yêu cầu. Giữ sáu bảng hiện hành ở HT1; nếu bước sau cần thay schema cho phản hồi analyst phải ghi thiết kế/migration riêng, không nhét dữ liệu giả vào bảng cũ để giữ số bảng.
+- Cùng vector chuẩn hóa và cùng model phải cho cùng dự đoán, bất kể nguồn. Điều này không có nghĩa cùng traffic qua hai extractor sẽ cho cùng vector; phần đó cần HT2 kiểm chứng.
+
+### 2. Hợp đồng đầu vào và metadata
+
+| Nhóm | Hiện hành / quy tắc | Phần cần hoàn thiện |
+|---|---|---|
+| Vector model | Lấy đúng danh sách/thứ tự từ `Detector.feature_names`; kỳ vọng 78 số hữu hạn. `normalize_flow` từ chối thiếu cột, NaN/Inf; cột thừa không đưa vào vector lưu/model | Kiểm tra schema tại mọi cửa vào; log lỗi kiểu dữ liệu bị từ chối trước handler cũng cần được đánh giá |
+| Đơn vị | API nhận vector đã chuẩn hóa; feeder/UI đổi riêng `TIME_COLUMNS` giây → micro giây khi được chọn. Rate không nhân theo thời gian; không đổi hai lần | Có khai báo nguồn/quy tắc chuyển đổi rõ hơn; không đoán đơn vị chỉ từ độ lớn |
+| Nguồn và lượt | `source`, `capture_run_id`, `run_name` là metadata. UI upload tạo lượt cho mỗi lần gửi; feeder giữ run ID trong checkpoint | Không dùng model prediction để suy ra nguồn hoặc kịch bản |
+| Mạng | `src_ip`, `dst_ip`, `src_port` riêng với vector; `Dst Port`, `Protocol` vẫn là đặc trưng model và được UI đọc từ vector | Thiếu IP hiển thị không được cung cấp; không bịa IP từ dataset không chứa IP |
+| Phiên bản | `extractor_version` lưu riêng; `model_version` nằm trong Prediction | Chưa có manifest đầy đủ cho preprocessing/background/XAI; bổ sung có version ở bước tương ứng |
+| Nhãn thật | DB có `label_true`, nhưng đường `/predict`/UI upload hiện chưa lưu nhãn thật từ CSV | HT5 phải thêm nguồn nhãn/xác minh; không đưa nhãn vào model, không tự gán Benign cho toàn bộ traffic cá nhân |
+| Giá trị thô | DB hiện giữ vector chuẩn hóa, không phải toàn bộ vector trước chuyển đổi | Bản adapter ứng viên cần lưu đối chiếu thô/chuyển đổi có kiểm soát; chưa tuyên bố DB hiện có dữ liệu này |
+
+Nguồn đối chiếu: `app/normalize.py`, `app/predict.py`, `app/flow_metadata.py`, `app/feeder.py`, `app/ingestion_ui.py`, `app/main.py`, `app/db.py`. API không bắt buộc IP với CSV không có metadata. Không thêm IP thành đặc trưng thứ 79.
+
+### 3. Hợp đồng thời gian
+
+| Mốc | Hiện hành | Cách đọc / giới hạn |
+|---|---|---|
+| `flow_timestamp` | Chuỗi thời điểm nguồn cung cấp; capture dùng mốc flow | Không phải thời điểm API nhận; CSV ngoài cần xác minh ý nghĩa timestamp |
+| `flow_timestamp_utc` | Chuẩn hóa khi timestamp có múi giờ hoặc có `capture_timezone` | Timestamp không rõ múi giờ giữ UTC là null; không đoán rồi tính latency |
+| `received_at` | UTC khi handler API bắt đầu xử lý flow | Chưa phải thời điểm byte đầu HTTP tới máy |
+| `predicted_at` | UTC sau inference, trước giao dịch lưu core | Tách với thời gian packet, không sửa thành timestamp PCAP |
+| `Timing` | Duration dùng đồng hồ đo khoảng thời gian; `recorded_at` là UTC | `total` hiện dừng trước commit cuối/dispatch, không phải HTTP end-to-end; SHAP/LIME riêng, không cộng các bước lồng nhau |
+| Xuất flow / ACK / hoàn tất phiên | Chưa có đầy đủ mốc bền và telemetry thống nhất | HT3/HT4 cần bổ sung để phân biệt capture delay, backlog và thời gian xử lý |
+
+UI đổi thời gian có timezone sang GMT+7 để đọc; lưu UTC và giữ nguồn gốc. Replay PCAP cũ không được lấy ngày nhận trừ ngày packet rồi gọi đó là độ trễ xử lý live. E1 cần đo riêng từ flow sẵn sàng đến ACK, đến XAI hoàn tất và HTTP thực tế. Chú thích UI hiện gọi `total` là thời gian request còn chưa chính xác hoàn toàn; HT6 cần đồng bộ.
+
+### 4. Trạng thái XAI đang có
+
+| Trạng thái | Ý nghĩa / hành vi hiện hành |
+|---|---|
+| `pending_dispatch` | Alert đã lưu, chưa đưa vào hàng đợi RAM |
+| `queued` | Đã nhận tác vụ; hiện không tách riêng trạng thái tác vụ đang chạy |
+| `processed` | SHAP đã lưu; không đồng nghĩa nhãn dự đoán đã được xác minh |
+| `dropped_queue_full` | Bỏ tác vụ SHAP mới vì queue đầy; prediction/alert vẫn giữ, chưa tự retry |
+| `failed` | Dispatch/giải thích/phục hồi lỗi; không tự retry vô hạn |
+| `recovery_pending` | Việc bị ngắt được phát hiện khi restart; lấy dần từ DB khi queue RAM rảnh |
+| `not_required` | Trạng thái do lớp đọc/UI gán cho Benign, không phải alert được tạo |
+| `unknown_legacy` | Lịch sử không đủ trạng thái; không suy đoán thành thành công |
+
+Queue RAM: 200 chờ + một worker đang xử lý; backlog phục hồi trong DB có thể lớn hơn 200. Không giới hạn tổng flow bằng queue XAI. HT3 phải kiểm tra công bằng giữa việc mới và việc phục hồi, và chính sách retry thủ công có giới hạn.
+
+LIME tách riêng: `not_requested`, `ok`, `insufficient_neighborhood`, `zero_coefficients`, `undefined_fit`, `legacy_unchecked`. `ok` chỉ vượt kiểm tra suy biến tối thiểu, không chứng nhận chất lượng cao. Kết quả suy biến không có Top-5/R²/Jaccard dùng để kết luận; chẩn đoán thô vẫn giữ. `/alerts` còn tên tương thích `shap_only`/`shap_and_lime`; không dùng những tên này để kết luận LIME hợp lệ thay cho `lime_status`.
+
+### 5. Vòng đời realtime đề xuất — CHƯA triển khai
+
+| Thành phần | Trạng thái mục tiêu | Điều kiện quan sát |
+|---|---|---|
+| Capture | `starting → capturing → stopping → stopped`, hoặc `failed`; `unknown` khi mất khả năng xác minh | Bộ quản lý sở hữu tiến trình + heartbeat; log `receiving_started` hiện có chưa đủ để biết tình trạng hiện tại |
+| Feeder | `waiting_input`, `sending`, `caught_up`, `retrying`, `draining`, `stopped`, `failed`, `unknown` | Offset/ACK và lỗi thực; `caught_up` chỉ là đã bắt kịp CSV hiện tại, không phải capture kết thúc |
+| Phiên | `starting → running → stopping → draining → completed`; hoặc `failed`/`interrupted` | Chỉ `completed` khi capture dừng an toàn, ghi nốt thành công và feeder xác nhận hết record hợp lệ |
+
+Tên trên là đặc tả cho HT4, chưa phải API hiện có. `completed` của phiên ingestion không có nghĩa SHAP đã chạy hết hoặc không bị dropped; hiển thị backlog XAI riêng. Buộc dừng/mất tiến trình không được ghi là hoàn tất; phải báo nguy cơ mất packet/flow chưa ra CSV. UI reload không khởi chạy phiên mới. API khỏe không chứng minh capture khỏe; không có flow mới không chứng minh mất kết nối.
+
+Thứ tự dừng bình thường: ngừng nhận packet → đợi capture thread kết thúc → ghi nốt và đóng CSV → feeder gửi hết/nhận ACK → đóng phiên. Giữ API hoạt động trong giai đoạn drain. Cần ownership đầu ra, chống chạy trùng, quy tắc nhận diện phiên sau restart và giới hạn tài nguyên trước khi nối nút UI. Chưa bật capture hoặc thay chính sách timeout trong HT1.
+
+### 6. Tiêu chí nghiệm thu theo bước
+
+- **HT1 (đặc tả):** đã xác định nguồn sự thật cho vector/metadata/time; trạng thái hiện hành tách khỏi mục tiêu; có danh sách khoảng trống và bước phụ trách; đối chiếu với code, không chỉ với ảnh UI.
+- **Các bước triển khai sau:** test cùng vector qua các nguồn; lỗi input; mất ACK/restart; không gửi trùng; dừng/flush/drain; queue đầy; UI reload/giữ lựa chọn. Mỗi bước ghi rõ test mới chạy và kết quả lịch sử được kế thừa.
+- **Nghiệm thu realtime cuối:** đo thời gian chạy, RAM/CPU, số packet được adapter nhận, flow xuất/ACK, backlog/lỗi và latency p50/p95; ghi riêng giới hạn không đo được packet mất trước callback. Ngưỡng chấp nhận phải chốt trước lượt benchmark, không chọn sau khi thấy số.
+- **Độ đúng phát hiện:** chỉ tính FPR/FNR trên nhãn xác minh có nguồn; thiếu nhãn không đổi thành số 0. Adapter ít dự đoán Hulk hơn không tự chứng minh tương thích train hoặc hoàn thành E4.
+
+**Kiểm tra HT1:** thay đổi chỉ hai tài liệu hiện có; kiểm tra diff/whitespace, link `plan.md` và anchor `contract-ht1`, đối chiếu trường và trạng thái với mã. Không chạy lại capture, không khởi động API và không ghi DB ở bước đặc tả này. Các test PASS của lượt review trước là bằng chứng lịch sử, không tính là test mới HT1.
 
 ## Commit đã đối chiếu — 16/10/2026
 
@@ -19,7 +98,7 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 | `d411a49` | Gộp 11 Markdown thành 5, ba tab UI và hướng dẫn live | Chưa có nút điều khiển capture |
 | `b24f93c` | Chờ capture đáp ứng tín hiệu dừng, flush và test | Stage20 PASS 15; phím Ctrl+C trên mọi VS Code/Npcap chưa được chứng nhận |
 
-**Chốt theo yêu cầu hiện tại:** tự chạy API/UI/capture/feeder bằng terminal VS Code, live liên tục không cần `--seconds`. Hoãn nút Bắt đầu/Dừng trên UI. Xem [hướng dẫn hiện hành](dashboard_usage.md#run-ui), không dùng PID hoặc số flow trong nhật ký dưới đây làm trạng thái hiện tại.
+**Quyết định lịch sử ngày 16/10:** tự chạy API/UI/capture/feeder bằng terminal VS Code, live liên tục không cần `--seconds`; hoãn nút Bắt đầu/Dừng. Lộ trình ngày 18/10 đã đưa quản lý capture và UI vào các bước sau, chưa triển khai. Hướng dẫn terminal vẫn hiệu lực: xem [hướng dẫn hiện hành](dashboard_usage.md#run-ui), không dùng PID hoặc số flow trong nhật ký dưới đây làm trạng thái hiện tại.
 
 ## Nhật ký áp dụng trên máy người dùng — 16/10/2026
 
