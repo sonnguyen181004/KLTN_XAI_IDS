@@ -1,0 +1,80 @@
+{
+  "test_run_id": "38bc6a0a-a5bd-48c7-9b04-77795f83c650",
+  "interface": "Wi-Fi",
+  "duration_seconds": 120,
+  "isolated_database": true,
+  "generated_network_traffic": false,
+  "status": "failed",
+  "started_at": "2026-10-18T05:38:01.592922+00:00",
+  "samples": [
+    {
+      "elapsed_seconds": 0.01,
+      "api_flows": 0,
+      "queue": {
+        "qsize": 0,
+        "maxsize": 200,
+        "n_queued": 0,
+        "n_processed": 0,
+        "n_dropped": 0,
+        "n_recovered": 0,
+        "recovery_pending": 0
+      },
+      "csv_bytes": 0,
+      "processes": {
+        "api": {
+          "rss_bytes": 472186880,
+          "cpu_seconds": 7.875,
+          "processes": 1
+        },
+        "feeder": {
+          "rss_bytes": 77905920,
+          "cpu_seconds": 0.859375,
+          "processes": 1
+        },
+        "capture": {
+          "rss_bytes": 89600000,
+          "cpu_seconds": 0.734375,
+          "processes": 2
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 11.24,
+      "api_flows": 11,
+      "queue": {
+        "qsize": 0,
+        "maxsize": 200,
+        "n_queued": 6,
+        "n_processed": 6,
+        "n_dropped": 0,
+        "n_recovered": 0,
+        "recovery_pending": 0
+      },
+      "csv_bytes": 8618,
+      "processes": {
+        "api": {
+          "rss_bytes": 477601792,
+          "cpu_seconds": 24.84375,
+          "processes": 1
+        },
+        "feeder": {
+          "rss_bytes": 102064128,
+          "cpu_seconds": 1.25,
+          "processes": 1
+        },
+        "capture": {
+          "rss_bytes": 134881280,
+          "cpu_seconds": 1.8125,
+          "processes": 2
+        }
+      }
+    }
+  ],
+  "capture_limits": {
+    "max_buffered_packets": 50000,
+    "max_buffered_bytes": 67108864
+  },
+  "model_version": "52eb5a671ee82109",
+  "error_type": "PermissionError",
+  "finished_at": "2026-10-18T05:38:22.301553+00:00"
+}

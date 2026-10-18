@@ -48,7 +48,16 @@ def process_metrics(roots):
 def write_report(path, result):
     temporary = path.with_suffix(path.suffix + '.tmp')
     temporary.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-    os.replace(temporary, path)
+    # Windows readers/AV can briefly hold the destination without delete-share.
+    # Keep atomic replacement; bounded retry, never truncate the current report.
+    for attempt in range(11):
+        try:
+            os.replace(temporary, path)
+            break
+        except PermissionError:
+            if attempt == 10:
+                raise
+            time.sleep(.1)
 
 
 def main(interface,seconds,output,max_buffered_packets=20000,max_buffered_bytes=33554432):

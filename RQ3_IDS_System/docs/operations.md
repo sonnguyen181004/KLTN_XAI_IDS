@@ -1,5 +1,24 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT3.5 — giảm bộ nhớ packet (18/10/2026)
+
+Mục đích: không giữ payload/Scapy graph trong flow chờ xuất. V3 lưu bản ghi gọn sau khi xử lý bulk/window/TCP trên packet gốc; không thay model, 78 đặc trưng, lifecycle, queue hoặc giới hạn mặc định. `buffered_packet_bytes` vẫn là tổng frame byte logic chưa xuất, không phải RAM thực cấp phát. Đây vẫn là O(số packet), không phải thống kê O(1); bản tối ưu vẫn có thể chạm cap 20000 mặc định ở cùng tải.
+
+Stage30 trên hai PCAP: CSV, 78 cột sau chuẩn hóa và mọi nhãn/xác suất model khớp chính xác (99 flow/1.148 packet). Đo tracemalloc với cùng 1.000 packet payload 1.200 byte: retained 5.635.553 → 370.351 byte (~93,4% giảm), peak 5.816.954 → 829.198 byte. Không so thành RSS hoặc tốc độ thực. Bằng chứng đầy đủ `packet_record_validation_20261018.json`. Stage20/26/28/29 lần lượt 21/22/5/6 test PASS. Bộ test dùng DB/file tạm, không sửa lịch sử demo.
+
+Smoke live đầu (`packet_record_live_20261018.json`) FAIL do WinError 5 khi thay file báo cáo JSON nguyên tử, chưa hoàn tất capture/đối soát. Không gọi là lỗi model hay PASS. Harness Stage22 thêm tối đa 10 lần đợi 100ms cho PermissionError, vẫn thay file nguyên tử, lỗi kéo dài vẫn báo FAIL; kiểm thử giả lập lỗi nhất thời và lỗi kéo dài đều đạt. Không áp dụng retry này vào writer CSV của hệ thống. Đã kiểm tra không còn python.exe trước khi chạy lại smoke.
+
+Chạy lại từ SELF_KLTN (truyền đường dẫn Python chính đã cài model, không dùng Python venv capture cho worker model):
+
+```powershell
+$modelPython = (Get-Command python).Source
+RQ3_IDS_System/.venv_capture/Scripts/python.exe RQ3_IDS_System/scripts/stage30_test_packet_records.py RQ3_IDS_System/docs/packet_record_validation_NEW.json $modelPython
+```
+
+Áp dụng: dừng capture hiện tại an toàn, đợi feeder gửi hết rồi bắt lượt CSV mới bằng lệnh cũ. Không cần reset DB/train model hoặc thay lệnh UI PCAP. Giữ v3 vì ngữ nghĩa không đổi; commit Git phân biệt triển khai lưu trữ. Không tự tăng cap, không tuyên bố giảm FPR. Lượt soak 20 phút HT3.4 là trước tối ưu; cần kiểm chứng dài hơn cho bản mới.
+
+Smoke chạy lại 120 giây PASS (`packet_record_live_retry_20261018.json`): capture process 122,58s, 9.352 packet nhận/xuất/CSV khớp, 193 flow CSV/API khớp, 105 flow tới API khi còn sniff. SHAP 41/41, queue/dropped/recovery=0, feeder không lỗi, metadata IP/version/78 đặc trưng/15 xác suất/đổi duration và Streamlit AppTest đạt. Peak RSS capture lấy mẫu 137.531.392 byte (~131,2 MiB), peak buffered packets 4.682, cuối lượt byte=0. Dùng cap thử 50.000/64 MiB; không so trực tiếp RSS với soak cũ vì tải và thời lượng khác. Nhãn 152 Benign/41 Hulk chỉ là dự đoán, không phải FPR. Script exit 0 và tiến trình được dọn. Kiểm tra weakref cũng xác nhận packet Scapy gốc được giải phóng sau constructor và add_packet.
+
 ## HT3.3 — giới hạn tài nguyên và phục hồi công bằng (18/10/2026)
 
 **Mục đích:** chặn bộ đệm tăng vô hạn, báo quá tải rõ ràng, tránh bỏ đói tác vụ SHAP cần phục hồi. Commit: `feat(rq3): bound capture resources and schedule SHAP recovery`.

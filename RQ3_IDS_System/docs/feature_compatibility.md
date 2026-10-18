@@ -1,5 +1,11 @@
 # Tương thích đặc trưng train và capture
 
+## HT3.5 — lưu packet gọn, giữ nguyên đặc trưng (18/10/2026)
+
+`capture_packet_record.py` giữ timestamp nguyên kiểu số, frame length, IP ihl, TCP flags/text và payload length; không giữ payload/Scapy graph. Bulk/window/TCP lifecycle vẫn xử lý trên packet gốc trước khi chuyển sang record. Giữ thứ tự packet và cùng mã thống kê NumPy, không đổi sang công thức cộng dồn dễ khác sai số. Đây là tối ưu lưu trữ, giữ version ngữ nghĩa lifecycle-v3; commit Git truy vết triển khai. V1/V2/train-candidate không thay đổi.
+
+Stage30 so V3 lưu Scapy gốc (identity conversion) với record: `test.pcapng` 511 packet/38 flow, `tesst2.pcapng` 637 packet/61 flow; CSV giống từng byte, toàn bộ vector chuẩn hóa và 15 xác suất/nhãn model giống chính xác. Bằng chứng `packet_record_validation_20261018.json`. Giữ nguyên model `52eb5a671ee82109`, SHAP/LIME/nhánh A/B; không chạy lại phép đo chất lượng SHAP/LIME trong bước này, không suy ra tương thích dataset train hoặc giảm FPR.
+
 ## HT2.4 — nghiệm thu và áp dụng lifecycle v3 (18/10/2026)
 
 **Mục đích:** chốt bản phân flow có kiểm thử, áp dụng cùng đường live/PCAP và giữ bằng chứng model/XAI. Commit: `feat(rq3): validate and enable lifecycle v3 capture`.

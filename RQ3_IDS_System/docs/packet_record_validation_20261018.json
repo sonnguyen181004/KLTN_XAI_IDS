@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "fixture_packets": 4,
+  "runs": [
+    {
+      "file": "test.pcapng",
+      "sha256": "229d5d05ffd167aa5c28eb672728290f688c46f2152137ee9145e1ace1646705",
+      "packets": 511,
+      "flows": 38,
+      "exact_csv_equal": true,
+      "model_parity": {
+        "flows": 38,
+        "exact_normalized_features": true,
+        "exact_predictions": true,
+        "model_version": "52eb5a671ee82109"
+      }
+    },
+    {
+      "file": "tesst2.pcapng",
+      "sha256": "bf06d31a01cbfd387f797c3aafd702afd43fe72a5f73c2f2b130bcb4b01d05b0",
+      "packets": 637,
+      "flows": 61,
+      "exact_csv_equal": true,
+      "model_parity": {
+        "flows": 61,
+        "exact_normalized_features": true,
+        "exact_predictions": true,
+        "model_version": "52eb5a671ee82109"
+      }
+    }
+  ],
+  "note": "Exact CSV parity against V3 original storage; no ground truth/FPR. Memory is tracemalloc, not RSS.",
+  "memory": {
+    "original": {
+      "retained_python_bytes": 5635553,
+      "peak_python_bytes": 5816954,
+      "packets": 1000
+    },
+    "compact": {
+      "retained_python_bytes": 370351,
+      "peak_python_bytes": 829198,
+      "packets": 1000
+    }
+  }
+}
