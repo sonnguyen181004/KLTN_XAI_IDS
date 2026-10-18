@@ -28,7 +28,8 @@ def start_gc(session, interval=1.):
                 check_health(session)
                 session.garbage_collect(time.time())
             except Exception as error:
-                session._capture_error = error
+                if getattr(session, '_capture_error', None) is None:
+                    session._capture_error = error
                 session._gc_stop.set()
                 return
     session._gc_thread = threading.Thread(target=run, name='project-flow-gc', daemon=True)

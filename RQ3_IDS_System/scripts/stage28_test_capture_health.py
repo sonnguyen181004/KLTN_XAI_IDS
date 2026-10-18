@@ -44,6 +44,17 @@ class CaptureHealthTests(unittest.TestCase):
         self.assertFalse(s._gc_thread.is_alive())
         self.assertEqual(s.process.call_count, 1)
 
+    def test_gc_preserves_original_failure_and_flush_policy(self):
+        original = RuntimeError('capacity reached')
+        original.safe_to_flush = True
+        s = SimpleNamespace(_capture_error=original, garbage_collect=Mock())
+        start_gc(s, interval=.001)
+        self.assertTrue(s._gc_stop.wait(2))
+        stop_gc(s)
+        self.assertIs(s._capture_error, original)
+        self.assertTrue(s._capture_error.safe_to_flush)
+        s.garbage_collect.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

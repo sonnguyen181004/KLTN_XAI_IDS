@@ -6,6 +6,8 @@ Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: 
 
 ## Trạng thái hiện tại và thứ tự làm tiếp
 
+HT3.3 (18/10): cap buffer v3, bảo vệ ổ CSV ít dung lượng, counter quá tải; queue hữu hạn và recovery xen kẽ sau 10 tác vụ mới. Stage27 8/8, Stage28 5/5, Stage29 5+1 fixture/tải 3.200 packet, Stage26 22/22; Stage14/24 PASS trên DB tạm. Mục đích, số đo và giới hạn trong `operations.md`. Commit: `feat(rq3): bound capture resources and schedule SHAP recovery`. Không đổi model/RQ2/DB thật hoặc thêm MD. Còn nghiệm thu live dài hạn/RSS/CPU, retention/backup và độ bền packet chưa xuất; chưa tự chuyển HT4.
+
 HT3.1 (18/10): sửa kiểm tra ACK đầy đủ trước checkpoint và cấu hình poll; Stage27 5/5 PASS. Mục đích/giới hạn trong `operations.md`. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`. Tiếp tục HT3.2 lỗi capture nền và HT3.3 giới hạn tài nguyên; không coi fixture là nghiệm thu live dài hạn.
 
 HT3.2 (18/10): sửa lỗi nền capture bị che, dừng/flush có kiểm tra GC, không báo thành công khi writer lỗi. Stage28 4/4, Stage20 21/21, Stage24 recovery PASS. Không hứa phục hồi packet RAM sau kill. Commit: `fix(rq3): propagate capture background failures safely`; chi tiết trong `operations.md`.
@@ -22,7 +24,7 @@ Các mã HT dưới đây là bước hoàn thiện mới, không thay số Bư�
 |---|---|---|---|
 | HT1 | Chốt hợp đồng dữ liệu, thời gian và trạng thái; phân biệt code đang có với thiết kế cần thêm | Đối chiếu code, ghi hợp đồng trong `operations.md`; không sửa runtime | Hoàn tất đặc tả 18/10/2026; xem nhật ký HT1 bên dưới |
 | HT2 | Kiểm chứng đặc trưng và vòng đời flow trước khi tối ưu capture | Điều tra nguồn train, fixture công thức/timeout/đóng flow; mọi thay đổi có version và đối chiếu, không ép cờ để giảm Hulk. Cập nhật `feature_compatibility.md` | HT2.1–HT2.4 triển khai và kiểm thử xong 18/10; v3 mặc định. Chứng nhận train–PCAP còn bị chặn do thiếu nguồn preprocessing/extractor lịch sử |
-| HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Chưa bắt đầu; kế thừa checkpoint/idempotency v2 |
+| HT3 | Hoàn thiện giao nhận, phục hồi và giới hạn tài nguyên | Kiểm thử mất ACK/restart/file lỗi, chống ghi trùng, backlog XAI, lưu trữ; cập nhật `operations.md` | Đã sửa HT3.1–3.3 và kiểm thử sự cố; còn nghiệm thu live dài hạn/RSS, retention và độ bền packet chưa xuất |
 | HT4 | Quản lý realtime độc lập vòng làm mới UI | Start/Stop, ownership, heartbeat, flush/drain, khôi phục trạng thái; cập nhật `operations.md` | Chưa bắt đầu |
 | HT5 | Hoàn thiện logic đánh giá và XAI | Nhãn thật có nguồn, nhận xét analyst, tham chiếu RQ2, chẩn đoán SHAP/LIME; cập nhật `xai_validation.md` | Chưa bắt đầu |
 | HT6 | Hoàn thiện UI dựa trên API/trạng thái đã kiểm chứng | Tổng quan, realtime, CSV/PCAP, flow/cảnh báo, đánh giá; test thao tác và dữ liệu; cập nhật `dashboard_usage.md` | Chưa bắt đầu |

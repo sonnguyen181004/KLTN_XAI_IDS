@@ -1,5 +1,7 @@
 # KLTN_XAI_IDS
 
+**HT3 — 18/10/2026:** đã sửa ACK/checkpoint, báo lỗi capture nền, thêm cap v3 (4096 flow mở / 20000 packet đang giữ / 32 MiB byte packet), bảo vệ dung lượng ổ CSV và tránh bỏ đói SHAP recovery. Quá tải dừng có lỗi, không âm thầm bỏ packet hoặc báo phiên đầy đủ. Cap không phải tổng traffic cả phiên hoặc RSS Python. [Vận hành](RQ3_IDS_System/docs/operations.md) ghi lệnh test và giới hạn còn lại: chưa chứng nhận Wi-Fi dài hạn, chưa tự retention/backup. Restart API và bắt lượt CSV mới để áp dụng, không reset DB.
+
 Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XAI) cho hệ thống phát hiện xâm nhập (IDS)** trên bộ dữ liệu CSE-CIC-IDS2018. Mô hình phát hiện là XGBoost (so sánh với Random Forest ở RQ1); phần giải thích dùng **SHAP** và **LIME**.
 
 - Dữ liệu: CSE-CIC-IDS2018 đã xử lý, 78 đặc trưng, 15 lớp (1 Benign + 14 loại tấn công), test set 700.000 flow.
