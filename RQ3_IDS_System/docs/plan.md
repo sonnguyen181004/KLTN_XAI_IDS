@@ -28,6 +28,8 @@ Nếu một bước lớn cần chia nhỏ, ghi HT2.1, HT2.2… với phạm vi 
 
 ### Nhật ký HT2.1 — 18/10/2026
 
+**Tiếp nối HT2.2 (18/10):** thêm adapter lifecycle v3 opt-in với biên timeout nhất quán và late packet có lý do xuất, giữ mặc định v2 ở commit này. Mục đích, chính sách và nguồn Word đã kiểm tra nằm ở đầu `feature_compatibility.md`. Stage26 8/8 PASS; baseline Stage20 được chạy lại trước commit. Commit: `fix(rq3): version deterministic flow timeout and late-packet policy`. Tiếp tục TCP lifecycle và đối chiếu PCAP trong cùng HT2, chưa chuyển HT3.
+
 - **Mục đích:** kiểm chứng giả thuyết cờ TCP và các giới hạn vòng đời capture để chọn việc sửa có bằng chứng. Phạm vi điều tra nhỏ thuộc HT2, không phải hoàn thành toàn bộ HT2.
 - **Đã làm:** rà nguồn code/lịch sử preprocessing, kiểm tra đường đếm cờ Java tham khảo; thêm Stage25 đọc model và trích hai PCAP offline để so nhị phân hóa cờ trong bộ nhớ; thêm sáu fixture vòng đời v2 vào Stage20. Chi tiết và giới hạn nằm trong [báo cáo HT2.1](feature_compatibility.md#ht21).
 - **Kết quả quan trọng:** 74/92 vector đổi cờ nhưng 92/92 nhãn, xác suất và lá cây không đổi. Model dùng ngưỡng 1 tại các split cờ, nên không lấy count>1 làm nguyên nhân trực tiếp đã chứng minh cho Hulk. Tái hiện idle đúng 240s phụ thuộc thứ tự GC, FIN/RST chưa đóng flow, tuple tái sử dụng bị gộp và IAT âm khi packet lệch thứ tự.
