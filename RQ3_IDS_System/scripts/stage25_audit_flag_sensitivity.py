@@ -58,7 +58,7 @@ def audit():
             subprocess.run([str(RQ3 / '.venv_capture/Scripts/python.exe'),
                             str(RQ3 / 'scripts/run_live_capture.py'),
                             '--pcap-input', str(pcap), '--output', str(output),
-                            '--extractor', 'project'], check=True, capture_output=True,
+                            '--extractor', 'project-v2'], check=True, capture_output=True,
                            timeout=120, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
             frame = pd.read_csv(output)
             rows = [normalize_flow(row_to_payload(row, list(frame.columns), True),

@@ -2,7 +2,7 @@
 
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
-> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+> Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 ## Bắt đầu ở đây
 
@@ -102,7 +102,7 @@ Refresh không tự gửi lại; **bấm gửi lần nữa tạo lượt mới**
 1. Giữ API/UI chạy. Không cần terminal capture/feeder cho cách này.
 2. **Nạp CSV / PCAP → PCAP đã ghi → Chọn PCAP**.
 3. Chọn file, ví dụ `C:\Users\LOQ\Downloads\SELF_KLTN\tesst2.pcapng` hoặc `test.pcapng`.
-4. Bấm **Trích xuất và gửi**. UI tự chạy Python trong `.venv_capture`, trích flow bằng project v2 rồi gửi cùng `/predict`.
+4. Bấm **Trích xuất và gửi**. UI tự chạy Python trong `.venv_capture`, trích flow bằng project lifecycle v3 rồi gửi cùng `/predict`. Flow lịch sử vẫn giữ version cũ; không trích lại tự động.
 5. Đợi số flow thành công/lỗi, sang **Giám sát flow**, chọn lượt tên PCAP và Nguồn = `pcap_replay`.
 6. Xem IP/cổng, thời điểm gói đầu khác lúc API nhận, nhãn/xác suất và SHAP/LIME của flow đã chọn.
 
@@ -155,7 +155,7 @@ python app\feeder.py --watch data\live_review_01.csv --convert-units --capture-t
 
 ### Vì sao lướt web mà chưa thấy flow?
 
-Dự đoán **theo flow**, không từng packet. Adapter xuất khi flow có duration đạt 90 giây, idle đạt 240 giây hoặc flush lúc dừng. **Không phải cứ 90 giây từ lúc bật là mọi flow đều xuất**; flow ngắn ngừng có gói có thể phải chờ idle. Chưa dùng đóng TCP làm điểm xuất riêng.
+Dự đoán **theo flow**, không từng packet. Project v3 xuất khi tuổi flow tính từ packet đầu đạt 90 giây (GC live kiểm tra định kỳ), quan sát RST, đủ FIN/ACK hai chiều, SYN mở phiên mới hoặc flush lúc dừng. Không phải 90 giây từ lúc bật chương trình. FIN một chiều chưa đủ để đóng; packet lệch timestamp được xuất riêng với `flow_end_reason=late_packet` trong CSV. Idle 240 giây vẫn có trong policy nhưng tuổi tối đa 90 giây đến trước với cấu hình mặc định. V1/v2 giữ cách timeout cũ; xem version của từng lượt. Chưa có chứng nhận tương thích train hoặc benchmark chạy lâu v3.
 
 Kiểm tra ở terminal phụ:
 

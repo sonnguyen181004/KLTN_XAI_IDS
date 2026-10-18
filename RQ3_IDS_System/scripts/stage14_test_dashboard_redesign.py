@@ -165,6 +165,12 @@ def main():
                         at.button(key='send_pcap').click().run(timeout=150)
                         assert not at.exception, at.exception
                         assert get('/dashboard/summary')['flows'] > before, [e.value for e in at.error]
+                        extracted = get('/flows', source='pcap_replay')['flows']
+                        assert extracted, 'No replay flow persisted'
+                        for item in extracted:
+                            captured = get('/flows/' + item['flow_id'])
+                            assert captured['extractor_version'] == 'rq3-cfm-0.5.0-lifecycle-v3'
+                            assert len(captured['features']) == 78
                         print('PASS real PCAP extraction + prediction via UI')
                     else:
                         print('SKIP PCAP: .venv_capture not installed')

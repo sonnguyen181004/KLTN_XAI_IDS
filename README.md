@@ -15,11 +15,13 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 |---|---|
 | Chạy hệ thống, live/CSV/PCAP và hiểu SHAP/LIME | [Hướng dẫn sử dụng](RQ3_IDS_System/docs/dashboard_usage.md) |
 | Kiến trúc, đã làm gì và tiếp theo làm gì, gồm hoàn thiện UI | [Kiến trúc và kế hoạch](RQ3_IDS_System/docs/plan.md) |
-| Capture v2, checkpoint, queue 200, phục hồi và kết quả test | [Vận hành](RQ3_IDS_System/docs/operations.md) |
+| Capture v3, checkpoint, queue 200, phục hồi và kết quả test | [Vận hành](RQ3_IDS_System/docs/operations.md) |
 | Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
 | Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
 UI có Giám sát flow, Hướng dẫn live và Nạp CSV / PCAP; chưa có nút điều khiển capture. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
+
+**HT2 — 18/10/2026:** mặc định CLI/PCAP dùng `rq3-cfm-0.5.0-lifecycle-v3`: biên timeout nhất quán, nhận biết dấu hiệu đóng/mở TCP, tách rõ packet lệch timestamp. Không đổi model hoặc ép cờ nhị phân. Hai PCAP bảo toàn 1.148 packet; 99 flow thay cho 92 do phân phiên mới, không phải bằng chứng giảm FPR. Tra mục đích, kiểm thử và giới hạn ở [tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md); lịch sử/commit ở [tiến độ HT2](RQ3_IDS_System/docs/plan.md). Chọn `--extractor project-v2` nếu cần đối chiếu baseline; không trộn hai bản trong cùng CSV.
 
 ```text
 SELF_KLTN/
@@ -315,7 +317,7 @@ python app\feeder.py --watch data\live_review_01.csv --convert-units --capture-t
 
 Không có `--seconds`: chạy liên tục tới khi chủ động dừng, **không bắt buộc 60 giây**. Xem đúng card qua `Get-NetAdapter`; chỉ bắt mạng được phép, Npcap/quyền bắt phải sẵn sàng. Đổi tên CSV ở cả hai lệnh cho mỗi phiên mới; không ghi đè file đang theo dõi.
 
-Lướt web trên máy capture; chọn lượt `live_review_01.csv` và nguồn `feeder_live` trên UI. Flow chỉ tới model sau khi được xuất: duration 90s, idle 240s hoặc flush lúc dừng; không phải dự đoán từng packet. Lượt chỉ xuất hiện sau khi API nhận flow.
+Lướt web trên máy capture; chọn lượt `live_review_01.csv` và nguồn `feeder_live` trên UI. V3 xuất theo tuổi tối đa 90s từ packet đầu, quan sát đóng TCP/mở phiên mới hoặc flush lúc dừng; packet trễ được xuất riêng. Đây không phải dự đoán từng packet. Lượt chỉ xuất hiện sau khi API nhận flow. Quy tắc v2 cũ chỉ áp dụng khi chọn rõ `--extractor project-v2`.
 
 **Dừng:** Ctrl+C capture → đợi ghi nốt và “Đã dừng” → giữ feeder tới khi gửi hết → Ctrl+C feeder. Giữ API/UI để xem kết quả, hoặc dừng sau đó. Bản sửa Ctrl+C `b24f93c` chỉ áp dụng cho tiến trình mới. Xem [hướng dẫn live và chẩn đoán](RQ3_IDS_System/docs/dashboard_usage.md#test-live), [tiếp tục từ checkpoint](RQ3_IDS_System/docs/dashboard_usage.md#resume).
 

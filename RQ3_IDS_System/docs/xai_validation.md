@@ -1,8 +1,18 @@
 # Kiểm chứng model, SHAP và LIME
 
+## HT2.4 — đối chiếu lifecycle v3, 18/10/2026
+
+**Mục đích:** kiểm tra thay đổi phân flow có làm sai đường model/giải thích hay không, không tối ưu nhãn để giảm cảnh báo. Commit: `feat(rq3): validate and enable lifecycle v3 capture`.
+
+Stage21 chạy hai PCAP offline qua v2/v3, normalize theo 78 cột, dự đoán mọi flow và giải thích mọi cảnh báo. Bằng chứng cuối: `lifecycle_v3_final_evidence_20261018.json`. 92 flow v2 thành 99 flow v3; 92 cặp ghép được giữ nguyên nhãn, 4 cặp đổi vector. Bảy flow bổ sung dự đoán Benign; hai bản đều có tổng 8 cảnh báo Hulk. Không có nhãn thật xác minh nên **không tính FPR/accuracy**, không kết luận sửa được báo nhầm.
+
+SHAP cả 8 cảnh báo v3 có sai số cộng dồn tối đa `2.86102294921875e-6`. Điều này kiểm tra tính cộng dồn lời giải thích, không chứng minh model đúng hay đặc trưng khớp train. LIME cả 8 vẫn `insufficient_neighborhood`: giữ validity guard, không gán cứng nội dung, không sửa kernel/background/seed RQ2. Seed diagnostic theo khóa flow được giữ như nhau giữa hai bản, không coi là seed alert lưu DB. Không dùng R²/Jaccard khi LIME không hợp lệ.
+
+Stage14 PASS trên DB/server tạm: dự đoán thật, SHAP nền, bấm LIME, xử lý LIME suy biến, CSV và PCAP qua UI, kiểm tra metadata v3/78 đặc trưng. Đây chưa phải E5 toàn cohort hoặc benchmark live dài hạn. Artifact model/encoder vẫn có cảnh báo khác phiên bản thư viện; giữ nguyên artifact để bảo toàn so sánh nghiên cứu.
+
 Tài liệu hợp nhất ngày 16/10/2026. Chỉ còn 5 tài liệu RQ3 chính: [kiến trúc và kế hoạch](plan.md), [chạy và đọc UI](dashboard_usage.md), [vận hành](operations.md), [kiểm chứng XAI](xai_validation.md), [tương thích đặc trưng](feature_compatibility.md).
 
-> Trạng thái hiện hành: capture project v2; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Các mục audit/nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử, không phải mọi nhận định đều mô tả bản hiện tại. Chưa chứng nhận tương thích đầy đủ train–PCAP; nhãn live chưa phải ground truth.
+> Trạng thái hiện hành (HT2, 18/10/2026): capture project lifecycle v3; v2 còn chọn được bằng `--extractor project-v2`; feeder checkpoint/chống gửi trùng; SHAP queue 200 và phục hồi sau restart. Giữ XGBoost/78 đặc trưng, cấu hình LIME RQ2 và nhánh A/B. Nhật ký bên dưới giữ số liệu của phiên bản được ghi tại thời điểm kiểm thử. Chưa chứng nhận tương thích đầy đủ train–PCAP hoặc độ ổn định live dài hạn; nhãn live chưa phải ground truth.
 
 - [LIME suy biến: cách kiểm tra và trình bày](#lime-validity)
 - [Audit model, SHAP và LIME trên hai PCAP](#pcap-audit)
