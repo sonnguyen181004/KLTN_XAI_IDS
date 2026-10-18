@@ -281,6 +281,18 @@ Chỉ thử candidate khi đối chiếu nghiên cứu:
 
 ## Kiểm chứng và việc còn lại
 
+### HT3.4 — thử thụ động 20 phút, ngày 18/10/2026
+
+Lượt đầu chạm cap 20.000 packet sau khoảng 2 phút, không đạt nghiệm thu. RSS capture đo cao nhất khoảng 286 MiB. Nhận/xuất 29.160 packet, CSV 176 flow; chưa đối soát API cuối lượt. Bằng chứng: `live_20min_ht3_20261018.json`. Không tính FPR từ các nhãn chưa có ground truth.
+
+Lượt tiếp dùng cap thử riêng 50.000 packet / 64 MiB packet bytes, không đổi mặc định. Stage22 dùng DB tạm, theo dõi RSS/CPU/queue và đối soát packet/flow/metadata/UI. Chạm cap vẫn kiểm tra CSV đã flush nhưng toàn bài FAIL. Chạy từ SELF_KLTN:
+
+```powershell
+python -u RQ3_IDS_System/scripts/stage22_test_live_pipeline.py --interface Wi-Fi --seconds 1200 --max-buffered-packets 50000 --max-buffered-bytes 67108864 --output RQ3_IDS_System/docs/live_20min_ht3_retry_20261018.json
+```
+
+Không ghi đè output cũ, không xóa DB demo. JSON chỉ lưu số liệu tổng hợp; CSV/DB thô tạm được dọn sau test. Cap byte không giới hạn RSS của đối tượng Scapy. Thành công 20 phút chưa chứng nhận chạy nhiều giờ hoặc không mất gói tại NIC.
+
 - Stage20: 13 fixture/regression test PASS, gồm zero window cả hai chiều, baseline v1, candidate chỉ đổi nhóm được phép, chống ghi đè và các test packet/flow trước đó.
 - Stage24: API/model/SQLite thật trên DB tạm; gửi trùng đồng thời, xung đột khóa, rollback giữa giao dịch, mất kết nối, mất ACK sau commit, restart API/feeder, dòng trống/dở dang, khóa feeder, lỗi input và truncate. Có mô phỏng việc SHAP bị ngắt bằng trạng thái DB sau khi dừng API, xác nhận phục hồi khi restart và giữ các việc dropped.
 - Stage14: hồi quy API/UI/CSV/PCAP và LIME qua model thật, Streamlit AppTest; dữ liệu cô lập.
