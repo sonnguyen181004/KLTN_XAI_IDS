@@ -33,12 +33,16 @@ lime:
   background_sample_size: 2000
   background_seed: 42
 
-# 3 đặc trưng "nghi nhạy môi trường" — CHỈ dùng làm cờ cảnh báo tham khảo,
+# 4 đặc trưng "nghi nhạy môi trường" — CHỈ dùng làm cờ cảnh báo tham khảo,
 # không phải bằng chứng (xem RQ3_IDS_System/docs/plan.md, mục cảnh báo overclaim).
+# FIN Flag Cnt thêm 18/10/2026 sau khi truy leaf cây quyết định thật: 445/2.800.000
+# dòng train rơi đúng vùng (Fwd Seg Size Min<32, FIN Flag Cnt>=1, Fwd Pkt Len Max>=66)
+# đều là DoS attacks-Hulk, 0 dòng Benign — xem feature_compatibility.md.
 environment_fingerprint_features:
   - "Dst Port"
   - "Fwd Seg Size Min"
   - "Init Fwd Win Byts"
+  - "FIN Flag Cnt"
 environment_fingerprint_flag_threshold: 2  # Top-5 có >= 2 cái này thì bật cờ
 
 rare_class_min_train_samples: 100  # lớp có dưới ngưỡng này thì bật cờ "lớp hiếm"

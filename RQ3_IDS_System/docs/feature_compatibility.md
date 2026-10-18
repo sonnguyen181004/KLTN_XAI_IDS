@@ -58,6 +58,17 @@ Stage19 mặc định chỉ xuất JSON bằng chứng; dùng `--matrix-output <
 
 <a id="ht21"></a>
 
+## HT2.5 — Truy leaf cây quyết định cho FIN Flag Cnt, mở rộng cờ env-fingerprint (18/10/2026)
+
+**Mục đích:** HT2.1 đã loại trừ giả thuyết "đếm cờ >1" nhưng chưa giải thích vì sao `FIN Flag Cnt` lại là đặc trưng dominant (SHAP phi≈+5,87) cho các báo nhầm Hulk thật trên traffic live. Bước này truy trực tiếp cây quyết định XGBoost để tìm bằng chứng ở mức leaf, không suy luận từ SHAP một mình.
+
+- Lấy 1 flow Hulk bị báo nhầm thật (từ soak live 18/10, p(Hulk)=93,3%), dùng `booster.trees_to_dataframe()` quét toàn bộ 100 cây của lớp Hulk: **cả 100/100 cây đều có ít nhất 1 split dùng `FIN Flag Cnt`**. Truy đường đi thật của flow này trong cây có Gain cao nhất (cây #38): `Fwd Seg Size Min < 32` → `FIN Flag Cnt >= 1` → `Fwd Pkt Len Max >= 66`.
+- Lọc toàn bộ `train_set.parquet` (2,8 triệu dòng) theo đúng 3 điều kiện trên (hyper-rectangle thật, không phải suy diễn): **445/2.800.000 dòng (0,0159%) rơi vào vùng này, 445/445 là DoS attacks-Hulk, 0 dòng Benign.**
+- **Kết luận**: model không "nhầm" theo nghĩa lỗi logic — nó học đúng 100% dữ liệu đã thấy. Vấn đề là vùng đặc trưng "đóng kết nối có FIN + segment nhỏ + gói forward lớn" gần như vắng bóng Benign trong train (0 dòng trong mẫu khảo sát), trong khi traffic HTTPS thật của người dùng rơi vào đúng vùng này thường xuyên (đóng kết nối chuẩn TCP là hành vi bình thường). Đây là domain gap có số liệu cụ thể, không phải suy đoán từ SHAP đơn lẻ.
+- **Nguyên nhân sâu xa của việc train thiếu FIN ở mọi lớp (không riêng Benign) vẫn CHƯA xác định chắc chắn** — 2 giả thuyết chưa phân biệt được: (a) lỗi đếm cờ của bản CICFlowMeter lịch sử dùng tạo dataset, hoặc (b) đặc điểm thật của hạ tầng sinh traffic cường độ cao trong testbed gốc (nhiều kết nối song song không kịp đóng sạch trước khi bị cắt/export). Không có nguồn preprocessing gốc để phân xử (xem HT2.1).
+- **Quyết định**: thêm `FIN Flag Cnt` vào `environment_fingerprint_features` trong `config.yaml` (4 đặc trưng, giữ nguyên ngưỡng `environment_fingerprint_flag_threshold=2`). Đây là thay đổi tầng 5 (chỉ hiển thị/gắn cờ "cần xem lại"), **không đổi model, không đổi nhãn dự đoán, không đổi ngưỡng A/B dựa cohort**. Kiểm tra lại Stage08, Stage11 (PASS, luật nhánh vẫn đúng) và Stage14 (PASS toàn bộ, không ảnh hưởng CSV/PCAP/LIME/storage).
+- **Chưa làm**: phân tích tương tự cho ca Infilteration mới phát hiện ở soak 18/10 (chưa có mẫu feature lưu lại); chưa làm E4 (train lại thử nghiệm bỏ nhóm đặc trưng nghi ngờ) — việc này cần quyết định riêng, không gộp vào thay đổi hiển thị này.
+
 ## HT2.1 — Điều tra nguồn train, độ nhạy cờ TCP và vòng đời flow (18/10/2026)
 
 **Mục đích:** chọn bước sửa có bằng chứng, không nhị phân hóa cờ chỉ để mong giảm Hulk; xác định hành vi capture v2 cần xử lý trước khi hoàn thiện realtime. Chỉ thêm kiểm thử/diagnostic/tài liệu, không đổi adapter mặc định, model, LIME, timeout, DB hoặc hai PCAP gốc. HT2 tổng thể chưa hoàn tất.
