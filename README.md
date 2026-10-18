@@ -1,5 +1,58 @@
 # KLTN_XAI_IDS
 
+## Chạy nhanh trên VS Code — hiện hành 18/10/2026
+
+Giữ pipeline: **Wi-Fi → capture → flow/78 đặc trưng → CSV → feeder → API/XGBoost → SHAP/LIME → UI**. Nút Realtime chỉ thay việc tự mở hai terminal capture/feeder; API quản lý vòng đời worker, không thay model/logic dự đoán.
+
+### 1. Chuẩn bị
+
+- Dùng Python đã cài dependencies API/UI; không dùng venv của demo capture cũ hoặc `.venv_capture` để chạy API/UI. Backend tự dùng `.venv_capture` cho capture. Cần Npcap và interface hoạt động; chạy VS Code quyền Administrator nếu cấu hình Npcap yêu cầu.
+- Nếu đang chạy phiên cũ: bấm Dừng capture, đợi hoàn tất rồi Ctrl+C ở UI/API. Không mở nhiều API cùng DB, không dùng `--reload`, không chạy capture thủ công cùng nút UI.
+- Không cần reset DB mỗi lần chạy. Nếu vừa reset, tạo lượt mới, không resume checkpoint feeder cũ.
+
+### 2. Terminal PowerShell thứ nhất — API
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+Remove-Item Env:IDS_DB_PATH -ErrorAction SilentlyContinue
+Remove-Item Env:IDS_CAPTURE_SESSION_DIR -ErrorAction SilentlyContinue
+$env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
+$env:IDS_CAPTURE_CONTROL_TOKEN
+$env:IDS_CAPTURE_API_URL = 'http://127.0.0.1:8000'
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+Hai lệnh Remove-Item chỉ bỏ override của terminal hiện tại để dùng DB/registry mặc định, không xóa file. Đợi API khởi động hoàn tất. Bôi đen chuỗi token 32 ký tự vừa hiện và dùng **Copy trong menu chuột phải của terminal VS Code** (hoặc Ctrl+Shift+C nếu shortcut đang gán Copy). Không dùng Ctrl+C để copy khi tiến trình đang chạy vì có thể dừng API. Không đưa token vào Git/ảnh công khai.
+
+### 3. Terminal PowerShell thứ hai — UI
+
+Thay placeholder bằng đúng token của API, không tạo token thứ hai:
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN\RQ3_IDS_System
+$env:IDS_CAPTURE_CONTROL_TOKEN = 'DAN_TOKEN_TU_TERMINAL_API_VAO_DAY'.Trim()
+$env:IDS_API_URL = 'http://127.0.0.1:8000'
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
+```
+
+Mở **http://127.0.0.1:8501** trên chính máy, không đưa điều khiển lên LAN/proxy/tunnel. Giữ hai terminal chạy.
+
+### 4. Test từng nguồn
+
+- **Realtime:** Realtime → interface `Wi-Fi` (kiểm tra bằng `Get-NetAdapter`) → Bắt đầu capture → đợi Đang bắt → lướt web → Xem flow của phiên này / Giám sát flow. Khi xong bấm Dừng capture, đợi Đã hoàn tất trước khi đóng API. Không cần mở thêm capture/feeder.
+- **CSV:** Nạp CSV / PCAP → CSV đặc trưng → chọn file → Gửi CSV vào /predict. Chỉ đổi giây sang micro giây khi đúng đơn vị CSV extractor; không đổi lần nữa với dataset đã dùng micro giây.
+- **PCAP:** Nạp CSV / PCAP → PCAP đã ghi → chọn `test.pcapng` hoặc `tesst2.pcapng` → Trích xuất và gửi → chọn đúng lượt trong Giám sát flow. Không cần bắt Wi-Fi khi phát lại file.
+
+### Lỗi thường gặp và giới hạn
+
+- **403:** token API/UI có thể khác nhau hoặc có khoảng trắng; `.Trim()` bỏ khoảng trắng đầu/cuối. Token được API đọc lúc khởi động. Không tắt xác thực để vượt lỗi; nếu vẫn lỗi, kiểm tra log/điều kiện local.
+- **Chặn local dù mở localhost:** đã sửa ở `99f5a03`; Streamlit 1.65 trả IP None cho loopback. Restart UI bằng lệnh có `--server.address 127.0.0.1`. Guard vẫn yêu cầu listener loopback tường minh.
+- **Packet tăng nhưng chưa có flow:** pipeline xuất flow khi kết thúc/timeout hoặc dừng và flush, không dự đoán ngay từng packet. Traffic nền cũng được bắt.
+- **Cap 20.000 packet:** số packet đang giữ đồng thời, không phải tổng packet cả phiên; khác queue SHAP 200. Chạm giới hạn có thể dừng lỗi và phiên không đầy đủ. Chưa chứng nhận ổn định tải cao/chạy dài, không tự bỏ cap. Cần đo tích tụ, tối ưu giữ đúng đặc trưng và kiểm thử tải trước khi đổi mặc định.
+- Cảnh báo lệch phiên bản XGBoost/encoder cần kiểm chứng môi trường riêng; hotfix UI không xử lý cảnh báo này. Nhãn model không phải xác nhận tấn công hay FPR; LIME suy biến phải được hiển thị trung thực.
+
+Hướng dẫn đầy đủ: [UI và test](RQ3_IDS_System/docs/dashboard_usage.md), [vận hành/khôi phục/giới hạn](RQ3_IDS_System/docs/operations.md). Các mục mốc tiến độ dưới đây là lịch sử, ưu tiên hướng dẫn hiện hành ở trên.
+
 **Reset để tự test — 18/10/2026:** DB mặc định đã được sao lưu/verify rồi xóa lịch sử theo yêu cầu; cả 6 bảng về 0. Không đổi model, không tự bật API/UI. Xem [chạy và test lại từ đầu](RQ3_IDS_System/docs/dashboard_usage.md#clean-retest) và [nhật ký reset/khôi phục](RQ3_IDS_System/docs/operations.md#reset-20261018).
 
 **HT4.4 hiện hành — 18/10/2026:** đã nối API + tab **Realtime** với Bắt đầu/Dừng/Đối soát, state do API sở hữu, không spawn khi refresh. Bật opt-in bằng cùng `IDS_CAPTURE_CONTROL_TOKEN` ở API/UI, chạy cả hai trên loopback, 1 API worker; [hướng dẫn chạy](RQ3_IDS_System/docs/dashboard_usage.md#capture-control). Kiểm thử UI/API/CSV/PCAP/model PASS; Wi-Fi smoke test 10,034s PASS, 267 packet/19 flow CSV=API=ACK, dừng/drain 2,133s. **Lượt 30s FAIL ở khoảng 25s do chạm cap 20.000 packet đang giữ**; chưa chứng nhận ổn định dài hạn/tải cao, không tăng cap/model. Chi tiết và các lần thất bại được giữ trong [vận hành](RQ3_IDS_System/docs/operations.md). Các mốc phía dưới là nhật ký lịch sử.
