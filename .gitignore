@@ -13,6 +13,8 @@ RQ3_IDS_System/data/*.db-wal
 RQ3_IDS_System/data/*.db.worker.lock
 RQ3_IDS_System/data/*.csv
 RQ3_IDS_System/data/*.log
+RQ3_IDS_System/backups/
+RQ3_IDS_System/restores/
 RQ3_IDS_System/data/train_stats.json
 RQ3_IDS_System/data/lime_background.npy
 RQ3_IDS_System/data/*.pcap

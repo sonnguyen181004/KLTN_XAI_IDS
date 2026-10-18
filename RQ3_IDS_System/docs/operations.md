@@ -1,5 +1,46 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT3.6 — dung lượng, backup và khôi phục an toàn (18/10/2026)
+
+**Mục đích:** quan sát tăng trưởng file và có snapshot SQLite kiểm chứng được, không đổi 6 bảng/model/SHAP/LIME, không tự xóa hoặc thay DB đang dùng.
+
+- API đọc `GET /storage_status`; UI mục **Dung lượng lưu trữ** trong Giám sát flow cập nhật cùng bảng flow. Cảnh báo khi ổ DB còn dưới `storage.warning_free_bytes` (mặc định 1 GiB), không phải quota. Chỉ tính file trực tiếp trong thư mục DB: DB/WAL/SHM (gồm DB backup cũ nếu cùng thư mục), CSV, log, checkpoint, khác; không tính thư mục con/ổ capture khác. Không đọc được hiển thị chưa rõ, không báo còn đủ. Cap dung lượng ổ CSV vẫn là cơ chế riêng.
+- Backup dùng SQLite Online Backup API từ connection read-only, lấy dữ liệu đã commit kể cả WAL; không copy thô file DB đang chạy. Kiểm tra `integrity_check`, `foreign_key_check`, 6 bảng, số dòng/model version; ghi SHA-256/kích thước vào manifest hoàn tất. Không bao gồm CSV, checkpoint, log, model hoặc packet RAM. Backup lỗi giữ thư mục dở để chẩn đoán, không có manifest hoàn tất; thử lại bằng tên mới. Có deadline 30s cho bước chuyển trang backup, dự trữ dung lượng 256 MiB; kiểm tra dung lượng không bảo đảm chống ổ đầy do tác vụ khác.
+- Verify kiểm tra checksum, integrity, khóa ngoại và metadata; từ chối sidecar WAL/SHM/journal, symlink DB hoặc đường dẫn DB khác `snapshot.db`. Checksum phát hiện hỏng, không phải chữ ký chống kẻ sửa cả DB lẫn manifest.
+- Restore chỉ tạo thư mục **mới** chứa `snapshot.db` và manifest; không ghi đè/reset DB thật, không tự chuyển API sang bản phục hồi. Model và code tương thích phải được giữ riêng; manifest chỉ liệt kê model version đã có trong Prediction.
+- Không tự backup định kỳ/rotation/retention. Không sao chép CSV/checkpoint/log đang mở. File backup có IP/đặc trưng và lịch sử: chưa mã hóa; lưu nơi có quyền truy cập phù hợp, sao chép bundle hoàn chỉnh ra ổ khác nếu cần chống hỏng ổ. Thư mục `RQ3_IDS_System/backups/` và `restores/` được Git ignore.
+
+### Lệnh vận hành (từ thư mục RQ3_IDS_System)
+
+```powershell
+python scripts/manage_storage.py status
+python scripts/manage_storage.py backup --bundle backups/manual_01
+python scripts/manage_storage.py verify --bundle backups/manual_01
+python scripts/manage_storage.py restore --bundle backups/manual_01 --destination restores/manual_01
+```
+
+Tên thư mục phải chưa tồn tại; lần sau dùng tên khác. Nguồn mặc định theo `IDS_DB_PATH` nếu có, nếu không theo config.yaml; dùng `--db đường_dẫn` để chỉ rõ nguồn khi backup/status. Backup SQLite có thể chạy khi API hoạt động, nhưng trạng thái snapshot phản ánh thời điểm backup, không bảo đảm cùng thời điểm với CSV/checkpoint.
+
+### Dùng bản phục hồi mà không ghi đè bản cũ
+
+1. Verify bundle; restore sang thư mục mới như trên. Giữ bản backup nguyên vẹn, không chạy API trực tiếp trên backup.
+2. Dừng capture an toàn, đợi feeder gửi xong rồi dừng feeder; dừng API cũ trước khi chuyển DB. Không kill để giả lập hoàn tất.
+3. Trong terminal chạy API mới, đặt đường dẫn DB phục hồi rồi chạy lệnh API quen thuộc:
+
+```powershell
+$env:IDS_DB_PATH = (Resolve-Path restores/manual_01/snapshot.db).Path
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+4. Kiểm tra số flow/lịch sử/model, trạng thái SHAP recovery. API có thể migrate/ghi thêm vào DB phục hồi; đây là bản làm việc, không còn là bundle bất biến để verify theo hash ban đầu. Quay lại DB cũ: dừng API mới, bỏ biến `IDS_DB_PATH` trong terminal rồi khởi động lại; không xóa bản nào.
+5. **Không tự dùng lại feeder checkpoint mới hơn snapshot DB**: có thể bỏ qua flow DB chưa có. Phát lại toàn bộ CSV bằng checkpoint mới cũng có thể tạo bản trùng; cần đối soát idempotency key/offset riêng trước replay. Để bắt traffic mới, dùng CSV/lượt mới. Backup DB không hứa phục hồi packet chưa xuất, không phải snapshot nguyên khối toàn pipeline.
+
+### Kiểm thử
+
+`python scripts/stage31_test_storage.py`: DB tạm, WAL đang mở/giao dịch chưa commit, giữ ingestion key/trạng thái XAI, restore mới, từ chối ghi đè/checksum hỏng/sidecar/manifest sai/DB không đúng schema/khóa ngoại lỗi/dung lượng thấp/deadline; kiểm tra CSV/checkpoint không bị sửa. Stage14 bổ sung API và UI dung lượng bình thường/thấp/không đọc được; chạy cùng hồi quy model/CSV/PCAP/LIME trên DB tạm. Không chạy backup hoặc restore trên DB người dùng trong đợt triển khai.
+
+**Kết quả 18/10/2026:** Stage31 **8/8 PASS**; Stage14 **PASS toàn bộ**, gồm API/Streamlit AppTest ba trạng thái storage, upload CSV, trích PCAP, model thật, SHAP nền, LIME validity, chọn flow và chống gửi lặp. CLI status chạy chỉ đọc: ổ DB còn khoảng 28,7 GiB tại lần kiểm tra, 34 file trực tiếp, không lỗi scan. Số dung lượng là snapshot, không phải mức cố định. Lượt test đầu vướng fixture chưa đóng connection SQLite trên Windows; đã đóng rõ ràng và chạy lại đạt, không sửa dữ liệu thật. Commit triển khai: `feat(rq3): add verified SQLite backups and storage visibility`. Không thêm MD mới; chưa triển khai retention xóa tự động hoặc backup toàn pipeline.
+
 ## HT3.5 — giảm bộ nhớ packet (18/10/2026)
 
 Mục đích: không giữ payload/Scapy graph trong flow chờ xuất. V3 lưu bản ghi gọn sau khi xử lý bulk/window/TCP trên packet gốc; không thay model, 78 đặc trưng, lifecycle, queue hoặc giới hạn mặc định. `buffered_packet_bytes` vẫn là tổng frame byte logic chưa xuất, không phải RAM thực cấp phát. Đây vẫn là O(số packet), không phải thống kê O(1); bản tối ưu vẫn có thể chạm cap 20000 mặc định ở cùng tải.

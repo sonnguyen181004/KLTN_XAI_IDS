@@ -74,6 +74,9 @@ def main():
                     response = requests.get(url + path, params=params, timeout=10)
                     response.raise_for_status(); return response.json()
                 assert get('/dashboard/summary', capture_run_id='fixture')['flows'] == 205
+                storage = get('/storage_status')
+                assert storage['automatic_deletion'] is False and storage['free_bytes'] > 0
+                assert storage['bytes_by_group']['database'] > 0
                 assert get('/flows', capture_run_id='fixture', offset=200, limit=50)['count'] == 205
                 assert len(get('/flows', capture_run_id='fixture', offset=200, limit=50)['flows']) == 5
                 assert requests.get(url + '/flows', params={'limit': -1}).status_code == 422
@@ -116,6 +119,7 @@ def main():
                     at = AppTest.from_file(str(ROOT / 'app/dashboard.py')).run(timeout=30)
                     assert not at.exception, at.exception
                     assert {'Giám sát flow', 'Hướng dẫn live', 'Nạp CSV / PCAP'} <= {tab.label for tab in at.tabs}
+                    assert any('Ổ chứa DB còn' in item.value for item in at.caption)
                     assert any('chưa có nút bật hoặc tắt' in item.value for item in at.info)
                     assert any('run_live_capture.py' in item.value for item in at.code)
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
@@ -206,6 +210,23 @@ def main():
                     assert any('không còn các ví dụ lân cận hữu ích' in item.value for item in at.markdown)
                     assert any(tab.label == 'Đối chứng đặc trưng' for tab in at.tabs)
                 print('PASS degenerate LIME guard, null R2/agreement, diagnostic UI and feature comparison')
+                original_get = requests.get
+                for unavailable in (False, True):
+                    def storage_fixture(request_url, *args, **kwargs):
+                        if request_url.endswith('/storage_status'):
+                            if unavailable:
+                                raise requests.ConnectionError('storage fixture unavailable')
+                            response = requests.Response()
+                            response.status_code = 200
+                            response._content = json.dumps({**storage, 'low_space': True, 'free_bytes': 1}).encode()
+                            return response
+                        return original_get(request_url, *args, **kwargs)
+                    with patch.dict(os.environ, {'IDS_API_URL': url}), patch('requests.get', side_effect=storage_fixture):
+                        at = AppTest.from_file(str(ROOT/'app/dashboard.py')).run(timeout=30)
+                        assert not at.exception, at.exception
+                        message = 'Chưa đọc được dung lượng' if unavailable else 'Dung lượng trống thấp'
+                        assert any(message in item.value for item in at.warning)
+                print('PASS storage API, normal/low-space/unavailable dashboard states')
             finally:
                 proc.terminate()
                 proc.wait(timeout=10)
