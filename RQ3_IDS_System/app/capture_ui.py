@@ -11,9 +11,17 @@ LABELS = {'starting': 'Đang khởi động', 'running': 'Đang bắt', 'stoppin
 
 
 def local_browser():
-    browser_ip = st.context.ip_address
-    if not browser_ip:
+    # Streamlit 1.65 deliberately maps loopback client IPs to None. Client
+    # context is not an authentication boundary: require an explicit local
+    # listener, keep API token checks, and never deploy control behind a proxy.
+    try:
+        if not ip_address(st.get_option('server.address')).is_loopback:
+            return False
+    except (ValueError, TypeError):
         return False
+    browser_ip = st.context.ip_address
+    if browser_ip is None:
+        return True
     try:
         return ip_address(browser_ip).is_loopback
     except ValueError:
@@ -28,7 +36,7 @@ def render_capture(api):
         st.info('Chưa bật điều khiển: đặt cùng IDS_CAPTURE_CONTROL_TOKEN (ít nhất 32 ký tự) cho API và UI rồi khởi động lại. Hướng dẫn terminal bên dưới vẫn dùng được.')
         return
     if not local_browser():
-        st.error('Điều khiển capture chỉ dùng từ trình duyệt trên máy này. Không triển khai UI điều khiển ra mạng.')
+        st.error('Điều khiển capture yêu cầu UI bind loopback: chạy Streamlit với --server.address 127.0.0.1 và mở http://127.0.0.1:8501 trên máy này. Không triển khai qua LAN/proxy/tunnel.')
         return
     headers = {'X-IDS-Control-Token': token}
     try:

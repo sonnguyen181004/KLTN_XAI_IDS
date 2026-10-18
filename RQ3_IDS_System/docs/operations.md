@@ -1,5 +1,11 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## Sửa chặn nhầm trình duyệt local — 18/10/2026
+
+Streamlit 1.65.0 cố ý trả `st.context.ip_address=None` cho loopback; guard cũ từ chối None nên nút bị chặn dù chạy đúng lệnh. Guard mới bắt buộc `server.address` là địa chỉ IP loopback tường minh, sau đó chấp nhận None hoặc IP loopback, vẫn từ chối IP remote/không hợp lệ. Không dựa riêng vào context IP làm xác thực; giữ API token/Host/client/Origin guard. Không triển khai UI điều khiển sau proxy/tunnel hoặc ra LAN vì listener local không xác thực người dùng qua proxy.
+
+Stage37: 5/5 PASS gồm ma trận bind/client IP, None, auth API, refresh không start và Start/Stop. AppTest mô phỏng context None/cấu hình listener trong luồng render, không thay hàm guard bằng True; không phải nghiệm thu trình duyệt/NIC thật. Các lần fixture thất bại trước đó đã chỉnh cách đưa cấu hình vào luồng AppTest. Không ghi DB, không bắt Wi-Fi, không đổi model/78 đặc trưng/XAI. Pipeline vẫn capture → flow/CSV → feeder → API/model → SHAP/LIME → UI; chỉ đổi cách điều khiển hai worker so với bốn terminal. Cảnh báo phiên bản model/encoder là vấn đề riêng, chưa được khắc phục trong patch này.
+
 <a id="reset-20261018"></a>
 
 ## Reset lịch sử để tự test — 18/10/2026
