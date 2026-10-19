@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from datetime import datetime, timezone
 from pathlib import Path

@@ -16,7 +16,9 @@ sys.path.insert(0, str(ROOT / 'app'))
 from ingestion_ui import render_ingestion
 from xai_reading_ui import explain_top_features, lime_problem, feature_guide
 from dashboard_format import endpoint, protocol_text, bounded_page
-from capture_ui import render_capture
+from capture_ui import render_capture, capture_summary
+from alert_hints import fin_data_hint, lime_badge, why_suspect
+from feature_help import describe, reading
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
@@ -57,6 +59,50 @@ def bars(data, name, value, signed=False):
     st.altair_chart(chart.properties(height=max(180, len(frame) * 26)), width='stretch')
 
 
+COLORS = {'ok': '#27a884', 'warn': '#ed9851', 'bad': '#e05252', 'off': '#8a8f98', 'neutral': '#4c78a8'}
+
+
+def badge(title, text, level, tip=''):
+    return (f"<div title='{tip}' style='border-left:4px solid {COLORS[level]};padding:2px 10px;background:rgba(128,128,128,.08);border-radius:4px'>"
+            f"<div style='font-size:.75rem;opacity:.7'>{title}</div><div style='font-weight:600'>{text}</div></div>")
+
+
+def card(title, value, sub, level='neutral'):
+    return (f"<div style='border-left:5px solid {COLORS[level]};padding:6px 12px;background:rgba(128,128,128,.08);border-radius:6px'>"
+            f"<div style='font-size:.8rem;opacity:.75'>{title}</div>"
+            f"<div style='font-size:1.9rem;font-weight:700;line-height:1.2'>{value}</div>"
+            f"<div style='font-size:.75rem;opacity:.65'>{sub or '&nbsp;'}</div></div>")
+
+
+def percent(part, total):
+    return f'{part / total:.1%}' if total else '—'
+
+
+def label_bars(data):
+    """Phân bố nhãn: đủ mọi lớp, tên dài không bị cắt, Benign xanh, cảnh báo cam."""
+    if not data:
+        st.info('Chưa có dữ liệu.'); return
+    frame = pd.DataFrame(data).rename(columns={'label': 'Nhãn dự đoán', 'count': 'Số flow'})
+    st.altair_chart(alt.Chart(frame).mark_bar().encode(
+        y=alt.Y('Nhãn dự đoán:N', sort='-x', title=None, axis=alt.Axis(labelLimit=320, labelOverlap=False)),
+        x=alt.X('Số flow:Q', title=None),
+        color=alt.condition(alt.datum['Nhãn dự đoán'] == 'Benign', alt.value(COLORS['ok']), alt.value(COLORS['warn'])),
+        tooltip=['Nhãn dự đoán', 'Số flow']).properties(height=max(120, len(frame) * 26)), width='stretch')
+
+
+def paint(frame):
+    def label_color(value):
+        return 'background-color: rgba(39,168,132,.28)' if value == 'Benign' else 'background-color: rgba(237,152,81,.40); font-weight: 600'
+    def branch_color(value):
+        return 'background-color: rgba(237,152,81,.40)' if value == 'B' else ''
+    def lime_color(value):
+        return 'background-color: rgba(224,82,82,.30)' if value == 'Không đủ tin cậy' else ''
+    def hint_color(value):
+        return 'background-color: rgba(237,152,81,.40)' if value else ''
+    return (frame.style.map(label_color, subset=['Nhãn']).map(branch_color, subset=['Nhánh'])
+            .map(lime_color, subset=['LIME']).map(hint_color, subset=['Gợi ý']))
+
+
 def show_detail(flow_id):
     flow = get('/flows/' + flow_id)
     reference = get('/flows/' + flow_id + '/comparison')
@@ -68,6 +114,15 @@ def show_detail(flow_id):
     cols[1].metric('Xác suất lớp thắng', f"{flow['confidence']:.2%}" if flow['confidence'] is not None else 'Chưa có')
     cols[2].metric('Giải thích', STATUS.get(flow['explanation_status'], flow['explanation_status']))
     st.caption('Xác suất do model trả về, không phải bằng chứng tấn công đã xác nhận. Giờ hiển thị GMT+7.')
+    if flow['is_alert']:
+        why = why_suspect(flow.get('shap_top5'), describe, reading)
+        st.markdown('**Vì sao nghi ngờ:** ' + (why or 'chưa có SHAP để nêu lý do (đang chờ hoặc bị bỏ).'))
+        features = flow.get('features') or {}
+        hint = fin_data_hint(flow['predicted_label'], features.get('FIN Flag Cnt'),
+                             features.get('Fwd Pkt Len Max'), features.get('Fwd Seg Size Min'))
+        if hint:
+            st.warning('**Gợi ý có thể báo nhầm.** ' + hint['text'])
+        st.caption('LIME: ' + lime_badge(flow))
     left, right = st.columns(2)
     with left:
         st.write('Nguồn: ' + endpoint(flow['src_ip'], flow['src_port']))
@@ -86,16 +141,16 @@ def show_detail(flow_id):
     if not flow['is_alert']:
         st.info('Benign: vẫn lưu dự đoán, không tạo cảnh báo và không chạy SHAP/LIME theo thiết kế.')
     elif flow['branch']:
-        st.info(f"Nhánh {flow['branch']}: {flow['branch_reason']}. Nhánh A/B không đổi nhãn dự đoán.")
+        st.info(f"Nhánh {flow['branch']}: {flow['branch_reason'].rstrip('.')}. Nhánh A/B chỉ đổi cách hiển thị, không đổi nhãn dự đoán.")
     prediction, shap_tab, lime_tab, comparison, reliability, raw = st.tabs(
         ['Xác suất các lớp', 'SHAP tự động', 'LIME theo yêu cầu', 'Đối chứng đặc trưng', 'Đánh giá giải thích', 'Đặc trưng và thời gian'])
     with prediction:
         probabilities = pd.DataFrame([{'Lớp': k, 'Xác suất': v} for k, v in flow['probabilities'].items()])
         st.altair_chart(alt.Chart(probabilities).mark_bar().encode(
-            y=alt.Y('Lớp:N', sort='-x', title=None),
+            y=alt.Y('Lớp:N', sort='-x', title=None, axis=alt.Axis(labelLimit=320, labelOverlap=False)),
             x=alt.X('Xác suất:Q', scale=alt.Scale(domain=[0, 1]), axis=alt.Axis(format='.0%')),
             tooltip=['Lớp', alt.Tooltip('Xác suất:Q', format='.2%')]
-        ).properties(height=340), width='stretch')
+        ).properties(height=len(probabilities) * 24), width='stretch')
         st.caption(f"Model: {flow['model_version']} · Nhãn thật: {flow['label_true'] or 'Không biết (traffic thật không có nhãn xác nhận)'}")
     with shap_tab:
         if flow.get('shap_top5'):
@@ -151,7 +206,7 @@ def show_detail(flow_id):
 
 
 st.set_page_config(page_title='IDS · Giám sát và giải thích', layout='wide')
-st.title('IDS · Giám sát traffic và giải thích')
+st.markdown('## IDS · Giám sát traffic và giải thích')
 st.caption('Flow hoàn tất → dự đoán → cảnh báo → SHAP nền. LIME chỉ chạy khi bạn yêu cầu.')
 try:
     health = get('/health')
@@ -181,11 +236,35 @@ with st.sidebar:
     st.caption(f"Model: {'Đã nạp' if health['model_loaded'] else 'LỖI'} · {health['n_classes']} lớp")
     st.caption('Phiên bản: ' + health['model_version'])
 
+
+@st.fragment(run_every=None if paused else '5s')
+def status_bar():
+    def read(path):
+        try:
+            return get(path)
+        except requests.RequestException:
+            return None
+    live_health, queue = read('/health'), read('/explain_queue_status')
+    loaded = bool(live_health and live_health.get('model_loaded'))
+    capture_text, capture_level = capture_summary(API)
+    if queue:
+        queue_text = f"{queue['qsize']}/{queue['maxsize']} chờ" + (f" · {queue['recovery_pending']} chờ khôi phục" if queue.get('recovery_pending') else '')
+        queue_level = 'warn' if queue['qsize'] >= 0.8 * queue['maxsize'] else 'ok'
+    else:
+        queue_text, queue_level = 'Không đọc được', 'bad'
+    items = [('API', 'Hoạt động' if live_health else 'Không kết nối', 'ok' if live_health else 'bad', ''),
+             ('Model', f"Đã nạp · {live_health['n_classes']} lớp" if loaded else 'Chưa nạp', 'ok' if loaded else 'bad', ''),
+             ('Capture', capture_text, capture_level, 'Khi chưa bật điều khiển, dashboard không biết capture đang chạy hay dừng. Xem tab Realtime.'),
+             ('Hàng đợi SHAP', queue_text, queue_level, 'SHAP chờ trong hàng đợi / sức chứa. Đầy thì cảnh báo vẫn có, chỉ thiếu giải thích.')]
+    for column, (title, text, level, tip) in zip(st.columns(4), items):
+        column.markdown(badge(title, text, level, tip), unsafe_allow_html=True)
+
+
+status_bar()
 live, capture_help, upload = st.tabs(['Giám sát flow', 'Realtime', 'Nạp CSV / PCAP'])
 
 
-@st.fragment(run_every=None if paused else '5s')
-def monitor():
+def storage_panel():
     with st.expander('Dung lượng lưu trữ · chỉ theo dõi, không tự xóa'):
         try:
             storage = get('/storage_status')
@@ -200,6 +279,10 @@ def monitor():
                 st.warning('Một số file không đọc được dung lượng; thống kê chưa đầy đủ.')
         except (requests.RequestException, KeyError):
             st.warning('Chưa đọc được dung lượng. Kiểm tra API/restart sau cập nhật; không coi là còn đủ dung lượng.')
+
+
+@st.fragment(run_every=None if paused else '5s')
+def monitor():
     try:
         current_runs = get('/runs')['runs']
         selected_run = current_runs[0]['capture_run_id'] if choice == '__latest__' and current_runs else choice
@@ -223,24 +306,27 @@ def monitor():
         stats = get('/dashboard/summary', params)
         queue = get('/explain_queue_status')
         display_run = next((r.get('run_name') or r['capture_run_id'] for r in current_runs if r['capture_run_id'] == selected_run), 'Tất cả lịch sử' if selected_run == '__all__' else 'Chưa có lượt')
-        st.subheader('Tổng quan trong phạm vi đang chọn')
+        total, alerts = stats['flows'], stats['alerts']
         st.caption(f"Cập nhật: {local_time(now.isoformat())} GMT+7 · Lượt: {display_run} · Nguồn: {source} · {window}")
-        with st.expander('Tình trạng xử lý toàn hệ thống · không theo bộ lọc'):
-            st.write(f"SHAP đang chờ: {queue['qsize']}/{queue['maxsize']} · Chờ phục hồi từ DB: {queue.get('recovery_pending', 0)}")
-            st.caption('API kết nối được không chứng minh capture đang chạy. Trạng thái tiến trình/heartbeat sẽ được bổ sung ở HT4; hiện chưa có dữ liệu xác minh.')
-        if queue.get('recovery_pending'):
-            st.caption(f"Đang chờ khôi phục SHAP từ DB: {queue['recovery_pending']} cảnh báo; xử lý dần khi hàng đợi hiện tại rảnh.")
-        cols = st.columns(6)
-        for col, title, val in zip(cols, ['Tổng flow', 'Benign', 'Cảnh báo', 'Chờ SHAP', 'SHAP xong', 'SHAP bỏ / lỗi'],
-                                  [stats['flows'], stats['benign'], stats['alerts'], stats['queued'], stats['processed'], f"{stats['dropped']} / {stats['failed']}"]):
-            col.metric(title, val)
-        st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
-        st.caption('Cảnh báo là dự đoán của model, không phải tấn công đã xác nhận. Tỷ lệ cảnh báo không phải FPR; cần ground truth để đánh giá báo nhầm.')
-        st.write('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']))
-        if not stats['last_received_at'] or (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() > 30:
-            st.info('Chưa nhận flow mới gần đây. Có packet chưa đồng nghĩa đã xuất flow: project v3 xuất khi tuổi flow đạt 90 giây, quan sát đóng TCP/mở phiên mới hoặc dừng để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; bản v2/nguồn khác có thể dùng chính sách khác.')
+        cards = [('Tổng flow', total, 'trong phạm vi đang chọn', 'neutral'),
+                 ('Benign', stats['benign'], percent(stats['benign'], total) + ' tổng flow', 'ok'),
+                 ('Cảnh báo', alerts, percent(alerts, total) + ' tổng flow · không phải FPR', 'warn' if alerts else 'neutral'),
+                 ('Chờ SHAP', stats['queued'], 'đang xử lý nền', 'neutral'),
+                 ('SHAP xong', stats['processed'], percent(stats['processed'], alerts) + ' số cảnh báo', 'ok' if stats['processed'] else 'neutral'),
+                 ('SHAP bỏ / lỗi', f"{stats['dropped']} / {stats['failed']}", 'hàng đợi đầy / lỗi', 'bad' if stats['dropped'] or stats['failed'] else 'neutral')]
+        for column, args in zip(st.columns(6), cards):
+            column.markdown(card(*args), unsafe_allow_html=True)
+        recent = bool(stats['last_received_at']) and (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() <= 30
+        st.caption('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']) +
+                   ('' if recent else ' · chưa có flow mới trong 30 giây gần đây'))
+        with st.expander('Cách đọc số liệu và giới hạn'):
+            st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
+            st.caption('Cảnh báo là dự đoán của model, không phải tấn công đã xác nhận. Tỷ lệ cảnh báo không phải FPR; cần ground truth để đánh giá báo nhầm.')
+            st.caption(f"Hàng đợi SHAP toàn hệ thống (không theo bộ lọc): {queue['qsize']}/{queue['maxsize']} · Chờ phục hồi từ DB: {queue.get('recovery_pending', 0)}.")
+            st.caption('Không có flow mới chưa chắc là capture hỏng: project v3 xuất flow khi tuổi flow đạt 90 giây, quan sát đóng TCP/mở phiên mới hoặc khi dừng để ghi nốt. API không biết chắc bộ bắt còn chạy hay đã dừng; trạng thái thật xem ở ô Capture phía trên.')
         if not stats['flows']:
             st.info('Không có flow khớp bộ lọc. Thử chọn Tất cả lịch sử hoặc bỏ bớt bộ lọc.')
+            storage_panel()
             return
         charts, explanation_chart = st.tabs(['Xu hướng & nhãn dự đoán', 'Tiến độ giải thích trong phạm vi'])
         with explanation_chart:
@@ -250,18 +336,17 @@ def monitor():
             st.caption('Không tính Benign; trạng thái cũ/chưa xác định có thể không nằm trong bốn nhóm. Đây là số lượng, không phải chất lượng giải thích.')
         left, right = charts.columns(2)
         with left:
-            st.subheader('Flow được nhận theo phút')
+            st.markdown('**Flow được nhận theo phút**')
             timeline = pd.DataFrame(stats['timeline'])
-            timeline['Giờ GMT+7'] = timeline['minute'].map(local_time)
+            timeline['Giờ GMT+7'] = timeline['minute'].map(lambda m: local_time(m)[:16].replace('/2026', ''))
             st.altair_chart(alt.Chart(timeline).mark_bar().encode(
-                x=alt.X('Giờ GMT+7:O', sort=list(dict.fromkeys(timeline['Giờ GMT+7'])), title=None),
+                x=alt.X('Giờ GMT+7:O', sort=list(dict.fromkeys(timeline['Giờ GMT+7'])), title=None, axis=alt.Axis(labelAngle=0, labelOverlap='greedy')),
                 y=alt.Y('count:Q', title='Số flow'), color=alt.Color('category:N', title='Kết quả',
-                    scale=alt.Scale(domain=['Benign', 'Cảnh báo'], range=['#27a884', '#ed9851'])),
-                tooltip=['Giờ GMT+7', 'category', 'count']).properties(height=220), width='stretch')
+                    scale=alt.Scale(domain=['Benign', 'Cảnh báo'], range=[COLORS['ok'], COLORS['warn']])),
+                tooltip=['Giờ GMT+7', 'category', 'count']).properties(height=200), width='stretch')
         with right:
-            st.subheader('Phân bố nhãn dự đoán')
-            bars([{'Nhãn dự đoán': r['label'], 'Số flow': r['count']} for r in stats['labels']], 'Nhãn dự đoán', 'Số flow')
-        st.divider()
+            st.markdown('**Phân bố nhãn dự đoán**')
+            label_bars(stats['labels'])
         st.subheader('Lịch sử & phân tích flow')
         current_page, pages = bounded_page(st.session_state.get('flow_page', 1), stats['flows'])
         st.session_state['flow_page'] = current_page
@@ -273,8 +358,7 @@ def monitor():
         following.button('Trang sau →', disabled=current_page >= pages, on_click=move_page, args=(1,))
         result = get('/flows', {**params, 'limit': 50, 'offset': (page - 1) * 50})
         records = result['flows']
-        st.subheader('Flow mới nhất trước')
-        st.caption(f"Trang {page} / {max(1, (result['count'] + 49) // 50)} · Chọn một dòng để xem chi tiết. Flow đang xem được giữ khi làm mới.")
+        st.caption(f"Mới nhất trước · Trang {page} / {max(1, (result['count'] + 49) // 50)} · Chọn một dòng để xem chi tiết ngay bên dưới. Flow đang xem được giữ khi làm mới.")
         if records:
             key = 'flows_' + hashlib.sha256((signature + str(page)).encode()).hexdigest()[:12]
             ids = [f['flow_id'] for f in records]
@@ -282,18 +366,28 @@ def monitor():
                 indices = st.session_state[key]['selection']['rows']
                 if indices:
                     st.session_state['selected_flow'] = ids[indices[0]]
-            table = [{'API nhận (GMT+7)': local_time(f['received_at']),
-                      'Nguồn →': endpoint(f['src_ip'], f['src_port']), 'Đích': endpoint(f['dst_ip'], f['dst_port']),
-                      'Giao thức': protocol_text(f['protocol']),
-                      'Nhãn': f['predicted_label'], 'Xác suất': f"{f['confidence']:.2%}" if f['confidence'] is not None else 'Chưa có',
-                      'SHAP': STATUS.get(f['explanation_status'], f['explanation_status']),
-                      'Nhánh': f['branch'] or '—', 'Flow ID': f['flow_id'][:8]} for f in records]
-            st.dataframe(table, hide_index=True, width='stretch', key=key,
+            table = []
+            for f in records:
+                hint = fin_data_hint(f['predicted_label'], f.get('fin_flag_cnt'), f.get('fwd_pkt_len_max'), f.get('fwd_seg_size_min'))
+                table.append({'API nhận (GMT+7)': local_time(f['received_at']),
+                              'Nguồn →': endpoint(f['src_ip'], f['src_port']),
+                              'Đích · giao thức': f"{endpoint(f['dst_ip'], f['dst_port'])} · {protocol_text(f['protocol'])}",
+                              'Nhãn': f['predicted_label'], 'Xác suất': f"{f['confidence']:.2%}" if f['confidence'] is not None else 'Chưa có',
+                              'Nhánh': f['branch'] or '—',
+                              'SHAP': STATUS.get(f['explanation_status'], f['explanation_status']) if f['is_alert'] else '—',
+                              'LIME': lime_badge(f), 'Gợi ý': hint['tag'] if hint else '', 'Flow ID': f['flow_id'][:8]})
+            narrow = {name: st.column_config.TextColumn(width='small') for name in ['Xác suất', 'Nhánh', 'Flow ID']}
+            st.dataframe(paint(pd.DataFrame(table)), hide_index=True, width='stretch', key=key, column_config=narrow,
                          selection_mode='single-row', on_select=on_select)
             if not st.session_state.get('selected_flow'):
                 st.session_state['selected_flow'] = ids[0]
         else:
             st.info('Trang này chưa có dữ liệu; chọn trang 1.')
+        if st.session_state.get('selected_flow'):
+            if st.session_state['selected_flow'] not in [f['flow_id'] for f in records]:
+                st.caption('Đang giữ flow đã chọn từ trang trước/lần làm mới trước; chọn một dòng để đổi flow.')
+            with st.container(border=True):
+                show_detail(st.session_state['selected_flow'])
         with st.expander('Nhóm cảnh báo · cửa sổ 5 phút (tối đa 100 nhóm mới nhất)'):
             groups = stats['groups']
             st.caption('Chỉ gom hiển thị theo lượt/cặp IP/cổng đích/lớp; không xóa hoặc gộp mất flow.')
@@ -309,11 +403,8 @@ def monitor():
                     format_func=lambda f: f"{local_time(f['received_at'])} · {f['flow_id']}")
                 if child and st.button('Mở flow trong nhóm'):
                     st.session_state['selected_flow'] = child['flow_id']
-        if st.session_state.get('selected_flow'):
-            if st.session_state['selected_flow'] not in [f['flow_id'] for f in records]:
-                st.caption('Đang giữ flow đã chọn từ trang trước/lần làm mới trước; chọn một dòng để đổi flow.')
-            st.divider()
-            show_detail(st.session_state['selected_flow'])
+                    st.rerun(scope='fragment')
+        storage_panel()
     except (requests.RequestException, ValueError) as exc:
         st.error(f'Không tải được dữ liệu: {exc}')
 

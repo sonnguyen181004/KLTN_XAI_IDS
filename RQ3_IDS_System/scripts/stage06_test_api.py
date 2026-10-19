@@ -7,6 +7,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from pathlib import Path
 
@@ -115,7 +117,7 @@ def main() -> int:
         print("\n--- Việc 4: mở lại file DB, xác nhận dữ liệu đã được ghi thật ---")
         sys.path.insert(0, str(RQ3_ROOT / "app"))
         import db  # noqa: E402
-        conn = db.init_db(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.init_db(_testdb.TEST_DB)
         for fid in returned_flow_ids:
             flow_row = conn.execute("SELECT * FROM FlowRecord WHERE flow_id=?", (fid,)).fetchone()
             pred_row = conn.execute("SELECT * FROM Prediction WHERE flow_id=?", (fid,)).fetchone()

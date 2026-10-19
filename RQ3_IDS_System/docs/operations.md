@@ -1,5 +1,15 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT6.1 — sửa test ghi vào DB thật, giao diện giám sát, gợi ý "FIN + có dữ liệu" (19/10/2026)
+
+**Mục đích:** (1) ngừng làm bẩn DB demo khi chạy test; (2) giao diện đọc nhanh hơn; (3) nói rõ bằng lời vì sao một cảnh báo Hulk trên traffic duyệt web thường là báo nhầm. Chỉ thêm lớp trình bày và sửa test; không đổi model, 78 đặc trưng, SHAP/LIME, luật nhánh A/B, nhãn hay xác suất.
+
+- **Sự cố do test:** `stage06/07/07b/08/08b/09/11/12` từng ghi thẳng vào `data/ids_system.db` (DB thật). Các lượt kiểm tra ngày 18–19/10 đã thêm 458 flow `source='api'` + 1 dòng `DataError` (kèm ~190 cảnh báo chờ SHAP). Đã sao lưu DB (`data/ids_system_backup_before_test_cleanup_20261019.db`, integrity ok, không đưa vào Git), rồi xóa đúng các dòng `source='api'` và dòng lỗi test; còn nguyên 853 `feeder_live` + 94 `pcap_replay` (947 flow, 95 cảnh báo đều đã có SHAP, `foreign_key_check` sạch).
+- **Sửa:** `scripts/_testdb.py` đặt `IDS_DB_PATH` về thư mục tạm trước khi test khởi động API; 8 script trên import nó. Chạy lại: DB thật không đổi. `stage07_test_shap.py` (lỗi thời từ 7b) nay chuyển sang `stage07b`. `stage07b` dội `maxsize*2` request thay vì `maxsize+20` vì với queue 200 worker nền rút kịp nên bài test chập chờn.
+- **Giao diện (`app/dashboard.py`):** thanh trạng thái trên đầu (API, model, capture, hàng đợi SHAP); thẻ số liệu có màu và tỷ lệ % (ghi rõ không phải FPR); bảng flow đưa lên sát thẻ số liệu, tô màu nhãn/nhánh/LIME, thêm cột LIME ("Không đủ tin cậy" hiện ngay trên bảng) và cột Gợi ý; chi tiết flow nằm ngay dưới bảng trong khung riêng; dòng "Vì sao nghi ngờ" từ 2 đặc trưng SHAP đẩy mạnh nhất; biểu đồ nhãn hiện đủ lớp và không cắt tên; ghi chú dài gom vào mục "Cách đọc số liệu và giới hạn"; dung lượng lưu trữ và nhóm cảnh báo chuyển xuống cuối.
+- **Gợi ý (`app/alert_hints.py`):** khi nhãn Hulk, `FIN Flag Cnt>=1`, `Fwd Pkt Len Max>=66`, `Fwd Seg Size Min<32` thì hiện "Gợi ý có thể báo nhầm". Căn cứ đo trên `train_set.parquet`: vùng đó có 445 flow, 445 là Hulk, 0 Benign; mọi flow Benign đóng bằng FIN trong train (9.815) đều không gửi dữ liệu. Là gợi ý, không phải kết luận: Hulk thật cũng có thể rơi vào vùng này. Nguyên nhân train thiếu Benign có dữ liệu + FIN vẫn chưa xác định (lỗi trích xuất gốc hay đặc điểm testbed).
+- **Kiểm thử:** Stage39 5/5 (quy tắc, nhãn LIME, câu lý do, và con số 445/0 phải khớp train thật), Stage14 PASS (thêm kiểm tra gợi ý + câu lý do trên flow Hulk thật `data/samples/sample_hulk_fin_data.json`), Stage32/37/16/12/24 PASS. Đã xem giao diện bằng trình duyệt headless trên DB cô lập: không lỗi console. Chưa thử bằng trình duyệt của bạn, chưa kiểm thử màn hình nhỏ/chế độ tối.
+
 ## HT3.7 — nâng trần buffer mặc định cho live thật (18/10/2026)
 
 **Mục đích:** mặc định cũ (20.000 packet đang giữ / 32MiB) chạm trần chỉ sau ~54 giây traffic nền bình thường (đo thật bằng Stage22 trên Wi-Fi thật, không phát tấn công), vì nhiều flow mở đồng thời (app nền giữ kết nối lâu) khiến packet dồn lại chờ flush trước khi đủ 76 flow xuất. Mặc định này không đủ cho một phiên demo/live thực tế.
