@@ -141,6 +141,25 @@ def main():
                     at.session_state['selected_flow'] = real[0]['flow_id']
                     at.run(timeout=30)
                     assert not at.exception and any('Benign:' in item.value for item in at.info)
+                    # Gợi ý "đóng FIN + có dữ liệu" và dòng "vì sao nghi ngờ": flow Hulk thật bắt từ Wi-Fi (chỉ số, không có IP/payload).
+                    sample = json.loads((ROOT / 'data/samples/sample_hulk_fin_data.json').read_text(encoding='utf-8'))
+                    hulk_fin = requests.post(url + '/predict', json=sample, params={
+                        'capture_run_id': 'hulk-fin-hint', 'run_name': 'FIN hint test'}, timeout=15).json()
+                    assert hulk_fin['predicted_label'] == 'DoS attacks-Hulk', hulk_fin
+                    for _ in range(100):
+                        if get('/flows/' + hulk_fin['flow_id'])['shap_top5']:
+                            break
+                        time.sleep(.1)
+                    at.run(timeout=30)  # nạp lại danh sách lượt để có 'hulk-fin-hint'
+                    at.selectbox(key='run_choice').set_value('hulk-fin-hint').run(timeout=30)
+                    at.session_state['selected_flow'] = hulk_fin['flow_id']
+                    at.run(timeout=30)
+                    assert not at.exception, at.exception
+                    assert any('Gợi ý có thể báo nhầm' in w.value and '445/445' in w.value for w in at.warning)
+                    assert any('Vì sao nghi ngờ' in m.value for m in at.markdown)
+                    at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
+                    assert not at.exception, at.exception
+                    print('PASS FIN+data hint and why-suspect line')
                     at.session_state['selected_flow'] = real[1]['flow_id']
                     at.run(timeout=30)
                     assert not at.exception, at.exception

@@ -10,6 +10,9 @@ SELECT = '''SELECT f.flow_id, f.received_at, f.source, f.capture_run_id, f.run_n
  a.alert_id, a.status, a.explanation_status, a.created_at, r.branch, r.branch_reason,
  json_extract(f.features_json, '$."Dst Port"') AS dst_port,
  json_extract(f.features_json, '$."Protocol"') AS protocol,
+ json_extract(f.features_json, '$."FIN Flag Cnt"') AS fin_flag_cnt,
+ json_extract(f.features_json, '$."Fwd Pkt Len Max"') AS fwd_pkt_len_max,
+ json_extract(f.features_json, '$."Fwd Seg Size Min"') AS fwd_seg_size_min,
  r.shap_top5_json, r.lime_top5_json, r.lime_local_r2, r.lime_diagnostics_json, r.agreement_jaccard5,
  r.faithfulness_proxy_drop, r.env_fingerprint_count, r.env_fingerprint_flag,
  r.rare_class_flag, r.stability_lookup, r.robustness_lookup_json'''

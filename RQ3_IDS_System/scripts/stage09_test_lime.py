@@ -12,6 +12,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from pathlib import Path
 
@@ -122,7 +124,7 @@ def main() -> int:
         print("\n--- Việc 4: mở lại DB, xác nhận lime_top5_json + agreement_jaccard5 ---")
         sys.path.insert(0, str(RQ3_ROOT / "app"))
         import db  # noqa: E402
-        conn = db.init_db(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.init_db(_testdb.TEST_DB)
         row = conn.execute(
             "SELECT lime_top5_json, agreement_jaccard5 FROM Reliability WHERE alert_id = ?", (alert_id,),
         ).fetchone()

@@ -11,6 +11,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -98,7 +100,7 @@ def main() -> int:
         print("\n--- Việc 2: đợi worker nền tính SHAP, kiểm tra DB ---")
         sys.path.insert(0, str(RQ3_ROOT / "app"))
         import db  # noqa: E402
-        conn = db.init_db(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.init_db(_testdb.TEST_DB)
         shap_json = None
         for _ in range(20):  # chờ tối đa 2 giây
             row = conn.execute("SELECT shap_top5_json FROM Reliability WHERE alert_id=?", (alert_id,)).fetchone()
@@ -119,7 +121,7 @@ def main() -> int:
         # SHAP (~40ms) nhanh hơn tốc độ gửi tuần tự nên hàng đợi không bao giờ đầy kịp
         # (đã thử và thấy 0/60 dropped ở lần chạy đầu — lỗi THIẾT KẾ TEST, không phải lỗi
         # hàng đợi). Dùng ThreadPoolExecutor để bắn gần như đồng thời.
-        n_requests = maxsize + 20
+        n_requests = maxsize * 2  # gấp đôi: worker nền rút queue khi đang dội, +20 không đủ ép đầy trên máy nhanh
         print(f"\n--- Việc 3: dội {n_requests} request ĐỒNG THỜI (maxsize={maxsize}) để ép hàng đợi đầy ---")
 
         def _one_request(_):

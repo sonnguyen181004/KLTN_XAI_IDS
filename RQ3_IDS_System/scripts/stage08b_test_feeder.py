@@ -11,6 +11,8 @@ import csv
 import re
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from pathlib import Path
 
@@ -78,7 +80,7 @@ def main() -> int:
         # ---- Đếm số FlowRecord TRƯỚC khi test (để so sánh sau) --------------------------
         sys.path.insert(0, str(RQ3_ROOT / "app"))
         import db  # noqa: E402
-        conn = db.init_db(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.init_db(_testdb.TEST_DB)
         n_flows_before = conn.execute("SELECT COUNT(*) FROM FlowRecord").fetchone()[0]
         conn.close()
 
@@ -144,7 +146,7 @@ def main() -> int:
 
         # ---- Việc 3: DB có đủ FlowRecord mới ---------------------------------------------
         print("\n--- Việc 3: mở DB, xác nhận số FlowRecord tăng đúng ---")
-        conn = db.init_db(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.init_db(_testdb.TEST_DB)
         n_flows_after = conn.execute("SELECT COUNT(*) FROM FlowRecord").fetchone()[0]
         conn.close()
         n_new = n_flows_after - n_flows_before

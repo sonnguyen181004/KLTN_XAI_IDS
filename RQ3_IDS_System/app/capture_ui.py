@@ -28,6 +28,23 @@ def local_browser():
         return False
 
 
+def capture_summary(api):
+    """Trạng thái capture ngắn cho thanh trạng thái trên đầu: (chữ, mức) với mức ok/warn/bad/off."""
+    token = os.environ.get('IDS_CAPTURE_CONTROL_TOKEN', '')
+    if len(token) < 32:
+        return 'Chưa bật điều khiển', 'off'
+    try:
+        response = requests.get(api + '/capture/status', headers={'X-IDS-Control-Token': token}, timeout=3)
+        response.raise_for_status()
+        state = response.json().get('session') or {}
+    except (requests.RequestException, ValueError):
+        return 'Chưa đọc được trạng thái', 'warn'
+    status = state.get('status', 'idle')
+    level = {'running': 'ok', 'starting': 'warn', 'stopping': 'warn', 'draining': 'warn',
+             'failed': 'bad', 'unknown': 'bad'}.get(status, 'off')
+    return LABELS.get(status, 'Chưa có phiên'), level
+
+
 @st.fragment(run_every='3s')
 def render_capture(api):
     st.subheader('Điều khiển bắt traffic realtime')

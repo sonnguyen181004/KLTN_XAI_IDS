@@ -10,6 +10,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+
+import _testdb  # DB tạm, không chạm data/ids_system.db
 import time
 from pathlib import Path
 
@@ -92,7 +94,7 @@ def main() -> int:
 
         sys.path.insert(0, str(RQ3_ROOT / "app"))
         import db  # noqa: E402
-        conn = db.get_connection(REPO_ROOT / cfg["paths"]["sqlite_db"])
+        conn = db.get_connection(_testdb.TEST_DB)
 
         cases = [
             ("SQL Injection", True),   # 70 mẫu train -> PHẢI rare_class_flag=1

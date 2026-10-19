@@ -58,6 +58,8 @@ HT3.6 (18/10): bổ sung thống kê dung lượng chỉ đọc/API/UI cảnh b�
 
 Nghiệm thu HT3.6: Stage31 **8/8 PASS**, Stage14 API/model/UI/CSV/PCAP/SHAP/LIME và storage normal/low/unavailable **PASS**; CLI status chỉ đọc đã kiểm tra. Không backup/restore/reset DB thật; không thay schema/model; không thêm tài liệu MD. Hoàn thành phạm vi backup SQLite thủ công + quan sát dung lượng, chưa đóng toàn bộ HT3.
 
+HT6.1 (19/10): giao diện giám sát gọn hơn (thanh trạng thái, thẻ số liệu có màu, bảng lên sát, chi tiết ngay dưới bảng, cột LIME/Gợi ý), thêm gợi ý "FIN + có dữ liệu" cho cảnh báo Hulk; sửa 8 test từng ghi vào DB thật và dọn 458 flow rác (có sao lưu). Chi tiết, số đo và giới hạn trong `operations.md` (mục HT6.1). Không đổi model/XAI/nhánh A/B. Còn: nhãn thật do analyst gắn (HT5), thử trình duyệt thật và màn hình nhỏ.
+
 HT3.3 (18/10): cap buffer v3, bảo vệ ổ CSV ít dung lượng, counter quá tải; queue hữu hạn và recovery xen kẽ sau 10 tác vụ mới. Stage27 8/8, Stage28 5/5, Stage29 5+1 fixture/tải 3.200 packet, Stage26 22/22; Stage14/24 PASS trên DB tạm. Mục đích, số đo và giới hạn trong `operations.md`. Commit: `feat(rq3): bound capture resources and schedule SHAP recovery`. Không đổi model/RQ2/DB thật hoặc thêm MD. Còn nghiệm thu live dài hạn/RSS/CPU, retention/backup và độ bền packet chưa xuất; chưa tự chuyển HT4.
 
 HT3.1 (18/10): sửa kiểm tra ACK đầy đủ trước checkpoint và cấu hình poll; Stage27 5/5 PASS. Mục đích/giới hạn trong `operations.md`. Commit: `fix(rq3): validate feeder acknowledgements before checkpoint`. Tiếp tục HT3.2 lỗi capture nền và HT3.3 giới hạn tài nguyên; không coi fixture là nghiệm thu live dài hạn.
