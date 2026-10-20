@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
@@ -128,15 +129,15 @@ def main():
                     assert not at.exception, at.exception
                     selected = at.session_state['selected_flow']
                     next(b for b in at.button if b.label == 'Trang sau →').click().run(timeout=30)
-                    assert not at.exception and at.number_input(key='flow_page').value == 2
+                    assert not at.exception and at.session_state['flow_page'] == 2
                     assert at.session_state['selected_flow'] == selected
                     next(b for b in at.button if b.label == '← Trang trước').click().run(timeout=30)
-                    assert not at.exception and at.number_input(key='flow_page').value == 1
-                    at.number_input(key='flow_page').set_value(5).run(timeout=30)
-                    assert not at.exception and at.number_input(key='flow_page').value == 5
+                    assert not at.exception and at.session_state['flow_page'] == 1
+                    at.session_state['flow_page'] = 5; at.run(timeout=30)
+                    assert not at.exception and at.session_state['flow_page'] == 5
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
                     assert not at.exception, at.exception
-                    assert at.number_input(key='flow_page').value == 1
+                    assert at.session_state['flow_page'] == 1
                     assert any('Giao thức: TCP' in item.value or 'Giao thức: UDP' in item.value for item in at.markdown)
                     at.session_state['selected_flow'] = real[0]['flow_id']
                     at.run(timeout=30)
@@ -160,6 +161,27 @@ def main():
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
                     assert not at.exception, at.exception
                     print('PASS FIN+data hint and why-suspect line')
+                    # Bộ lọc IP: IP sai báo rõ và không lọc; IP đúng thu hẹp phạm vi; để trống thì trả về như cũ.
+                    at.text_input(key='filter_src_ip').set_value('not-an-ip').run(timeout=30)
+                    assert not at.exception and any('không phải địa chỉ IP' in w.value for w in at.warning)
+                    at.text_input(key='filter_src_ip').set_value('192.0.2.1').run(timeout=30)
+                    assert not at.exception and any('IP nguồn 192.0.2.1' in c.value for c in at.caption)
+                    at.text_input(key='filter_src_ip').set_value('203.0.113.9').run(timeout=30)
+                    assert not at.exception and any('Không có flow khớp bộ lọc' in i.value for i in at.info)
+                    at.text_input(key='filter_src_ip').set_value('').run(timeout=30)
+                    assert not at.exception and not any('IP nguồn' in c.value for c in at.caption)
+                    print('PASS source-IP filter in dashboard')
+                    # Khoảng giờ tùy chọn: mặc định (1 giờ trước -> hết hôm nay) có flow vừa tạo; «Từ» sau «Đến» thì báo lỗi.
+                    window_box = next(box for box in at.selectbox if box.label == 'Khoảng thời gian nhận')
+                    window_box.set_value('Tùy chọn (từ – đến)').run(timeout=30)
+                    assert not at.exception, at.exception
+                    assert not any('Không có flow khớp bộ lọc' in i.value for i in at.info)
+                    assert any(' – ' in c.value and 'Tùy chọn' in c.value for c in at.caption)
+                    at.date_input(key='range_from_date').set_value(datetime.now().date() + timedelta(days=3)).run(timeout=30)
+                    assert not at.exception and any('«Từ» phải trước «Đến»' in w.value for w in at.warning)
+                    next(box for box in at.selectbox if box.label == 'Khoảng thời gian nhận').set_value('Toàn bộ lượt').run(timeout=30)
+                    assert not at.exception
+                    print('PASS custom time range in dashboard')
                     at.session_state['selected_flow'] = real[1]['flow_id']
                     at.run(timeout=30)
                     assert not at.exception, at.exception

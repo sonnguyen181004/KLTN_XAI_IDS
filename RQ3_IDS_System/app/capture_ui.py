@@ -4,6 +4,7 @@ import uuid
 import requests
 import streamlit as st
 from ipaddress import ip_address
+from dashboard_format import time_text
 
 LABELS = {'starting': 'Đang khởi động', 'running': 'Đang bắt', 'stopping': 'Đang dừng và ghi nốt',
           'draining': 'Đang gửi nốt flow', 'completed': 'Đã hoàn tất', 'failed': 'Thất bại / chưa đầy đủ',
@@ -110,7 +111,7 @@ def render_capture(api):
             st.rerun()
     if state.get('workers'):
         st.dataframe([{'Worker': role, 'Sẵn sàng': worker.get('ready'),
-                       'Heartbeat (UTC)': worker.get('heartbeat_at'), 'Mã thoát': worker.get('exit_code')}
+                       'Heartbeat (GMT+7)': time_text(worker.get('heartbeat_at')), 'Mã thoát': worker.get('exit_code')}
                       for role, worker in state['workers'].items()], hide_index=True)
     if state.get('reason') or report.get('supervisor_error'):
         st.warning(state.get('reason') or report['supervisor_error'])

@@ -25,7 +25,8 @@ def rows(cursor):
 def scope(filters):
     clauses, values = [], []
     for key, column in {'capture_run_id': 'f.capture_run_id', 'source': 'f.source',
-                        'label': 'p.predicted_label', 'branch': 'r.branch', 'group_key': 'a.group_key'}.items():
+                        'label': 'p.predicted_label', 'branch': 'r.branch', 'group_key': 'a.group_key',
+                        'src_ip': 'f.src_ip', 'dst_ip': 'f.dst_ip'}.items():
         value = filters.get(key)
         if value is not None:
             if key == 'capture_run_id' and value == '__legacy__':

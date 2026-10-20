@@ -1,5 +1,6 @@
 """Live IDS dashboard. Read data through API; explanations remain architecture-driven."""
 import hashlib
+import ipaddress
 import os
 import sys
 from datetime import datetime, timedelta, timezone
@@ -15,14 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'app'))
 from ingestion_ui import render_ingestion
 from xai_reading_ui import explain_top_features, lime_problem, feature_guide
-from dashboard_format import endpoint, protocol_text, bounded_page
+from dashboard_format import LOCAL, age_text, bounded_page, endpoint, protocol_text, time_text
 from capture_ui import render_capture, capture_summary
-from alert_hints import fin_data_hint, lime_badge, why_suspect
+from alert_hints import LIME_LIVE_NOTE, fin_data_hint, lime_badge, shap_short, why_suspect
 from feature_help import describe, reading
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
-LOCAL = timezone(timedelta(hours=7))
 STATUS = {'not_required': 'Không cần (Benign)', 'queued': 'Chờ SHAP',
           'pending_dispatch': 'Đã lưu dự đoán; chưa đưa vào SHAP',
           'recovery_pending': 'Chờ khôi phục SHAP sau restart',
@@ -31,12 +31,7 @@ STATUS = {'not_required': 'Không cần (Benign)', 'queued': 'Chờ SHAP',
 
 
 def local_time(value):
-    if not value:
-        return 'Chưa có'
-    dt = datetime.fromisoformat(value.replace('Z', '+00:00'))
-    if dt.tzinfo is None:
-        return dt.strftime('%d/%m/%Y %H:%M:%S') + ' (chưa rõ múi giờ)'
-    return dt.astimezone(LOCAL).strftime('%d/%m/%Y %H:%M:%S')
+    return time_text(value)
 
 
 def get(path, params=None):
@@ -96,11 +91,12 @@ def paint(frame):
     def branch_color(value):
         return 'background-color: rgba(237,152,81,.40)' if value == 'B' else ''
     def lime_color(value):
-        return 'background-color: rgba(224,82,82,.30)' if value == 'Không đủ tin cậy' else ''
+        return 'background-color: rgba(224,82,82,.30)' if value == 'Không tin cậy' else ''
     def hint_color(value):
         return 'background-color: rgba(237,152,81,.40)' if value else ''
     return (frame.style.map(label_color, subset=['Nhãn']).map(branch_color, subset=['Nhánh'])
             .map(lime_color, subset=['LIME']).map(hint_color, subset=['Gợi ý']))
+
 
 
 def show_detail(flow_id):
@@ -178,6 +174,8 @@ def show_detail(flow_id):
             st.caption(f"Local R²: {flow.get('lime_local_r2') if flow.get('lime_local_r2') is not None else 'Chưa có'} · Jaccard@5: {flow.get('agreement_jaccard5') if flow.get('agreement_jaccard5') is not None else 'Chưa có'}")
             st.caption('LIME là mô hình thay thế cục bộ trên xác suất; không so độ lớn trực tiếp với SHAP raw margin.')
             st.caption('R² đo độ khớp trên các mẫu LIME, không phải độ chính xác IDS. Jaccard@5 đo mức trùng các tên/mô tả Top-5 được so sánh, không xác nhận nhãn đúng.')
+        if flow['is_alert']:
+            st.caption(LIME_LIVE_NOTE)
         if flow['is_alert'] and st.button('Yêu cầu / kiểm tra lại LIME', key='lime_' + flow_id):
             with st.spinner('Đang tính LIME theo yêu cầu…'):
                 response = requests.post(API + '/explain', json={'alert_id': flow['alert_id'], 'method': 'lime'}, timeout=60)
@@ -227,7 +225,28 @@ with st.sidebar:
     choice = st.selectbox('Lượt dữ liệu', options, key='run_choice',
         format_func=lambda x: {'__latest__': 'Lượt nhận dữ liệu gần nhất', '__all__': 'Tất cả lịch sử'}.get(x, run_names.get(x, x)))
     source = st.selectbox('Nguồn', ['Tất cả', 'feeder_live', 'csv_upload', 'pcap_replay', 'api'])
-    window = st.selectbox('Khoảng thời gian nhận', ['Toàn bộ lượt', '5 phút', '15 phút', '1 giờ', 'Hôm nay'])
+    window = st.selectbox('Khoảng thời gian nhận', ['Toàn bộ lượt', '5 phút', '15 phút', '1 giờ', 'Hôm nay', 'Tùy chọn (từ – đến)'])
+    scope_error, custom_range = None, None
+    if window.startswith('Tùy chọn'):
+        start_default = datetime.now(LOCAL) - timedelta(hours=1)
+        end_default = datetime.now(LOCAL).replace(hour=23, minute=59)
+        from_cols, to_cols = st.columns(2), st.columns(2)
+        from_date = from_cols[0].date_input('Từ ngày', value=start_default.date(), key='range_from_date', format='DD/MM/YYYY')
+        from_time = from_cols[1].time_input('Từ giờ', value=start_default.time().replace(second=0, microsecond=0), key='range_from_time', step=60)
+        to_date = to_cols[0].date_input('Đến ngày', value=end_default.date(), key='range_to_date', format='DD/MM/YYYY')
+        to_time = to_cols[1].time_input('Đến giờ', value=end_default.time().replace(second=0, microsecond=0), key='range_to_time', step=60)
+        st.caption('Giờ GMT+7, tính theo giờ API nhận flow (cột «API nhận»).')
+        custom_range = (datetime.combine(from_date, from_time, tzinfo=LOCAL), datetime.combine(to_date, to_time, tzinfo=LOCAL).replace(second=59))
+        if custom_range[0] > custom_range[1]:
+            scope_error, custom_range = 'Khoảng thời gian sai: «Từ» phải trước «Đến».', None
+    ip_filters = {}
+    for field, title in [('src_ip', 'IP nguồn (để trống = tất cả)'), ('dst_ip', 'IP đích (để trống = tất cả)')]:
+        text = st.text_input(title, key='filter_' + field, placeholder='ví dụ 192.168.56.101').strip()
+        if text:
+            try:
+                ip_filters[field] = str(ipaddress.ip_address(text))
+            except ValueError:
+                scope_error = scope_error or f'«{text}» không phải địa chỉ IP hợp lệ.'
     label = st.selectbox('Nhãn dự đoán', ['Tất cả'] + health.get('class_names', []))
     branch = st.selectbox('Nhánh giải thích', ['Tất cả', 'A', 'B'])
     alerts_only = st.checkbox('Chỉ cảnh báo')
@@ -293,6 +312,12 @@ def monitor():
             if value != 'Tất cả':
                 params[key] = value
         params['alerts_only'] = alerts_only
+        params.update(ip_filters)
+        if scope_error:
+            st.warning(scope_error + ' Sửa ở thanh bên trái; bảng giữ trống cho tới khi hợp lệ.')
+            return
+        if custom_range:
+            params['since'], params['until'] = (t.astimezone(timezone.utc).isoformat() for t in custom_range)
         # Stable identity excludes the rolling cutoff: polling must not reset selected flow.
         signature = str((params, window))
         if st.session_state.get('scope_signature') != signature:
@@ -300,14 +325,17 @@ def monitor():
             st.session_state['flow_page'] = 1
             st.session_state['scope_signature'] = signature
         now = datetime.now(timezone.utc)
-        if window != 'Toàn bộ lượt':
+        if window not in ('Toàn bộ lượt', 'Tùy chọn (từ – đến)'):
             since = now.astimezone(LOCAL).replace(hour=0, minute=0, second=0, microsecond=0) if window == 'Hôm nay' else now - timedelta(minutes={'5 phút': 5, '15 phút': 15, '1 giờ': 60}[window])
             params['since'] = since.astimezone(timezone.utc).isoformat()
         stats = get('/dashboard/summary', params)
         queue = get('/explain_queue_status')
         display_run = next((r.get('run_name') or r['capture_run_id'] for r in current_runs if r['capture_run_id'] == selected_run), 'Tất cả lịch sử' if selected_run == '__all__' else 'Chưa có lượt')
         total, alerts = stats['flows'], stats['alerts']
-        st.caption(f"Cập nhật: {local_time(now.isoformat())} GMT+7 · Lượt: {display_run} · Nguồn: {source} · {window}")
+        extra = ''.join(f' · {name} {value}' for name, value in [('IP nguồn', ip_filters.get('src_ip')), ('IP đích', ip_filters.get('dst_ip'))] if value)
+        if custom_range:
+            extra += f" · {time_text(custom_range[0], compact=True, seconds=False)} – {time_text(custom_range[1], compact=True, seconds=False)}"
+        st.caption(f"Cập nhật: {local_time(now.isoformat())} GMT+7 · Lượt: {display_run} · Nguồn: {source} · {window}{extra}")
         cards = [('Tổng flow', total, 'trong phạm vi đang chọn', 'neutral'),
                  ('Benign', stats['benign'], percent(stats['benign'], total) + ' tổng flow', 'ok'),
                  ('Cảnh báo', alerts, percent(alerts, total) + ' tổng flow · không phải FPR', 'warn' if alerts else 'neutral'),
@@ -317,7 +345,8 @@ def monitor():
         for column, args in zip(st.columns(6), cards):
             column.markdown(card(*args), unsafe_allow_html=True)
         recent = bool(stats['last_received_at']) and (now - datetime.fromisoformat(stats['last_received_at'])).total_seconds() <= 30
-        st.caption('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']) +
+        age = age_text(stats['last_received_at'], now)
+        st.caption('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']) + (f' ({age})' if age else '') +
                    ('' if recent else ' · chưa có flow mới trong 30 giây gần đây'))
         with st.expander('Cách đọc số liệu và giới hạn'):
             st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
@@ -338,7 +367,7 @@ def monitor():
         with left:
             st.markdown('**Flow được nhận theo phút**')
             timeline = pd.DataFrame(stats['timeline'])
-            timeline['Giờ GMT+7'] = timeline['minute'].map(lambda m: local_time(m)[:16].replace('/2026', ''))
+            timeline['Giờ GMT+7'] = timeline['minute'].map(lambda m: time_text(m, compact=True, seconds=False))
             st.altair_chart(alt.Chart(timeline).mark_bar().encode(
                 x=alt.X('Giờ GMT+7:O', sort=list(dict.fromkeys(timeline['Giờ GMT+7'])), title=None, axis=alt.Axis(labelAngle=0, labelOverlap='greedy')),
                 y=alt.Y('count:Q', title='Số flow'), color=alt.Color('category:N', title='Kết quả',
@@ -350,15 +379,10 @@ def monitor():
         st.subheader('Lịch sử & phân tích flow')
         current_page, pages = bounded_page(st.session_state.get('flow_page', 1), stats['flows'])
         st.session_state['flow_page'] = current_page
-        def move_page(delta):
-            st.session_state['flow_page'] = min(pages, max(1, st.session_state['flow_page'] + delta))
-        previous, selector, following = st.columns([1, 2, 1])
-        previous.button('← Trang trước', disabled=current_page <= 1, on_click=move_page, args=(-1,))
-        page = selector.number_input('Trang (50 flow/trang)', min_value=1, max_value=pages, step=1, key='flow_page')
-        following.button('Trang sau →', disabled=current_page >= pages, on_click=move_page, args=(1,))
+        page = current_page
         result = get('/flows', {**params, 'limit': 50, 'offset': (page - 1) * 50})
         records = result['flows']
-        st.caption(f"Mới nhất trước · Trang {page} / {max(1, (result['count'] + 49) // 50)} · Chọn một dòng để xem chi tiết ngay bên dưới. Flow đang xem được giữ khi làm mới.")
+        st.caption('Mới nhất trước · Chọn một dòng để xem chi tiết (có mã flow đầy đủ) ngay bên dưới. Flow đang xem được giữ khi làm mới.')
         if records:
             key = 'flows_' + hashlib.sha256((signature + str(page)).encode()).hexdigest()[:12]
             ids = [f['flow_id'] for f in records]
@@ -369,16 +393,24 @@ def monitor():
             table = []
             for f in records:
                 hint = fin_data_hint(f['predicted_label'], f.get('fin_flag_cnt'), f.get('fwd_pkt_len_max'), f.get('fwd_seg_size_min'))
-                table.append({'API nhận (GMT+7)': local_time(f['received_at']),
+                table.append({'API nhận (GMT+7)': time_text(f['received_at'], compact=True),
                               'Nguồn →': endpoint(f['src_ip'], f['src_port']),
                               'Đích · giao thức': f"{endpoint(f['dst_ip'], f['dst_port'])} · {protocol_text(f['protocol'])}",
                               'Nhãn': f['predicted_label'], 'Xác suất': f"{f['confidence']:.2%}" if f['confidence'] is not None else 'Chưa có',
                               'Nhánh': f['branch'] or '—',
-                              'SHAP': STATUS.get(f['explanation_status'], f['explanation_status']) if f['is_alert'] else '—',
-                              'LIME': lime_badge(f), 'Gợi ý': hint['tag'] if hint else '', 'Flow ID': f['flow_id'][:8]})
-            narrow = {name: st.column_config.TextColumn(width='small') for name in ['Xác suất', 'Nhánh', 'Flow ID']}
-            st.dataframe(paint(pd.DataFrame(table)), hide_index=True, width='stretch', key=key, column_config=narrow,
-                         selection_mode='single-row', on_select=on_select)
+                              'SHAP': shap_short(f),
+                              'LIME': lime_badge(f, short=True), 'Gợi ý': hint['tag'] if hint else ''})
+            widths = {'API nhận (GMT+7)': 115, 'Nguồn →': 145, 'Đích · giao thức': 170, 'Nhãn': 170, 'Xác suất': 70,
+                      'Nhánh': 60, 'SHAP': 50, 'LIME': 105, 'Gợi ý': 120}
+            columns = {name: st.column_config.TextColumn(width=width) for name, width in widths.items()}
+            st.dataframe(paint(pd.DataFrame(table)), hide_index=True, width='stretch', key=key, column_config=columns,
+                         height=min(38 + 35 * len(table), 560), selection_mode='single-row', on_select=on_select)
+            def move_page(delta):
+                st.session_state['flow_page'] = min(pages, max(1, st.session_state['flow_page'] + delta))
+            back, forward, where = st.columns([1, 1, 6], vertical_alignment='center')
+            back.button('← Trang trước', disabled=current_page <= 1, on_click=move_page, args=(-1,), width='stretch')
+            forward.button('Trang sau →', disabled=current_page >= pages, on_click=move_page, args=(1,), width='stretch')
+            where.caption(f"Trang {current_page} / {pages} · {result['count']} flow theo bộ lọc · 50 flow/trang")
             if not st.session_state.get('selected_flow'):
                 st.session_state['selected_flow'] = ids[0]
         else:
