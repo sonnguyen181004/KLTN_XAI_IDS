@@ -306,6 +306,7 @@ def list_alerts(
     since: Optional[str] = None, until: Optional[str] = None,
     label: Optional[str] = None, branch: Optional[str] = None,
     capture_run_id: Optional[str] = None, source: Optional[str] = None,
+    src_ip: Optional[str] = None, dst_ip: Optional[str] = None,
     limit: int = Query(200, ge=1, le=1000), offset: int = Query(0, ge=0),
 ):
     """Bước 12 — Tầng 6: danh sách Alert kèm trạng thái giải thích, lọc theo
@@ -318,7 +319,7 @@ def list_alerts(
     conn = db.get_connection(DB_PATH)
     try:
         result = monitoring.flows(conn, monitor_filters(since, until, label, branch,
-                                  source, capture_run_id, True, None), limit, offset)
+                                  source, capture_run_id, True, None, src_ip, dst_ip), limit, offset)
     finally:
         conn.close()
     # Preserve completed explanation names for existing /alerts consumers.
@@ -335,6 +336,7 @@ def list_flows(
     offset: int = Query(0, ge=0), capture_run_id: Optional[str] = None,
     source: Optional[str] = None, branch: Optional[str] = Query(None, pattern='^[AB]$'),
     alerts_only: bool = False, group_key: Optional[str] = None,
+    src_ip: Optional[str] = None, dst_ip: Optional[str] = None,
 ):
     """Bổ sung ngoài 4 điểm gọi gốc trong tài liệu kiến trúc (POST /predict, POST
     /explain, GET /alerts, GET /health) — theo yêu cầu thực tế khi test: `GET
@@ -344,7 +346,7 @@ def list_flows(
     conn = db.get_connection(DB_PATH)
     try:
         result = monitoring.flows(conn, monitor_filters(since, until, label, branch, source,
-                                  capture_run_id, alerts_only, group_key), limit, offset)
+                                  capture_run_id, alerts_only, group_key, src_ip, dst_ip), limit, offset)
     finally:
         conn.close()
     return result
@@ -353,8 +355,12 @@ def list_flows(
 def monitor_filters(since: Optional[str] = None, until: Optional[str] = None,
                     label: Optional[str] = None, branch: Optional[str] = Query(None, pattern='^[AB]$'),
                     source: Optional[str] = None, capture_run_id: Optional[str] = None,
-                    alerts_only: bool = False, group_key: Optional[str] = None):
+                    alerts_only: bool = False, group_key: Optional[str] = None,
+                    src_ip: Optional[str] = None, dst_ip: Optional[str] = None):
     try:
+        # Chỉ nhận IP hợp lệ (sai thì 422, không lọc nhầm) và chuẩn hóa như lúc lưu.
+        src_ip = str(ip_address(src_ip.strip())) if src_ip else None
+        dst_ip = str(ip_address(dst_ip.strip())) if dst_ip else None
         times = {key: timestamp_utc(value) for key, value in [('since', since), ('until', until)]}
         if (since and not times['since']) or (until and not times['until']):
             raise ValueError('Mốc lọc phải kèm múi giờ')
@@ -363,7 +369,8 @@ def monitor_filters(since: Optional[str] = None, until: Optional[str] = None,
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
     return dict(**times, label=label, branch=branch, source=source,
-                capture_run_id=capture_run_id, alerts_only=alerts_only, group_key=group_key)
+                capture_run_id=capture_run_id, alerts_only=alerts_only, group_key=group_key,
+                src_ip=src_ip, dst_ip=dst_ip)
 
 
 def read_monitor(function, *args):

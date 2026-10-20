@@ -1,5 +1,16 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT6.2 — bảng gọn hơn, lọc theo IP và giờ, thống nhất cách hiển thị giờ (20/10/2026)
+
+**Mục đích:** đọc bảng không bị cắt chữ, tách đúng traffic của một máy (chuẩn bị demo tấn công), và mọi mốc giờ trông giống nhau. Chỉ đổi lớp trình bày và thêm điều kiện lọc đọc dữ liệu; không đổi model, SHAP/LIME, luật nhánh A/B, nhãn, xác suất hay cách lưu.
+
+- **Bảng flow:** độ rộng cột đặt cố định để vừa một màn hình 1500 px (9 cột, bỏ cột Flow ID; mã đầy đủ nằm trong khung chi tiết). Nhãn ngắn: SHAP = Có / Chờ / Bỏ / Lỗi; LIME = Hợp lệ / Chưa / Không tin cậy / Cũ. Bảng cao tối đa 560 px (khoảng 15 dòng).
+- **Phân trang:** bỏ ô số trang lớn; một thanh nhỏ dưới bảng gồm «← Trang trước», «Trang sau →» và «Trang x / y · N flow».
+- **Lọc theo IP nguồn / IP đích** (thanh bên) và **khoảng giờ «Tùy chọn (từ – đến)»**. API `/flows`, `/alerts`, `/dashboard/summary` nhận thêm `src_ip`, `dst_ip` (IP sai trả 422, IP được chuẩn hóa như lúc lưu). Khoảng giờ lọc theo **giờ API nhận flow** (cột «API nhận»), không phải giờ gói đầu tiên; với flow live hai giờ này lệch tối đa vài chục giây đến 90 giây vì flow chỉ xuất khi đóng. IP nguồn là bên **gửi gói đầu tiên của flow**, nên traffic phản hồi từ nạn nhân có thể mang IP nguồn là máy nạn nhân; dùng thêm bộ lọc IP đích nếu cần cả hai chiều.
+- **Chú thích LIME** đặt ngay trên nút «Yêu cầu / kiểm tra lại LIME»: với traffic thật LIME thường không đủ tin cậy (đo ngày 19/10/2026: hợp lệ 1/113 flow realtime, 0/8 flow PCAP, 143/198 trên dữ liệu lab).
+- **Giờ thống nhất** (`app/dashboard_format.py`: `time_text`, `age_text`): luôn GMT+7. Đầy đủ `20/10/2026 07:08:12` (khung chi tiết, tiêu đề lượt, caption); rút gọn `20/10 07:08:12` (bảng) và `20/10 07:08` (trục biểu đồ, khoảng giờ) — bỏ năm khi là năm hiện tại, khác năm vẫn hiện năm. Ô chọn ngày dạng `DD/MM/YYYY`. «Flow cuối được nhận» kèm «(13 giờ trước)». Heartbeat của worker trước đây hiện UTC thô, nay là GMT+7. Giờ thiếu múi giờ không bị đổi, chỉ ghi «(chưa rõ múi giờ)»; chuỗi không phải giờ giữ nguyên.
+- **Kiểm thử:** Stage32 (7 test, thêm giờ/tuổi), Stage40 (6 test, lọc IP/giờ, 422 khi IP sai), Stage39, Stage14 (thêm lọc IP và khoảng giờ trên dashboard) và Stage37 đều đạt; DB thật không đổi. Đã xem bằng trình duyệt headless trên bản sao DB thật: không lỗi console. Chưa thử bằng trình duyệt của bạn; chế độ tối vẫn chưa kiểm.
+
 ## HT6.1 — sửa test ghi vào DB thật, giao diện giám sát, gợi ý "FIN + có dữ liệu" (19/10/2026)
 
 **Mục đích:** (1) ngừng làm bẩn DB demo khi chạy test; (2) giao diện đọc nhanh hơn; (3) nói rõ bằng lời vì sao một cảnh báo Hulk trên traffic duyệt web thường là báo nhầm. Chỉ thêm lớp trình bày và sửa test; không đổi model, 78 đặc trưng, SHAP/LIME, luật nhánh A/B, nhãn hay xác suất.
