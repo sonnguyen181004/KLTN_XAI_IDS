@@ -19,6 +19,8 @@ from xai_reading_ui import explain_top_features, lime_problem, feature_guide
 from dashboard_format import LOCAL, age_text, bounded_page, endpoint, protocol_text, time_text
 from capture_ui import render_capture, capture_summary
 from alert_hints import fin_data_hint, lime_badge, lime_note, shap_short, why_suspect
+from branch_help import branch_option, branch_short
+from branch_ui import render_branch
 from feature_help import describe, reading
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
@@ -40,10 +42,12 @@ def get(path, params=None):
     return response.json()
 
 
-def bars(data, name, value, signed=False):
+def bars(data, name, value, signed=False, mark=()):
     if not data:
         st.info('Chưa có dữ liệu.'); return
     frame = pd.DataFrame(data)
+    if mark:  # đặc trưng nhạy môi trường: gắn dấu ngay trên tên để thấy cái nào gây dấu hiệu
+        frame[name] = [f'{x} ⚠' if x in mark else x for x in frame[name]]
     chart = alt.Chart(frame).mark_bar().encode(
         y=alt.Y(name + ':N', sort='-x', title=None),
         x=alt.X(value + ':Q', title=value),
@@ -89,7 +93,7 @@ def paint(frame):
     def label_color(value):
         return 'background-color: rgba(39,168,132,.28)' if value == 'Benign' else 'background-color: rgba(237,152,81,.40); font-weight: 600'
     def branch_color(value):
-        return 'background-color: rgba(237,152,81,.40)' if value == 'B' else ''
+        return 'background-color: rgba(237,152,81,.40)' if value == branch_short('B') else ''
     def lime_color(value):
         return 'background-color: rgba(224,82,82,.30)' if value == 'Không tin cậy' else ''
     def hint_color(value):
@@ -101,6 +105,10 @@ def paint(frame):
 
 def show_detail(flow_id):
     flow = get('/flows/' + flow_id)
+    try:
+        rules = get('/branch_rules')
+    except requests.RequestException:
+        rules = None
     reference = get('/flows/' + flow_id + '/comparison')
     st.subheader('Chi tiết flow đang chọn')
     with st.expander('Mã flow đầy đủ · có thể sao chép'):
@@ -119,6 +127,7 @@ def show_detail(flow_id):
         if hint:
             st.warning('**Gợi ý có thể báo nhầm.** ' + hint['text'])
         st.caption('LIME: ' + lime_badge(flow))
+        render_branch(flow, rules)
     left, right = st.columns(2)
     with left:
         st.write('Nguồn: ' + endpoint(flow['src_ip'], flow['src_port']))
@@ -136,8 +145,6 @@ def show_detail(flow_id):
         st.write('Thời lượng flow: ' + (f'{duration / 1e6:.6f} giây' if duration is not None else 'Chưa có'))
     if not flow['is_alert']:
         st.info('Benign: vẫn lưu dự đoán, không tạo cảnh báo và không chạy SHAP/LIME theo thiết kế.')
-    elif flow['branch']:
-        st.info(f"Nhánh {flow['branch']}: {flow['branch_reason'].rstrip('.')}. Nhánh A/B chỉ đổi cách hiển thị, không đổi nhãn dự đoán.")
     prediction, shap_tab, lime_tab, comparison, reliability, raw = st.tabs(
         ['Xác suất các lớp', 'SHAP tự động', 'LIME theo yêu cầu', 'Đối chứng đặc trưng', 'Đánh giá giải thích', 'Đặc trưng và thời gian'])
     with prediction:
@@ -150,8 +157,10 @@ def show_detail(flow_id):
         st.caption(f"Model: {flow['model_version']} · Nhãn thật: {flow['label_true'] or 'Không biết (traffic thật không có nhãn xác nhận)'}")
     with shap_tab:
         if flow.get('shap_top5'):
-            bars(flow['shap_top5'], 'feature', 'phi', signed=True)
+            bars(flow['shap_top5'], 'feature', 'phi', signed=True, mark=set((rules or {}).get('env_features', [])))
             st.caption('Đỏ/dương: tăng điểm lớp đang giải thích; xanh/âm: giảm điểm. SHAP ở raw margin, không phải phần trăm xác suất.')
+            if rules and any(i['feature'] in rules.get('env_features', []) for i in flow['shap_top5']):
+                st.caption('⚠ = đặc trưng nhạy môi trường (giả thuyết, chưa kiểm chứng): góp vào dấu hiệu môi trường của nhánh A/B. Xem «A/B là gì?» ở trên.')
             explain_top_features(flow, 'SHAP')
             with st.expander('Số liệu SHAP gốc'):
                 st.dataframe(flow['shap_top5'], hide_index=True, width='stretch')
@@ -254,7 +263,8 @@ with st.sidebar:
             except ValueError:
                 scope_error = scope_error or f'«{text}» không phải địa chỉ IP hợp lệ.'
     label = st.selectbox('Nhãn dự đoán', ['Tất cả'] + health.get('class_names', []))
-    branch = st.selectbox('Nhánh giải thích', ['Tất cả', 'A', 'B'])
+    branch = st.selectbox('Nhánh giải thích', ['Tất cả', 'A', 'B'], format_func=branch_option,
+                          help='A: không có dấu hiệu cần lưu ý. B: có ít nhất một dấu hiệu (môi trường hoặc lớp hiếm). Chỉ đổi cách hiển thị, không đổi nhãn.')
     alerts_only = st.checkbox('Chỉ cảnh báo')
     paused = st.checkbox('Tạm dừng tự làm mới')
     st.button('Làm mới ngay')
@@ -354,6 +364,9 @@ def monitor():
         age = age_text(stats['last_received_at'], now)
         st.caption('Flow cuối được nhận trong phạm vi: ' + local_time(stats['last_received_at']) + (f' ({age})' if age else '') +
                    ('' if recent else ' · chưa có flow mới trong 30 giây gần đây'))
+        if stats['branch_a'] + stats['branch_b']:
+            st.caption(f"Phân nhánh giải thích: {stats['branch_b']} cảnh báo cần xem lại (dấu hiệu môi trường {stats['env_flag']}, lớp hiếm {stats['rare_flag']}) · "
+                       f"{stats['branch_a']} bình thường. Chọn một dòng rồi mở «A/B là gì?» để hiểu cách chia. Nhánh chỉ đổi cách hiển thị, không đổi nhãn.")
         with st.expander('Cách đọc số liệu và giới hạn'):
             st.caption('Chỉ số và biểu đồ tính trên TOÀN BỘ bộ lọc, không chỉ 50 dòng của trang.')
             st.caption('Cảnh báo là dự đoán của model, không phải tấn công đã xác nhận. Tỷ lệ cảnh báo không phải FPR; cần ground truth để đánh giá báo nhầm.')
@@ -403,11 +416,11 @@ def monitor():
                               'Nguồn →': endpoint(f['src_ip'], f['src_port']),
                               'Đích · giao thức': f"{endpoint(f['dst_ip'], f['dst_port'])} · {protocol_text(f['protocol'])}",
                               'Nhãn': f['predicted_label'], 'Xác suất': f"{f['confidence']:.2%}" if f['confidence'] is not None else 'Chưa có',
-                              'Nhánh': f['branch'] or '—',
+                              'Nhánh': branch_short(f['branch']),
                               'SHAP': shap_short(f),
                               'LIME': lime_badge(f, short=True), 'Gợi ý': hint['tag'] if hint else ''})
-            widths = {'API nhận (GMT+7)': 115, 'Nguồn →': 145, 'Đích · giao thức': 170, 'Nhãn': 170, 'Xác suất': 70,
-                      'Nhánh': 60, 'SHAP': 50, 'LIME': 105, 'Gợi ý': 120}
+            widths = {'API nhận (GMT+7)': 110, 'Nguồn →': 140, 'Đích · giao thức': 165, 'Nhãn': 160, 'Xác suất': 65,
+                      'Nhánh': 105, 'SHAP': 48, 'LIME': 100, 'Gợi ý': 125}
             columns = {name: st.column_config.TextColumn(width=width) for name, width in widths.items()}
             st.dataframe(paint(pd.DataFrame(table)), hide_index=True, width='stretch', key=key, column_config=columns,
                          height=min(38 + 35 * len(table), 560), selection_mode='single-row', on_select=on_select)
