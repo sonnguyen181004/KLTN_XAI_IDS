@@ -1,5 +1,17 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## HT6.3 — giải thích nhánh A/B trên giao diện (20/10/2026)
+
+**Mục đích:** người xem hiểu vì sao có nhánh A/B, nhánh được quyết định thế nào, cờ môi trường là giả thuyết gì. Chỉ thêm lớp trình bày; không đổi luật (`reliability.py`), nhãn, xác suất hay dữ liệu lưu.
+
+- **Thẻ nhánh** (dưới «Vì sao nghi ngờ»): tiêu đề, một câu nghĩa, «Nên làm», hai chip dấu hiệu (môi trường, lớp hiếm). Nhánh A không nói «đúng», nhánh B không nói «báo nhầm».
+- **«Nhánh này được quyết định thế nào?»:** 4 bước với số thật của flow (Top-5 SHAP, số đặc trưng môi trường so với ngưỡng, số mẫu train của lớp so với ngưỡng, luật).
+- **«A/B là gì?»:** mục đích, những gì A/B không phải, cờ môi trường ghi rõ là giả thuyết chưa kiểm chứng (E4), bảng 4 đặc trưng (độ quan trọng đo từ model; cột «Phản ánh môi trường lab?» = chưa kiểm chứng), lớp hiếm hiện có, các tiêu chí đã cố ý không dùng.
+- Cột bảng/bộ lọc dùng «✓ Bình thường» / «⚠ Xem lại»; biểu đồ SHAP gắn ⚠ cạnh đặc trưng nhạy môi trường; dòng tóm tắt số nhánh trên bảng.
+- **API `GET /branch_rules`:** ngưỡng, danh sách đặc trưng, số mẫu từng lớp (từ config và `train_stats.json`) và độ quan trọng (tổng gain) từ model. `summary` thêm `branch_a/b`, `env_flag`, `rare_flag`. Không gõ cứng số trong giao diện; hằng `ENV_HYPOTHESIS_VALIDATED` (False) trong `branch_help.py` chỉ đổi thành True khi E4 xong.
+- **Phát hiện khi kiểm chứng trên DB thật (178 cảnh báo):** giao diện dựng đúng nhánh đã lưu, 0 sai luật; 162 B (đều do dấu hiệu môi trường), 16 A, 0 do lớp hiếm. 93 cảnh báo được tính khi danh sách môi trường còn 3 đặc trưng (trước khi thêm FIN); 9 trong số đó đang lưu A nhưng sẽ là B nếu tính lại. Giao diện dùng số đã lưu và hiện cảnh báo nói rõ điều này. `FIN Flag Cnt` chỉ hạng 45/78 toàn model (0,04% gain): ý nghĩa của nó mang tính cục bộ.
+- **Kiểm thử:** Stage41 (13 test), Stage14 (thêm bước thẻ nhánh), Stage32/37/39/40 đạt; đã xem bằng trình duyệt headless trên bản sao DB thật, không lỗi console. Chưa thử bằng trình duyệt của bạn.
+
 ## HT6.2 — bảng gọn hơn, lọc theo IP và giờ, thống nhất cách hiển thị giờ (20/10/2026)
 
 **Mục đích:** đọc bảng không bị cắt chữ, tách đúng traffic của một máy (chuẩn bị demo tấn công), và mọi mốc giờ trông giống nhau. Chỉ đổi lớp trình bày và thêm điều kiện lọc đọc dữ liệu; không đổi model, SHAP/LIME, luật nhánh A/B, nhãn, xác suất hay cách lưu.

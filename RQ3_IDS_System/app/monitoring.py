@@ -97,6 +97,8 @@ def summary(conn, filters):
  COALESCE(SUM(a.explanation_status IN ('queued','pending_dispatch','recovery_pending') AND r.shap_top5_json IS NULL),0) AS queued,
  COALESCE(SUM(a.explanation_status='dropped_queue_full'),0) AS dropped,
  COALESCE(SUM(a.explanation_status='failed'),0) AS failed,
+ COALESCE(SUM(r.branch='A'),0) AS branch_a, COALESCE(SUM(r.branch='B'),0) AS branch_b,
+ COALESCE(SUM(r.env_fingerprint_flag=1),0) AS env_flag, COALESCE(SUM(r.rare_class_flag=1),0) AS rare_flag,
  MAX(f.received_at) AS last_received_at''' + JOIN + where, values))[0]
     result['labels'] = rows(conn.execute('SELECT p.predicted_label AS label, COUNT(*) AS count' + JOIN + where + ' GROUP BY p.predicted_label ORDER BY count DESC', values))
     result['timeline'] = rows(conn.execute('''SELECT strftime('%Y-%m-%dT%H:%M:00Z', f.received_at) AS minute,

@@ -58,6 +58,8 @@ HT3.6 (18/10): bổ sung thống kê dung lượng chỉ đọc/API/UI cảnh b�
 
 Nghiệm thu HT3.6: Stage31 **8/8 PASS**, Stage14 API/model/UI/CSV/PCAP/SHAP/LIME và storage normal/low/unavailable **PASS**; CLI status chỉ đọc đã kiểm tra. Không backup/restore/reset DB thật; không thay schema/model; không thêm tài liệu MD. Hoàn thành phạm vi backup SQLite thủ công + quan sát dung lượng, chưa đóng toàn bộ HT3.
 
+HT6.3 (20/10): giải thích nhánh A/B trên giao diện (thẻ nhánh, các bước quyết định, trang «A/B là gì?», `/branch_rules`); cờ môi trường ghi rõ là giả thuyết chưa kiểm chứng (E4). Chi tiết trong `operations.md` (HT6.3). Không đổi luật nhánh.
+
 HT6.2 (20/10): bảng không cắt chữ (cột cố định, nhãn ngắn), phân trang gọn, chú thích LIME trên nút, lọc theo IP nguồn/đích và khoảng giờ (API + thanh bên), thống nhất mọi mốc giờ GMT+7. Chi tiết trong `operations.md` (HT6.2). Không đổi model/XAI/nhánh A/B.
 
 HT6.1 (19/10): giao diện giám sát gọn hơn (thanh trạng thái, thẻ số liệu có màu, bảng lên sát, chi tiết ngay dưới bảng, cột LIME/Gợi ý), thêm gợi ý "FIN + có dữ liệu" cho cảnh báo Hulk; sửa 8 test từng ghi vào DB thật và dọn 458 flow rác (có sao lưu). Chi tiết, số đo và giới hạn trong `operations.md` (mục HT6.1). Không đổi model/XAI/nhánh A/B. Còn: nhãn thật do analyst gắn (HT5), thử trình duyệt thật và màn hình nhỏ.

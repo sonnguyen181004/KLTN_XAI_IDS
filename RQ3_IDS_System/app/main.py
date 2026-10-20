@@ -4,6 +4,7 @@ Chạy thử: uvicorn app.main:app --reload --port 8000  (chạy từ thư mục
 """
 from __future__ import annotations
 
+import functools
 import hashlib
 import json
 import os
@@ -384,6 +385,26 @@ def read_monitor(function, *args):
 @app.get('/runs')
 def list_runs():
     return read_monitor(monitoring.runs)
+
+
+@functools.lru_cache(maxsize=1)
+def env_importance():
+    """Độ quan trọng (tổng gain theo mọi lớp) của các đặc trưng nhạy môi trường, đo trực tiếp từ model đang chạy."""
+    score = detector.model.get_booster().get_score(importance_type='total_gain')
+    total = sum(score.values())
+    ranked = sorted(score, key=score.get, reverse=True)
+    return {name: dict(rank=ranked.index(name) + 1 if name in score else None, of=len(detector.feature_names),
+                       share_pct=round(100 * score.get(name, 0.0) / total, 2) if total else 0.0)
+            for name in cfg['environment_fingerprint_features']}
+
+
+@app.get('/branch_rules')
+def branch_rules():
+    """Luật nhánh A/B đang chạy, để giao diện giải thích mà không gõ cứng số: ngưỡng, danh sách đặc trưng, số mẫu train."""
+    return dict(env_features=list(cfg['environment_fingerprint_features']),
+                env_threshold=cfg['environment_fingerprint_flag_threshold'],
+                rare_min_samples=cfg['rare_class_min_train_samples'], top_k=cfg['faithfulness_proxy']['k'],
+                train_samples_per_class=train_stats['train_samples_per_class'], importance=env_importance())
 
 
 @app.get('/lime_validity')

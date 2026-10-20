@@ -189,6 +189,13 @@ def main():
                     at.session_state['selected_flow'] = real[1]['flow_id']
                     at.run(timeout=30)
                     assert not at.exception, at.exception
+                    # Thẻ nhánh A/B + các bước quyết định + trang «A/B là gì?» (số lấy từ /branch_rules).
+                    assert any(('Cần xem lại giải thích' in m.value or 'Giải thích bình thường' in m.value) and 'Nên làm' in m.value for m in at.markdown)
+                    labels = {e.label for e in at.expander}
+                    assert 'Nhánh này được quyết định thế nào?' in labels and 'A/B là gì? Vì sao hệ thống có nhánh này?' in labels, labels
+                    assert any('Bước 4. Luật' in m.value for m in at.markdown)
+                    assert any('chưa kiểm chứng' in w.value.lower() for w in at.warning)
+                    print('PASS branch A/B explanation card and steps')
                     at.button(key='lime_' + real[1]['flow_id']).click().run(timeout=60)
                     assert not at.exception, at.exception
                     explained = get('/flows/' + real[1]['flow_id'])
