@@ -386,6 +386,11 @@ def list_runs():
     return read_monitor(monitoring.runs)
 
 
+@app.get('/lime_validity')
+def lime_validity():
+    return read_monitor(monitoring.lime_validity)
+
+
 @app.get('/dashboard/summary')
 def dashboard_summary(filters: dict = Depends(monitor_filters)):
     return read_monitor(monitoring.summary, filters)

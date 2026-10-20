@@ -1,33 +1,77 @@
-"""Gợi ý đọc cảnh báo bằng lời: chỉ là lớp trình bày, không đổi nhãn, xác suất hay nhánh A/B."""
+"""Gợi ý đọc cảnh báo bằng lời: chỉ là lớp trình bày, không đổi nhãn, xác suất hay nhánh A/B.
+Không ghi cứng số liệu: ngưỡng ở config.yaml (hulk_fin_hint), số đếm tính từ file train thật, số LIME tính từ DB."""
+import functools
+from pathlib import Path
 
-# Đo trên train_set.parquet (2,8 triệu dòng) ngày 19/10/2026: trong vùng
-# FIN Flag Cnt>=1, Fwd Pkt Len Max>=66, Fwd Seg Size Min<32 có 445 flow, 445 là Hulk, 0 là Benign.
-HULK_FIN_TRAIN = dict(hulk=445, benign=0)
+import yaml
+
+RQ3 = Path(__file__).resolve().parents[1]
 LIME_BAD = ('insufficient_neighborhood', 'zero_coefficients', 'undefined_fit')
-# Đo ngày 19/10/2026 trên máy này: số flow cảnh báo mà LIME cho kết quả hợp lệ / số đã chạy.
-LIME_VALID = dict(lab=(143, 198), realtime=(1, 113), pcap=(0, 8))
-LIME_LIVE_NOTE = (
-    'Với traffic thật (realtime, PCAP), LIME thường không đủ tin cậy: LIME tạo các mẫu giả quanh flow dựa trên '
-    '2.000 flow mẫu của tập train, mà flow thật thường nằm xa dữ liệu đó nên các mẫu giả không đại diện cho flow. '
-    f"Đo ngày 19/10/2026: hợp lệ {LIME_VALID['realtime'][0]}/{LIME_VALID['realtime'][1]} flow realtime và "
-    f"{LIME_VALID['pcap'][0]}/{LIME_VALID['pcap'][1]} flow PCAP, so với {LIME_VALID['lab'][0]}/{LIME_VALID['lab'][1]} trên dữ liệu lab. "
-    'Khi đó hệ thống ghi «Không đủ tin cậy» thay vì hiện kết quả sai; SHAP vẫn dùng được.')
 SHAP_SHORT = {'processed': 'Có', 'queued': 'Chờ', 'pending_dispatch': 'Chờ', 'recovery_pending': 'Chờ',
               'failed': 'Lỗi', 'dropped_queue_full': 'Bỏ', 'unknown_legacy': 'Cũ'}
 
 
+def thousands(number):
+    return f'{number:,}'.replace(',', '.')
+
+
+@functools.lru_cache(maxsize=1)
+def hint_rule():
+    """(ngưỡng từ config.yaml, đường dẫn train_set)."""
+    cfg = yaml.safe_load((RQ3 / 'config.yaml').read_text(encoding='utf-8'))
+    return cfg['hulk_fin_hint'], RQ3.parent / cfg['paths']['train_set']
+
+
+@functools.lru_cache(maxsize=1)
+def train_counts():
+    """Đếm trực tiếp trên train_set: vùng khớp luật, trong đó bao nhiêu Hulk/Benign, và tổng Benign đóng bằng FIN.
+    Không đọc được file train thì trả None (khi đó không hiện gợi ý, không bịa số)."""
+    rule, path = hint_rule()
+    try:
+        import pandas as pd
+        frame = pd.read_parquet(path, columns=['Label', 'FIN Flag Cnt', 'Fwd Pkt Len Max', 'Fwd Seg Size Min'])
+    except Exception:  # noqa: BLE001 - thiếu file/thư viện: bỏ gợi ý thay vì làm hỏng giao diện
+        return None
+    fin = frame['FIN Flag Cnt'] >= rule['min_fin_flag_cnt']
+    region = fin & (frame['Fwd Pkt Len Max'] >= rule['min_fwd_pkt_len_max']) & (frame['Fwd Seg Size Min'] < rule['below_fwd_seg_size_min'])
+    benign = frame['Label'] == rule['benign_label']
+    hulk = frame['Label'] == rule['label']
+    return dict(region=int(region.sum()), hulk=int((region & hulk).sum()), benign=int((region & benign).sum()),
+                benign_fin=int((fin & benign).sum()), rows=int(len(frame)))
+
+
 def fin_data_hint(label, fin, fwd_pkt_len_max, fwd_seg_size_min):
     """Trả về dict(tag, text) khi cảnh báo Hulk khớp vùng "đóng bằng FIN + có gửi dữ liệu", ngược lại None."""
-    if label != 'DoS attacks-Hulk' or None in (fin, fwd_pkt_len_max, fwd_seg_size_min):
+    rule, _ = hint_rule()
+    if label != rule['label'] or None in (fin, fwd_pkt_len_max, fwd_seg_size_min):
         return None
-    if fin >= 1 and fwd_pkt_len_max >= 66 and fwd_seg_size_min < 32:
-        return dict(
-            tag='FIN + có dữ liệu',
-            text=('Flow này đóng kết nối bằng FIN và có gửi dữ liệu. Trong dữ liệu train, kiểu này chỉ gặp ở Hulk '
-                  f"({HULK_FIN_TRAIN['hulk']}/{HULK_FIN_TRAIN['hulk']} flow, {HULK_FIN_TRAIN['benign']} Benign) vì mọi flow Benign "
-                  'đóng bằng FIN trong train đều không gửi dữ liệu. Với traffic duyệt web bình thường, đây có thể là báo nhầm, '
-                  'cần xem lại. Đây là gợi ý, không phải kết luận.'))
-    return None
+    if not (fin >= rule['min_fin_flag_cnt'] and fwd_pkt_len_max >= rule['min_fwd_pkt_len_max']
+            and fwd_seg_size_min < rule['below_fwd_seg_size_min']):
+        return None
+    n = train_counts()
+    if not n or not n['region']:
+        return None
+    if n['benign'] == 0:
+        evidence = (f"Trong dữ liệu train, kiểu này chỉ gặp ở Hulk ({thousands(n['hulk'])}/{thousands(n['region'])} flow, 0 Benign) "
+                    f"vì mọi flow Benign đóng bằng FIN trong train ({thousands(n['benign_fin'])} flow) đều không gửi dữ liệu. "
+                    'Với traffic duyệt web bình thường, đây có thể là báo nhầm, cần xem lại. ')
+    else:
+        evidence = (f"Trong dữ liệu train, kiểu này gặp ở Hulk {thousands(n['hulk'])}/{thousands(n['region'])} flow và ở Benign "
+                    f"{thousands(n['benign'])}/{thousands(n['region'])} flow, nên cần xem thêm bối cảnh. ")
+    return dict(tag='FIN + có dữ liệu',
+                text='Flow này đóng kết nối bằng FIN và có gửi dữ liệu. ' + evidence + 'Đây là gợi ý, không phải kết luận.')
+
+
+def lime_note(validity, background_n=None):
+    """Chú thích đặt trên nút LIME. Số liệu lấy từ chính DB (validity = /lime_validity), không gõ cứng."""
+    sizes = f' {thousands(background_n)}' if background_n else ''
+    why = (f'LIME tạo các mẫu giả quanh flow dựa trên{sizes} flow mẫu của tập train; flow thật nằm xa dữ liệu mẫu '
+           'thì các mẫu giả không đại diện cho flow đó, và hệ thống ghi «Không đủ tin cậy» thay vì hiện kết quả sai. ')
+    names = {'feeder_live': 'realtime', 'pcap_replay': 'PCAP', 'csv_upload': 'CSV', 'api': 'API'}
+    parts = [f"{names.get(r['source'], r['source'])} {r['valid']}/{r['ran']}" for r in (validity or {}).get('sources', []) if r['ran']]
+    stats = ('Số lần LIME cho kết quả hợp lệ trên dữ liệu của hệ thống này (hợp lệ/đã chạy): ' + ' · '.join(parts) + '. ') if parts \
+        else 'Chưa có lần chạy LIME nào được kiểm tra để thống kê. '
+    return 'Với traffic thật, LIME có thể không đủ tin cậy. ' + why + stats + 'SHAP vẫn dùng được.'
 
 
 def lime_badge(flow, short=False):

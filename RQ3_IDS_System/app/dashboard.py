@@ -18,7 +18,7 @@ from ingestion_ui import render_ingestion
 from xai_reading_ui import explain_top_features, lime_problem, feature_guide
 from dashboard_format import LOCAL, age_text, bounded_page, endpoint, protocol_text, time_text
 from capture_ui import render_capture, capture_summary
-from alert_hints import LIME_LIVE_NOTE, fin_data_hint, lime_badge, shap_short, why_suspect
+from alert_hints import fin_data_hint, lime_badge, lime_note, shap_short, why_suspect
 from feature_help import describe, reading
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
@@ -175,7 +175,11 @@ def show_detail(flow_id):
             st.caption('LIME là mô hình thay thế cục bộ trên xác suất; không so độ lớn trực tiếp với SHAP raw margin.')
             st.caption('R² đo độ khớp trên các mẫu LIME, không phải độ chính xác IDS. Jaccard@5 đo mức trùng các tên/mô tả Top-5 được so sánh, không xác nhận nhãn đúng.')
         if flow['is_alert']:
-            st.caption(LIME_LIVE_NOTE)
+            try:
+                validity = get('/lime_validity')
+            except requests.RequestException:
+                validity = None
+            st.caption(lime_note(validity, reference.get('background_n')))
         if flow['is_alert'] and st.button('Yêu cầu / kiểm tra lại LIME', key='lime_' + flow_id):
             with st.spinner('Đang tính LIME theo yêu cầu…'):
                 response = requests.post(API + '/explain', json={'alert_id': flow['alert_id'], 'method': 'lime'}, timeout=60)

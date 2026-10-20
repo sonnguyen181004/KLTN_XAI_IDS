@@ -14,6 +14,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'app'))
+from alert_hints import thousands, train_counts  # noqa: E402
+
 import pandas as pd
 import requests
 
@@ -156,7 +159,8 @@ def main():
                     at.session_state['selected_flow'] = hulk_fin['flow_id']
                     at.run(timeout=30)
                     assert not at.exception, at.exception
-                    assert any('Gợi ý có thể báo nhầm' in w.value and '445/445' in w.value for w in at.warning)
+                    counts = train_counts()
+                    assert any('Gợi ý có thể báo nhầm' in w.value and f"{thousands(counts['hulk'])}/{thousands(counts['region'])}" in w.value for w in at.warning)
                     assert any('Vì sao nghi ngờ' in m.value for m in at.markdown)
                     at.selectbox(key='run_choice').set_value('real-model-test').run(timeout=30)
                     assert not at.exception, at.exception

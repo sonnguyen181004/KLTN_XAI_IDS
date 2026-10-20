@@ -60,6 +60,14 @@ class IpTimeFilters(unittest.TestCase):
         summary = monitoring.summary(self.conn, dict(src_ip=ATTACKER))
         self.assertEqual((summary["flows"], summary["alerts"], summary["benign"]), (3, 2, 1))
 
+    def test_lime_validity_counts_only_checked_runs_per_source(self):
+        import json
+        for alert, status in (("a_f1", "ok"), ("a_f2", "insufficient_neighborhood")):
+            db.upsert_reliability(self.conn, alert, lime_diagnostics_json=json.dumps({"status": status}))
+        self.conn.commit()
+        sources = {r["source"]: (r["ran"], r["valid"]) for r in monitoring.lime_validity(self.conn)["sources"]}
+        self.assertEqual(sources, {"feeder_live": (2, 1)})
+
     def test_api_validation_rejects_bad_ip_and_normalizes(self):
         import main
         from fastapi import HTTPException

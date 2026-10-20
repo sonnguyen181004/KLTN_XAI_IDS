@@ -45,6 +45,15 @@ environment_fingerprint_features:
   - "FIN Flag Cnt"
 environment_fingerprint_flag_threshold: 2  # Top-5 có >= 2 cái này thì bật cờ
 
+# Gợi ý "đóng FIN + có dữ liệu" trên cảnh báo Hulk (app/alert_hints.py). Chỉ là gợi ý đọc, không đổi nhãn.
+# Ngưỡng nằm ở đây; số flow Hulk/Benign trong vùng này được ĐẾM trực tiếp từ paths.train_set lúc chạy.
+hulk_fin_hint:
+  label: "DoS attacks-Hulk"
+  benign_label: "Benign"
+  min_fin_flag_cnt: 1        # flow có ít nhất 1 gói cờ FIN (đóng kết nối bằng FIN)
+  min_fwd_pkt_len_max: 66    # gói lớn nhất chiều đi >= ngưỡng này thì coi là có gửi dữ liệu
+  below_fwd_seg_size_min: 32 # header TCP nhỏ hơn 32 byte (kiểu máy thường); lab Hulk dùng 32
+
 rare_class_min_train_samples: 100  # lớp có dưới ngưỡng này thì bật cờ "lớp hiếm"
 
 # Tập B (dữ liệu sạch dùng để demo/test, không dính nghi vấn "model học thuộc").
