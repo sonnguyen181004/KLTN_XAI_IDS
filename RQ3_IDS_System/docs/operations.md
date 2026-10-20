@@ -1,5 +1,11 @@
 # Vận hành, phục hồi và kiểm thử RQ3
 
+## Reset DB demo và kịch bản demo — 20/10/2026
+
+Theo yêu cầu người dùng, đã reset `data/ids_system.db` (1.845 flow, 475 cảnh báo, 6.962 timing). Dừng API/dashboard (cổng 8000/8501) và xác nhận không có feeder/capture; backup bằng SQLite backup API tại `backups/before_reset_20261020_094428_demo_script/` (`snapshot.db` + `manifest.json`, có sha256; Git ignore), kiểm tra integrity và đối chiếu số dòng với DB trước khi xóa trong một transaction; sau reset mọi bảng = 0, integrity ok, foreign_key_check sạch, reset sequence Timing/DataError, giữ schema/index. Không đụng model, CSV, PCAP, checkpoint feeder, `capture_sessions`. Khôi phục theo mục backup/restore (vào thư mục mới). API/dashboard chưa được khởi động lại sau reset.
+
+Kịch bản demo từng chức năng, kèm case và số liệu từ lần chạy thử trên DB tạm: [demo_script.md](demo_script.md).
+
 ## HT6.3 — giải thích nhánh A/B trên giao diện (20/10/2026)
 
 **Mục đích:** người xem hiểu vì sao có nhánh A/B, nhánh được quyết định thế nào, cờ môi trường là giả thuyết gì. Chỉ thêm lớp trình bày; không đổi luật (`reliability.py`), nhãn, xác suất hay dữ liệu lưu.
