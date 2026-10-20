@@ -208,6 +208,8 @@ def show_detail(flow_id):
 
 
 st.set_page_config(page_title='IDS · Giám sát và giải thích', layout='wide')
+# Tự làm mới 5 giây chạy lại cả khu giám sát; mặc định Streamlit làm mờ khối đang chạy lại (nháy mờ mỗi lần dù nội dung không đổi).
+st.markdown('<style>[data-stale="true"] {opacity: 1 !important; transition: none !important;}</style>', unsafe_allow_html=True)
 st.markdown('## IDS · Giám sát traffic và giải thích')
 st.caption('Flow hoàn tất → dự đoán → cảnh báo → SHAP nền. LIME chỉ chạy khi bạn yêu cầu.')
 try:
