@@ -106,3 +106,12 @@ def summary(conn, filters):
  MIN(f.received_at) AS first_seen, MAX(f.received_at) AS last_seen, COUNT(*) AS count''' + JOIN + where +
  ' AND a.alert_id IS NOT NULL GROUP BY a.group_key, window ORDER BY last_seen DESC LIMIT 100', values))
     return result
+
+
+def lime_validity(conn):
+    """Với mỗi nguồn dữ liệu: số lần LIME đã chạy có chẩn đoán (ran) và số cho kết quả hợp lệ (valid).
+    Tính trên toàn bộ DB; kết quả cũ chưa có chẩn đoán không được đếm."""
+    return {'sources': rows(conn.execute("""SELECT f.source AS source, COUNT(*) AS ran,
+ COALESCE(SUM(json_extract(r.lime_diagnostics_json, '$.status')='ok'),0) AS valid
+ FROM Reliability r JOIN AlertRecord a ON a.alert_id=r.alert_id JOIN FlowRecord f ON f.flow_id=a.flow_id
+ WHERE r.lime_diagnostics_json IS NOT NULL GROUP BY f.source ORDER BY ran DESC"""))}
