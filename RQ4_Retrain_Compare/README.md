@@ -30,7 +30,7 @@ Những chỗ **không** thể giống hệt, và cách xử lý:
 | M0 | Train cũ 15 lớp (đã có, RQ1) | Mô hình gốc để tham chiếu |
 | M0b | Train cũ giới hạn 13 lớp chung | Điểm so sánh công bằng về không gian nhãn |
 | M1 | Train lấy từ bản improved | Dữ liệu đã sửa lỗi có giúp không |
-| M2 | Train cũ cộng Benign "FIN có dữ liệu" lấy từ improved | Tách "thiếu mẫu" khỏi "khác định nghĩa đặc trưng" |
+| M2 (hoãn) | Train cũ cộng Benign "FIN có dữ liệu" lấy từ improved | Tách "thiếu mẫu" khỏi "khác định nghĩa đặc trưng". Theo yêu cầu của người dùng, tạm không chạy. Mã đã có (`04_build_datasets.py`, `05_train_models.py m2_10000`) để chạy sau |
 
 ## Bộ đánh giá
 
@@ -39,6 +39,8 @@ Những chỗ **không** thể giống hệt, và cách xử lý:
 | T1 | Test cũ (`test_set.parquet`) | Trong phân phối của M0, M0b, M2 |
 | T2 | Test stratified 20 % của bản improved và bộ giữ riêng theo thời gian | Trong phân phối của M1 |
 | T3 | Flow realtime của máy người dùng (`feeder_live`), có nhật ký hoạt động | Đo báo nhầm trên lưu lượng thật. Không dùng PCAP đã nạp |
+
+Siêu tham số XGBoost và cấu hình SHAP, LIME giữ nguyên của RQ1 và RQ2, không quét hay chọn lại.
 
 ## Thứ tự thực hiện (mỗi bước một commit)
 
