@@ -1,0 +1,87 @@
+{
+ "M1_test_stratified_khong_trung": {
+  "rows": 536586,
+  "removed": 113512,
+  "accuracy": 99.99608636826156,
+  "macro_f1": 99.75997570993552,
+  "by_class_recall": {
+   "Benign": 99.99827661976201,
+   "Bot": 100.0,
+   "Brute Force -Web": 100.0,
+   "Brute Force -XSS": 94.44444444444444,
+   "DDOS attack-HOIC": 100.0,
+   "DDOS attack-LOIC-UDP": 99.71098265895954,
+   "DDoS attacks-LOIC-HTTP": 100.0,
+   "DoS attacks-GoldenEye": 100.0,
+   "DoS attacks-Hulk": 100.0,
+   "DoS attacks-Slowloris": 100.0,
+   "Infilteration": 99.82749469214437,
+   "SQL Injection": 100.0,
+   "SSH-Bruteforce": 100.0
+  }
+ },
+ "M1_holdout_thoi_gian_khong_trung": {
+  "rows": 374525,
+  "removed": 47607,
+  "accuracy": 99.89747012882985,
+  "macro_f1": 98.88269220372695,
+  "by_class_recall": {
+   "Benign": 99.99626340503444,
+   "Bot": 100.0,
+   "Brute Force -Web": 96.29629629629629,
+   "Brute Force -XSS": 100.0,
+   "DDOS attack-HOIC": 100.0,
+   "DDOS attack-LOIC-UDP": 100.0,
+   "DDoS attacks-LOIC-HTTP": 100.0,
+   "DoS attacks-GoldenEye": 99.97783687943263,
+   "DoS attacks-Hulk": 99.954,
+   "DoS attacks-Slowloris": 79.43349753694581,
+   "Infilteration": 99.80663545695094,
+   "SQL Injection": 100.0,
+   "SSH-Bruteforce": 100.0
+  }
+ },
+ "importance_M1": {
+  "Init Fwd Win Byts": 21.04,
+  "Init Bwd Win Byts": 16.6,
+  "Dst Port": 15.97,
+  "Fwd Seg Size Min": 14.7,
+  "TotLen Fwd Pkts": 9.98,
+  "Bwd Pkt Len Std": 4.58,
+  "Pkt Len Std": 3.56,
+  "Flow Duration": 2.5,
+  "Fwd Pkts/b Avg": 1.95,
+  "Pkt Len Mean": 1.59
+ },
+ "importance_M0": {
+  "Dst Port": 23.46,
+  "Init Fwd Win Byts": 16.69,
+  "Fwd Seg Size Min": 13.5,
+  "Fwd Pkt Len Max": 7.76,
+  "Fwd Pkts/s": 5.77,
+  "Fwd IAT Std": 4.99,
+  "Flow Duration": 4.32,
+  "Flow IAT Min": 2.74,
+  "Bwd Pkt Len Std": 2.32,
+  "Tot Fwd Pkts": 2.12
+ },
+ "M1_bo_dac_trung_moi_truong_test_stratified": {
+  "accuracy": 99.97954154604383,
+  "macro_f1": 99.73188052761715,
+  "fpr": 0.009229369612080806,
+  "hulk_recall": 100.0
+ },
+ "M1_bo_dac_trung_moi_truong_holdout_thoi_gian": {
+  "accuracy": 99.84530905024968,
+  "macro_f1": 98.93611627684497,
+  "fpr": 0.0045000000000000005,
+  "hulk_recall": 99.914
+ },
+ "env_features_removed": [
+  "Dst Port",
+  "Protocol",
+  "Init Fwd Win Byts",
+  "Init Bwd Win Byts",
+  "Fwd Seg Size Min"
+ ]
+}
