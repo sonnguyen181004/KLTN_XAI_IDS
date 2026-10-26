@@ -1,2 +1,2 @@
 ﻿Cấu hình,Thời gian (s),Train F1 (%),Test Acc (%),Test Prec (%) [Sub-1.1],Test F1 (%) [Sub-1.1],FPR Benign (%) [Sub-1.2],FNR Attack (%),FP (Benign thành Attack),TN (Benign thành Benign),FN (Attack thành Benign),TP (Attack thành Attack),Ghi chú
-"Depth=8, LR=0.08",137.19,100.0,100.0,100.0,99.76,0.0013,0.0077,6,455063,15,195014,Cấu hình tối ưu đã chọn ở RQ1
+"Depth=8, LR=0.08",134.98,99.96,100.0,99.99,99.3,0.0015,0.0078,7,477463,16,204614,Cấu hình tối ưu đã chọn ở RQ1

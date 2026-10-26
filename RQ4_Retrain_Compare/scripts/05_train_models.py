@@ -1,11 +1,10 @@
-"""Huấn luyện XGBoost cho M0b, M1, M2 với đúng siêu tham số đã chọn ở RQ1 (2_train_optimal_model.py):
+"""Huấn luyện XGBoost cho M0b và M1 với đúng siêu tham số đã chọn ở RQ1 (2_train_optimal_model.py):
 XGBClassifier(n_estimators=100, max_depth=8, learning_rate=0.08, tree_method='hist', random_state=42, n_jobs=-1).
 Không quét lại tham số, để mọi khác biệt giữa các mô hình chỉ đến từ dữ liệu huấn luyện.
 LabelEncoder và các chỉ số (Accuracy, Macro P/R/F1, FPR, FNR bằng ids_detection_metrics) như RQ1.
 
   python 05_train_models.py m0b      train cũ giới hạn 13 lớp
   python 05_train_models.py m1       train lấy từ bản improved
-  python 05_train_models.py m2_10000 train cũ 13 lớp cộng 10.000 Benign nằm trong vùng ba điều kiện của Hulk
 """
 import argparse
 import json
@@ -44,11 +43,6 @@ if a.name == "m0b":
     train, test = old13(TRAIN_OLD), old13(TEST_OLD)
 elif a.name == "m1":
     train, test = pd.read_parquet(DATA / "d2_train.parquet"), pd.read_parquet(DATA / "d2_test.parquet")
-elif a.name.startswith("m2_"):
-    n = int(a.name.split("_")[1])
-    train = pd.concat([old13(TRAIN_OLD), pd.read_parquet(DATA / f"m2_add_{n}.parquet")], ignore_index=True)
-    train = train.sample(frac=1.0, random_state=SEED).reset_index(drop=True)
-    test = old13(TEST_OLD)
 else:
     raise SystemExit("tên mô hình không hợp lệ")
 

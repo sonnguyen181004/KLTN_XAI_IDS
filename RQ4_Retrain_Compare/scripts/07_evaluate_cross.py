@@ -1,7 +1,7 @@
 """Đánh giá chéo: mỗi mô hình trên mỗi bộ test, cùng một bộ chỉ số.
 
-Mô hình : M0 (RQ1 gốc, 15 lớp), M0b (train cũ 13 lớp), M1 (train improved), M2_N (train cũ cộng N Benign vùng Hulk).
-Bộ test : T1 test cũ, T2a test stratified của improved, T2b giữ riêng theo thời gian, T3 realtime (chỉ Benign đã xác nhận).
+Mô hình : M0 (RQ1 gốc, 15 lớp), M0b (train cũ 13 lớp), M1 (train improved).
+Bộ test : T1 test cũ, T2a test của improved, T3 realtime (chỉ Benign đã xác nhận).
 Chỉ số  : Macro F1 trên 13 lớp chung, FPR nhị phân (Benign bị báo thành bất kỳ lớp tấn công), recall Hulk,
           tỷ lệ Benign bị báo Hulk, và FPR tách theo Benign trong vùng ba điều kiện hay ngoài vùng.
 """
@@ -46,9 +46,7 @@ def load_tests():
     d2_tr = pd.read_parquet(DATA / "d2_train.parquet", columns=FEATURES)
     t["T2a_improved_stratified"] = pd.read_parquet(DATA / "d2_test.parquet")
     t["T2a_improved_stratified_sach"], n2 = drop_dups(t["T2a_improved_stratified"], d2_tr)
-    t["T2b_improved_thoi_gian"] = pd.read_parquet(DATA / "t2_time_holdout.parquet").drop(columns=["Day"])
-    t["T2b_improved_thoi_gian_sach"], n3 = drop_dups(t["T2b_improved_thoi_gian"], d2_tr)
-    print("dòng trùng đã bỏ khi làm bản sạch: T1", n1, "| T2a", n2, "| T2b", n3, flush=True)
+    print("dòng trùng đã bỏ khi làm bản sạch: T1", n1, "| T2a", n2, flush=True)
     p3 = DATA / "t3_benign_confirmed.parquet"
     if p3.exists():
         t["T3_realtime_benign"] = pd.read_parquet(p3)

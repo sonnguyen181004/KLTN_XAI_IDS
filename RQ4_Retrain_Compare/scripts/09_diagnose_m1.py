@@ -2,7 +2,7 @@
  1. Trùng lặp: đánh giá lại trên phần test không có dòng giống hệt (78 đặc trưng) trong train.
  2. Dựa vào đặc trưng nào: tổng gain của XGBoost, so với M0.
  3. Bỏ đặc trưng gắn với môi trường lab (cổng đích, giao thức, cửa sổ nhận ban đầu, Fwd Seg Size Min):
-    huấn luyện lại cùng siêu tham số rồi đo trên test và trên bộ giữ riêng theo thời gian."""
+    huấn luyện lại cùng siêu tham số rồi đo trên test."""
 import json
 import joblib
 import numpy as np
@@ -14,13 +14,12 @@ from rq4_common import *
 
 ENV = ["Dst Port", "Protocol", "Init Fwd Win Byts", "Init Bwd Win Byts", "Fwd Seg Size Min"]
 tr, te = pd.read_parquet(DATA / "d2_train.parquet"), pd.read_parquet(DATA / "d2_test.parquet")
-ho = pd.read_parquet(DATA / "t2_time_holdout.parquet")
 m1, le1 = joblib.load(MODELS / "m1_xgboost_model.pkl"), joblib.load(MODELS / "m1_label_encoder.pkl")
 out = {}
 
 # 1. trùng lặp
 h_tr = set(pd.util.hash_pandas_object(tr[FEATURES], index=False).tolist())
-for name, df in [("test_stratified", te), ("holdout_thoi_gian", ho)]:
+for name, df in [("test_stratified", te)]:
     dup = pd.util.hash_pandas_object(df[FEATURES], index=False).isin(h_tr).to_numpy()
     nd = df[~dup]
     pred = np.array(le1.classes_)[m1.predict(nd[FEATURES])]
@@ -42,7 +41,7 @@ print("Top gain M1:", out["importance_M1"]); print("Top gain M0:", out["importan
 feats = [f for f in FEATURES if f not in ENV]
 le = LabelEncoder(); y = le.fit_transform(tr.Label)
 m = XGBClassifier(n_estimators=100, max_depth=8, learning_rate=0.08, tree_method="hist", random_state=SEED, n_jobs=-1).fit(tr[feats], y)
-for name, df in [("test_stratified", te), ("holdout_thoi_gian", ho)]:
+for name, df in [("test_stratified", te)]:
     pred = np.array(le.classes_)[m.predict(df[feats])]
     b = df.Label.to_numpy() == "Benign"
     out[f"M1_bo_dac_trung_moi_truong_{name}"] = dict(accuracy=float((pred == df.Label).mean() * 100),
