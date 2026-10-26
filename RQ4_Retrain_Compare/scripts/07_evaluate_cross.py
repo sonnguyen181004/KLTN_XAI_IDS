@@ -30,12 +30,25 @@ def in_zone(df):
     return (df["FIN Flag Cnt"] >= R["min_fin_flag_cnt"]) & (df["Fwd Pkt Len Max"] >= R["min_fwd_pkt_len_max"]) & (df["Fwd Seg Size Min"] < R["below_fwd_seg_size_min"])
 
 
+def drop_dups(df, train_df):
+    """Bỏ các dòng có 78 đặc trưng giống hệt một dòng trong train (bản test sạch)."""
+    h = set(pd.util.hash_pandas_object(train_df[FEATURES], index=False).tolist())
+    dup = pd.util.hash_pandas_object(df[FEATURES], index=False).isin(h).to_numpy()
+    return df[~dup].reset_index(drop=True), int(dup.sum())
+
+
 def load_tests():
     t = {}
     old = pd.read_parquet(TEST_OLD)
+    old_tr = pd.read_parquet(TRAIN_OLD, columns=FEATURES)
     t["T1_test_cu"] = old[old.Label.isin(CLASSES_13)].reset_index(drop=True)
+    t["T1_test_cu_sach"], n1 = drop_dups(t["T1_test_cu"], old_tr)       # bỏ dòng trùng với train cũ
+    d2_tr = pd.read_parquet(DATA / "d2_train.parquet", columns=FEATURES)
     t["T2a_improved_stratified"] = pd.read_parquet(DATA / "d2_test.parquet")
+    t["T2a_improved_stratified_sach"], n2 = drop_dups(t["T2a_improved_stratified"], d2_tr)
     t["T2b_improved_thoi_gian"] = pd.read_parquet(DATA / "t2_time_holdout.parquet").drop(columns=["Day"])
+    t["T2b_improved_thoi_gian_sach"], n3 = drop_dups(t["T2b_improved_thoi_gian"], d2_tr)
+    print("dòng trùng đã bỏ khi làm bản sạch: T1", n1, "| T2a", n2, "| T2b", n3, flush=True)
     p3 = DATA / "t3_benign_confirmed.parquet"
     if p3.exists():
         t["T3_realtime_benign"] = pd.read_parquet(p3)
