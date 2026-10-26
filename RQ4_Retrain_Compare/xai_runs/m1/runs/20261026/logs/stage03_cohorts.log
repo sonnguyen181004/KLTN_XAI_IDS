@@ -1,0 +1,21 @@
+2026-10-26 19:22:01,431 [INFO] stage03_cohorts: ================================================================================
+2026-10-26 19:22:01,431 [INFO] stage03_cohorts: GĐ 3: COHORT GHÉP CẶP, TẬP DEV VÀ COHORT LỖI
+2026-10-26 19:22:01,432 [INFO] stage03_cohorts: ================================================================================
+2026-10-26 19:22:04,556 [INFO] stage03_cohorts: Cohort — lớp Benign                   : chọn 100 / 477463 flow đúng dự đoán
+2026-10-26 19:22:04,559 [INFO] stage03_cohorts: Cohort — lớp Bot                      : chọn 100 / 25162 flow đúng dự đoán
+2026-10-26 19:22:04,565 [INFO] stage03_cohorts: Cohort — lớp Brute Force -Web         : chọn 25 / 25 flow đúng dự đoán
+2026-10-26 19:22:04,566 [INFO] stage03_cohorts: Cohort — lớp Brute Force -XSS         : chọn 23 / 23 flow đúng dự đoán
+2026-10-26 19:22:04,569 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-HOIC         : chọn 100 / 59580 flow đúng dự đoán
+2026-10-26 19:22:04,570 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-LOIC-UDP     : chọn 100 / 344 flow đúng dự đoán
+2026-10-26 19:22:04,573 [INFO] stage03_cohorts: Cohort — lớp DDoS attacks-LOIC-HTTP   : chọn 100 / 51354 flow đúng dự đoán
+2026-10-26 19:22:04,575 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-GoldenEye    : chọn 100 / 3694 flow đúng dự đoán
+2026-10-26 19:22:04,578 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Hulk         : chọn 100 / 38759 flow đúng dự đoán
+2026-10-26 19:22:04,579 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Slowloris    : chọn 100 / 905 flow đúng dự đoán
+2026-10-26 19:22:04,582 [INFO] stage03_cohorts: Cohort — lớp Infilteration            : chọn 100 / 14303 flow đúng dự đoán
+2026-10-26 19:22:04,583 [INFO] stage03_cohorts: Cohort — lớp SQL Injection            : chọn 7 / 7 flow đúng dự đoán
+2026-10-26 19:22:04,585 [INFO] stage03_cohorts: Cohort — lớp SSH-Bruteforce           : chọn 100 / 10457 flow đúng dự đoán
+2026-10-26 19:22:04,604 [INFO] stage03_cohorts: Cohort lỗi: chọn 24 / 24 flow dự đoán sai (cap 20/lớp theo nhãn thật)
+2026-10-26 19:22:04,625 [INFO] stage03_cohorts: Tập dev: 250 flow. Phân bố lớp: {'Benign': 159, 'DDoS attacks-LOIC-HTTP': 29, 'DDOS attack-HOIC': 28, 'DoS attacks-Hulk': 11, 'Bot': 10, 'Infilteration': 8, 'SSH-Bruteforce': 5}
+2026-10-26 19:22:04,625 [INFO] stage03_cohorts: Kiểm tra không giao nhau — cohort&dev=0, cohort&error=0, dev&error=0 -> True
+2026-10-26 19:22:04,638 [INFO] stage03_cohorts: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\cohort_ids.csv (1055), C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\dev_ids.csv (250), C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\error_ids.csv (24)
+2026-10-26 19:22:04,672 [INFO] stage03_cohorts: GĐ 3 HOÀN TẤT — cohort=1055, dev=250, error=24, không giao nhau=True

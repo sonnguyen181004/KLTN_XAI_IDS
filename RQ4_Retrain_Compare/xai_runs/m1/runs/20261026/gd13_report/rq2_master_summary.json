@@ -1,0 +1,1093 @@
+{
+  "gd1_verification": {
+    "checks": {
+      "model_loads": true,
+      "test_set_78_features_plus_label": true,
+      "feature_order_matches_model": true,
+      "label_encoder_15_classes": true,
+      "no_nan_inf_in_test": true,
+      "metrics_match_rq1": true,
+      "duplicate_check_recorded": true
+    },
+    "details": {
+      "env_versions": {
+        "python": "3.14.7",
+        "xgboost": "3.4.1",
+        "shap": "0.52.0",
+        "lime": "0.2.0.1",
+        "scikit-learn": "1.9.1",
+        "pandas": "3.0.6",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "pyarrow": "25.0.1"
+      },
+      "test_set_shape": {
+        "rows": 682100,
+        "cols": 79,
+        "n_features": 78
+      },
+      "feature_order_mismatch_sample": null,
+      "label_encoder_classes": [
+        "Benign",
+        "Bot",
+        "Brute Force -Web",
+        "Brute Force -XSS",
+        "DDOS attack-HOIC",
+        "DDOS attack-LOIC-UDP",
+        "DDoS attacks-LOIC-HTTP",
+        "DoS attacks-GoldenEye",
+        "DoS attacks-Hulk",
+        "DoS attacks-Slowloris",
+        "Infilteration",
+        "SQL Injection",
+        "SSH-Bruteforce"
+      ],
+      "nan_inf_counts": {
+        "n_nan": 0,
+        "n_inf": 0
+      },
+      "metrics_rerun": {
+        "accuracy_pct": 99.9965,
+        "macro_precision_pct": 99.9875,
+        "macro_recall_pct": 98.6914,
+        "macro_f1_pct": 99.3044
+      },
+      "metrics_rq1_reference": {
+        "accuracy_pct": 100.0,
+        "macro_precision_pct": 99.99,
+        "macro_recall_pct": 98.69,
+        "macro_f1_pct": 99.3
+      },
+      "metrics_deltas_pct_points": {
+        "accuracy_pct": 0.0035,
+        "macro_precision_pct": 0.0025,
+        "macro_recall_pct": 0.0014,
+        "macro_f1_pct": 0.0044
+      },
+      "train_test_duplicate_rows": {
+        "n_duplicates": 115467,
+        "fraction": 0.169282
+      }
+    },
+    "GATE_PASS": true
+  },
+  "gd2_shap_global_top5": [
+    {
+      "class": "Benign",
+      "rank": 1,
+      "feature": "Init Bwd Win Byts",
+      "mean_abs_shap": 2.016182896632828,
+      "mean_signed_shap": 1.9965431221895729,
+      "n_flows": 477463
+    },
+    {
+      "class": "Benign",
+      "rank": 2,
+      "feature": "Fwd Seg Size Min",
+      "mean_abs_shap": 0.3466411885253412,
+      "mean_signed_shap": 0.2861588156192862,
+      "n_flows": 477463
+    },
+    {
+      "class": "Benign",
+      "rank": 3,
+      "feature": "Init Fwd Win Byts",
+      "mean_abs_shap": 0.2433919679214672,
+      "mean_signed_shap": 0.2405766053796315,
+      "n_flows": 477463
+    },
+    {
+      "class": "Benign",
+      "rank": 4,
+      "feature": "Bwd IAT Tot",
+      "mean_abs_shap": 0.2312043416027786,
+      "mean_signed_shap": 0.2183767022997724,
+      "n_flows": 477463
+    },
+    {
+      "class": "Benign",
+      "rank": 5,
+      "feature": "Fwd Header Len",
+      "mean_abs_shap": 0.2010059625816228,
+      "mean_signed_shap": 0.1863694799510315,
+      "n_flows": 477463
+    },
+    {
+      "class": "Bot",
+      "rank": 1,
+      "feature": "Dst Port",
+      "mean_abs_shap": 6.602116255414911,
+      "mean_signed_shap": 6.602116255414911,
+      "n_flows": 25162
+    },
+    {
+      "class": "Bot",
+      "rank": 2,
+      "feature": "Fwd Pkt Len Std",
+      "mean_abs_shap": 0.0036746584433893,
+      "mean_signed_shap": 0.0036746584433893,
+      "n_flows": 25162
+    },
+    {
+      "class": "Bot",
+      "rank": 3,
+      "feature": "FIN Flag Cnt",
+      "mean_abs_shap": 0.0028103458209576,
+      "mean_signed_shap": 0.0027945630833318,
+      "n_flows": 25162
+    },
+    {
+      "class": "Bot",
+      "rank": 4,
+      "feature": "Tot Fwd Pkts",
+      "mean_abs_shap": 0.0011957463034858,
+      "mean_signed_shap": 0.0011957463034858,
+      "n_flows": 25162
+    },
+    {
+      "class": "Bot",
+      "rank": 5,
+      "feature": "Bwd IAT Mean",
+      "mean_abs_shap": 0.000283558236407,
+      "mean_signed_shap": 0.0001535564507051,
+      "n_flows": 25162
+    },
+    {
+      "class": "Brute Force -Web",
+      "rank": 1,
+      "feature": "Fwd Header Len",
+      "mean_abs_shap": 4.0982669067382815,
+      "mean_signed_shap": 4.0982669067382815,
+      "n_flows": 25
+    },
+    {
+      "class": "Brute Force -Web",
+      "rank": 2,
+      "feature": "Fwd PSH Flags",
+      "mean_abs_shap": 2.689883117675781,
+      "mean_signed_shap": 2.689883117675781,
+      "n_flows": 25
+    },
+    {
+      "class": "Brute Force -Web",
+      "rank": 3,
+      "feature": "Bwd PSH Flags",
+      "mean_abs_shap": 2.064994201660156,
+      "mean_signed_shap": 2.064994201660156,
+      "n_flows": 25
+    },
+    {
+      "class": "Brute Force -Web",
+      "rank": 4,
+      "feature": "Subflow Fwd Byts",
+      "mean_abs_shap": 1.7926763916015624,
+      "mean_signed_shap": 1.7926763916015624,
+      "n_flows": 25
+    },
+    {
+      "class": "Brute Force -Web",
+      "rank": 5,
+      "feature": "Down/Up Ratio",
+      "mean_abs_shap": 1.0021426391601562,
+      "mean_signed_shap": 1.0021426391601562,
+      "n_flows": 25
+    },
+    {
+      "class": "Brute Force -XSS",
+      "rank": 1,
+      "feature": "Bwd Pkt Len Max",
+      "mean_abs_shap": 4.347861911939538,
+      "mean_signed_shap": 4.347861911939538,
+      "n_flows": 23
+    },
+    {
+      "class": "Brute Force -XSS",
+      "rank": 2,
+      "feature": "ACK Flag Cnt",
+      "mean_abs_shap": 3.456100795579993,
+      "mean_signed_shap": 3.456100795579993,
+      "n_flows": 23
+    },
+    {
+      "class": "Brute Force -XSS",
+      "rank": 3,
+      "feature": "Fwd Act Data Pkts",
+      "mean_abs_shap": 3.4167984672214677,
+      "mean_signed_shap": 3.4167984672214677,
+      "n_flows": 23
+    },
+    {
+      "class": "Brute Force -XSS",
+      "rank": 4,
+      "feature": "Down/Up Ratio",
+      "mean_abs_shap": 0.6147242836330248,
+      "mean_signed_shap": 0.6147242836330248,
+      "n_flows": 23
+    },
+    {
+      "class": "Brute Force -XSS",
+      "rank": 5,
+      "feature": "Bwd Pkt Len Mean",
+      "mean_abs_shap": 0.4051849531090777,
+      "mean_signed_shap": 0.4051849531090777,
+      "n_flows": 23
+    },
+    {
+      "class": "DDOS attack-HOIC",
+      "rank": 1,
+      "feature": "Init Fwd Win Byts",
+      "mean_abs_shap": 5.6620148329976505,
+      "mean_signed_shap": 5.6620148329976505,
+      "n_flows": 59580
+    },
+    {
+      "class": "DDOS attack-HOIC",
+      "rank": 2,
+      "feature": "CWE Flag Count",
+      "mean_abs_shap": 0.0195099973086344,
+      "mean_signed_shap": 0.0195099973086344,
+      "n_flows": 59580
+    },
+    {
+      "class": "DDOS attack-HOIC",
+      "rank": 3,
+      "feature": "Bwd Pkt Len Std",
+      "mean_abs_shap": 0.0032302241791171,
+      "mean_signed_shap": 0.0032302241791171,
+      "n_flows": 59580
+    },
+    {
+      "class": "DDOS attack-HOIC",
+      "rank": 4,
+      "feature": "Init Bwd Win Byts",
+      "mean_abs_shap": 0.003018149164308,
+      "mean_signed_shap": -0.0030180380783772,
+      "n_flows": 59580
+    },
+    {
+      "class": "DDOS attack-HOIC",
+      "rank": 5,
+      "feature": "Dst Port",
+      "mean_abs_shap": 0.001028405919736,
+      "mean_signed_shap": 0.001028405919736,
+      "n_flows": 59580
+    },
+    {
+      "class": "DDOS attack-LOIC-UDP",
+      "rank": 1,
+      "feature": "Fwd Pkts/b Avg",
+      "mean_abs_shap": 52.21307231104651,
+      "mean_signed_shap": 52.21307231104651,
+      "n_flows": 344
+    },
+    {
+      "class": "DDOS attack-LOIC-UDP",
+      "rank": 2,
+      "feature": "Fwd Act Data Pkts",
+      "mean_abs_shap": 1.5307560410610466,
+      "mean_signed_shap": 1.5307560410610466,
+      "n_flows": 344
+    },
+    {
+      "class": "DDOS attack-LOIC-UDP",
+      "rank": 3,
+      "feature": "Tot Bwd Pkts",
+      "mean_abs_shap": 0.9000454392544058,
+      "mean_signed_shap": 0.9000454392544058,
+      "n_flows": 344
+    },
+    {
+      "class": "DDOS attack-LOIC-UDP",
+      "rank": 4,
+      "feature": "Dst Port",
+      "mean_abs_shap": 0.2902378925057344,
+      "mean_signed_shap": 0.2902378925057344,
+      "n_flows": 344
+    },
+    {
+      "class": "DDOS attack-LOIC-UDP",
+      "rank": 5,
+      "feature": "Bwd Pkts/s",
+      "mean_abs_shap": 0.2845229880754338,
+      "mean_signed_shap": 0.2845229880754338,
+      "n_flows": 344
+    },
+    {
+      "class": "DDoS attacks-LOIC-HTTP",
+      "rank": 1,
+      "feature": "TotLen Fwd Pkts",
+      "mean_abs_shap": 5.043982166067882,
+      "mean_signed_shap": 5.043982166067882,
+      "n_flows": 51354
+    },
+    {
+      "class": "DDoS attacks-LOIC-HTTP",
+      "rank": 2,
+      "feature": "Pkt Len Std",
+      "mean_abs_shap": 0.5702837283548994,
+      "mean_signed_shap": 0.5702837283548994,
+      "n_flows": 51354
+    },
+    {
+      "class": "DDoS attacks-LOIC-HTTP",
+      "rank": 3,
+      "feature": "Bwd Pkt Len Max",
+      "mean_abs_shap": 0.1046485750828501,
+      "mean_signed_shap": 0.1046485750828501,
+      "n_flows": 51354
+    },
+    {
+      "class": "DDoS attacks-LOIC-HTTP",
+      "rank": 4,
+      "feature": "Bwd Pkt Len Std",
+      "mean_abs_shap": 0.0756653713911647,
+      "mean_signed_shap": 0.0755142929184709,
+      "n_flows": 51354
+    },
+    {
+      "class": "DDoS attacks-LOIC-HTTP",
+      "rank": 5,
+      "feature": "Fwd Pkt Len Std",
+      "mean_abs_shap": 0.0332255493644223,
+      "mean_signed_shap": 0.0330937575684829,
+      "n_flows": 51354
+    },
+    {
+      "class": "DoS attacks-GoldenEye",
+      "rank": 1,
+      "feature": "Fwd Seg Size Min",
+      "mean_abs_shap": 4.7132268966567405,
+      "mean_signed_shap": 4.7132268966567405,
+      "n_flows": 3694
+    },
+    {
+      "class": "DoS attacks-GoldenEye",
+      "rank": 2,
+      "feature": "Down/Up Ratio",
+      "mean_abs_shap": 2.7789262359569573,
+      "mean_signed_shap": 2.7333957938549,
+      "n_flows": 3694
+    },
+    {
+      "class": "DoS attacks-GoldenEye",
+      "rank": 3,
+      "feature": "Fwd IAT Std",
+      "mean_abs_shap": 1.924378796274364,
+      "mean_signed_shap": 1.9234079176113288,
+      "n_flows": 3694
+    },
+    {
+      "class": "DoS attacks-GoldenEye",
+      "rank": 4,
+      "feature": "Init Fwd Win Byts",
+      "mean_abs_shap": 1.3149670496074717,
+      "mean_signed_shap": 1.3149670496074717,
+      "n_flows": 3694
+    },
+    {
+      "class": "DoS attacks-GoldenEye",
+      "rank": 5,
+      "feature": "Bwd Pkt Len Mean",
+      "mean_abs_shap": 0.9896199257875948,
+      "mean_signed_shap": 0.9329850507156876,
+      "n_flows": 3694
+    },
+    {
+      "class": "DoS attacks-Hulk",
+      "rank": 1,
+      "feature": "Fwd Seg Size Min",
+      "mean_abs_shap": 3.779461504102273,
+      "mean_signed_shap": 3.7685059840940167,
+      "n_flows": 38759
+    },
+    {
+      "class": "DoS attacks-Hulk",
+      "rank": 2,
+      "feature": "Init Fwd Win Byts",
+      "mean_abs_shap": 0.9892407549698136,
+      "mean_signed_shap": 0.9892407549698136,
+      "n_flows": 38759
+    },
+    {
+      "class": "DoS attacks-Hulk",
+      "rank": 3,
+      "feature": "Tot Bwd Pkts",
+      "mean_abs_shap": 0.5576374448918315,
+      "mean_signed_shap": 0.557025389465995,
+      "n_flows": 38759
+    },
+    {
+      "class": "DoS attacks-Hulk",
+      "rank": 4,
+      "feature": "Bwd Header Len",
+      "mean_abs_shap": 0.3790190262261668,
+      "mean_signed_shap": 0.3742299545549098,
+      "n_flows": 38759
+    },
+    {
+      "class": "DoS attacks-Hulk",
+      "rank": 5,
+      "feature": "Bwd Pkt Len Std",
+      "mean_abs_shap": 0.3045225055591927,
+      "mean_signed_shap": 0.3040770571028664,
+      "n_flows": 38759
+    },
+    {
+      "class": "DoS attacks-Slowloris",
+      "rank": 1,
+      "feature": "Bwd IAT Mean",
+      "mean_abs_shap": 12.199580239986188,
+      "mean_signed_shap": 12.182411084254143,
+      "n_flows": 905
+    },
+    {
+      "class": "DoS attacks-Slowloris",
+      "rank": 2,
+      "feature": "Fwd Seg Size Min",
+      "mean_abs_shap": 10.626330498964087,
+      "mean_signed_shap": 10.608066082527625,
+      "n_flows": 905
+    },
+    {
+      "class": "DoS attacks-Slowloris",
+      "rank": 3,
+      "feature": "TotLen Bwd Pkts",
+      "mean_abs_shap": 2.088323468793163,
+      "mean_signed_shap": 2.076768468361533,
+      "n_flows": 905
+    },
+    {
+      "class": "DoS attacks-Slowloris",
+      "rank": 4,
+      "feature": "Bwd IAT Std",
+      "mean_abs_shap": 1.4673489565348756,
+      "mean_signed_shap": 1.3873962739554555,
+      "n_flows": 905
+    },
+    {
+      "class": "DoS attacks-Slowloris",
+      "rank": 5,
+      "feature": "Dst Port",
+      "mean_abs_shap": 0.9915924578081836,
+      "mean_signed_shap": 0.9915924578081836,
+      "n_flows": 905
+    },
+    {
+      "class": "Infilteration",
+      "rank": 1,
+      "feature": "Pkt Len Mean",
+      "mean_abs_shap": 3.168425931185765,
+      "mean_signed_shap": 3.134737631528351,
+      "n_flows": 14303
+    },
+    {
+      "class": "Infilteration",
+      "rank": 2,
+      "feature": "Flow Duration",
+      "mean_abs_shap": 1.0674835207211777,
+      "mean_signed_shap": 1.0663639184087257,
+      "n_flows": 14303
+    },
+    {
+      "class": "Infilteration",
+      "rank": 3,
+      "feature": "Pkt Len Max",
+      "mean_abs_shap": 0.6558369256012725,
+      "mean_signed_shap": 0.6558316000139831,
+      "n_flows": 14303
+    },
+    {
+      "class": "Infilteration",
+      "rank": 4,
+      "feature": "Dst Port",
+      "mean_abs_shap": 0.6312133900012236,
+      "mean_signed_shap": 0.6163877060319514,
+      "n_flows": 14303
+    },
+    {
+      "class": "Infilteration",
+      "rank": 5,
+      "feature": "Bwd Pkts/s",
+      "mean_abs_shap": 0.4294841035316017,
+      "mean_signed_shap": 0.3580843985418269,
+      "n_flows": 14303
+    },
+    {
+      "class": "SQL Injection",
+      "rank": 1,
+      "feature": "Fwd Pkt Len Std",
+      "mean_abs_shap": 3.196404593331473,
+      "mean_signed_shap": 3.196404593331473,
+      "n_flows": 7
+    },
+    {
+      "class": "SQL Injection",
+      "rank": 2,
+      "feature": "Bwd Pkt Len Std",
+      "mean_abs_shap": 1.6829278128487724,
+      "mean_signed_shap": 1.6829278128487724,
+      "n_flows": 7
+    },
+    {
+      "class": "SQL Injection",
+      "rank": 3,
+      "feature": "Bwd Pkt Len Max",
+      "mean_abs_shap": 0.8435346058436802,
+      "mean_signed_shap": 0.8435346058436802,
+      "n_flows": 7
+    },
+    {
+      "class": "SQL Injection",
+      "rank": 4,
+      "feature": "Bwd Header Len",
+      "mean_abs_shap": 0.7942318916320801,
+      "mean_signed_shap": 0.7942318916320801,
+      "n_flows": 7
+    },
+    {
+      "class": "SQL Injection",
+      "rank": 5,
+      "feature": "Fwd IAT Std",
+      "mean_abs_shap": 0.5019509451729911,
+      "mean_signed_shap": -0.0417242390768868,
+      "n_flows": 7
+    },
+    {
+      "class": "SSH-Bruteforce",
+      "rank": 1,
+      "feature": "Dst Port",
+      "mean_abs_shap": 5.078439532131586,
+      "mean_signed_shap": 5.078439532131586,
+      "n_flows": 10457
+    },
+    {
+      "class": "SSH-Bruteforce",
+      "rank": 2,
+      "feature": "Fwd PSH Flags",
+      "mean_abs_shap": 2.694911490209907,
+      "mean_signed_shap": 2.694911490209907,
+      "n_flows": 10457
+    },
+    {
+      "class": "SSH-Bruteforce",
+      "rank": 3,
+      "feature": "Bwd PSH Flags",
+      "mean_abs_shap": 0.2575858463529215,
+      "mean_signed_shap": 0.2575858463529215,
+      "n_flows": 10457
+    },
+    {
+      "class": "SSH-Bruteforce",
+      "rank": 4,
+      "feature": "Flow Duration",
+      "mean_abs_shap": 0.0070031173281429,
+      "mean_signed_shap": 0.0070031173281429,
+      "n_flows": 10457
+    },
+    {
+      "class": "SSH-Bruteforce",
+      "rank": 5,
+      "feature": "Tot Fwd Pkts",
+      "mean_abs_shap": 0.0022572397649932,
+      "mean_signed_shap": 0.000905470945211,
+      "n_flows": 10457
+    }
+  ],
+  "gd2_additivity": {
+    "sample_size": 300,
+    "max_abs_error": 4.76837158203125e-06,
+    "mean_abs_error": 7.459826747435727e-07
+  },
+  "gd3_cohorts": {
+    "cohort_size": 1055,
+    "cohort_class_distribution": {
+      "DoS attacks-Slowloris": 100,
+      "Infilteration": 100,
+      "DoS attacks-Hulk": 100,
+      "DDoS attacks-LOIC-HTTP": 100,
+      "DDOS attack-HOIC": 100,
+      "SSH-Bruteforce": 100,
+      "DoS attacks-GoldenEye": 100,
+      "Bot": 100,
+      "DDOS attack-LOIC-UDP": 100,
+      "Benign": 100,
+      "Brute Force -Web": 25,
+      "Brute Force -XSS": 23,
+      "SQL Injection": 7
+    },
+    "dev_size": 250,
+    "dev_class_distribution": {
+      "Benign": 159,
+      "DDoS attacks-LOIC-HTTP": 29,
+      "DDOS attack-HOIC": 28,
+      "DoS attacks-Hulk": 11,
+      "Bot": 10,
+      "Infilteration": 8,
+      "SSH-Bruteforce": 5
+    },
+    "error_cohort_size": 24,
+    "error_cohort_class_distribution": {
+      "Infilteration": 12,
+      "Benign": 7,
+      "DDOS attack-LOIC-UDP": 2,
+      "DoS attacks-Hulk": 1,
+      "SQL Injection": 1,
+      "Brute Force -Web": 1
+    },
+    "n_error_total_raw_in_test_set": 24,
+    "no_overlap": true,
+    "max_per_class": 100,
+    "max_per_class_error": 20,
+    "dev_set_size_requested": 250,
+    "seed": 42
+  },
+  "gd5_lime_lock": {
+    "locked_config": {
+      "kernel_width": 3.312,
+      "num_samples": 1000,
+      "discretize_continuous": false,
+      "num_features": 78,
+      "background_sample_size": 2000,
+      "background_seed": 42,
+      "selection_rule": "highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec",
+      "dev_grid_sample_size": 150
+    },
+    "full_dev_validation": {
+      "n_flows": 250,
+      "median_r2": 0.25821638766200083,
+      "mean_r2": 0.31333442091526015,
+      "frac_r2_pass_gate": 0.384,
+      "mean_time_sec": 0.021469426155090333,
+      "total_time_sec": 5.3716065883636475
+    },
+    "grid_best_row": {
+      "kernel_width": 3.312,
+      "discretize_continuous": false,
+      "num_samples": 1000,
+      "median_r2": 0.24687926059936488,
+      "mean_r2": 0.290905023903585,
+      "frac_r2_pass_gate": 0.31333333333333335,
+      "mean_time_sec": 0.022468813260396323,
+      "total_time_sec": 3.3739640712738037,
+      "n_flows": 150
+    }
+  },
+  "gd6_lime_per_flow": {
+    "n_flows": 1055,
+    "flow_ids_match_gd4": true,
+    "total_time_sec": 35.79568648338318,
+    "mean_time_sec_per_flow": 0.03392956064775657,
+    "median_local_r2": 0.5276675022749401,
+    "mean_local_r2": 0.43330647852437326,
+    "frac_r2_pass_gate": 0.7270142180094786,
+    "locked_config_used": {
+      "kernel_width": 3.312,
+      "num_samples": 1000,
+      "discretize_continuous": false,
+      "num_features": 78,
+      "background_sample_size": 2000,
+      "background_seed": 42,
+      "selection_rule": "highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec",
+      "dev_grid_sample_size": 150
+    }
+  },
+  "gd7_agreement_overall": [
+    {
+      "k": 3,
+      "n_flows": 1055,
+      "jaccard_mean": 0.2490995260663507,
+      "jaccard_ci_lo": 0.2381018957345972,
+      "jaccard_ci_hi": 0.2614241706161137,
+      "spearman_topk_union_mean": -0.1819092755585646,
+      "spearman_topk_union_ci_lo": -0.2149312796208531,
+      "spearman_topk_union_ci_hi": -0.1484844278943805,
+      "kendall_tau_topk_union_mean": -0.1582938388625591,
+      "kendall_tau_topk_union_ci_lo": -0.1864834123222748,
+      "kendall_tau_topk_union_ci_hi": -0.1309936808846761,
+      "spearman_full78_mean": 0.1747353252662509,
+      "spearman_full78_ci_lo": 0.1686631450018575,
+      "spearman_full78_ci_hi": 0.1806665360555815,
+      "kendall_full78_mean": 0.118413340214288,
+      "kendall_full78_ci_lo": 0.1140083455249332,
+      "kendall_full78_ci_hi": 0.1228696422061351,
+      "rbo_mean": 0.3944911771392596,
+      "rbo_ci_lo": 0.373605568283171,
+      "rbo_ci_hi": 0.4140758293838862,
+      "sign_agreement_mean": 0.933206106870229,
+      "sign_agreement_ci_lo": 0.9172868956743002,
+      "sign_agreement_ci_hi": 0.948473282442748,
+      "jaccard_group_mean": 0.4387677725118484,
+      "jaccard_group_ci_lo": 0.4214194312796208,
+      "jaccard_group_ci_hi": 0.4564928909952607
+    },
+    {
+      "k": 5,
+      "n_flows": 1055,
+      "jaccard_mean": 0.2132964718272775,
+      "jaccard_ci_lo": 0.2061143082825547,
+      "jaccard_ci_hi": 0.2204242834574588,
+      "spearman_topk_union_mean": -0.195148232494204,
+      "spearman_topk_union_ci_lo": -0.2180637553599638,
+      "spearman_topk_union_ci_hi": -0.1718846607578835,
+      "kendall_tau_topk_union_mean": -0.1502113894530956,
+      "kendall_tau_topk_union_ci_lo": -0.16785529978184,
+      "kendall_tau_topk_union_ci_hi": -0.1331781012563003,
+      "spearman_full78_mean": 0.1747353252662509,
+      "spearman_full78_ci_lo": 0.1688372836594085,
+      "spearman_full78_ci_hi": 0.1811031460590522,
+      "kendall_full78_mean": 0.118413340214288,
+      "kendall_full78_ci_lo": 0.1143293830971556,
+      "kendall_full78_ci_hi": 0.1228201971803867,
+      "rbo_mean": 0.3758731374833475,
+      "rbo_ci_lo": 0.3601119551501904,
+      "rbo_ci_hi": 0.3916684586977778,
+      "sign_agreement_mean": 0.865491009681881,
+      "sign_agreement_ci_lo": 0.848197614107884,
+      "sign_agreement_ci_hi": 0.8826071922544951,
+      "jaccard_group_mean": 0.4045700744752877,
+      "jaccard_group_ci_lo": 0.3927582186112991,
+      "jaccard_group_ci_hi": 0.418586756187467
+    },
+    {
+      "k": 10,
+      "n_flows": 1055,
+      "jaccard_mean": 0.1883271303289497,
+      "jaccard_ci_lo": 0.1832595824400844,
+      "jaccard_ci_hi": 0.1934317616756394,
+      "spearman_topk_union_mean": -0.2516808391526305,
+      "spearman_topk_union_ci_lo": -0.2666216684526719,
+      "spearman_topk_union_ci_hi": -0.2369443151946582,
+      "kendall_tau_topk_union_mean": -0.1921113514129228,
+      "kendall_tau_topk_union_ci_lo": -0.2026471569337804,
+      "kendall_tau_topk_union_ci_hi": -0.1813181814020515,
+      "spearman_full78_mean": 0.1747353252662509,
+      "spearman_full78_ci_lo": 0.1685501474349035,
+      "spearman_full78_ci_hi": 0.181018277421181,
+      "kendall_full78_mean": 0.118413340214288,
+      "kendall_full78_ci_lo": 0.1140245852094193,
+      "kendall_full78_ci_hi": 0.1229506512444901,
+      "rbo_mean": 0.354276038634441,
+      "rbo_ci_lo": 0.3414039411004463,
+      "rbo_ci_hi": 0.365890470092438,
+      "sign_agreement_mean": 0.7920734799243995,
+      "sign_agreement_ci_lo": 0.7768746830774904,
+      "sign_agreement_ci_hi": 0.8070975660351265,
+      "jaccard_group_mean": 0.7246301881372972,
+      "jaccard_group_ci_lo": 0.7199181387333046,
+      "jaccard_group_ci_hi": 0.7296000287232515
+    },
+    {
+      "k": 20,
+      "n_flows": 1055,
+      "jaccard_mean": 0.219131358508835,
+      "jaccard_ci_lo": 0.2153967472380878,
+      "jaccard_ci_hi": 0.2225375474090126,
+      "spearman_topk_union_mean": -0.2796590841272007,
+      "spearman_topk_union_ci_lo": -0.2890828596018988,
+      "spearman_topk_union_ci_hi": -0.2707273813016552,
+      "kendall_tau_topk_union_mean": -0.2064188151475042,
+      "kendall_tau_topk_union_ci_lo": -0.2127475576075331,
+      "kendall_tau_topk_union_ci_hi": -0.1998425383246988,
+      "spearman_full78_mean": 0.1747353252662509,
+      "spearman_full78_ci_lo": 0.1687339404850953,
+      "spearman_full78_ci_hi": 0.1805284433006552,
+      "kendall_full78_mean": 0.118413340214288,
+      "kendall_full78_ci_lo": 0.1141347751774292,
+      "kendall_full78_ci_hi": 0.122805803990638,
+      "rbo_mean": 0.3449393924462948,
+      "rbo_ci_lo": 0.3351501997020911,
+      "rbo_ci_hi": 0.3544179841058655,
+      "sign_agreement_mean": 0.6025801712768537,
+      "sign_agreement_ci_lo": 0.5892981551097666,
+      "sign_agreement_ci_hi": 0.6169033608571524,
+      "jaccard_group_mean": 1.0,
+      "jaccard_group_ci_lo": 1.0,
+      "jaccard_group_ci_hi": 1.0
+    }
+  ],
+  "gd7_random_baseline": [
+    {
+      "k": 3,
+      "random_jaccard_mean": 0.02396,
+      "random_jaccard_ci_lo": 0.0,
+      "random_jaccard_ci_hi": 0.2,
+      "observed_jaccard_mean": 0.2490995260663507,
+      "fold_over_random": 10.396474376725823
+    },
+    {
+      "k": 5,
+      "random_jaccard_mean": 0.0373944444444444,
+      "random_jaccard_ci_lo": 0.0,
+      "random_jaccard_ci_hi": 0.25,
+      "observed_jaccard_mean": 0.2132964718272775,
+      "fold_over_random": 5.703961510757681
+    },
+    {
+      "k": 10,
+      "random_jaccard_mean": 0.0715242247776303,
+      "random_jaccard_ci_lo": 0.0,
+      "random_jaccard_ci_hi": 0.1764705882352941,
+      "observed_jaccard_mean": 0.1883271303289497,
+      "fold_over_random": 2.633053778834528
+    },
+    {
+      "k": 20,
+      "random_jaccard_mean": 0.1495147382859016,
+      "random_jaccard_ci_lo": 0.0526315789473684,
+      "random_jaccard_ci_hi": 0.25,
+      "observed_jaccard_mean": 0.219131358508835,
+      "fold_over_random": 1.4656171091963703
+    }
+  ],
+  "gd8_quality_gate": {
+    "gate": 0.3,
+    "n_total": 1055,
+    "n_pass": 767,
+    "frac_pass": 0.7270142180094786,
+    "class_distribution_all": {
+      "DoS attacks-Slowloris": 100,
+      "Infilteration": 100,
+      "DoS attacks-Hulk": 100,
+      "DDoS attacks-LOIC-HTTP": 100,
+      "DDOS attack-HOIC": 100,
+      "SSH-Bruteforce": 100,
+      "DoS attacks-GoldenEye": 100,
+      "Bot": 100,
+      "DDOS attack-LOIC-UDP": 100,
+      "Benign": 100,
+      "Brute Force -Web": 25,
+      "Brute Force -XSS": 23,
+      "SQL Injection": 7
+    },
+    "class_distribution_pass": {
+      "DoS attacks-Hulk": 100,
+      "DDoS attacks-LOIC-HTTP": 100,
+      "DDOS attack-HOIC": 100,
+      "SSH-Bruteforce": 100,
+      "Bot": 100,
+      "Benign": 96,
+      "DoS attacks-GoldenEye": 95,
+      "Infilteration": 61,
+      "SQL Injection": 7,
+      "DoS attacks-Slowloris": 5,
+      "DDOS attack-LOIC-UDP": 3
+    },
+    "class_pass_rate": {
+      "Bot": 1.0,
+      "DDOS attack-HOIC": 1.0,
+      "SQL Injection": 1.0,
+      "DoS attacks-Hulk": 1.0,
+      "DDoS attacks-LOIC-HTTP": 1.0,
+      "SSH-Bruteforce": 1.0,
+      "Benign": 0.96,
+      "DoS attacks-GoldenEye": 0.95,
+      "Infilteration": 0.61,
+      "DoS attacks-Slowloris": 0.05,
+      "DDOS attack-LOIC-UDP": 0.03,
+      "Brute Force -XSS": 0.0,
+      "Brute Force -Web": 0.0
+    }
+  },
+  "gd8_r2_bucket": {
+    "gate": 0.3,
+    "monotonic_increase": false,
+    "buckets": [
+      {
+        "r2_bucket": "thấp (<0.1)",
+        "n_flows": 229,
+        "mean_jaccard": 0.21253552367089484,
+        "mean_spearman_full78": 0.19960112851605855,
+        "mean_sign_agreement": 0.9174242424242425
+      },
+      {
+        "r2_bucket": "vừa (0.1–0.3)",
+        "n_flows": 59,
+        "mean_jaccard": 0.3656846919558783,
+        "mean_spearman_full78": 0.12966329958391742,
+        "mean_sign_agreement": 0.6779661016949152
+      },
+      {
+        "r2_bucket": "cao (>=0.3)",
+        "n_flows": 767,
+        "mean_jaccard": 0.2018014941743755,
+        "mean_spearman_full78": 0.17077832470699628,
+        "mean_sign_agreement": 0.864963503649635
+      }
+    ]
+  },
+  "gd10_auc_summary": [
+    {
+      "baseline": "global_median",
+      "method": "SHAP",
+      "comprehensiveness_auc": 0.8362433,
+      "sufficiency_auc": 0.508163
+    },
+    {
+      "baseline": "global_median",
+      "method": "LIME",
+      "comprehensiveness_auc": 0.5572357,
+      "sufficiency_auc": 0.2715214
+    },
+    {
+      "baseline": "global_median",
+      "method": "Random",
+      "comprehensiveness_auc": 0.10727606,
+      "sufficiency_auc": 0.10541902
+    },
+    {
+      "baseline": "global_mean",
+      "method": "SHAP",
+      "comprehensiveness_auc": 0.84518224,
+      "sufficiency_auc": 0.49901247
+    },
+    {
+      "baseline": "global_mean",
+      "method": "LIME",
+      "comprehensiveness_auc": 0.55577403,
+      "sufficiency_auc": 0.26343203
+    },
+    {
+      "baseline": "global_mean",
+      "method": "Random",
+      "comprehensiveness_auc": 0.11730745,
+      "sufficiency_auc": 0.10175182
+    },
+    {
+      "baseline": "benign_median",
+      "method": "SHAP",
+      "comprehensiveness_auc": 0.83973044,
+      "sufficiency_auc": 0.43663985
+    },
+    {
+      "baseline": "benign_median",
+      "method": "LIME",
+      "comprehensiveness_auc": 0.57406795,
+      "sufficiency_auc": 0.23926874
+    },
+    {
+      "baseline": "benign_median",
+      "method": "Random",
+      "comprehensiveness_auc": 0.10964378,
+      "sufficiency_auc": 0.09981801
+    }
+  ],
+  "gd10_winrate": [
+    {
+      "baseline": "global_median",
+      "k": 5,
+      "shap_win_rate_vs_lime": 0.8246445497630331,
+      "wilcoxon_stat": 49851.0,
+      "wilcoxon_p": 2.372000728432233e-114,
+      "n_flows": 1055
+    },
+    {
+      "baseline": "global_mean",
+      "k": 5,
+      "shap_win_rate_vs_lime": 0.8777251184834123,
+      "wilcoxon_stat": 25342.0,
+      "wilcoxon_p": 3.368168861603593e-142,
+      "n_flows": 1055
+    },
+    {
+      "baseline": "benign_median",
+      "k": 5,
+      "shap_win_rate_vs_lime": 0.833175355450237,
+      "wilcoxon_stat": 47132.0,
+      "wilcoxon_p": 1.4476019853643427e-117,
+      "n_flows": 1055
+    }
+  ],
+  "gd10_summary": {
+    "k_values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "baselines": [
+      "global_median",
+      "global_mean",
+      "benign_median"
+    ],
+    "conclusion_shap_more_faithful_all_baselines": true,
+    "note_ood_limitation": "Đặt đặc trưng về giá trị nền có thể tạo ra mẫu ngoài phân phối huấn luyện (out-of-distribution) — xác suất đo được sau khi xóa đặc trưng có thể không phản ánh đúng hành vi model trên dữ liệu thực. Đây là giới hạn đã biết của phương pháp deletion/insertion, không phải lỗi triển khai."
+  },
+  "gd11_domain_summary": [
+    {
+      "scope": "broad",
+      "method": "LIME",
+      "precision_at_5": 0.1,
+      "recall": 0.0714285714285714,
+      "f1": 0.0833333333333333
+    },
+    {
+      "scope": "broad",
+      "method": "SHAP",
+      "precision_at_5": 0.15,
+      "recall": 0.1056547619047619,
+      "f1": 0.1239316239316239
+    },
+    {
+      "scope": "strict",
+      "method": "LIME",
+      "precision_at_5": 0.0166666666666666,
+      "recall": 0.0208333333333333,
+      "f1": 0.0185185185185185
+    },
+    {
+      "scope": "strict",
+      "method": "SHAP",
+      "precision_at_5": 0.0999999999999999,
+      "recall": 0.125,
+      "f1": 0.1111111111111111
+    }
+  ],
+  "gd11_summary": {
+    "lime_scope_note": "LIME top5-by-class tính trên cohort (<=100 flow/lớp), SHAP top5-by-class tính trên toàn test set — khác quy mô dữ liệu.",
+    "lime_n_flows_per_class": {
+      "Benign": 100,
+      "Bot": 100,
+      "Brute Force -Web": 25,
+      "Brute Force -XSS": 23,
+      "DDOS attack-HOIC": 100,
+      "DDOS attack-LOIC-UDP": 100,
+      "DDoS attacks-LOIC-HTTP": 100,
+      "DoS attacks-GoldenEye": 100,
+      "DoS attacks-Hulk": 100,
+      "DoS attacks-Slowloris": 100,
+      "Infilteration": 100,
+      "SQL Injection": 7,
+      "SSH-Bruteforce": 100
+    },
+    "f1_by_scope_method": {
+      "broad": {
+        "LIME": 0.08333333333333333,
+        "SHAP": 0.12393162393162394
+      },
+      "strict": {
+        "LIME": 0.01851851851851852,
+        "SHAP": 0.1111111111111111
+      }
+    },
+    "environment_fingerprint_features": [
+      "Fwd Seg Size Min",
+      "Dst Port",
+      "Init Fwd Win Byts"
+    ]
+  },
+  "gd12_error_comparison": {
+    "error_cohort_n_flows": 24,
+    "error_shap_concentration_mean": 0.7137912511825562,
+    "correct_cohort_shap_concentration_mean": 0.9225475406443217,
+    "error_shap_lime_jaccard5_mean": 0.09722222222222221,
+    "correct_cohort_shap_lime_jaccard5_mean": 0.2132964718272775,
+    "error_env_fraction_in_top5_mean": 0.24166666666666667,
+    "caveat": "Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê."
+  }
+}

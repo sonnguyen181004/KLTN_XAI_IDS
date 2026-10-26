@@ -1,0 +1,8 @@
+{
+  "n_flows": 1055,
+  "additivity_max_error": 6.67572021484375e-06,
+  "additivity_mean_error": 1.8436196569382446e-06,
+  "time_mean_sec_per_flow": 0.0004397380973490494,
+  "time_total_sec": 0.4639236927032471,
+  "flow_ids_match_cohort": true
+}

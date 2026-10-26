@@ -33,32 +33,18 @@ for m in ("m0b", "m1"):
 ce = pd.read_csv(RESULTS / "cross_evaluation.csv")
 D["cross"] = json.loads(ce.to_json(orient="records"))
 
-# --- kiểm toán cờ FIN
-o = pd.read_csv(RESULTS / "audit_orig_by_label.csv")
-i = pd.read_csv(RESULTS / "audit_improved_by_label.csv")
-cols = ["tcp_flows", "fin", "fin_data_gt0", "fin_data_ge_min", "zone"]
-o_days = set(o.day)
-i9 = i[i.day.isin(o_days)]
-
-
-def agg(df, benign):
-    m = df.label.str.upper() == "BENIGN"
-    return {k: int(v) for k, v in df[m if benign else ~m][cols].sum().items()}
-
-
-def hulk(df):
-    return {k: int(v) for k, v in df[df.label.str.contains("Hulk") & ~df.label.str.contains("Attempted")][cols].sum().items()}
-
-
-D["audit"] = dict(orig_benign=agg(o, True), orig_attack=agg(o, False), orig_hulk=hulk(o), imp9_benign=agg(i9, True), imp9_hulk=hulk(i9),
-                  imp10_benign=agg(i, True), flags=json.load(open(RESULTS / "audit_orig_flags.json", encoding="utf-8")))
+# --- so sánh hai bộ train (cũ và improved)
+D["train_cmp"] = json.load(open(RESULTS / "compare_train_sets.json", encoding="utf-8"))
+D["scan"] = json.load(open(RESULTS / "improved_scan_summary.json", encoding="utf-8"))
+D["perclass"] = {m: json.loads(pd.read_csv(RESULTS / m / "bang_chi_tiet_lop.csv", index_col=0)["f1-score"].to_json()) for m in ("m0b", "m1")}
+D["standalone"] = json.load(open(RESULTS / "m1_standalone_audit.json", encoding="utf-8"))
+D["srcip"] = json.loads(pd.read_csv(RESULTS / "srcip_per_class.csv").to_json(orient="records"))
 
 # --- thành phần, rò rỉ, chẩn đoán, realtime
 D["composition"] = json.loads(pd.read_csv(RESULTS / "dataset_composition.csv", index_col=0).to_json(orient="index"))
 D["leak"] = json.load(open(RESULTS / "leakage_report.json", encoding="utf-8"))
 D["diag"] = json.load(open(RESULTS / "diagnose_m1.json", encoding="utf-8"))
 D["t3"] = json.load(open(RESULTS / "t3_explain.json", encoding="utf-8"))
-D["scan"] = json.load(open(RESULTS / "improved_scan_summary.json", encoding="utf-8"))
 
 # --- XAI: M0 (RQ2) và M1 (RQ4)
 x0 = json.load(open(REPO / "RQ2/runs/20261009/gd13_report/rq2_master_summary.json", encoding="utf-8"))
@@ -92,7 +78,7 @@ json.dump(D, open(RESULTS / "report_data.json", "w", encoding="utf-8"), indent=1
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
 BLUE, ORANGE, AQUA, INK = "#2a78d6", "#eb6834", "#1baf7a", "#0b0b0b"
 sets = [("T1_test_cu_sach", "Test cũ\n(đã bỏ trùng)"), ("T2a_improved_stratified_sach", "Test improved\n(đã bỏ trùng)"),
-        ("T2b_improved_thoi_gian_sach", "Giữ riêng theo\nthời gian"), ("T3_realtime_benign", "Realtime của\nbạn (784 flow)")]
+        ("T3_realtime_benign", "Realtime của\nbạn (784 flow)")]
 labels = {"M0": "M0 (mô hình cũ, 15 lớp)", "M0b": "M0b (dữ liệu cũ, 13 lớp)", "M1": "M1 (dữ liệu improved)"}
 fig, ax = plt.subplots(figsize=(8.2, 4.1), dpi=200)
 w = 0.26
@@ -113,25 +99,26 @@ fig.tight_layout()
 fig.savefig(RQ4 / "report" / "hinh1_benign_bao_nham.png")
 plt.close(fig)
 
-# ---------- hình 2: FIN trong Benign TCP, CSV gốc và improved
-a = D["audit"]
-ob, ib = a["orig_benign"], a["imp9_benign"]
+# ---------- hình 2: FIN trong Benign TCP của hai bộ train
+tc = D["train_cmp"]
+ob, ib = tc["cu"]["benign"], tc["moi"]["benign"]
 cats = ["Mang cờ FIN", "FIN và có dữ liệu", "FIN và dữ liệu từ 66 byte"]
-ov = [100 * ob[k] / ob["tcp_flows"] for k in ("fin", "fin_data_gt0", "fin_data_ge_min")]
-iv = [100 * ib[k] / ib["tcp_flows"] for k in ("fin", "fin_data_gt0", "fin_data_ge_min")]
+ov = [100 * ob[k] / ob["tcp_rows"] for k in ("fin", "fin_data_gt0", "fin_data_ge_min")]
+iv = [100 * ib[k] / ib["tcp_rows"] for k in ("fin", "fin_data_gt0", "fin_data_ge_min")]
 fig, ax = plt.subplots(figsize=(8.2, 3.7), dpi=200)
-for k, (vals, col, lab) in enumerate([(ov, BLUE, "CSV gốc (4,39 triệu flow Benign TCP)"), (iv, ORANGE, "Bản improved (30,99 triệu flow, cùng 9 ngày)")]):
+for k, (vals, col, lab) in enumerate([(ov, BLUE, f"Train cũ ({ob['tcp_rows']/1e6:.2f} triệu flow Benign TCP)".replace(".", ",")),
+                                      (iv, ORANGE, f"Train improved ({ib['tcp_rows']/1e6:.2f} triệu flow Benign TCP)".replace(".", ","))]):
     xs = [j + (k - 0.5) * 0.33 for j in range(3)]
     ax.bar(xs, vals, width=0.31, color=col, label=lab, edgecolor="white", linewidth=1.2)
     for x, v in zip(xs, vals):
         ax.text(x, v + 1, f"{v:.2f}".replace(".", ",") + "%", ha="center", va="bottom", fontsize=9, color=INK)
 ax.set_xticks(range(3))
 ax.set_xticklabels(cats, color=INK)
-ax.set_ylim(0, 62)
+ax.set_ylim(0, 70)
 ax.set_ylabel("Tỷ lệ flow Benign TCP (%)", color=INK)
 ax.yaxis.grid(True, color="#e5e4e0", linewidth=0.8)
 ax.set_axisbelow(True)
-ax.legend(frameon=False, loc="upper right", fontsize=9)
+ax.legend(frameon=False, loc="upper left", fontsize=9)
 fig.tight_layout()
 fig.savefig(RQ4 / "report" / "hinh2_fin_benign.png")
 plt.close(fig)

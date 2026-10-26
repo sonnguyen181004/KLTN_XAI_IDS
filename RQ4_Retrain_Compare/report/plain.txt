@@ -1,0 +1,691 @@
+TITLE
+So sánh mô hình XGBoost huấn luyện trên CSE-CIC-IDS2018 bản gốc và bản đã sửa lỗi, kèm giải thích SHAP và LIME
+Dự án IDS thời gian thực có giải thích (RQ1, RQ2, RQ3, RQ4). Ngày lập 26/10/2026. Bản nháp gửi thầy xem.
+1. Tóm tắt
+Mô hình XGBoost của dự án (M0) đạt Accuracy 97,91% và Macro F1 85,81% trên tập kiểm thử của bộ dữ liệu cũ, nhưng khi chạy trên lưu lượng thật của máy người dùng thì 19,0% số flow Benign bị báo thành tấn công. Cả 148 flow nằm trong một vùng đặc trưng cụ thể đều bị báo là DoS Hulk, và đặt cờ FIN bằng 0 thì cả 148 flow đó đổi nhãn, chỉ còn 4 trên 784 flow bị báo tấn công. Người dùng xác nhận toàn bộ 784 flow này là lưu lượng bình thường.
+Nguồn gốc nằm ở dữ liệu huấn luyện. Bộ train cũ của RQ1 có 1.322.801 flow Benign TCP, trong đó 26 flow vừa mang cờ FIN vừa có dữ liệu và không flow nào mang dữ liệu từ 66 byte trở lên. Bộ train improved dựng theo cùng công thức lấy mẫu có 1.100.982 flow Benign TCP, trong đó 43,6% vừa mang cờ FIN vừa có dữ liệu và 36,9% mang dữ liệu từ 66 byte trở lên. Trên 100.819 flow Benign có nhãn thật của bộ test improved nằm trong vùng này, mô hình cũ gán nhãn tấn công cho 99,998%.
+Nhóm huấn luyện lại hai mô hình theo đúng quy trình của RQ1 và RQ2, giữ nguyên siêu tham số và cấu hình SHAP, LIME. M0b dùng dữ liệu cũ giới hạn 13 lớp chung. M1 dùng 2.728.397 dòng train lấy từ bản improved, cùng công thức lấy mẫu và cùng cách chia stratified 80/20 của RQ1, không dùng Timestamp hay địa chỉ IP. M1 báo nhầm 0,0% trên lưu lượng thật, so với 19,0% của M0. Tuy nhiên M1 chỉ nhận 3,7% số flow Hulk của bộ test cũ và báo nhầm 3,8% Benign cũ.
+M1 đạt Macro F1 99,30% trên test cùng nguồn. Nhóm kiểm tra riêng M1 và không thấy rò rỉ: nhãn xáo trộn chỉ đạt mức đoán lớp đông nhất, không có nhóm đặc trưng nào trùng mà khác nhãn. Điểm cao đến từ việc bài toán dễ: chỉ 2.739 dòng train (0,1%) đã cho Macro F1 96,6%, và 74% dòng test có một dòng train gần như y hệt. Điểm này đo khả năng nhận ra chiến dịch tấn công trong chính phòng lab, chưa phải chất lượng ngoài đời.
+Kết luận có thể viết là dữ liệu huấn luyện cũ thiếu một loại lưu lượng Benign rất phổ biến, mô hình học vùng đó là Hulk, và đổi sang dữ liệu đã sửa lỗi làm báo nhầm biến mất trên lưu lượng thật. Chưa thể kết luận rằng nguyên nhân duy nhất là thiếu mẫu, vì hai bộ dữ liệu còn khác nhau ở cách định nghĩa đặc trưng, và thí nghiệm tách hai nguyên nhân (M2) đang được hoãn.
+2. Mục tiêu và câu hỏi nghiên cứu
+Báo cáo trả lời bốn câu hỏi theo thứ tự phát sinh trong dự án.
+Mô hình XGBoost đạt kết quả nội bộ cao ở RQ1 có còn đúng khi chạy trên lưu lượng thật, và nếu sai thì sai ở đâu.
+SHAP và LIME của RQ2 có chỉ ra được nguyên nhân của cảnh báo sai hay không.
+Bộ dữ liệu cũ thiếu gì so với bản đã sửa lỗi, và các bài báo đã công bố nói gì về lỗi của bộ dữ liệu này.
+Huấn luyện lại bằng dữ liệu đã sửa lỗi, với đúng quy trình cũ, có giải quyết được báo nhầm hay không và giải thích của mô hình mới có khác không.
+3. Thực nghiệm đã làm trước đó
+3.1 RQ1, huấn luyện và đánh giá XGBoost
+Dữ liệu là CSE-CIC-IDS2018 gồm 15,59 triệu flow, được rút xuống 3,5 triệu dòng với tỷ lệ 70% Benign và 30% tấn công, giữ nguyên toàn bộ các lớp hiếm, bỏ cột Timestamp để tránh học vẹt, chia 80% train (2,8 triệu dòng) và 20% test (700 nghìn dòng) theo phân tầng. Mô hình có 78 đặc trưng số và 15 lớp. Siêu tham số được chọn bằng cách quét bảy cấu hình độ sâu và learning rate, và cấu hình có Macro F1 cao nhất là độ sâu 8, learning rate 0,08, 100 cây, tree_method hist, random_state 42.
+Chỉ số trên tập test cũ (700.000 dòng)
+M0, mô hình RQ1
+Ghi chú
+Accuracy
+97,91%
+
+Macro Precision
+90,84%
+
+Macro Recall
+83,99%
+
+Macro F1
+85,81%
+
+FPR của Benign
+0,2324% (FP 1.139, TN 488.861)
+Benign bị báo thành bất kỳ lớp tấn công
+FNR của tấn công
+5,7481% (FN 12.071, TP 197.929)
+Tấn công bị báo thành Benign
+F1 của lớp DoS Hulk
+99,997%
+Gần như hoàn hảo
+Dòng test trùng hệt dòng train
+194.149 (27,74%)
+Số liệu của RQ2
+Bảng 1. Kết quả chính thức của RQ1 trên tập test cũ.
+Hai điểm trong Bảng 1 cần đọc cùng nhau. Hulk được phân loại gần như hoàn hảo, nhưng hơn một phần tư tập test trùng hệt dòng của tập train, nên phép đo này không hoàn toàn độc lập.
+3.2 RQ2, giải thích bằng SHAP và LIME
+RQ2 chạy 14 giai đoạn (GĐ0 đến GĐ13) trên một nhóm 1.339 flow dự đoán đúng, tối đa 100 flow mỗi lớp. SHAP dùng TreeExplainer, xác định và cộng dồn chính xác (sai số cộng dồn lớn nhất 5,7e-6). LIME dùng cấu hình đã khóa ở GĐ5 trên tập dev, gồm kernel_width 3,312, num_samples 1000, discretize_continuous tắt, num_features 78, nền 2000 dòng train lấy với seed 42.
+Kết quả RQ2 trên M0
+Giá trị
+Cách hiểu
+Local R bình phương trung vị của LIME
+0,580
+Mức khớp của mô hình LIME cục bộ
+Tỷ lệ flow LIME vượt cổng chất lượng 0,3
+86,0%
+
+Jaccard Top-5 giữa SHAP và LIME
+0,141 (ngẫu nhiên 0,036)
+Hai phương pháp đồng ý ít
+AUC comprehensiveness của SHAP
+0,812
+Trung thành hơn LIME
+AUC comprehensiveness của LIME
+0,458
+Đối chứng ngẫu nhiên 0,111
+Tỷ lệ flow SHAP thắng LIME tại k bằng 5
+78,3%
+Nền trung vị toàn cục
+F1 so với bảng tri thức miền, bản chặt
+SHAP 0,190, LIME 0,095
+
+Bảng 2. Kết quả chính của RQ2 trên M0.
+SHAP của M0 cho lớp Hulk đặt đặc trưng Fwd Seg Size Min lên đầu với trọng số trung bình tuyệt đối 6,49, cao hơn nhiều so với Init Fwd Win Byts ở vị trí kế tiếp, chỉ 0,23. Cả hai đặc trưng này gắn với môi trường lab, một là kích thước header tối thiểu và một là cửa sổ nhận ban đầu, và không mô tả hành vi tấn công.
+3.3 RQ3, hệ thống IDS và hiện tượng báo nhầm
+RQ3 đưa mô hình vào hệ thống thời gian thực nhận CSV, PCAP hoặc lưu lượng bắt trực tiếp, tự trích 78 đặc trưng, dự đoán, giải thích bằng SHAP và cho phép LIME theo yêu cầu. Đặc trưng do bộ trích của hệ thống tính đã được đối chiếu với tshark và khớp về số gói, số cờ FIN, cửa sổ nhận ban đầu và thời lượng, và dự đoán lại ngoại tuyến cho kết quả giống hệt dữ liệu đã lưu, nên lỗi báo nhầm không nằm ở mã trích hay mã dự đoán.
+Khi chạy với lưu lượng ngoài tập huấn luyện, hệ thống báo DoS Hulk cho các kết nối HTTP bình thường. Phân tích cây quyết định cho thấy mô hình gán Hulk khi đồng thời cờ FIN từ 1 trở lên, Fwd Pkt Len Max từ 66 trở lên và Fwd Seg Size Min dưới 32. Trong 2,8 triệu dòng train có 445 dòng thỏa cả ba điều kiện, và cả 445 dòng đều là Hulk, không có dòng Benign nào. Ngưỡng của vùng này được đọc từ cấu hình hệ thống (hulk_fin_hint) và được dùng nhất quán ở các phần sau.
+4. Các bài báo đã công bố nói gì về lỗi của bộ dữ liệu
+Mục này lấy nguồn từ hai trang tài liệu của nhóm tác giả tại KU Leuven, gồm trang tài liệu mở rộng của bài WTMC 2021 và trang bổ trợ của bài CNS 2022. Tệp PDF của bài WTMC 2021 không trích được văn bản, nên các chi tiết sau đây là nội dung các trang tóm tắt đó, và cần đối chiếu với bản đầy đủ trước khi trích dẫn từng ý.
+Engelen, Rimmer và Joosen (WTMC 2021) khảo sát bộ CIC-IDS-2017 và mô tả các lỗi sau, trong đó ba lỗi đầu liên quan trực tiếp đến kết quả của nhóm.
+Lỗi TCP appendices. CICFlowMeter kết thúc flow ở gói FIN đầu tiên, trái với đặc tả TCP. Các gói còn lại của kết nối tạo thành những flow nhỏ phụ, có thể bị gán nhãn sai, và sau một lần timeout flow kế tiếp có thể bị đảo chiều.
+Lỗi đếm cờ TCP. Số cờ chỉ nhận giá trị 0 hoặc 1 vì công cụ chỉ ghi nhận cờ ở gói đầu của flow. Tác giả công cụ đã sửa lỗi này vào tháng 10 năm 2019.
+Lỗi cài đặt DoS Hulk. Công cụ gửi tiêu đề Connection: close thay vì Keep-Alive, nên máy chủ đóng kết nối ngay sau mỗi yêu cầu. Các tác giả khuyên không dùng Hulk làm lớp tấn công trong IDS dựa trên flow, vì mô hình có thể học thói quen của công cụ thay vì hành vi DoS.
+Cấu hình máy chủ nạn nhân, ví dụ KeepAliveTimeout 5 giây, làm yếu một số tấn công và tạo nguy cơ học đường tắt theo cấu hình.
+Cửa sổ thời gian gán nhãn trên trang web của bộ dữ liệu không đủ để tái tạo chính xác việc gán nhãn, và các tác giả đã chỉnh tay để khớp số lượng flow gốc.
+Liu, Engelen, Lynar, Essam và Joosen (CNS 2022) mở rộng việc khảo sát sang CSE-CIC-IDS-2018, mô tả nhiều lỗi chưa từng được ghi nhận trong khâu dàn dựng tấn công, tạo đặc trưng, tài liệu và gán nhãn, và công bố các bản dữ liệu đã sửa lỗi cùng công cụ CICFlowMeter đã sửa. Trang bổ trợ của bài này không nêu chi tiết lỗi FIN, mà dẫn sang các trang riêng. Vì vậy việc lỗi TCP appendices có tồn tại trong bản CSV gốc của CSE-CIC-IDS-2018 hay không là điều nhóm chưa kiểm chứng trực tiếp, và chỉ được suy ra từ việc hai bộ dữ liệu cùng dùng CICFlowMeter-V3.
+Tệp CSE-CIC-IDS2018 improved trong thư mục dataset có cột Attempted Category và các nhãn Attempted, khớp với mô tả bản sửa lỗi của nhóm tác giả. Nguồn tải chính xác của tệp này chưa được ghi lại trong dự án và cần được xác nhận trước khi nộp bài.
+5. So sánh hai bộ dữ liệu train
+Phần này so sánh đúng hai bộ đã đưa vào huấn luyện: bộ train cũ của RQ1 (2.779.034 dòng, giới hạn 13 lớp chung) và bộ train improved dựng cho M1 (2.728.397 dòng). Cả hai theo cùng công thức lấy mẫu (70% Benign, 30% tấn công, cùng thành phần các lớp tấn công lớn), nên so sánh trực tiếp được. Nhóm không dùng các tệp dữ liệu gốc nữa vì bộ train chính là mẫu của chúng. Chỉ xét flow giao thức TCP và dùng đúng các ngưỡng của vùng Hulk.
+Chỉ tiêu
+Train cũ
+Train improved
+Số dòng / số flow TCP
+2.779.034 / 2.120.771
+2.728.397 / 1.917.416
+Benign TCP mang cờ FIN
+9.815 trên 1.322.801 (0,74%)
+549.066 trên 1.100.982 (49,87%)
+Benign TCP có FIN và có dữ liệu
+26 (0,0020%)
+479.685 (43,57%)
+Benign TCP có FIN và dữ liệu từ 66 byte
+0
+406.055 (36,88%)
+Benign nằm trong vùng ba điều kiện của Hulk
+0
+405.347 (36,82%)
+Hulk TCP mang cờ FIN
+445 trên 155.042 (0,29%)
+155.027 trên 155.042 (99,99%)
+Hulk nằm trong vùng ba điều kiện
+445 trên 155.042
+330 trên 155.042
+Flow có từ 4 gói mỗi chiều mang FIN
+428 trên 661.302 (0,065%)
+1.179.170 trên 1.662.550 (70,9%)
+Flow TCP có cờ ACK
+49,8%
+99,3%
+Giá trị cờ FIN quan sát được
+Chỉ 0 hoặc 1
+Nhận 0 đến 5 và hơn nữa
+Bảng 3. So sánh cờ TCP giữa hai bộ train. Mã nằm ở scripts/02_compare_train_sets.py, kết quả ở results/compare_train_sets.json.
+HINH hinh2_fin_benign.png
+Hình 1. Tỷ lệ flow Benign TCP mang cờ FIN trong hai bộ train.
+Trong bộ train cũ, chỉ 0,065% trong 661.302 flow có từ 4 gói trở lên ở mỗi chiều, tức những kết nối trông khá đầy đủ, mang cờ FIN. Theo giao thức TCP một kết nối hoàn chỉnh thường kết thúc bằng FIN, nên tỷ lệ này rất thấp, và bộ train improved có 70,9%. Cờ ACK cũng chỉ có ở 49,8% flow TCP của bộ cũ dù hầu như mọi kết nối đều có gói ACK, và cả năm cột cờ chỉ nhận 0 hoặc 1. Các dấu hiệu này phù hợp với mô tả lỗi đếm cờ và lỗi cắt flow của CICFlowMeter-V3, nhưng chưa phải bằng chứng trực tiếp vì thiếu PCAP gốc.
+Hệ quả cho mô hình rất cụ thể. Ở bộ cũ vùng ba điều kiện chỉ chứa 445 dòng Hulk, nên mô hình học vùng đó là Hulk. Ở bộ improved vùng đó chứa 405.347 dòng Benign, 238.320 dòng HOIC, 100.650 dòng Bot và chỉ 330 dòng Hulk, tức quy tắc cũ không còn đặc trưng cho Hulk. Cách giải thích phù hợp với số liệu là vì flow bị cắt ở gói FIN đầu tiên và cờ chỉ được ghi nhận ở gói đầu, Benign có dữ liệu của bộ cũ thường không mang FIN, còn Hulk dùng Connection: close nên FIN đi cùng dữ liệu. Giải thích này khớp các con số nhưng là giả thuyết.
+5.1 Hulk của hai bộ là hai kiểu lưu lượng khác nhau
+Nhóm (flow TCP)
+Số flow
+Tot Fwd Pkts
+Fwd Pkt Len Max
+Init Fwd Win Byts
+Fwd Seg Size Min
+FIN Flag Cnt
+Train cũ, Hulk
+155.042
+2
+0
+225
+32
+0
+Train cũ, Benign
+1.322.801
+5
+161
+8.192
+20
+0
+Train improved, Hulk
+155.042
+5
+348
+26.883
+32
+2
+Train improved, Benign
+1.100.982
+8
+434
+8.192
+20
+0
+Bảng 4. Trung vị đặc trưng của flow Hulk và Benign trong hai bộ train.
+Hulk trong bộ train cũ có trung vị 2 gói chiều đi, Fwd Pkt Len Max bằng 0 và FIN bằng 0, tức phần lớn là những flow rất ngắn không mang dữ liệu. Hulk trong bộ improved là kết nối HTTP đầy đủ với 5 gói chiều đi, Fwd Pkt Len Max 348, FIN 2 và cửa sổ nhận ban đầu 26.883 so với 225. Hai bộ vì vậy mô tả cùng một công cụ tấn công bằng hai kiểu đặc trưng khác nhau, và một mô hình học từ bộ này không thể nhận ra Hulk của bộ kia.
+5.2 Đặc trưng và nhãn
+Cả 78 đặc trưng của mô hình đều có tương ứng trong bản improved, trong đó 48 đặc trưng chỉ khác tên và được ánh xạ bằng bảng results/mapping_features.csv. Bản improved có thêm 5 cột mà mô hình không dùng, gồm Fwd RST Flags, Bwd RST Flags, ICMP Code, ICMP Type và Total TCP Flow Time. Tập nhãn thì không giống nhau. Bản improved không có DoS attacks-SlowHTTPTest, và FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted (tấn công thất bại) bị bỏ ra khỏi mọi thí nghiệm. Bốn loại Infiltration được gộp lại thành một lớp. Kết quả là không gian nhãn chung gồm 13 lớp, và bảng ánh xạ đầy đủ nằm ở results/mapping_labels_improved.csv.
+6. Thiết kế thực nghiệm mới
+6.1 Nguyên tắc làm đúng như mô hình cũ
+Hạng mục
+Mô hình cũ (RQ1, RQ2)
+Mô hình mới (RQ4)
+Thuật toán và tham số
+XGBClassifier, 100 cây, độ sâu 8, learning rate 0,08, hist, seed 42
+Giống hệt, không quét lại tham số
+Đặc trưng
+78 đặc trưng float32, không Timestamp, không IP
+Giống hệt, đổi tên theo bảng ánh xạ
+Lấy mẫu
+3,5 triệu dòng, 70% Benign và 30% tấn công, giữ 100% lớp hiếm
+Cùng công thức, số mẫu mỗi lớp theo bộ cũ và bị chặn bởi số flow sẵn có
+Chia dữ liệu
+Stratified 80/20, seed 42
+Giống hệt, không bộ giữ riêng nào
+Chỉ số
+Accuracy, Macro P, R, F1, FPR, FNR bằng ids_detection_metrics
+Giống hệt, cùng hàm
+Giải thích
+SHAP toàn cục và từng flow, LIME khóa cấu hình, đồng thuận, cổng chất lượng, trung thành, miền tri thức, nhóm lỗi
+Chạy lại cùng mã, LIME dùng đúng cấu hình đã khóa ở RQ2
+Bảng 5. So sánh quy trình cũ và mới.
+Hai giai đoạn của RQ2 được xử lý khác. GĐ5 (chọn lại cấu hình LIME trên tập dev) không chạy lại, và cấu hình đã khóa của RQ2 được dùng nguyên vẹn theo yêu cầu giữ nguyên cấu hình. GĐ9 (độ ổn định và chịu nhiễu) được bỏ qua theo yêu cầu của người dùng, và các số liệu GĐ9 của M0 vẫn có trong RQ2.
+6.2 Các mô hình
+Mã
+Dữ liệu huấn luyện
+Vai trò
+M0
+Train cũ, 15 lớp, 2.800.000 dòng
+Mô hình RQ1, giữ nguyên
+M0b
+Train cũ giới hạn 13 lớp chung, 2.779.034 dòng
+Dữ liệu cũ nhưng cùng không gian nhãn với M1, để so sánh công bằng
+M1
+Mẫu từ bản improved, 2.728.397 dòng
+Dữ liệu đã sửa lỗi
+M2
+Train cũ cộng 10.000 flow Benign trong vùng ba điều kiện lấy từ improved
+Tách thiếu mẫu khỏi khác định nghĩa đặc trưng. Hoãn theo yêu cầu người dùng, mã đã sẵn sàng
+Bảng 6. Các mô hình trong RQ4. Mỗi mô hình có file .pkl và bộ mã hóa nhãn riêng trong thư mục models, không ghi đè mô hình RQ1.
+M0b tồn tại vì hai lớp SlowHTTPTest và FTP-BruteForce không có ở bản improved. Nếu so M0 15 lớp với M1 13 lớp thì hai bên có số đáp án khác nhau, nên M0b được huấn luyện trên chính dữ liệu cũ, bỏ hai lớp đó (khoảng 21.000 dòng), với cùng tham số.
+6.3 Dữ liệu và các bộ đánh giá
+Lớp
+Train cũ
+Test cũ
+Train M1
+Test M1
+Benign
+1.960.000
+490.000
+1.909.878
+477.470
+DDOS attack-HOIC
+238.320
+59.580
+238.320
+59.580
+DDoS attacks-LOIC-HTTP
+205.417
+51.354
+205.417
+51.354
+DoS attacks-Hulk
+155.042
+38.760
+155.042
+38.760
+Bot
+100.650
+25.162
+100.650
+25.162
+Infilteration
+57.258
+14.315
+57.258
+14.315
+SSH-Bruteforce
+41.828
+10.457
+41.828
+10.457
+DoS attacks-GoldenEye
+14.774
+3.694
+14.774
+3.694
+DoS attacks-Slowloris
+3.620
+905
+3.620
+905
+DDOS attack-LOIC-UDP
+1.384
+346
+1.384
+346
+Brute Force -Web
+487
+122
+105
+26
+Brute Force -XSS
+184
+46
+90
+23
+SQL Injection
+70
+17
+31
+8
+FTP-BruteForce
+14.028
+3.507
+0
+0
+DoS attacks-SlowHTTPTest
+6.938
+1.735
+0
+0
+Bảng 7. Thành phần các bộ dữ liệu. Hulk có đúng 155.042 dòng train ở cả hai bộ.
+Bản improved được quét một lần duy nhất (khoảng 35 GB, 63.195.145 flow), giữ toàn bộ flow của 12 lớp tấn công chung và 7% Benign ngẫu nhiên. Từ bộ nhớ đệm này, nhóm lấy ngẫu nhiên số mẫu mỗi lớp tấn công theo thành phần của bộ cũ, bị chặn bởi số flow có sẵn: Brute Force -Web chỉ còn 131 flow, Brute Force -XSS 113 và SQL Injection 39. Benign được lấy sao cho giữ tỷ lệ 70% và 30%. Sau đó chia stratified 80/20 với seed 42, đúng như RQ1. Không có vùng thời gian hay bộ giữ riêng nào, nên không có thí nghiệm nào dùng Timestamp hay địa chỉ IP.
+Mã
+Nội dung
+Ghi chú
+T1
+Test cũ, giới hạn 13 lớp (694.758 dòng), và bản bỏ dòng trùng với train cũ
+Trong phân phối của M0 và M0b
+T2a
+Test 20% của bản improved (682.100 dòng), và bản bỏ trùng
+Trong phân phối của M1
+T3
+784 flow realtime của máy người dùng, nguồn feeder_live, bỏ multicast và flow PCAP
+Nhãn Benign do người dùng xác nhận bằng lời ngày 26/10/2026, chưa có chi tiết hoạt động từng phiên
+Bảng 8. Các bộ đánh giá.
+Về trùng lặp, 115.467 trên 682.100 dòng test của M1 (16,9%) có 78 đặc trưng giống hệt một dòng trong train. Bộ cũ có 27,74%. Các công cụ tấn công trong lab gửi nhiều gói giống hệt nhau nên flow trùng xuất hiện tự nhiên khi chia ngẫu nhiên. Nhóm giữ nguyên cách chia để so sánh cùng điều kiện với RQ1, và bổ sung mọi bản bỏ trùng để kết luận không phụ thuộc vào dòng trùng.
+7. Kết quả
+7.1 Huấn luyện theo quy trình RQ1
+Chỉ số trên test của chính mô hình
+M0 (cũ, 15 lớp)
+M0b (cũ, 13 lớp)
+M1 (improved)
+Accuracy
+97,91%
+98,07%
+100,00%
+Macro Precision
+90,84%
+93,83%
+99,99%
+Macro Recall
+83,99%
+86,63%
+98,69%
+Macro F1
+85,81%
+88,70%
+99,30%
+FPR của Benign
+0,2324%
+0,2390%
+0,0015%
+FNR của tấn công
+5,7481%
+5,9495%
+0,0078%
+Bảng 9. Chỉ số theo quy trình RQ1. Mỗi mô hình được đo trên test cùng phân phối với nó, nên các cột không so sánh trực tiếp được.
+M0b gần giống M0 và cao hơn một chút, vì bỏ hai lớp khó (SlowHTTPTest và FTP-BruteForce). M1 đạt gần tuyệt đối. Mục 8 giải thích vì sao con số này không nên được hiểu là chất lượng ngoài đời.
+7.2 Đánh giá chéo
+Mỗi mô hình được đo trên mọi bộ test, với cùng một bộ chỉ số. Bảng 10 chỉ nêu các bản đã bỏ dòng trùng, và bản đầy đủ nằm ở results/cross_evaluation.csv.
+Bộ test
+Mô hình
+Số flow
+Benign báo tấn công
+Báo nhầm trong vùng Hulk (số flow)
+Recall Hulk
+Macro F1 13 lớp
+T1 test cũ
+M0
+505.851
+0,27%
+không có
+99,99%
+90,4%
+T1 test cũ
+M0b
+505.851
+0,27%
+không có
+99,99%
+90,2%
+T1 test cũ
+M1
+505.851
+4,54%
+không có
+11,83%
+27,0%
+T2a test improved
+M0
+566.633
+27,36%
+100,0% (100.819)
+99,98%
+65,9%
+T2a test improved
+M0b
+566.633
+27,36%
+100,0% (100.819)
+99,98%
+54,3%
+T2a test improved
+M1
+566.633
+0,00%
+0,0% (100.819)
+100,00%
+99,3%
+T3 realtime (Benign)
+M0
+784
+19,01%
+100,0% (148)
+không có
+không áp dụng
+T3 realtime (Benign)
+M0b
+784
+19,64%
+100,0% (148)
+không có
+không áp dụng
+T3 realtime (Benign)
+M1
+784
+0,00%
+0,0% (148)
+không có
+không áp dụng
+Bảng 10. Đánh giá chéo trên các bộ test đã bỏ dòng trùng với train.
+HINH hinh1_benign_bao_nham.png
+Hình 2. Tỷ lệ Benign bị báo thành tấn công theo mô hình và bộ test.
+Trên dữ liệu improved có nhãn thật, M0 báo 27,4% flow Benign thành tấn công, và trong vùng ba điều kiện của Hulk thì 100,00% trong 100.819 flow bị báo Hulk. Ngoài vùng này tỷ lệ chỉ 0,009%. Đây là bằng chứng ở quy mô gần một trăm nghìn flow có nhãn thật, không phụ thuộc vào việc tự đánh giá lưu lượng. M1 gần như không báo nhầm Benign trên mọi bộ improved và trên lưu lượng thật, nhưng không dùng được cho dữ liệu cũ. Trên test cũ M1 chỉ nhận 11,83% số flow Hulk, vì Hulk của hai bản là hai kiểu lưu lượng khác nhau như Bảng 4 cho thấy.
+Chiều ngược lại cũng đáng chú ý. M0 nhận 99,98% flow Hulk của bản improved, nhưng nhiều khả năng nhờ dấu hiệu FIN, vì 99,99% flow Hulk của bộ train improved mang FIN. Điểm này làm cho độ nhận Hulk cao của M0 không phản ánh khả năng nhận diện hành vi tấn công.
+7.3 Trên lưu lượng thật của máy người dùng
+Trên 784 flow Benign realtime
+M0
+M0b
+M1
+Báo thành tấn công
+19,0%
+19,6%
+0,0%
+Báo thành Hulk
+18,9%
+18,9%
+0,0%
+Trong vùng ba điều kiện (148 flow), báo tấn công
+100%
+100%
+0%
+Ngoài vùng, báo tấn công
+0,16%
+0,94%
+0,00%
+Bảng 11. Kết quả trên flow realtime, nhãn Benign do người dùng xác nhận.
+Với M0, SHAP của lớp Hulk trên 148 flow trong vùng cho FIN Flag Cnt trung bình 5,87 và Fwd Pkt Len Max 2,60, hai đóng góp dương lớn nhất. Giá trị của FIN trùng với con số đã đo ở các PCAP trước đó. Thử phản thực trên 784 flow cho kết quả ở Bảng 12.
+Thay đổi đặc trưng (M0)
+Flow còn bị báo tấn công
+Số nhãn bị đổi
+Không đổi
+149
+0
+FIN Flag Cnt bằng 0
+4
+148
+Fwd Pkt Len Max bằng 0
+3
+148
+Fwd Seg Size Min bằng 32
+22
+165
+Init Fwd Win Byts bằng 64240
+148
+1
+Dst Port bằng 80
+148
+5
+Bảng 12. Thử phản thực của M0 trên flow realtime.
+Đặt FIN bằng 0 hoặc Fwd Pkt Len Max bằng 0 làm 148 flow trong vùng đổi nhãn và chỉ còn 3 đến 4 trên 784 flow bị báo tấn công, còn đổi cửa sổ nhận hoặc cổng đích gần như không đổi nhãn nào. Tức là cảnh báo sai của M0 do một tổ hợp cụ thể gồm FIN, độ dài dữ liệu và kích thước header, đúng như phân tích cây quyết định. Phép thử này đo cách M0 quyết định, không chứng minh M0 sai nếu bỏ đặc trưng, vì các flow này được xác nhận là Benign độc lập.
+M1 gán Benign cho cả 148 flow này. Đặc trưng đóng góp lớn nhất cho quyết định của M1 trên các flow này là Init Bwd Win Byts, với SHAP trung bình 2,06. Đây lại là một đặc trưng cửa sổ nhận, tức gắn với môi trường, nên M1 đúng trên lưu lượng thật nhưng chưa chắc vì lý do hành vi. Điều này cần được ghi rõ trong bài báo.
+7.4 SHAP và LIME của M1 so với M0
+Chuỗi giải thích của RQ2 được chạy lại nguyên vẹn cho M1, trừ GĐ5 và GĐ9 như đã nêu. Bảng 13 so sánh với M0.
+Chỉ số
+M0 (RQ2)
+M1 (RQ4)
+Số flow trong nhóm đánh giá
+1.339
+1.055
+Số flow dự đoán sai trong nhóm lỗi
+151
+24
+Sai số cộng dồn SHAP lớn nhất
+5,7e-6
+4,8e-6
+Local R bình phương trung vị của LIME
+0,580
+0,528
+Flow LIME vượt cổng chất lượng 0,3
+86,0%
+72,7%
+Jaccard Top-5 giữa SHAP và LIME
+0,141
+0,213
+AUC comprehensiveness, SHAP
+0,812
+0,836
+AUC comprehensiveness, LIME
+0,458
+0,557
+SHAP thắng LIME tại k bằng 5
+78,3%
+82,5%
+F1 miền tri thức bản chặt, SHAP và LIME
+0,190 và 0,095
+0,111 và 0,019
+Tỷ lệ đặc trưng môi trường trong Top-5 của flow sai
+24,6%
+24,2%
+Bảng 13. Kết quả giải thích của M0 và M1 theo cùng một quy trình.
+Kết luận về phương pháp giữ nguyên. SHAP trung thành hơn LIME ở cả hai mô hình với AUC comprehensiveness 0,84 so với 0,56 ở M1, và SHAP thắng ở 82% số flow. Hai phương pháp đồng ý với nhau nhiều hơn mức ngẫu nhiên nhưng vẫn thấp. LIME của M1 đạt cổng chất lượng ở ít flow hơn M0 (72,7% so với 86,0%). Nhóm lỗi của M1 chỉ có 24 flow nên các so sánh trên nhóm lỗi chỉ mang tính tham khảo.
+SHAP toàn cục của M1 cho lớp Hulk vẫn đặt Fwd Seg Size Min (3,78) và Init Fwd Win Byts (0,99) lên đầu, tức M1 vẫn nhận Hulk chủ yếu qua đặc trưng môi trường, dù không còn dùng cờ FIN. Với lớp Benign, đặc trưng đứng đầu của M1 là Init Bwd Win Byts (2,02). Dữ liệu sửa lỗi bỏ được đường tắt FIN nhưng không bỏ được đường tắt môi trường.
+8. Kiểm tra riêng M1
+M1 đạt Accuracy 100,00%, Macro F1 99,30% và FPR 0,0015%. Con số này quá cao nên nhóm kiểm tra M1 như một mô hình riêng, trước khi so với M0. M1 dùng đúng 78 đặc trưng của RQ1, không có Timestamp, địa chỉ IP hay mã định danh flow nào trong số đó, và bộ train và test lấy theo đúng công thức của RQ1.
+Kiểm tra
+Cách làm
+Kết quả
+Nguồn dữ liệu
+Đối chiếu 1.050 dòng mẫu của ba ngày với tệp CSV improved theo khóa gồm thời điểm, thời lượng, số gói, tổng độ dài và cổng
+858 dòng tìm thấy, 858 dòng có nhãn đúng với bảng ánh xạ. Các dòng còn lại không khớp được khóa, chưa rõ lý do
+Nhãn mâu thuẫn
+Tìm các nhóm dòng giống hệt 78 đặc trưng nhưng khác nhãn
+0 trên 2.918.867 nhóm
+Nhãn xáo trộn
+Huấn luyện lại với nhãn bị xáo ngẫu nhiên, đo trên test thật
+Accuracy 70,00%, bằng đúng mức đoán lớp đông nhất (70,00%), Macro F1 6,3%
+Đường cong học
+Chỉ dùng 0,1%, 1%, 10% dữ liệu train
+0,1% (2.739 dòng): Macro F1 96,6%; 1%: 96,8%; 10%: 96,5%; 100%: 99,3%
+Cây quyết định nông
+Độ sâu 2, 3, 5
+Accuracy 86,7%, 96,4%, 99,5%; Macro F1 26,4%, 43,9%, 68,5%
+Dòng test gần giống train
+Khoảng cách tới dòng train gần nhất sau khi chuẩn hóa, 3.057 dòng test cân bằng theo lớp
+74,5% có dòng train gần như y hệt (dưới 0,01 độ lệch chuẩn), 87,1% dưới 0,1
+Bỏ dòng trùng hệt
+Đo lại trên phần test không có dòng giống hệt train (bỏ 115.467 dòng)
+Macro F1 99,30%, so với 99,30%
+Bỏ đặc trưng môi trường
+Huấn luyện lại không có Dst Port, Protocol, hai cửa sổ nhận ban đầu và Fwd Seg Size Min
+Macro F1 98,68%, FPR 0,009%, recall Hulk 99,99%
+Bảng 14. Các kiểm tra riêng M1 (scripts/09_diagnose_m1.py và 13_audit_m1_standalone.py).
+Nhãn xáo trộn chỉ đạt mức đoán lớp đông nhất nên không có đường rò rỉ nhãn vào đặc trưng. Không có hai dòng nào giống hệt nhau mà khác nhãn, nên điểm cao không đến từ việc nhãn mơ hồ. Điều nổi bật nhất là đường cong học: chỉ 2.739 dòng đã cho Macro F1 96,6% và Accuracy 99,76%. Bài toán phân loại này dễ, và cây sâu 5 đã đạt Accuracy 99,5%. Thêm vào đó 74% dòng test có một dòng train gần như y hệt, vì các công cụ tấn công trong lab gửi lặp lại cùng một mẫu gói. Bỏ riêng các dòng trùng hệt không đổi điểm, vì phần gần giống nhưng không trùng hệt vẫn còn.
+Lớp
+Số flow trong cache
+Số địa chỉ nguồn
+Địa chỉ đông nhất chiếm
+Benign
+4.151.111
+69.632
+1,0%
+Bot
+142.921
+10
+11,1%
+Brute Force -Web
+131
+1
+100,0%
+Brute Force -XSS
+113
+1
+100,0%
+DDOS attack-HOIC
+1.082.293
+10
+10,1%
+DDOS attack-LOIC-UDP
+2.527
+10
+10,7%
+DDoS attacks-LOIC-HTTP
+289.328
+10
+10,2%
+DoS attacks-GoldenEye
+22.560
+1
+100,0%
+DoS attacks-Hulk
+1.803.160
+1
+100,0%
+DoS attacks-Slowloris
+8.490
+1
+100,0%
+Infilteration
+89.663
+2
+55,6%
+SQL Injection
+39
+1
+100,0%
+SSH-Bruteforce
+94.197
+1
+100,0%
+Bảng 15. Số địa chỉ nguồn theo lớp trong bản improved (quét lại tệp CSV, results/srcip_per_class.csv).
+Bảng 15 cho thấy lý do không chia train và test tách theo máy gửi. Bảy trong mười hai lớp tấn công, gồm Hulk, GoldenEye, Slowloris, SSH-Bruteforce, Brute Force -Web, -XSS và SQL Injection, chỉ có một địa chỉ nguồn, nên không thể đưa toàn bộ máy tấn công của lớp đó sang phía test mà vẫn còn lớp để học. Địa chỉ IP và thời điểm không nằm trong 78 đặc trưng, nên mô hình không học thuộc được chúng trực tiếp. Tuy vậy mỗi lớp tấn công về bản chất là một công cụ chạy từ một hoặc mười máy trong một ngày, nên nhận ra lớp đó dễ hơn nhiều so với nhận ra tấn công nói chung. Benign thì có 69.632 địa chỉ nguồn khác nhau.
+Tổng gain của XGBoost cho thấy M1 dựa nhiều nhất vào Init Fwd Win Byts (19,6%), Init Bwd Win Byts (18,6%), Dst Port (15,6%) và Fwd Seg Size Min (14,8%), tổng khoảng 69%. Bỏ cả các đặc trưng này mô hình vẫn đạt Macro F1 98,7%, nên điểm cao không phụ thuộc vào vài đặc trưng cụ thể.
+So với M0b, phần lớn chênh lệch Macro F1 (88,7% so với 99,3%) đến từ lớp Infilteration: F1 là 0,247 ở M0b và 0,999 ở M1. Infilteration của bộ cũ khó nhận, còn Infilteration của bản improved (có quét cổng bằng Nmap) dễ tách. Các lớp còn lại gần như bằng nhau, trừ vài lớp nhỏ (SQL Injection 0,643 so với 0,933, Brute Force -Web 0,743 so với 0,980) mà test chỉ có vài chục flow. Vì vậy nhóm không kết luận bản improved làm mô hình tốt hơn nói chung. Kết luận hợp lý là: không phát hiện rò rỉ, điểm cao phản ánh bài toán dễ trong chính phòng lab với nhiều dòng gần trùng, và bằng chứng rõ nhất về giới hạn là M1 chỉ nhận 3,7% số flow Hulk của bộ test cũ.
+9. Thảo luận
+Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bộ train cũ gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là 43,6% flow Benign TCP của bộ train improved. Mô hình học từ bộ cũ đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở hai cấp độ độc lập, gồm 100.819 flow Benign trong vùng ở bộ test improved có nhãn thật, và 148 flow realtime do người dùng xác nhận.
+Thực nghiệm cũng cho thấy việc sửa dữ liệu không giải quyết hết vấn đề. Mô hình M1 loại bỏ được báo nhầm FIN nhưng vẫn dựa nhiều vào đặc trưng môi trường như cửa sổ nhận ban đầu và kích thước header tối thiểu. Những đặc trưng này khác nhau giữa các mạng, nên M1 có thể thất bại ở một môi trường khác dù đúng ở máy của người dùng. Đây cũng là điều Engelen và cộng sự cảnh báo khi nói về nguy cơ học đường tắt theo cấu hình lab.
+Với giải thích, SHAP đóng vai trò công cụ chẩn đoán trong cả hai mô hình. Nó chỉ ra FIN và Fwd Pkt Len Max ở M0, và chỉ ra các đặc trưng cửa sổ nhận ở M1, và kết quả của nó được kiểm chứng bằng cấu trúc cây và thử phản thực. LIME kém tin cậy hơn, đạt cổng chất lượng ở 73% flow của M1 trong nhóm đánh giá, và theo kết quả RQ3 trước đó bị loại gần hết trên flow thật vì các flow này nằm quá xa dữ liệu nền mà LIME lấy mẫu quanh đó.
+9.1 Những điều có thể và chưa thể kết luận
+Có thể kết luận rằng dữ liệu train cũ không có Benign trong vùng ba điều kiện, rằng vùng này khớp các báo nhầm quan sát được, và rằng đặt FIN bằng 0 loại bỏ các báo nhầm đó ở M0.
+Có thể kết luận rằng bộ train cũ gần như không có Benign mang FIN và dữ liệu, trong khi bộ train improved có 43,6%.
+Có thể kết luận rằng huấn luyện lại trên bản improved theo đúng quy trình cũ làm báo nhầm trên lưu lượng thật của máy người dùng từ 19,0% xuống 0,0%.
+Chưa thể kết luận rằng nguyên nhân duy nhất là thiếu mẫu Benign. Thí nghiệm M2 để tách thiếu mẫu khỏi khác định nghĩa đặc trưng đang được hoãn.
+Chưa thể kết luận rằng lỗi bắt nguồn từ công cụ trích xuất CICFlowMeter-V3, vì thiếu cặp PCAP và CSV gốc để kiểm chứng trực tiếp.
+Chưa thể kết luận gì về khả năng M1 phát hiện tấn công thật ngoài lab, vì chưa có dữ liệu tấn công độc lập.
+10. Hướng viết bài báo khoa học
+10.1 Câu chuyện
+Bài báo bắt đầu từ một nghịch lý. Một mô hình phát hiện xâm nhập đạt hiệu năng nội bộ rất cao nhưng báo nhầm hàng loạt khi chạy trên lưu lượng thật. Câu hỏi đặt ra là điều gì che giấu lỗi trong phép đánh giá thông thường và giải thích mô hình có giúp tìm ra lỗi hay không.
+Phần tiếp theo kể quá trình truy tìm. SHAP chỉ vào cờ FIN. Phân tích cây quyết định cho ra một vùng ba điều kiện chỉ có Hulk trong dữ liệu train. Thử phản thực khẳng định vùng đó là thứ làm nhãn đổi. So sánh hai bộ train cho thấy bộ cũ không có Benign trong vùng này còn bộ improved có hơn một phần ba, và lỗi khớp với mô tả TCP appendices và cách đếm cờ sai của CICFlowMeter-V3 trong tài liệu của Engelen và cộng sự.
+Phần cuối kiểm chứng và rút bài học. Huấn luyện lại bằng dữ liệu đã sửa lỗi với đúng quy trình cũ làm báo nhầm biến mất, nhưng giải thích của mô hình mới cho thấy đường tắt môi trường vẫn còn, nên điểm cao trên dữ liệu cùng nguồn không đủ để tin. Bài học chung là phải đánh giá IDS bằng dữ liệu ngoài nguồn huấn luyện và dùng giải thích như một công cụ kiểm tra dữ liệu.
+Tên bài đề xuất bằng tiếng Việt là Khi độ chính xác nội bộ đánh lừa, dùng SHAP, LIME và kiểm tra phản thực để phát hiện lỗi cờ FIN trong bộ dữ liệu CSE-CIC-IDS2018. Tên tiếng Anh là When Internal Accuracy Misleads, Using SHAP, LIME and Counterfactual Checks to Expose a FIN-Flag Shortcut in CSE-CIC-IDS2018.
+10.2 Vấn đề, mục tiêu và câu hỏi
+Vấn đề là mô hình IDS học đường tắt từ khoảng trống hoặc lỗi của bộ dữ liệu mà các chỉ số nội bộ không phát hiện được. Mục đích là chỉ ra cách dùng giải thích và kiểm thử độc lập để phát hiện, xác nhận và giảm thiểu đường tắt đó. Các câu hỏi nghiên cứu gồm bốn câu.
+RQ1. Hiệu năng của mô hình thay đổi thế nào giữa tập kiểm thử nội bộ và dữ liệu độc lập có nhãn. Trả lời bằng Bảng 10 và 11.
+RQ2. SHAP, đường đi trong cây và phản thực có xác định được đặc trưng gây báo nhầm hay không, và LIME có đủ tin cậy để đối chiếu không. Trả lời bằng mục 7.3 và 7.4.
+RQ3. Bộ dữ liệu cũ khác bản đã sửa lỗi ở điểm nào liên quan đến vùng đặc trưng đó. Trả lời bằng mục 5.
+RQ4. Huấn luyện lại bằng dữ liệu đã sửa lỗi có giảm báo nhầm mà vẫn giữ khả năng nhận Hulk không. Trả lời một phần bằng mục 7.2, phần còn lại cần M2 và dữ liệu tấn công độc lập.
+10.3 Tính chất nào của lời giải thích quan trọng nhất
+Số liệu hiện có gợi ý rằng tính hợp lệ của lời giải thích quan trọng hơn mức độ dễ đọc. LIME cho lời giải thích gọn nhưng bị loại gần hết trên lưu lượng thật. Tiếp theo là khả năng kiểm chứng ngược, vì SHAP có giá trị chẩn đoán khi kết quả của nó truy lại được bằng đường đi trong cây, thống kê dữ liệu train và thử phản thực. Mức độ dễ đọc đứng sau hai tính chất trên. Kết luận này cần được củng cố bằng thí nghiệm kiểm tra LIME trực tiếp trên flow realtime của M1.
+10.4 Đóng góp dự kiến
+Bằng chứng thực nghiệm về khoảng cách giữa đánh giá nội bộ và hành vi của IDS trên lưu lượng thật.
+Quy trình chẩn đoán gồm SHAP, đường đi trong cây, thống kê dữ liệu train, phản thực và kiểm toán bộ dữ liệu.
+So sánh có kiểm soát giữa mô hình huấn luyện trên dữ liệu cũ và dữ liệu đã sửa lỗi, cùng quy trình và cùng cấu hình giải thích.
+10.5 Việc còn lại trước khi nộp
+STT
+Việc
+Mục đích
+1
+Chạy M2, thêm 10.000 flow Benign trong vùng ba điều kiện vào train cũ
+Tách thiếu mẫu khỏi khác định nghĩa đặc trưng
+2
+Thu dữ liệu tấn công độc lập có nhãn, hoặc nêu rõ đây là hạn chế
+Đo khả năng phát hiện ngoài lab
+3
+Ghi nhật ký hoạt động chi tiết của các phiên realtime
+Củng cố nhãn Benign của T3
+4
+Xác nhận nguồn tải của bản improved và giải thích chênh lệch số flow
+Đảm bảo tài liệu tham khảo
+5
+Đọc bản đầy đủ bài WTMC 2021 và CNS 2022, đối chiếu các chi tiết đã trích
+Tránh trích sai
+6
+Chạy LIME trên flow realtime của M1 và đo tỷ lệ hợp lệ
+Củng cố kết luận về tính hợp lệ
+Bảng 16. Các việc còn lại.
+11. Hạn chế
+Nhãn Benign của bộ realtime dựa trên lời xác nhận bằng lời của người dùng, chưa có nhật ký hoạt động chi tiết từng phiên.
+Bộ realtime có 784 flow từ hai mạng (Wi-Fi nhà và điểm phát sóng điện thoại) trong một ngày, nên chưa đại diện cho nhiều môi trường.
+Chưa có dữ liệu tấn công độc lập, nên chưa đo được khả năng phát hiện tấn công của mô hình mới ngoài lab.
+Thí nghiệm M2 bị hoãn, nên chưa tách được hai nguyên nhân là thiếu mẫu và khác định nghĩa đặc trưng.
+Lỗi lịch sử của công cụ trích xuất chưa được kiểm chứng trực tiếp vì thiếu cặp PCAP và CSV gốc.
+Bảy trong mười hai lớp tấn công chỉ có đúng một địa chỉ nguồn, nên không thể chia train và test tách theo máy gửi. Phép chia ngẫu nhiên theo RQ1 vì vậy cho điểm lạc quan hơn một phép chia tách theo máy.
+Ba lớp tấn công nhỏ nhất (Brute Force -Web, Brute Force -XSS, SQL Injection) chỉ có 26, 23 và 8 flow trong test M1, nên F1 của chúng dao động mạnh và kéo Macro F1 lên xuống.
+Hulk của CICFlowMeter-V3 có cài đặt lỗi theo tài liệu của Engelen và cộng sự, nên bài báo nên dùng Hulk như một ca nghiên cứu về học đường tắt, không dùng như bằng chứng khả năng phát hiện DoS nói chung.
+Cách chọn siêu tham số của RQ1 dựa trên điểm test của chính mô hình, và được giữ nguyên theo yêu cầu để so sánh cùng điều kiện.
+12. Tái lập
+Mã, kết quả và tài liệu nằm trong thư mục RQ4_Retrain_Compare. Các tập dữ liệu trung gian và file mô hình .pkl không được commit theo cấu hình của repo, nhưng mã và số liệu kết quả đều có trong git.
+Tệp
+Nội dung
+scripts/01_mapping_tables.py
+Bảng ánh xạ 78 đặc trưng và các nhãn giữa hai bản
+scripts/02_compare_train_sets.py
+So sánh hai bộ train: cờ TCP, vùng Hulk, hồ sơ Hulk và Benign
+scripts/03_build_improved_cache.py
+Quét bản improved một lần, lấy toàn bộ tấn công và 7% Benign
+scripts/04_build_datasets.py
+Dựng train và test M1 theo công thức lấy mẫu của RQ1
+scripts/05_train_models.py
+Huấn luyện M0b và M1 với tham số RQ1
+scripts/06_prepare_t3_realtime.py, 06b_confirm_t3.py
+Dựng bộ realtime T3 từ DB hệ thống
+scripts/07_evaluate_cross.py
+Đánh giá chéo, có bản bỏ trùng
+scripts/08_run_xai.py
+Chuỗi SHAP và LIME (GĐ0 đến GĐ13) cho một mô hình
+scripts/09_diagnose_m1.py, 13_audit_m1_standalone.py
+Chẩn đoán và kiểm tra riêng M1
+scripts/10_t3_explain.py
+SHAP và phản thực trên flow realtime
+scripts/11_report_data.py
+Gom số liệu và vẽ hình cho báo cáo
+results/ và xai_runs/m1/
+Kết quả CSV, JSON và hình của mọi bước
+Bảng 17. Các tệp chính.
+13. Tài liệu tham khảo
+Engelen, G., Rimmer, V., Joosen, W. (2021). Troubleshooting an Intrusion Detection Dataset, the CICIDS2017 Case Study. WTMC 2021. Trang tài liệu mở rộng tại intrusion-detection.distrinet-research.be/WTMC2021/extended_doc.html.
+Liu, L., Engelen, G., Lynar, T., Essam, D., Joosen, W. (2022). Error Prevalence in NIDS datasets, A Case Study on CIC-IDS-2017 and CSE-CIC-IDS-2018. IEEE Conference on Communications and Network Security (CNS), trang 254 đến 262. Trang bổ trợ tại intrusion-detection.distrinet-research.be/CNS2022/.
+Số liệu nội bộ lấy từ RQ1_Model_Training_xboost/results, RQ2/runs/20261009/gd13_report/rq2_master_summary.json, RQ3_IDS_System/docs/feature_compatibility.md và RQ4_Retrain_Compare/results.

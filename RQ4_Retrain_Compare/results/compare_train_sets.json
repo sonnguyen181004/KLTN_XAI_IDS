@@ -1,0 +1,167 @@
+{
+ "cu": {
+  "rows": 2779034,
+  "tcp_rows": 2120771,
+  "classes": 13,
+  "benign_rows": 1960000,
+  "flag_values": {
+   "FIN Flag Cnt": [
+    0.0,
+    1.0
+   ],
+   "SYN Flag Cnt": [
+    0.0,
+    1.0
+   ],
+   "RST Flag Cnt": [
+    0.0,
+    1.0
+   ],
+   "PSH Flag Cnt": [
+    0.0,
+    1.0
+   ],
+   "ACK Flag Cnt": [
+    0.0,
+    1.0
+   ]
+  },
+  "tcp_ack_ge1": 1056263,
+  "tcp_ge4pkts_each_way": 661302,
+  "tcp_ge4pkts_each_way_fin": 428,
+  "benign": {
+   "tcp_rows": 1322801,
+   "fin": 9815,
+   "fin_data_gt0": 26,
+   "fin_data_ge_min": 0,
+   "zone": 0,
+   "profile_median": {
+    "Flow Duration": 1403167.0,
+    "Tot Fwd Pkts": 5.0,
+    "Fwd Pkt Len Max": 161.0,
+    "Init Fwd Win Byts": 8192.0,
+    "Init Bwd Win Byts": 185.0,
+    "Fwd Seg Size Min": 20.0,
+    "FIN Flag Cnt": 0.0,
+    "Dst Port": 3389.0
+   }
+  },
+  "hulk": {
+   "tcp_rows": 155042,
+   "fin": 445,
+   "fin_data_gt0": 445,
+   "fin_data_ge_min": 445,
+   "zone": 445,
+   "profile_median": {
+    "Flow Duration": 15495.0,
+    "Tot Fwd Pkts": 2.0,
+    "Fwd Pkt Len Max": 0.0,
+    "Init Fwd Win Byts": 225.0,
+    "Init Bwd Win Byts": -1.0,
+    "Fwd Seg Size Min": 32.0,
+    "FIN Flag Cnt": 0.0,
+    "Dst Port": 80.0
+   }
+  },
+  "zone_by_label": {
+   "DoS attacks-Hulk": 445
+  }
+ },
+ "moi": {
+  "rows": 2728397,
+  "tcp_rows": 1917416,
+  "classes": 13,
+  "benign_rows": 1909878,
+  "flag_values": {
+   "FIN Flag Cnt": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ],
+   "SYN Flag Cnt": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ],
+   "RST Flag Cnt": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ],
+   "PSH Flag Cnt": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ],
+   "ACK Flag Cnt": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ]
+  },
+  "tcp_ack_ge1": 1903312,
+  "tcp_ge4pkts_each_way": 1662550,
+  "tcp_ge4pkts_each_way_fin": 1179170,
+  "benign": {
+   "tcp_rows": 1100982,
+   "fin": 549066,
+   "fin_data_gt0": 479685,
+   "fin_data_ge_min": 406055,
+   "zone": 405347,
+   "profile_median": {
+    "Flow Duration": 3002784.0,
+    "Tot Fwd Pkts": 8.0,
+    "Fwd Pkt Len Max": 434.0,
+    "Init Fwd Win Byts": 8192.0,
+    "Init Bwd Win Byts": 176.0,
+    "Fwd Seg Size Min": 20.0,
+    "FIN Flag Cnt": 0.0,
+    "Dst Port": 445.0
+   }
+  },
+  "hulk": {
+   "tcp_rows": 155042,
+   "fin": 155027,
+   "fin_data_gt0": 155027,
+   "fin_data_ge_min": 155027,
+   "zone": 330,
+   "profile_median": {
+    "Flow Duration": 138887.0,
+    "Tot Fwd Pkts": 5.0,
+    "Fwd Pkt Len Max": 348.0,
+    "Init Fwd Win Byts": 26883.0,
+    "Init Bwd Win Byts": 219.0,
+    "Fwd Seg Size Min": 32.0,
+    "FIN Flag Cnt": 2.0,
+    "Dst Port": 80.0
+   }
+  },
+  "zone_by_label": {
+   "Benign": 405347,
+   "DDOS attack-HOIC": 238320,
+   "Bot": 100650,
+   "Infilteration": 1630,
+   "DoS attacks-Hulk": 330,
+   "Brute Force -Web": 105,
+   "Brute Force -XSS": 88,
+   "DoS attacks-Slowloris": 39,
+   "SQL Injection": 31,
+   "DoS attacks-GoldenEye": 1
+  }
+ }
+}

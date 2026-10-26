@@ -1,0 +1,21 @@
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: ================================================================================
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: GĐ 2: SHAP TOÀN CỤC TRÊN TOÀN TEST SET
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: ================================================================================
+2026-10-26 19:19:45,581 [INFO] stage02_shap_global: Tổng 682100 flow, 13 lớp, 78 đặc trưng
+2026-10-26 19:21:18,031 [INFO] stage02_shap_global: Lớp Benign                    n_flows=477463  thời gian=92.2s (5180 flow/s)  Top1=Init Bwd Win Byts
+2026-10-26 19:21:22,795 [INFO] stage02_shap_global: Lớp Bot                       n_flows= 25162  thời gian=4.7s (5318 flow/s)  Top1=Dst Port
+2026-10-26 19:21:22,817 [INFO] stage02_shap_global: Lớp Brute Force -Web          n_flows=    25  thời gian=0.0s (1288 flow/s)  Top1=Fwd Header Len
+2026-10-26 19:21:22,840 [INFO] stage02_shap_global: Lớp Brute Force -XSS          n_flows=    23  thời gian=0.0s (1260 flow/s)  Top1=Bwd Pkt Len Max
+2026-10-26 19:21:33,779 [INFO] stage02_shap_global: Lớp DDOS attack-HOIC          n_flows= 59580  thời gian=10.9s (5467 flow/s)  Top1=Init Fwd Win Byts
+2026-10-26 19:21:33,876 [INFO] stage02_shap_global: Lớp DDOS attack-LOIC-UDP      n_flows=   344  thời gian=0.1s (3717 flow/s)  Top1=Fwd Pkts/b Avg
+2026-10-26 19:21:43,501 [INFO] stage02_shap_global: Lớp DDoS attacks-LOIC-HTTP    n_flows= 51354  thời gian=9.6s (5351 flow/s)  Top1=TotLen Fwd Pkts
+2026-10-26 19:21:44,246 [INFO] stage02_shap_global: Lớp DoS attacks-GoldenEye     n_flows=  3694  thời gian=0.7s (5018 flow/s)  Top1=Fwd Seg Size Min
+2026-10-26 19:21:51,469 [INFO] stage02_shap_global: Lớp DoS attacks-Hulk          n_flows= 38759  thời gian=7.2s (5395 flow/s)  Top1=Fwd Seg Size Min
+2026-10-26 19:21:51,650 [INFO] stage02_shap_global: Lớp DoS attacks-Slowloris     n_flows=   905  thời gian=0.2s (5090 flow/s)  Top1=Bwd IAT Mean
+2026-10-26 19:21:54,342 [INFO] stage02_shap_global: Lớp Infilteration             n_flows= 14303  thời gian=2.7s (5356 flow/s)  Top1=Pkt Len Mean
+2026-10-26 19:21:54,366 [INFO] stage02_shap_global: Lớp SQL Injection             n_flows=     7  thời gian=0.0s (321 flow/s)  Top1=Fwd Pkt Len Std
+2026-10-26 19:21:56,540 [INFO] stage02_shap_global: Lớp SSH-Bruteforce            n_flows= 10457  thời gian=2.2s (4841 flow/s)  Top1=Dst Port
+2026-10-26 19:21:56,571 [INFO] stage02_shap_global: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\rq2_shap_global_feature_importance_by_class.csv, C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\rq2_shap_global_top5_by_class.csv
+2026-10-26 19:21:59,095 [INFO] stage02_shap_global: Đã lưu 13 biểu đồ Top-5 vào C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\figures
+2026-10-26 19:21:59,242 [INFO] stage02_shap_global: Additivity trên mẫu 300 flow: max_err=4.768e-06, mean_err=7.460e-07
+2026-10-26 19:21:59,242 [INFO] stage02_shap_global: GĐ 2 HOÀN TẤT.

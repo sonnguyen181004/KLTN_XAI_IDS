@@ -1,0 +1,13 @@
+đối chiếu Friday-16-02-2018 {'sampled': 300, 'found_in_raw': 279, 'label_matches_mapping': 279}
+đối chiếu Wednesday-21-02-2018 {'sampled': 450, 'found_in_raw': 300, 'label_matches_mapping': 300}
+đối chiếu Wednesday-14-02-2018 {'sampled': 300, 'found_in_raw': 279, 'label_matches_mapping': 279}
+nhóm dòng giống hệt về đặc trưng nhưng khác nhãn: 0 trên 2918867
+nhãn xáo trộn: {'accuracy': 70.0, 'macro_f1': 6.334841628959276} | chỉ đoán lớp đông nhất: 70.0
+đường cong học 0.001 {'train_rows': 2739, 'accuracy': 99.75751356106143, 'macro_f1': 96.62810671307794}
+đường cong học 0.01 {'train_rows': 27290, 'accuracy': 99.89209793285441, 'macro_f1': 96.77977469976263}
+đường cong học 0.1 {'train_rows': 272839, 'accuracy': 99.98607242339833, 'macro_f1': 96.52706764422905}
+cây độ sâu 2 {'accuracy': 86.6824512534819, 'macro_f1': 26.352364491983277}
+cây độ sâu 3 {'accuracy': 96.35551971851635, 'macro_f1': 43.88585537888596}
+cây độ sâu 5 {'accuracy': 99.54816009382789, 'macro_f1': 68.538774543132}
+khoảng cách gần nhất (độ lệch chuẩn): {'n_test': 3057, 'n_train_pool': 600000, 'median': 0.0, 'p90': 0.316841185092926, 'frac_below_0_01': 74.48478900883218, 'frac_below_0_1': 87.07883545960091}
+xong

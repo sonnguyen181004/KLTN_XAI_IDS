@@ -1,0 +1,49 @@
+{
+  "gate": 0.3,
+  "n_total": 1055,
+  "n_pass": 767,
+  "frac_pass": 0.7270142180094786,
+  "class_distribution_all": {
+    "DoS attacks-Slowloris": 100,
+    "Infilteration": 100,
+    "DoS attacks-Hulk": 100,
+    "DDoS attacks-LOIC-HTTP": 100,
+    "DDOS attack-HOIC": 100,
+    "SSH-Bruteforce": 100,
+    "DoS attacks-GoldenEye": 100,
+    "Bot": 100,
+    "DDOS attack-LOIC-UDP": 100,
+    "Benign": 100,
+    "Brute Force -Web": 25,
+    "Brute Force -XSS": 23,
+    "SQL Injection": 7
+  },
+  "class_distribution_pass": {
+    "DoS attacks-Hulk": 100,
+    "DDoS attacks-LOIC-HTTP": 100,
+    "DDOS attack-HOIC": 100,
+    "SSH-Bruteforce": 100,
+    "Bot": 100,
+    "Benign": 96,
+    "DoS attacks-GoldenEye": 95,
+    "Infilteration": 61,
+    "SQL Injection": 7,
+    "DoS attacks-Slowloris": 5,
+    "DDOS attack-LOIC-UDP": 3
+  },
+  "class_pass_rate": {
+    "Bot": 1.0,
+    "DDOS attack-HOIC": 1.0,
+    "SQL Injection": 1.0,
+    "DoS attacks-Hulk": 1.0,
+    "DDoS attacks-LOIC-HTTP": 1.0,
+    "SSH-Bruteforce": 1.0,
+    "Benign": 0.96,
+    "DoS attacks-GoldenEye": 0.95,
+    "Infilteration": 0.61,
+    "DoS attacks-Slowloris": 0.05,
+    "DDOS attack-LOIC-UDP": 0.03,
+    "Brute Force -XSS": 0.0,
+    "Brute Force -Web": 0.0
+  }
+}
