@@ -1,0 +1,11 @@
+m1: train 2,600,395 | test 650,098 | 13 lớp
+  [1/1] depth=8 lr=0.08: 137s | Acc 100.00 | F1 99.76 | FPR 0.0013
+                                Chỉ số Đánh giá                 Kết quả m1
+               Độ chính xác toàn cục (Accuracy)                    100.00%
+                                Macro Precision                    100.00%
+                                   Macro Recall                     99.54%
+                                 Macro F1-score                     99.76%
+             Tỷ lệ Cảnh báo sai FPR trên Benign  0.0013% (FP=6, TN=455063)
+Tỷ lệ bỏ sót tấn công FNR (Attack thành Benign) 0.0077% (FN=15, TP=195014)
+                           Thời gian Huấn luyện                  2.29 phút
+đã lưu mô hình: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\models\m1_xgboost_model.pkl

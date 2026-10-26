@@ -1,0 +1,8 @@
+﻿Chỉ số Đánh giá,Kết quả m1
+Độ chính xác toàn cục (Accuracy),100.00%
+Macro Precision,100.00%
+Macro Recall,99.54%
+Macro F1-score,99.76%
+Tỷ lệ Cảnh báo sai FPR trên Benign,"0.0013% (FP=6, TN=455063)"
+Tỷ lệ bỏ sót tấn công FNR (Attack thành Benign),"0.0077% (FN=15, TP=195014)"
+Thời gian Huấn luyện,2.29 phút
