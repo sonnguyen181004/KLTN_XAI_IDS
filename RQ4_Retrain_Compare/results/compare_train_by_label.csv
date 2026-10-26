@@ -1,0 +1,25 @@
+﻿Label,n,fin,zone,all_rows,bo
+Benign,1322801,9815,0,1960000,cu
+Bot,100561,0,0,100650,cu
+Brute Force -Web,370,0,0,487,cu
+Brute Force -XSS,179,0,0,184,cu
+DDOS attack-HOIC,238320,0,0,238320,cu
+DDoS attacks-LOIC-HTTP,205118,0,0,205417,cu
+DoS attacks-GoldenEye,14774,0,0,14774,cu
+DoS attacks-Hulk,155042,445,445,155042,cu
+DoS attacks-Slowloris,3620,41,0,3620,cu
+Infilteration,38088,273,0,57258,cu
+SQL Injection,70,0,0,70,cu
+SSH-Bruteforce,41828,0,0,41828,cu
+Benign,1100982,549066,405347,1909878,moi
+Bot,100650,100650,100650,100650,moi
+Brute Force -Web,105,105,105,105,moi
+Brute Force -XSS,90,88,88,90,moi
+DDOS attack-HOIC,238320,238320,238320,238320,moi
+DDoS attacks-LOIC-HTTP,205417,205417,0,205417,moi
+DoS attacks-GoldenEye,14774,11301,1,14774,moi
+DoS attacks-Hulk,155042,155027,330,155042,moi
+DoS attacks-Slowloris,3620,165,39,3620,moi
+Infilteration,56557,3627,1630,57258,moi
+SQL Injection,31,31,31,31,moi
+SSH-Bruteforce,41828,41828,0,41828,moi

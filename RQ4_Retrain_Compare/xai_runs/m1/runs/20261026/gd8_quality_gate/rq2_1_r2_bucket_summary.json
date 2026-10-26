@@ -1,0 +1,27 @@
+{
+  "gate": 0.3,
+  "monotonic_increase": false,
+  "buckets": [
+    {
+      "r2_bucket": "thấp (<0.1)",
+      "n_flows": 229,
+      "mean_jaccard": 0.21253552367089484,
+      "mean_spearman_full78": 0.19960112851605855,
+      "mean_sign_agreement": 0.9174242424242425
+    },
+    {
+      "r2_bucket": "vừa (0.1–0.3)",
+      "n_flows": 59,
+      "mean_jaccard": 0.3656846919558783,
+      "mean_spearman_full78": 0.12966329958391742,
+      "mean_sign_agreement": 0.6779661016949152
+    },
+    {
+      "r2_bucket": "cao (>=0.3)",
+      "n_flows": 767,
+      "mean_jaccard": 0.2018014941743755,
+      "mean_spearman_full78": 0.17077832470699628,
+      "mean_sign_agreement": 0.864963503649635
+    }
+  ]
+}

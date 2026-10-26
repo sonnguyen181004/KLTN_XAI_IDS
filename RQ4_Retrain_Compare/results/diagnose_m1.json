@@ -1,0 +1,60 @@
+{
+ "M1_test_stratified_khong_trung": {
+  "rows": 566633,
+  "removed": 115467,
+  "accuracy": 99.99576445424111,
+  "macro_f1": 99.29948729904493,
+  "by_class_recall": {
+   "Benign": 99.99810100483973,
+   "Bot": 100.0,
+   "Brute Force -Web": 96.15384615384616,
+   "Brute Force -XSS": 100.0,
+   "DDOS attack-HOIC": 100.0,
+   "DDOS attack-LOIC-UDP": 99.42196531791907,
+   "DDoS attacks-LOIC-HTTP": 100.0,
+   "DoS attacks-GoldenEye": 100.0,
+   "DoS attacks-Hulk": 99.99742002063984,
+   "DoS attacks-Slowloris": 100.0,
+   "Infilteration": 99.84652768896278,
+   "SQL Injection": 87.5,
+   "SSH-Bruteforce": 100.0
+  }
+ },
+ "importance_M1": {
+  "Init Fwd Win Byts": 19.61,
+  "Init Bwd Win Byts": 18.57,
+  "Dst Port": 15.63,
+  "Fwd Seg Size Min": 14.78,
+  "TotLen Fwd Pkts": 11.87,
+  "Pkt Len Std": 5.21,
+  "Flow Duration": 2.27,
+  "Fwd Pkts/b Avg": 1.91,
+  "Pkt Len Mean": 1.71,
+  "Bwd Pkt Len Std": 1.49
+ },
+ "importance_M0": {
+  "Dst Port": 23.46,
+  "Init Fwd Win Byts": 16.69,
+  "Fwd Seg Size Min": 13.5,
+  "Fwd Pkt Len Max": 7.76,
+  "Fwd Pkts/s": 5.77,
+  "Fwd IAT Std": 4.99,
+  "Flow Duration": 4.32,
+  "Flow IAT Min": 2.74,
+  "Bwd Pkt Len Std": 2.32,
+  "Tot Fwd Pkts": 2.12
+ },
+ "M1_bo_dac_trung_moi_truong_test_stratified": {
+  "accuracy": 99.97742266529835,
+  "macro_f1": 98.6790017163022,
+  "fpr": 0.009215238653737407,
+  "hulk_recall": 99.99484004127966
+ },
+ "env_features_removed": [
+  "Dst Port",
+  "Protocol",
+  "Init Fwd Win Byts",
+  "Init Bwd Win Byts",
+  "Fwd Seg Size Min"
+ ]
+}

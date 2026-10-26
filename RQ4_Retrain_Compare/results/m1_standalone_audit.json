@@ -1,0 +1,66 @@
+{
+ "provenance_check": {
+  "Friday-16-02-2018": {
+   "sampled": 300,
+   "found_in_raw": 279,
+   "label_matches_mapping": 279
+  },
+  "Wednesday-21-02-2018": {
+   "sampled": 450,
+   "found_in_raw": 300,
+   "label_matches_mapping": 300
+  },
+  "Wednesday-14-02-2018": {
+   "sampled": 300,
+   "found_in_raw": 279,
+   "label_matches_mapping": 279
+  }
+ },
+ "conflicting_label_groups": 0,
+ "identical_feature_groups": 2918867,
+ "shuffled_labels": {
+  "accuracy": 70.0,
+  "macro_f1": 6.334841628959276
+ },
+ "majority_baseline_accuracy": 70.0,
+ "learning_curve": {
+  "0.001": {
+   "train_rows": 2739,
+   "accuracy": 99.75751356106143,
+   "macro_f1": 96.62810671307794
+  },
+  "0.01": {
+   "train_rows": 27290,
+   "accuracy": 99.89209793285441,
+   "macro_f1": 96.77977469976263
+  },
+  "0.1": {
+   "train_rows": 272839,
+   "accuracy": 99.98607242339833,
+   "macro_f1": 96.52706764422905
+  }
+ },
+ "shallow_trees": {
+  "2": {
+   "accuracy": 86.6824512534819,
+   "macro_f1": 26.352364491983277
+  },
+  "3": {
+   "accuracy": 96.35551971851635,
+   "macro_f1": 43.88585537888596
+  },
+  "depth3_rules": "|--- Init Fwd Win Byts <= 26882.00\n|   |--- TotLen Fwd Pkts <= 21.00\n|   |   |--- Bwd Pkt Len Max <= 938.00\n|   |   |   |--- class: 0\n|   |   |--- Bwd Pkt Len Max >  938.00\n|   |   |   |--- class: 6\n|   |--- TotLen Fwd Pkts >  21.00\n|   |   |--- Dst Port <= 7895.50\n|   |   |   |--- class: 0\n|   |   |--- Dst Port >  7895.50\n|   |   |   |--- class: 1\n|--- Init Fwd Win Byts >  26882.00\n|   |--- ECE Flag Cnt <= 0.50\n|   |   |--- TotLen Bwd Pkts <= 944.00\n|   |   |   |--- class: 8\n|   |   |--- TotLen Bwd Pkts >  944.00\n|   |   |   |--- class: 12\n|   |--- ECE Flag Cnt >  0.50\n|   |   |--- FIN Flag Cnt <= 1.50\n|   |   |   |--- class: 0\n|   |   |--- FIN Flag Cnt >  1.50\n|   |   |   |--- class: 4\n",
+  "5": {
+   "accuracy": 99.54816009382789,
+   "macro_f1": 68.538774543132
+  }
+ },
+ "nearest_neighbor": {
+  "n_test": 3057,
+  "n_train_pool": 600000,
+  "median": 0.0,
+  "p90": 0.316841185092926,
+  "frac_below_0_01": 74.48478900883218,
+  "frac_below_0_1": 87.07883545960091
+ }
+}

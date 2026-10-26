@@ -1,0 +1,14 @@
+Label,flows_in_cache,unique_src_ip,days,top1_ip_share
+Benign,4151111,69632,10,0.010
+Bot,142921,10,1,0.111
+Brute Force -Web,131,1,2,1.000
+Brute Force -XSS,113,1,2,1.000
+DDOS attack-HOIC,1082293,10,1,0.101
+DDOS attack-LOIC-UDP,2527,10,2,0.107
+DDoS attacks-LOIC-HTTP,289328,10,1,0.102
+DoS attacks-GoldenEye,22560,1,1,1.000
+DoS attacks-Hulk,1803160,1,1,1.000
+DoS attacks-Slowloris,8490,1,1,1.000
+Infilteration,89663,2,2,0.556
+SQL Injection,39,1,2,1.000
+SSH-Bruteforce,94197,1,1,1.000

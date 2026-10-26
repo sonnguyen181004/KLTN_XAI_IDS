@@ -1,0 +1,25 @@
+﻿flow_id,true_label,pred_label
+29783,Infilteration,Benign
+37224,DDOS attack-LOIC-UDP,Benign
+50942,Infilteration,Benign
+93635,Infilteration,Benign
+106199,Infilteration,Benign
+108107,Benign,Infilteration
+165813,Infilteration,Benign
+202176,Benign,Infilteration
+221679,Benign,Infilteration
+224874,Benign,Infilteration
+247323,Infilteration,Benign
+361092,DDOS attack-LOIC-UDP,Benign
+365111,Infilteration,Benign
+377155,Infilteration,Benign
+377484,Benign,Infilteration
+404292,Infilteration,Benign
+414300,Infilteration,Benign
+424508,Infilteration,Benign
+468200,DoS attacks-Hulk,DoS attacks-Slowloris
+481802,SQL Injection,Benign
+495195,Infilteration,Benign
+566390,Benign,Infilteration
+642901,Brute Force -Web,Benign
+656114,Benign,Infilteration

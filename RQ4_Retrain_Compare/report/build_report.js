@@ -23,7 +23,7 @@ function nf(x, d = 0) {
 const pc = (x, d = 2) => nf(x, d) + "%";
 const cr = (m, t) => D.cross.find((r) => r.model === m && r.test === t);
 const R = D.rq1;
-const A = D.audit;
+const TC = D.train_cmp;
 const X = D.xai;
 const T3 = D.t3;
 const pct = (a, b, d = 2) => pc((100 * a) / b, d);
@@ -86,8 +86,9 @@ c.push(P("Dự án IDS thời gian thực có giải thích (RQ1, RQ2, RQ3, RQ4)
 // ================= 1. TÓM TẮT =================
 c.push(H1("1. Tóm tắt"));
 c.push(P(`Mô hình XGBoost của dự án (M0) đạt Accuracy ${pc(R.M0.acc)} và Macro F1 ${pc(R.M0.f1)} trên tập kiểm thử của bộ dữ liệu cũ, nhưng khi chạy trên lưu lượng thật của máy người dùng thì ${pc(100 * T3.M0_all784_attack_flagged / T3.t3_flows, 1)} số flow Benign bị báo thành tấn công. Cả ${nf(T3.t3_zone_flows)} flow nằm trong một vùng đặc trưng cụ thể đều bị báo là DoS Hulk, và đặt cờ FIN bằng 0 thì cả ${nf(T3.M0_counterfactual_all784["FIN=0"].changed_labels)} flow đó đổi nhãn, chỉ còn ${nf(T3.M0_counterfactual_all784["FIN=0"].attack_flagged)} trên ${nf(T3.t3_flows)} flow bị báo tấn công. Người dùng xác nhận toàn bộ ${nf(T3.t3_flows)} flow này là lưu lượng bình thường.`));
-c.push(P(`Nguồn gốc nằm ở dữ liệu huấn luyện. Trong 9 tệp CSV gốc của CSE-CIC-IDS2018, ${nf(A.orig_benign.tcp_flows)} flow Benign TCP chỉ có ${nf(A.orig_benign.fin_data_gt0)} flow vừa mang cờ FIN vừa có dữ liệu, và không có flow nào mang dữ liệu từ 66 byte trở lên. Trong bản đã sửa lỗi (improved), tỷ lệ này là ${pct(A.imp9_benign.fin_data_gt0, A.imp9_benign.tcp_flows)} và ${pct(A.imp9_benign.fin_data_ge_min, A.imp9_benign.tcp_flows)} của ${nf(A.imp9_benign.tcp_flows)} flow Benign TCP cùng chín ngày. Mô hình cũ gán nhãn tấn công cho từ ${pc(cr("M0", "T2a_improved_stratified").fpr_zone_pct, 3)} đến ${pc(cr("M0", "T2b_improved_thoi_gian").fpr_zone_pct, 0)} flow Benign trong vùng này, với ${nf(cr("M0", "T2a_improved_stratified").benign_zone_n)} flow ở riêng bộ test improved.`));
-c.push(P(`Nhóm huấn luyện lại hai mô hình theo đúng quy trình của RQ1 và RQ2, giữ nguyên siêu tham số và cấu hình SHAP, LIME. Mô hình M0b dùng dữ liệu cũ giới hạn 13 lớp chung. Mô hình M1 dùng mẫu 3,25 triệu dòng lấy từ bản improved. M1 báo nhầm ${pc(cr("M1", "T3_realtime_benign").fpr_pct, 1)} trên lưu lượng thật, so với ${pc(cr("M0", "T3_realtime_benign").fpr_pct, 1)} của M0. Tuy nhiên M1 chỉ nhận từ ${pc(cr("M1", "T1_test_cu").hulk_recall_pct, 1)} đến ${pc(cr("M1", "T1_test_cu_sach").hulk_recall_pct, 1)} số flow Hulk của bộ test cũ (bản đầy đủ và bản bỏ trùng), và điểm gần như tuyệt đối của M1 trên dữ liệu improved (Macro F1 ${pc(R.M1.f1)}) cho thấy dữ liệu này dễ tách trong chính phòng lab, không cho thấy chất lượng ngoài đời.`));
+c.push(P(`Nguồn gốc nằm ở dữ liệu huấn luyện. Bộ train cũ của RQ1 có ${nf(TC.cu.benign.tcp_rows)} flow Benign TCP, trong đó ${nf(TC.cu.benign.fin_data_gt0)} flow vừa mang cờ FIN vừa có dữ liệu và không flow nào mang dữ liệu từ 66 byte trở lên. Bộ train improved dựng theo cùng công thức lấy mẫu có ${nf(TC.moi.benign.tcp_rows)} flow Benign TCP, trong đó ${pct(TC.moi.benign.fin_data_gt0, TC.moi.benign.tcp_rows, 1)} vừa mang cờ FIN vừa có dữ liệu và ${pct(TC.moi.benign.fin_data_ge_min, TC.moi.benign.tcp_rows, 1)} mang dữ liệu từ 66 byte trở lên. Trên ${nf(cr("M0", "T2a_improved_stratified").benign_zone_n)} flow Benign có nhãn thật của bộ test improved nằm trong vùng này, mô hình cũ gán nhãn tấn công cho ${pc(cr("M0", "T2a_improved_stratified").fpr_zone_pct, 3)}.`));
+c.push(P(`Nhóm huấn luyện lại hai mô hình theo đúng quy trình của RQ1 và RQ2, giữ nguyên siêu tham số và cấu hình SHAP, LIME. M0b dùng dữ liệu cũ giới hạn 13 lớp chung. M1 dùng ${nf(TC.moi.rows)} dòng train lấy từ bản improved, cùng công thức lấy mẫu và cùng cách chia stratified 80/20 của RQ1, không dùng Timestamp hay địa chỉ IP. M1 báo nhầm ${pc(cr("M1", "T3_realtime_benign").fpr_pct, 1)} trên lưu lượng thật, so với ${pc(cr("M0", "T3_realtime_benign").fpr_pct, 1)} của M0. Tuy nhiên M1 chỉ nhận ${pc(cr("M1", "T1_test_cu").hulk_recall_pct, 1)} số flow Hulk của bộ test cũ và báo nhầm ${pc(cr("M1", "T1_test_cu").fpr_pct, 1)} Benign cũ.`));
+c.push(P(`M1 đạt Macro F1 ${pc(R.M1.f1)} trên test cùng nguồn. Nhóm kiểm tra riêng M1 và không thấy rò rỉ: nhãn xáo trộn chỉ đạt mức đoán lớp đông nhất, không có nhóm đặc trưng nào trùng mà khác nhãn. Điểm cao đến từ việc bài toán dễ: chỉ ${nf(D.standalone.learning_curve["0.001"].train_rows)} dòng train (0,1%) đã cho Macro F1 ${pc(D.standalone.learning_curve["0.001"].macro_f1, 1)}, và ${pc(D.standalone.nearest_neighbor.frac_below_0_01, 0)} dòng test có một dòng train gần như y hệt. Điểm này đo khả năng nhận ra chiến dịch tấn công trong chính phòng lab, chưa phải chất lượng ngoài đời.`));
 c.push(P("Kết luận có thể viết là dữ liệu huấn luyện cũ thiếu một loại lưu lượng Benign rất phổ biến, mô hình học vùng đó là Hulk, và đổi sang dữ liệu đã sửa lỗi làm báo nhầm biến mất trên lưu lượng thật. Chưa thể kết luận rằng nguyên nhân duy nhất là thiếu mẫu, vì hai bộ dữ liệu còn khác nhau ở cách định nghĩa đặc trưng, và thí nghiệm tách hai nguyên nhân (M2) đang được hoãn."));
 
 // ================= 2. MỤC TIÊU =================
@@ -146,32 +147,35 @@ c.push(P("Liu, Engelen, Lynar, Essam và Joosen (CNS 2022) mở rộng việc kh
 c.push(P("Tệp CSE-CIC-IDS2018 improved trong thư mục dataset có cột Attempted Category và các nhãn Attempted, khớp với mô tả bản sửa lỗi của nhóm tác giả. Nguồn tải chính xác của tệp này chưa được ghi lại trong dự án và cần được xác nhận trước khi nộp bài."));
 
 // ================= 5. KIỂM TOÁN =================
-c.push(H1("5. Kiểm toán dữ liệu: bản gốc và bản improved"));
-c.push(P(`Nhóm đếm lại cờ FIN bằng một chương trình đọc toàn bộ chín ngày có mặt ở cả hai bản, chỉ xét flow giao thức TCP và dùng đúng các ngưỡng của mô hình. Ngày Tuesday-20-02 không có trong thư mục CSV gốc nên bị loại khỏi phép so sánh. Bản gốc có ${nf(A.flags.flows_all)} flow, trong đó ${nf(A.flags.flows_tcp)} flow TCP. Bản improved có ${nf(A.imp9_benign.tcp_flows)} flow Benign TCP trong cùng chín ngày, hơn bảy lần bản gốc, và chưa có lời giải thích cho chênh lệch này.`));
-c.push(T([4400, 2700, 2538], ["Chỉ tiêu trên flow Benign TCP (9 ngày chung)", "CSV gốc", "Bản improved"], [
-  ["Số flow", nf(A.orig_benign.tcp_flows), nf(A.imp9_benign.tcp_flows)],
-  ["Mang cờ FIN", nf(A.orig_benign.fin) + " (" + pct(A.orig_benign.fin, A.orig_benign.tcp_flows) + ")", nf(A.imp9_benign.fin) + " (" + pct(A.imp9_benign.fin, A.imp9_benign.tcp_flows) + ")"],
-  ["FIN và có dữ liệu", nf(A.orig_benign.fin_data_gt0) + " (" + pct(A.orig_benign.fin_data_gt0, A.orig_benign.tcp_flows, 4) + ")", nf(A.imp9_benign.fin_data_gt0) + " (" + pct(A.imp9_benign.fin_data_gt0, A.imp9_benign.tcp_flows) + ")"],
-  ["FIN và dữ liệu từ 66 byte", nf(A.orig_benign.fin_data_ge_min), nf(A.imp9_benign.fin_data_ge_min) + " (" + pct(A.imp9_benign.fin_data_ge_min, A.imp9_benign.tcp_flows) + ")"],
-  ["Nằm trong vùng ba điều kiện của Hulk", nf(A.orig_benign.zone), nf(A.imp9_benign.zone) + " (" + pct(A.imp9_benign.zone, A.imp9_benign.tcp_flows) + ")"],
-  ["Hulk mang cờ FIN", nf(A.orig_hulk.fin) + " trên " + nf(A.orig_hulk.tcp_flows) + " (" + pct(A.orig_hulk.fin, A.orig_hulk.tcp_flows) + ")", nf(A.imp9_hulk.fin) + " trên " + nf(A.imp9_hulk.tcp_flows) + " (" + pct(A.imp9_hulk.fin, A.imp9_hulk.tcp_flows) + ")"],
-  ["Hulk nằm trong vùng ba điều kiện", nf(A.orig_hulk.zone) + " trên " + nf(A.orig_hulk.tcp_flows), nf(A.imp9_hulk.zone) + " trên " + nf(A.imp9_hulk.tcp_flows)],
-  ["Giá trị cờ FIN quan sát được", "Chỉ 0 hoặc 1", "Nhận cả 2, 3, 4 và lớn hơn"],
+c.push(H1("5. So sánh hai bộ dữ liệu train"));
+c.push(P(`Phần này so sánh đúng hai bộ đã đưa vào huấn luyện: bộ train cũ của RQ1 (${nf(TC.cu.rows)} dòng, giới hạn 13 lớp chung) và bộ train improved dựng cho M1 (${nf(TC.moi.rows)} dòng). Cả hai theo cùng công thức lấy mẫu (70% Benign, 30% tấn công, cùng thành phần các lớp tấn công lớn), nên so sánh trực tiếp được. Nhóm không dùng các tệp dữ liệu gốc nữa vì bộ train chính là mẫu của chúng. Chỉ xét flow giao thức TCP và dùng đúng các ngưỡng của vùng Hulk.`));
+c.push(T([4300, 2670, 2668], ["Chỉ tiêu", "Train cũ", "Train improved"], [
+  ["Số dòng / số flow TCP", nf(TC.cu.rows) + " / " + nf(TC.cu.tcp_rows), nf(TC.moi.rows) + " / " + nf(TC.moi.tcp_rows)],
+  ["Benign TCP mang cờ FIN", nf(TC.cu.benign.fin) + " trên " + nf(TC.cu.benign.tcp_rows) + " (" + pct(TC.cu.benign.fin, TC.cu.benign.tcp_rows) + ")", nf(TC.moi.benign.fin) + " trên " + nf(TC.moi.benign.tcp_rows) + " (" + pct(TC.moi.benign.fin, TC.moi.benign.tcp_rows) + ")"],
+  ["Benign TCP có FIN và có dữ liệu", nf(TC.cu.benign.fin_data_gt0) + " (" + pct(TC.cu.benign.fin_data_gt0, TC.cu.benign.tcp_rows, 4) + ")", nf(TC.moi.benign.fin_data_gt0) + " (" + pct(TC.moi.benign.fin_data_gt0, TC.moi.benign.tcp_rows) + ")"],
+  ["Benign TCP có FIN và dữ liệu từ 66 byte", nf(TC.cu.benign.fin_data_ge_min), nf(TC.moi.benign.fin_data_ge_min) + " (" + pct(TC.moi.benign.fin_data_ge_min, TC.moi.benign.tcp_rows) + ")"],
+  ["Benign nằm trong vùng ba điều kiện của Hulk", nf(TC.cu.benign.zone), nf(TC.moi.benign.zone) + " (" + pct(TC.moi.benign.zone, TC.moi.benign.tcp_rows) + ")"],
+  ["Hulk TCP mang cờ FIN", nf(TC.cu.hulk.fin) + " trên " + nf(TC.cu.hulk.tcp_rows) + " (" + pct(TC.cu.hulk.fin, TC.cu.hulk.tcp_rows) + ")", nf(TC.moi.hulk.fin) + " trên " + nf(TC.moi.hulk.tcp_rows) + " (" + pct(TC.moi.hulk.fin, TC.moi.hulk.tcp_rows) + ")"],
+  ["Hulk nằm trong vùng ba điều kiện", nf(TC.cu.hulk.zone) + " trên " + nf(TC.cu.hulk.tcp_rows), nf(TC.moi.hulk.zone) + " trên " + nf(TC.moi.hulk.tcp_rows)],
+  ["Flow có từ 4 gói mỗi chiều mang FIN", nf(TC.cu.tcp_ge4pkts_each_way_fin) + " trên " + nf(TC.cu.tcp_ge4pkts_each_way) + " (" + pct(TC.cu.tcp_ge4pkts_each_way_fin, TC.cu.tcp_ge4pkts_each_way, 3) + ")", nf(TC.moi.tcp_ge4pkts_each_way_fin) + " trên " + nf(TC.moi.tcp_ge4pkts_each_way) + " (" + pct(TC.moi.tcp_ge4pkts_each_way_fin, TC.moi.tcp_ge4pkts_each_way, 1) + ")"],
+  ["Flow TCP có cờ ACK", pct(TC.cu.tcp_ack_ge1, TC.cu.tcp_rows, 1), pct(TC.moi.tcp_ack_ge1, TC.moi.tcp_rows, 1)],
+  ["Giá trị cờ FIN quan sát được", "Chỉ 0 hoặc 1", "Nhận 0 đến 5 và hơn nữa"],
 ]));
-c.push(cap("Bảng 3. Kiểm toán cờ FIN trên flow Benign TCP. Mã và kết quả từng ngày nằm trong RQ4_Retrain_Compare/results."));
+c.push(cap("Bảng 3. So sánh cờ TCP giữa hai bộ train. Mã nằm ở scripts/02_compare_train_sets.py, kết quả ở results/compare_train_sets.json."));
 c.push(IMG("hinh2_fin_benign.png", 560, 253));
-c.push(cap("Hình 1. Tỷ lệ flow Benign TCP mang cờ FIN trong CSV gốc và bản improved."));
-c.push(P(`Trong CSV gốc, cờ FIN bằng 0 ở ${pct(A.flags.flows_tcp - A.flags.tcp_fin_ge1, A.flags.flows_tcp)} flow TCP, và chỉ ${pct(A.flags.tcp_ge4pkts_each_way_fin, A.flags.tcp_ge4pkts_each_way)} trong ${nf(A.flags.tcp_ge4pkts_each_way)} flow có từ 4 gói trở lên ở mỗi chiều, tức những kết nối trông khá đầy đủ, mang cờ FIN. Theo giao thức TCP, một kết nối hoàn chỉnh thường kết thúc bằng FIN, nên tỷ lệ này rất thấp. Cờ ACK cũng chỉ có ở ${pct(A.flags.tcp_ack_ge1, A.flags.flows_tcp)} flow TCP dù hầu như mọi kết nối đều có gói ACK. Cả năm cột cờ trong CSV gốc chỉ nhận 0 hoặc 1. Các dấu hiệu này phù hợp với mô tả lỗi đếm cờ và lỗi cắt flow của CICFlowMeter-V3, nhưng chưa phải bằng chứng trực tiếp vì thiếu PCAP gốc.`));
-c.push(P("Cách giải thích phù hợp với số liệu như sau. Vì flow bị cắt ở gói FIN đầu tiên và cờ chỉ được ghi nhận ở gói đầu, phần lớn flow mang FIN trong bản gốc là những phần đuôi rỗng của kết nối. Kết nối Benign có dữ liệu bị ghi nhận không có FIN. Riêng Hulk dùng Connection: close nên FIN đi cùng dữ liệu. Giải thích này khớp các con số nhưng là giả thuyết."));
+c.push(cap("Hình 1. Tỷ lệ flow Benign TCP mang cờ FIN trong hai bộ train."));
+c.push(P(`Trong bộ train cũ, chỉ ${pct(TC.cu.tcp_ge4pkts_each_way_fin, TC.cu.tcp_ge4pkts_each_way, 3)} trong ${nf(TC.cu.tcp_ge4pkts_each_way)} flow có từ 4 gói trở lên ở mỗi chiều, tức những kết nối trông khá đầy đủ, mang cờ FIN. Theo giao thức TCP một kết nối hoàn chỉnh thường kết thúc bằng FIN, nên tỷ lệ này rất thấp, và bộ train improved có ${pct(TC.moi.tcp_ge4pkts_each_way_fin, TC.moi.tcp_ge4pkts_each_way, 1)}. Cờ ACK cũng chỉ có ở ${pct(TC.cu.tcp_ack_ge1, TC.cu.tcp_rows, 1)} flow TCP của bộ cũ dù hầu như mọi kết nối đều có gói ACK, và cả năm cột cờ chỉ nhận 0 hoặc 1. Các dấu hiệu này phù hợp với mô tả lỗi đếm cờ và lỗi cắt flow của CICFlowMeter-V3, nhưng chưa phải bằng chứng trực tiếp vì thiếu PCAP gốc.`));
+c.push(P(`Hệ quả cho mô hình rất cụ thể. Ở bộ cũ vùng ba điều kiện chỉ chứa ${nf(TC.cu.zone_by_label["DoS attacks-Hulk"])} dòng Hulk, nên mô hình học vùng đó là Hulk. Ở bộ improved vùng đó chứa ${nf(TC.moi.zone_by_label.Benign)} dòng Benign, ${nf(TC.moi.zone_by_label["DDOS attack-HOIC"])} dòng HOIC, ${nf(TC.moi.zone_by_label.Bot)} dòng Bot và chỉ ${nf(TC.moi.zone_by_label["DoS attacks-Hulk"])} dòng Hulk, tức quy tắc cũ không còn đặc trưng cho Hulk. Cách giải thích phù hợp với số liệu là vì flow bị cắt ở gói FIN đầu tiên và cờ chỉ được ghi nhận ở gói đầu, Benign có dữ liệu của bộ cũ thường không mang FIN, còn Hulk dùng Connection: close nên FIN đi cùng dữ liệu. Giải thích này khớp các con số nhưng là giả thuyết.`));
 
-c.push(H2("5.1 Hulk của hai bản là hai kiểu lưu lượng khác nhau"));
-const HP = fs.readFileSync(path.join(ROOT, "results", "hulk_profile_friday16.csv"), "utf8").replace(/^﻿/, "").trim().split("\n").map((l) => l.split(","));
-const hh = HP[0];
-const col = (n) => hh.indexOf(n);
-const rowsHP = HP.slice(1).map((r) => [r[0] + ", " + r[1], nf(+r[col("so_flow_tcp")]), nf(+r[col("Tot Fwd Pkts")]), nf(+r[col("Fwd Pkt Len Max")]), nf(+r[col("Init Fwd Win Byts")]), nf(+r[col("Fwd Seg Size Min")]), nf(+r[col("FIN Flag Cnt")])]);
-c.push(T([2338, 1300, 1100, 1300, 1300, 1200, 1100], ["Nhóm (ngày Friday-16, TCP)", "Số flow", "Tot Fwd Pkts", "Fwd Pkt Len Max", "Init Fwd Win Byts", "Fwd Seg Size Min", "FIN Flag Cnt"], rowsHP));
-c.push(cap("Bảng 4. Trung vị đặc trưng của flow Hulk và Benign. Mã nằm ở scripts/12_hulk_profile.py."));
-c.push(P("Hulk trong CSV gốc có trung vị 2 gói chiều đi, Fwd Pkt Len Max bằng 0 và không có FIN, tức phần lớn là những flow rất ngắn không mang dữ liệu. Hulk trong bản improved là kết nối HTTP đầy đủ với 5 gói chiều đi, có dữ liệu và có FIN. Cửa sổ nhận ban đầu chênh nhau cả trăm lần. Hai bản vì vậy mô tả cùng một công cụ tấn công bằng hai kiểu đặc trưng khác nhau, và một mô hình học từ bản này không thể nhận ra Hulk của bản kia."));
+c.push(H2("5.1 Hulk của hai bộ là hai kiểu lưu lượng khác nhau"));
+const prof = (set, k) => TC[set][k].profile_median;
+const rowsHP = [["Train cũ", "Hulk", "cu", "hulk"], ["Train cũ", "Benign", "cu", "benign"], ["Train improved", "Hulk", "moi", "hulk"], ["Train improved", "Benign", "moi", "benign"]].map(([s, n, a, b]) => {
+  const p = prof(a, b);
+  return [s + ", " + n, nf(TC[a][b].tcp_rows), nf(p["Tot Fwd Pkts"]), nf(p["Fwd Pkt Len Max"]), nf(p["Init Fwd Win Byts"]), nf(p["Fwd Seg Size Min"]), nf(p["FIN Flag Cnt"])];
+});
+c.push(T([2338, 1300, 1100, 1300, 1300, 1200, 1100], ["Nhóm (flow TCP)", "Số flow", "Tot Fwd Pkts", "Fwd Pkt Len Max", "Init Fwd Win Byts", "Fwd Seg Size Min", "FIN Flag Cnt"], rowsHP));
+c.push(cap("Bảng 4. Trung vị đặc trưng của flow Hulk và Benign trong hai bộ train."));
+c.push(P(`Hulk trong bộ train cũ có trung vị ${nf(prof("cu", "hulk")["Tot Fwd Pkts"])} gói chiều đi, Fwd Pkt Len Max bằng ${nf(prof("cu", "hulk")["Fwd Pkt Len Max"])} và FIN bằng ${nf(prof("cu", "hulk")["FIN Flag Cnt"])}, tức phần lớn là những flow rất ngắn không mang dữ liệu. Hulk trong bộ improved là kết nối HTTP đầy đủ với ${nf(prof("moi", "hulk")["Tot Fwd Pkts"])} gói chiều đi, Fwd Pkt Len Max ${nf(prof("moi", "hulk")["Fwd Pkt Len Max"])}, FIN ${nf(prof("moi", "hulk")["FIN Flag Cnt"])} và cửa sổ nhận ban đầu ${nf(prof("moi", "hulk")["Init Fwd Win Byts"])} so với ${nf(prof("cu", "hulk")["Init Fwd Win Byts"])}. Hai bộ vì vậy mô tả cùng một công cụ tấn công bằng hai kiểu đặc trưng khác nhau, và một mô hình học từ bộ này không thể nhận ra Hulk của bộ kia.`));
 
 c.push(H2("5.2 Đặc trưng và nhãn"));
 c.push(P("Cả 78 đặc trưng của mô hình đều có tương ứng trong bản improved, trong đó 48 đặc trưng chỉ khác tên và được ánh xạ bằng bảng results/mapping_features.csv. Bản improved có thêm 5 cột mà mô hình không dùng, gồm Fwd RST Flags, Bwd RST Flags, ICMP Code, ICMP Type và Total TCP Flow Time. Tập nhãn thì không giống nhau. Bản improved không có DoS attacks-SlowHTTPTest, và FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted (tấn công thất bại) bị bỏ ra khỏi mọi thí nghiệm. Bốn loại Infiltration được gộp lại thành một lớp. Kết quả là không gian nhãn chung gồm 13 lớp, và bảng ánh xạ đầy đủ nằm ở results/mapping_labels_improved.csv."));
@@ -183,7 +187,7 @@ c.push(T([2300, 3669, 3669], ["Hạng mục", "Mô hình cũ (RQ1, RQ2)", "Mô h
   ["Thuật toán và tham số", "XGBClassifier, 100 cây, độ sâu 8, learning rate 0,08, hist, seed 42", "Giống hệt, không quét lại tham số"],
   ["Đặc trưng", "78 đặc trưng float32, không Timestamp, không IP", "Giống hệt, đổi tên theo bảng ánh xạ"],
   ["Lấy mẫu", "3,5 triệu dòng, 70% Benign và 30% tấn công, giữ 100% lớp hiếm", "Cùng công thức, số mẫu mỗi lớp theo bộ cũ và bị chặn bởi số flow sẵn có"],
-  ["Chia dữ liệu", "Stratified 80/20", "Stratified 80/20, cộng thêm bộ giữ riêng theo thời gian"],
+  ["Chia dữ liệu", "Stratified 80/20, seed 42", "Giống hệt, không bộ giữ riêng nào"],
   ["Chỉ số", "Accuracy, Macro P, R, F1, FPR, FNR bằng ids_detection_metrics", "Giống hệt, cùng hàm"],
   ["Giải thích", "SHAP toàn cục và từng flow, LIME khóa cấu hình, đồng thuận, cổng chất lượng, trung thành, miền tri thức, nhóm lỗi", "Chạy lại cùng mã, LIME dùng đúng cấu hình đã khóa ở RQ2"],
 ]));
@@ -203,19 +207,17 @@ c.push(P("M0b tồn tại vì hai lớp SlowHTTPTest và FTP-BruteForce không c
 c.push(H2("6.3 Dữ liệu và các bộ đánh giá"));
 const comp = D.composition;
 const classes = Object.keys(comp);
-c.push(T([3000, 1560, 1560, 1760, 1758], ["Lớp", "Train cũ", "Train M1", "Test M1", "Giữ riêng theo thời gian"],
-  classes.map((k) => [k, nf(comp[k].old_train), nf(comp[k].d2_train), nf(comp[k].d2_test), nf(comp[k].t2_holdout)])));
+c.push(T([3000, 1660, 1660, 1660, 1658], ["Lớp", "Train cũ", "Test cũ", "Train M1", "Test M1"],
+  classes.map((k) => [k, nf(comp[k].old_train), nf(comp[k].old_test), nf(comp[k].d2_train), nf(comp[k].d2_test)])));
 c.push(cap("Bảng 7. Thành phần các bộ dữ liệu. Hulk có đúng 155.042 dòng train ở cả hai bộ."));
-c.push(P(`Bản improved được quét một lần duy nhất (khoảng 35 GB, ${nf(Object.values(D.scan.raw_label_counts).reduce((s, v) => s + v, 0))} flow), giữ toàn bộ flow của 12 lớp tấn công chung và 7% Benign ngẫu nhiên, chỉ một flow Benign bị bỏ vì giá trị NaN. Số mẫu mỗi lớp tấn công lấy theo thành phần bộ cũ, bị chặn bởi số flow có sẵn. Ví dụ SQL Injection chỉ có 39 flow nên mục tiêu là 30 sau khi trừ phần giữ riêng. Benign được lấy sao cho giữ tỷ lệ 70% và 30%.`));
-c.push(P("Để tránh lỗi test trùng train, mỗi lớp được sắp theo thời gian. Phần mẫu chỉ lấy từ 78% đầu của lớp, 2% tiếp theo bị bỏ làm khoảng đệm, và 20% cuối được giữ riêng thành bộ giữ riêng theo thời gian, nhờ đó một kết nối không nằm ở cả hai phía."));
+c.push(P(`Bản improved được quét một lần duy nhất (khoảng 35 GB, ${nf(Object.values(D.scan.raw_label_counts).reduce((s, v) => s + v, 0))} flow), giữ toàn bộ flow của 12 lớp tấn công chung và 7% Benign ngẫu nhiên. Từ bộ nhớ đệm này, nhóm lấy ngẫu nhiên số mẫu mỗi lớp tấn công theo thành phần của bộ cũ, bị chặn bởi số flow có sẵn: Brute Force -Web chỉ còn 131 flow, Brute Force -XSS 113 và SQL Injection 39. Benign được lấy sao cho giữ tỷ lệ 70% và 30%. Sau đó chia stratified 80/20 với seed 42, đúng như RQ1. Không có vùng thời gian hay bộ giữ riêng nào, nên không có thí nghiệm nào dùng Timestamp hay địa chỉ IP.`));
 c.push(T([1500, 4300, 3838], ["Mã", "Nội dung", "Ghi chú"], [
   ["T1", "Test cũ, giới hạn 13 lớp (694.758 dòng), và bản bỏ dòng trùng với train cũ", "Trong phân phối của M0 và M0b"],
-  ["T2a", "Test stratified 20% của bản improved (" + nf(D.leak.d2_test_rows) + " dòng), và bản bỏ trùng", "Trong phân phối của M1"],
-  ["T2b", "Bộ giữ riêng theo thời gian (" + nf(D.leak.t2_holdout_rows) + " dòng), và bản bỏ trùng", "Trong phân phối của M1"],
+  ["T2a", "Test 20% của bản improved (" + nf(D.leak.d2_test_rows) + " dòng), và bản bỏ trùng", "Trong phân phối của M1"],
   ["T3", nf(T3.t3_flows) + " flow realtime của máy người dùng, nguồn feeder_live, bỏ multicast và flow PCAP", "Nhãn Benign do người dùng xác nhận bằng lời ngày 26/10/2026, chưa có chi tiết hoạt động từng phiên"],
 ]));
 c.push(cap("Bảng 8. Các bộ đánh giá."));
-c.push(P(`Về trùng lặp, ${nf(D.leak.d2_test_rows_also_in_train)} trên ${nf(D.leak.d2_test_rows)} dòng test của M1 (${pct(D.leak.d2_test_rows_also_in_train, D.leak.d2_test_rows, 1)}) và ${nf(D.leak.t2_holdout_rows_also_in_train)} trên ${nf(D.leak.t2_holdout_rows)} dòng giữ riêng (${pct(D.leak.t2_holdout_rows_also_in_train, D.leak.t2_holdout_rows, 1)}) có 78 đặc trưng giống hệt một dòng trong train. Bộ cũ có ${pct(D.leak.old_test_rows_also_in_train, D.leak.old_test_rows, 2)}. Các công cụ tấn công trong lab gửi nhiều gói giống hệt nhau nên flow trùng xuất hiện tự nhiên khi chia ngẫu nhiên. Nhóm giữ nguyên cách chia để so sánh cùng điều kiện với RQ1, và bổ sung mọi bản bỏ trùng để kết luận không phụ thuộc vào dòng trùng.`));
+c.push(P(`Về trùng lặp, ${nf(D.leak.d2_test_rows_also_in_train)} trên ${nf(D.leak.d2_test_rows)} dòng test của M1 (${pct(D.leak.d2_test_rows_also_in_train, D.leak.d2_test_rows, 1)}) có 78 đặc trưng giống hệt một dòng trong train. Bộ cũ có ${pct(D.leak.old_test_rows_also_in_train, D.leak.old_test_rows, 2)}. Các công cụ tấn công trong lab gửi nhiều gói giống hệt nhau nên flow trùng xuất hiện tự nhiên khi chia ngẫu nhiên. Nhóm giữ nguyên cách chia để so sánh cùng điều kiện với RQ1, và bổ sung mọi bản bỏ trùng để kết luận không phụ thuộc vào dòng trùng.`));
 
 // ================= 7. KẾT QUẢ =================
 c.push(H1("7. Kết quả"));
@@ -233,7 +235,7 @@ c.push(P("M0b gần giống M0 và cao hơn một chút, vì bỏ hai lớp khó
 
 c.push(H2("7.2 Đánh giá chéo"));
 c.push(P("Mỗi mô hình được đo trên mọi bộ test, với cùng một bộ chỉ số. Bảng 10 chỉ nêu các bản đã bỏ dòng trùng, và bản đầy đủ nằm ở results/cross_evaluation.csv."));
-const sets = [["T1_test_cu_sach", "T1 test cũ"], ["T2a_improved_stratified_sach", "T2a test improved"], ["T2b_improved_thoi_gian_sach", "T2b giữ riêng theo thời gian"], ["T3_realtime_benign", "T3 realtime (Benign)"]];
+const sets = [["T1_test_cu_sach", "T1 test cũ"], ["T2a_improved_stratified_sach", "T2a test improved"], ["T3_realtime_benign", "T3 realtime (Benign)"]];
 const rowsX = [];
 for (const [k, nm] of sets) {
   for (const m of ["M0", "M0b", "M1"]) {
@@ -249,7 +251,7 @@ c.push(IMG("hinh1_benign_bao_nham.png", 560, 280));
 c.push(cap("Hình 2. Tỷ lệ Benign bị báo thành tấn công theo mô hình và bộ test."));
 const m0z = cr("M0", "T2a_improved_stratified_sach");
 c.push(P(`Trên dữ liệu improved có nhãn thật, M0 báo ${pc(m0z.fpr_pct, 1)} flow Benign thành tấn công, và trong vùng ba điều kiện của Hulk thì ${pc(m0z.fpr_zone_pct, 2)} trong ${nf(m0z.benign_zone_n)} flow bị báo Hulk. Ngoài vùng này tỷ lệ chỉ ${pc(m0z.fpr_outside_zone_pct, 3)}. Đây là bằng chứng ở quy mô gần một trăm nghìn flow có nhãn thật, không phụ thuộc vào việc tự đánh giá lưu lượng. M1 gần như không báo nhầm Benign trên mọi bộ improved và trên lưu lượng thật, nhưng không dùng được cho dữ liệu cũ. Trên test cũ M1 chỉ nhận ${pc(cr("M1", "T1_test_cu_sach").hulk_recall_pct, 2)} số flow Hulk, vì Hulk của hai bản là hai kiểu lưu lượng khác nhau như Bảng 4 cho thấy.`));
-c.push(P(`Chiều ngược lại cũng đáng chú ý. M0 nhận ${pc(m0z.hulk_recall_pct, 2)} flow Hulk của bản improved, nhưng nhiều khả năng nhờ dấu hiệu FIN, vì ${pct(A.imp9_hulk.fin, A.imp9_hulk.tcp_flows, 2)} flow Hulk của bản improved mang FIN. Điểm này làm cho độ nhận Hulk cao của M0 không phản ánh khả năng nhận diện hành vi tấn công.`));
+c.push(P(`Chiều ngược lại cũng đáng chú ý. M0 nhận ${pc(m0z.hulk_recall_pct, 2)} flow Hulk của bản improved, nhưng nhiều khả năng nhờ dấu hiệu FIN, vì ${pct(TC.moi.hulk.fin, TC.moi.hulk.tcp_rows, 2)} flow Hulk của bộ train improved mang FIN. Điểm này làm cho độ nhận Hulk cao của M0 không phản ánh khả năng nhận diện hành vi tấn công.`));
 
 c.push(H2("7.3 Trên lưu lượng thật của máy người dùng"));
 const t3m0 = cr("M0", "T3_realtime_benign"), t3m0b = cr("M0b", "T3_realtime_benign"), t3m1 = cr("M1", "T3_realtime_benign");
@@ -294,27 +296,39 @@ c.push(P(`Kết luận về phương pháp giữ nguyên. SHAP trung thành hơn
 c.push(P(`SHAP toàn cục của M1 cho lớp Hulk vẫn đặt ${X.M1.top5_hulk[0][0]} (${nf(X.M1.top5_hulk[0][1], 2)}) và ${X.M1.top5_hulk[1][0]} (${nf(X.M1.top5_hulk[1][1], 2)}) lên đầu, tức M1 vẫn nhận Hulk chủ yếu qua đặc trưng môi trường, dù không còn dùng cờ FIN. Với lớp Benign, đặc trưng đứng đầu của M1 là ${X.M1.top5_benign[0][0]} (${nf(X.M1.top5_benign[0][1], 2)}). Dữ liệu sửa lỗi bỏ được đường tắt FIN nhưng không bỏ được đường tắt môi trường.`));
 
 // ================= 8. CHẨN ĐOÁN =================
-c.push(H1("8. Vì sao M1 đạt gần 100%"));
-const dg = D.diag;
-c.push(P("Điểm của M1 trên dữ liệu improved cao đến mức cần kiểm tra trước khi tin. Nhóm kiểm tra ba khả năng."));
-c.push(T([2400, 3800, 3438], ["Giả thuyết", "Kiểm tra", "Kết quả"], [
-  ["Test có dòng giống hệt train", "Bỏ " + nf(dg.M1_test_stratified_khong_trung.removed) + " dòng trùng rồi đo lại", "Macro F1 " + pc(dg.M1_test_stratified_khong_trung.macro_f1) + ", không đổi so với " + pc(R.M1.f1)],
-  ["Chia ngẫu nhiên làm lộ dữ liệu", "Đo trên bộ giữ riêng theo thời gian đã bỏ " + nf(dg.M1_holdout_thoi_gian_khong_trung.removed) + " dòng trùng", "Macro F1 " + pc(dg.M1_holdout_thoi_gian_khong_trung.macro_f1) + ", vẫn rất cao"],
-  ["Mô hình chỉ dựa vài đặc trưng môi trường", "Huấn luyện lại không có Dst Port, Protocol, hai cửa sổ nhận ban đầu và Fwd Seg Size Min", "Macro F1 " + pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.macro_f1) + ", Hulk recall " + pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.hulk_recall, 1)],
+c.push(H1("8. Kiểm tra riêng M1"));
+const dg = D.diag, SA = D.standalone, LC = SA.learning_curve, ST = SA.shallow_trees, NN = SA.nearest_neighbor, PM = D.perclass;
+const pv = SA.provenance_check;
+const pvFound = Object.values(pv).reduce((s, v) => s + v.found_in_raw, 0), pvSamp = Object.values(pv).reduce((s, v) => s + v.sampled, 0), pvOk = Object.values(pv).reduce((s, v) => s + v.label_matches_mapping, 0);
+c.push(P(`M1 đạt Accuracy ${pc(R.M1.acc)}, Macro F1 ${pc(R.M1.f1)} và FPR ${pc(R.M1.fpr, 4)}. Con số này quá cao nên nhóm kiểm tra M1 như một mô hình riêng, trước khi so với M0. M1 dùng đúng 78 đặc trưng của RQ1, không có Timestamp, địa chỉ IP hay mã định danh flow nào trong số đó, và bộ train và test lấy theo đúng công thức của RQ1.`));
+c.push(T([2300, 4100, 3238], ["Kiểm tra", "Cách làm", "Kết quả"], [
+  ["Nguồn dữ liệu", "Đối chiếu " + nf(pvSamp) + " dòng mẫu của ba ngày với tệp CSV improved theo khóa gồm thời điểm, thời lượng, số gói, tổng độ dài và cổng", nf(pvFound) + " dòng tìm thấy, " + nf(pvOk) + " dòng có nhãn đúng với bảng ánh xạ. Các dòng còn lại không khớp được khóa, chưa rõ lý do"],
+  ["Nhãn mâu thuẫn", "Tìm các nhóm dòng giống hệt 78 đặc trưng nhưng khác nhãn", nf(SA.conflicting_label_groups) + " trên " + nf(SA.identical_feature_groups) + " nhóm"],
+  ["Nhãn xáo trộn", "Huấn luyện lại với nhãn bị xáo ngẫu nhiên, đo trên test thật", "Accuracy " + pc(SA.shuffled_labels.accuracy, 2) + ", bằng đúng mức đoán lớp đông nhất (" + pc(SA.majority_baseline_accuracy, 2) + "), Macro F1 " + pc(SA.shuffled_labels.macro_f1, 1)],
+  ["Đường cong học", "Chỉ dùng 0,1%, 1%, 10% dữ liệu train", "0,1% (" + nf(LC["0.001"].train_rows) + " dòng): Macro F1 " + pc(LC["0.001"].macro_f1, 1) + "; 1%: " + pc(LC["0.01"].macro_f1, 1) + "; 10%: " + pc(LC["0.1"].macro_f1, 1) + "; 100%: " + pc(R.M1.f1, 1)],
+  ["Cây quyết định nông", "Độ sâu 2, 3, 5", "Accuracy " + pc(ST["2"].accuracy, 1) + ", " + pc(ST["3"].accuracy, 1) + ", " + pc(ST["5"].accuracy, 1) + "; Macro F1 " + pc(ST["2"].macro_f1, 1) + ", " + pc(ST["3"].macro_f1, 1) + ", " + pc(ST["5"].macro_f1, 1)],
+  ["Dòng test gần giống train", "Khoảng cách tới dòng train gần nhất sau khi chuẩn hóa, " + nf(NN.n_test) + " dòng test cân bằng theo lớp", pc(NN.frac_below_0_01, 1) + " có dòng train gần như y hệt (dưới 0,01 độ lệch chuẩn), " + pc(NN.frac_below_0_1, 1) + " dưới 0,1"],
+  ["Bỏ dòng trùng hệt", "Đo lại trên phần test không có dòng giống hệt train (bỏ " + nf(dg.M1_test_stratified_khong_trung.removed) + " dòng)", "Macro F1 " + pc(dg.M1_test_stratified_khong_trung.macro_f1, 2) + ", so với " + pc(R.M1.f1, 2)],
+  ["Bỏ đặc trưng môi trường", "Huấn luyện lại không có Dst Port, Protocol, hai cửa sổ nhận ban đầu và Fwd Seg Size Min", "Macro F1 " + pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.macro_f1, 2) + ", FPR " + pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.fpr, 3) + ", recall Hulk " + pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.hulk_recall, 2)],
 ]));
-c.push(cap("Bảng 14. Kiểm tra nguyên nhân điểm cao của M1 (scripts/09_diagnose_m1.py)."));
+c.push(cap("Bảng 14. Các kiểm tra riêng M1 (scripts/09_diagnose_m1.py và 13_audit_m1_standalone.py)."));
+c.push(P(`Nhãn xáo trộn chỉ đạt mức đoán lớp đông nhất nên không có đường rò rỉ nhãn vào đặc trưng. Không có hai dòng nào giống hệt nhau mà khác nhãn, nên điểm cao không đến từ việc nhãn mơ hồ. Điều nổi bật nhất là đường cong học: chỉ ${nf(LC["0.001"].train_rows)} dòng đã cho Macro F1 ${pc(LC["0.001"].macro_f1, 1)} và Accuracy ${pc(LC["0.001"].accuracy, 2)}. Bài toán phân loại này dễ, và cây sâu 5 đã đạt Accuracy ${pc(ST["5"].accuracy, 1)}. Thêm vào đó ${pc(NN.frac_below_0_01, 0)} dòng test có một dòng train gần như y hệt, vì các công cụ tấn công trong lab gửi lặp lại cùng một mẫu gói. Bỏ riêng các dòng trùng hệt không đổi điểm, vì phần gần giống nhưng không trùng hệt vẫn còn.`));
+const tp = D.srcip;
+c.push(T([3400, 1900, 1900, 2438], ["Lớp", "Số flow trong cache", "Số địa chỉ nguồn", "Địa chỉ đông nhất chiếm"], tp.map((r) => [r.Label, nf(r.flows_in_cache), nf(r.unique_src_ip), pc(100 * r.top1_ip_share, 1)])));
+c.push(cap("Bảng 15. Số địa chỉ nguồn theo lớp trong bản improved (quét lại tệp CSV, results/srcip_per_class.csv)."));
+c.push(P(`Bảng 15 cho thấy lý do không chia train và test tách theo máy gửi. Bảy trong mười hai lớp tấn công, gồm Hulk, GoldenEye, Slowloris, SSH-Bruteforce, Brute Force -Web, -XSS và SQL Injection, chỉ có một địa chỉ nguồn, nên không thể đưa toàn bộ máy tấn công của lớp đó sang phía test mà vẫn còn lớp để học. Địa chỉ IP và thời điểm không nằm trong 78 đặc trưng, nên mô hình không học thuộc được chúng trực tiếp. Tuy vậy mỗi lớp tấn công về bản chất là một công cụ chạy từ một hoặc mười máy trong một ngày, nên nhận ra lớp đó dễ hơn nhiều so với nhận ra tấn công nói chung. Benign thì có ${nf(tp.find((r) => r.Label === "Benign").unique_src_ip)} địa chỉ nguồn khác nhau.`));
 const imp = dg.importance_M1;
-c.push(P(`Tổng gain của XGBoost cho thấy M1 dựa nhiều nhất vào Init Fwd Win Byts (${nf(imp["Init Fwd Win Byts"], 1)}%), Init Bwd Win Byts (${nf(imp["Init Bwd Win Byts"], 1)}%), Dst Port (${nf(imp["Dst Port"], 1)}%) và Fwd Seg Size Min (${nf(imp["Fwd Seg Size Min"], 1)}%), tổng khoảng ${nf(imp["Init Fwd Win Byts"] + imp["Init Bwd Win Byts"] + imp["Dst Port"] + imp["Fwd Seg Size Min"], 0)}%. Nhưng bỏ cả các đặc trưng này, mô hình vẫn đạt Macro F1 gần như cũ. Điều đó nghĩa là điểm cao không phụ thuộc vào vài đặc trưng cụ thể mà đến từ việc các lớp vốn rất dễ tách trong dữ liệu improved.`));
-c.push(P(`Giải thích phù hợp nhất với số liệu là mỗi loại tấn công trong lab do một công cụ chạy từ vài máy, nên dấu vết rất nhất quán, và bộ giữ riêng theo thời gian vẫn thuộc cùng chiến dịch tấn công trong cùng phòng lab. Bản improved cũng đã sửa nhãn và cách tách flow, nên có thể ít flow mơ hồ hơn bản gốc, nơi mô hình cũ chỉ đạt Macro F1 ${pc(R.M0.f1, 1)}. Vì vậy điểm trên bộ test cùng nguồn đo khả năng nhận ra chiến dịch trong lab, không đo khả năng phát hiện tấn công ngoài đời. Bằng chứng rõ nhất là M1 gần như không nhận ra Hulk của bộ cũ.`));
+c.push(P(`Tổng gain của XGBoost cho thấy M1 dựa nhiều nhất vào Init Fwd Win Byts (${nf(imp["Init Fwd Win Byts"], 1)}%), Init Bwd Win Byts (${nf(imp["Init Bwd Win Byts"], 1)}%), Dst Port (${nf(imp["Dst Port"], 1)}%) và Fwd Seg Size Min (${nf(imp["Fwd Seg Size Min"], 1)}%), tổng khoảng ${nf(imp["Init Fwd Win Byts"] + imp["Init Bwd Win Byts"] + imp["Dst Port"] + imp["Fwd Seg Size Min"], 0)}%. Bỏ cả các đặc trưng này mô hình vẫn đạt Macro F1 ${pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.macro_f1, 1)}, nên điểm cao không phụ thuộc vào vài đặc trưng cụ thể.`));
+c.push(P(`So với M0b, phần lớn chênh lệch Macro F1 (${pc(R.M0b.f1, 1)} so với ${pc(R.M1.f1, 1)}) đến từ lớp Infilteration: F1 là ${nf(PM.m0b.Infilteration, 3)} ở M0b và ${nf(PM.m1.Infilteration, 3)} ở M1. Infilteration của bộ cũ khó nhận, còn Infilteration của bản improved (có quét cổng bằng Nmap) dễ tách. Các lớp còn lại gần như bằng nhau, trừ vài lớp nhỏ (SQL Injection ${nf(PM.m0b["SQL Injection"], 3)} so với ${nf(PM.m1["SQL Injection"], 3)}, Brute Force -Web ${nf(PM.m0b["Brute Force -Web"], 3)} so với ${nf(PM.m1["Brute Force -Web"], 3)}) mà test chỉ có vài chục flow. Vì vậy nhóm không kết luận bản improved làm mô hình tốt hơn nói chung. Kết luận hợp lý là: không phát hiện rò rỉ, điểm cao phản ánh bài toán dễ trong chính phòng lab với nhiều dòng gần trùng, và bằng chứng rõ nhất về giới hạn là M1 chỉ nhận ${pc(cr("M1", "T1_test_cu").hulk_recall_pct, 1)} số flow Hulk của bộ test cũ.`));
 
 // ================= 9. THẢO LUẬN =================
 c.push(H1("9. Thảo luận"));
-c.push(P("Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bản CSV gốc gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là hơn một phần ba flow Benign TCP ở bản đã sửa lỗi. Mô hình học từ bản gốc đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở ba cấp độ độc lập gồm " + nf(cr("M0", "T2a_improved_stratified_sach").benign_zone_n) + " flow Benign trong vùng ở bộ test improved, " + nf(cr("M0", "T2b_improved_thoi_gian_sach").benign_zone_n) + " flow ở bộ giữ riêng theo thời gian, và " + nf(T3.t3_zone_flows) + " flow realtime do người dùng xác nhận."));
+c.push(P("Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bộ train cũ gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là " + pct(TC.moi.benign.fin_data_gt0, TC.moi.benign.tcp_rows, 1) + " flow Benign TCP của bộ train improved. Mô hình học từ bộ cũ đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở hai cấp độ độc lập, gồm " + nf(cr("M0", "T2a_improved_stratified_sach").benign_zone_n) + " flow Benign trong vùng ở bộ test improved có nhãn thật, và " + nf(T3.t3_zone_flows) + " flow realtime do người dùng xác nhận."));
 c.push(P("Thực nghiệm cũng cho thấy việc sửa dữ liệu không giải quyết hết vấn đề. Mô hình M1 loại bỏ được báo nhầm FIN nhưng vẫn dựa nhiều vào đặc trưng môi trường như cửa sổ nhận ban đầu và kích thước header tối thiểu. Những đặc trưng này khác nhau giữa các mạng, nên M1 có thể thất bại ở một môi trường khác dù đúng ở máy của người dùng. Đây cũng là điều Engelen và cộng sự cảnh báo khi nói về nguy cơ học đường tắt theo cấu hình lab."));
 c.push(P("Với giải thích, SHAP đóng vai trò công cụ chẩn đoán trong cả hai mô hình. Nó chỉ ra FIN và Fwd Pkt Len Max ở M0, và chỉ ra các đặc trưng cửa sổ nhận ở M1, và kết quả của nó được kiểm chứng bằng cấu trúc cây và thử phản thực. LIME kém tin cậy hơn, đạt cổng chất lượng ở " + pc(100 * X.M1.lime_pass, 0) + " flow của M1 trong nhóm đánh giá, và theo kết quả RQ3 trước đó bị loại gần hết trên flow thật vì các flow này nằm quá xa dữ liệu nền mà LIME lấy mẫu quanh đó."));
 c.push(H2("9.1 Những điều có thể và chưa thể kết luận"));
 c.push(B("Có thể kết luận rằng dữ liệu train cũ không có Benign trong vùng ba điều kiện, rằng vùng này khớp các báo nhầm quan sát được, và rằng đặt FIN bằng 0 loại bỏ các báo nhầm đó ở M0."));
-c.push(B("Có thể kết luận rằng bản CSV gốc gần như không có Benign mang FIN và dữ liệu, trong khi bản improved có hơn một phần ba."));
+c.push(B("Có thể kết luận rằng bộ train cũ gần như không có Benign mang FIN và dữ liệu, trong khi bộ train improved có " + pct(TC.moi.benign.fin_data_gt0, TC.moi.benign.tcp_rows, 1) + "."));
 c.push(B("Có thể kết luận rằng huấn luyện lại trên bản improved theo đúng quy trình cũ làm báo nhầm trên lưu lượng thật của máy người dùng từ " + pc(t3m0.fpr_pct, 1) + " xuống " + pc(t3m1.fpr_pct, 1) + "."));
 c.push(B("Chưa thể kết luận rằng nguyên nhân duy nhất là thiếu mẫu Benign. Thí nghiệm M2 để tách thiếu mẫu khỏi khác định nghĩa đặc trưng đang được hoãn."));
 c.push(B("Chưa thể kết luận rằng lỗi bắt nguồn từ công cụ trích xuất CICFlowMeter-V3, vì thiếu cặp PCAP và CSV gốc để kiểm chứng trực tiếp."));
@@ -324,7 +338,7 @@ c.push(B("Chưa thể kết luận gì về khả năng M1 phát hiện tấn c�
 c.push(H1("10. Hướng viết bài báo khoa học"));
 c.push(H2("10.1 Câu chuyện"));
 c.push(P("Bài báo bắt đầu từ một nghịch lý. Một mô hình phát hiện xâm nhập đạt hiệu năng nội bộ rất cao nhưng báo nhầm hàng loạt khi chạy trên lưu lượng thật. Câu hỏi đặt ra là điều gì che giấu lỗi trong phép đánh giá thông thường và giải thích mô hình có giúp tìm ra lỗi hay không."));
-c.push(P("Phần tiếp theo kể quá trình truy tìm. SHAP chỉ vào cờ FIN. Phân tích cây quyết định cho ra một vùng ba điều kiện chỉ có Hulk trong dữ liệu train. Thử phản thực khẳng định vùng đó là thứ làm nhãn đổi. Kiểm toán dữ liệu cho thấy bản CSV gốc gần như không có Benign trong vùng này còn bản đã sửa lỗi có hơn một phần ba, và lỗi khớp với mô tả TCP appendices và cách đếm cờ sai của CICFlowMeter-V3 trong tài liệu của Engelen và cộng sự."));
+c.push(P("Phần tiếp theo kể quá trình truy tìm. SHAP chỉ vào cờ FIN. Phân tích cây quyết định cho ra một vùng ba điều kiện chỉ có Hulk trong dữ liệu train. Thử phản thực khẳng định vùng đó là thứ làm nhãn đổi. So sánh hai bộ train cho thấy bộ cũ không có Benign trong vùng này còn bộ improved có hơn một phần ba, và lỗi khớp với mô tả TCP appendices và cách đếm cờ sai của CICFlowMeter-V3 trong tài liệu của Engelen và cộng sự."));
 c.push(P("Phần cuối kiểm chứng và rút bài học. Huấn luyện lại bằng dữ liệu đã sửa lỗi với đúng quy trình cũ làm báo nhầm biến mất, nhưng giải thích của mô hình mới cho thấy đường tắt môi trường vẫn còn, nên điểm cao trên dữ liệu cùng nguồn không đủ để tin. Bài học chung là phải đánh giá IDS bằng dữ liệu ngoài nguồn huấn luyện và dùng giải thích như một công cụ kiểm tra dữ liệu."));
 c.push(P("Tên bài đề xuất bằng tiếng Việt là Khi độ chính xác nội bộ đánh lừa, dùng SHAP, LIME và kiểm tra phản thực để phát hiện lỗi cờ FIN trong bộ dữ liệu CSE-CIC-IDS2018. Tên tiếng Anh là When Internal Accuracy Misleads, Using SHAP, LIME and Counterfactual Checks to Expose a FIN-Flag Shortcut in CSE-CIC-IDS2018."));
 c.push(H2("10.2 Vấn đề, mục tiêu và câu hỏi"));
@@ -348,7 +362,7 @@ c.push(T([700, 5700, 3238], ["STT", "Việc", "Mục đích"], [
   ["5", "Đọc bản đầy đủ bài WTMC 2021 và CNS 2022, đối chiếu các chi tiết đã trích", "Tránh trích sai"],
   ["6", "Chạy LIME trên flow realtime của M1 và đo tỷ lệ hợp lệ", "Củng cố kết luận về tính hợp lệ"],
 ]));
-c.push(cap("Bảng 15. Các việc còn lại."));
+c.push(cap("Bảng 16. Các việc còn lại."));
 
 // ================= 11. HẠN CHẾ =================
 c.push(H1("11. Hạn chế"));
@@ -357,7 +371,8 @@ c.push(B("Bộ realtime có 784 flow từ hai mạng (Wi-Fi nhà và điểm ph�
 c.push(B("Chưa có dữ liệu tấn công độc lập, nên chưa đo được khả năng phát hiện tấn công của mô hình mới ngoài lab."));
 c.push(B("Thí nghiệm M2 bị hoãn, nên chưa tách được hai nguyên nhân là thiếu mẫu và khác định nghĩa đặc trưng."));
 c.push(B("Lỗi lịch sử của công cụ trích xuất chưa được kiểm chứng trực tiếp vì thiếu cặp PCAP và CSV gốc."));
-c.push(B("Ngày Tuesday-20-02 không có trong CSV gốc nên không nằm trong phép kiểm toán so sánh."));
+c.push(B("Bảy trong mười hai lớp tấn công chỉ có đúng một địa chỉ nguồn, nên không thể chia train và test tách theo máy gửi. Phép chia ngẫu nhiên theo RQ1 vì vậy cho điểm lạc quan hơn một phép chia tách theo máy."));
+c.push(B("Ba lớp tấn công nhỏ nhất (Brute Force -Web, Brute Force -XSS, SQL Injection) chỉ có 26, 23 và 8 flow trong test M1, nên F1 của chúng dao động mạnh và kéo Macro F1 lên xuống."));
 c.push(B("Hulk của CICFlowMeter-V3 có cài đặt lỗi theo tài liệu của Engelen và cộng sự, nên bài báo nên dùng Hulk như một ca nghiên cứu về học đường tắt, không dùng như bằng chứng khả năng phát hiện DoS nói chung."));
 c.push(B("Cách chọn siêu tham số của RQ1 dựa trên điểm test của chính mô hình, và được giữ nguyên theo yêu cầu để so sánh cùng điều kiện."));
 
@@ -366,19 +381,19 @@ c.push(H1("12. Tái lập"));
 c.push(P("Mã, kết quả và tài liệu nằm trong thư mục RQ4_Retrain_Compare. Các tập dữ liệu trung gian và file mô hình .pkl không được commit theo cấu hình của repo, nhưng mã và số liệu kết quả đều có trong git."));
 c.push(T([2700, 6938], ["Tệp", "Nội dung"], [
   ["scripts/01_mapping_tables.py", "Bảng ánh xạ 78 đặc trưng và các nhãn giữa hai bản"],
-  ["scripts/02_audit_orig_csv.py", "Kiểm toán cờ FIN trong CSV gốc"],
-  ["scripts/03_build_improved_cache.py", "Quét bản improved một lần, kiểm toán FIN và lấy mẫu"],
-  ["scripts/04_build_datasets.py", "Dựng train, test, bộ giữ riêng theo thời gian và dữ liệu thêm cho M2"],
-  ["scripts/05_train_models.py", "Huấn luyện M0b, M1 (và M2) với tham số RQ1"],
+  ["scripts/02_compare_train_sets.py", "So sánh hai bộ train: cờ TCP, vùng Hulk, hồ sơ Hulk và Benign"],
+  ["scripts/03_build_improved_cache.py", "Quét bản improved một lần, lấy toàn bộ tấn công và 7% Benign"],
+  ["scripts/04_build_datasets.py", "Dựng train và test M1 theo công thức lấy mẫu của RQ1"],
+  ["scripts/05_train_models.py", "Huấn luyện M0b và M1 với tham số RQ1"],
   ["scripts/06_prepare_t3_realtime.py, 06b_confirm_t3.py", "Dựng bộ realtime T3 từ DB hệ thống"],
   ["scripts/07_evaluate_cross.py", "Đánh giá chéo, có bản bỏ trùng"],
   ["scripts/08_run_xai.py", "Chuỗi SHAP và LIME (GĐ0 đến GĐ13) cho một mô hình"],
-  ["scripts/09_diagnose_m1.py", "Chẩn đoán điểm cao của M1"],
+  ["scripts/09_diagnose_m1.py, 13_audit_m1_standalone.py", "Chẩn đoán và kiểm tra riêng M1"],
   ["scripts/10_t3_explain.py", "SHAP và phản thực trên flow realtime"],
-  ["scripts/11_report_data.py, 12_hulk_profile.py", "Gom số liệu cho báo cáo và hồ sơ Hulk"],
+  ["scripts/11_report_data.py", "Gom số liệu và vẽ hình cho báo cáo"],
   ["results/ và xai_runs/m1/", "Kết quả CSV, JSON và hình của mọi bước"],
 ]));
-c.push(cap("Bảng 16. Các tệp chính."));
+c.push(cap("Bảng 17. Các tệp chính."));
 
 // ================= 13. THAM KHẢO =================
 c.push(H1("13. Tài liệu tham khảo"));

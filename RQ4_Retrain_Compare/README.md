@@ -9,10 +9,10 @@ CSE-CIC-IDS2018 bản CSV gốc (thiếu Benign "đóng bằng FIN có dữ li�
 | Hạng mục | Mô hình cũ (RQ1, RQ2) | Mô hình mới (RQ4) |
 |---|---|---|
 | Thuật toán | XGBClassifier, tree_method hist, n_estimators 100, random_state 42 | Giống hệt |
-| Quét tham số | 7 cấu hình (độ sâu 4 đến 12, learning rate 0,05 đến 0,10), chọn theo Macro F1 | Giống hệt |
+| Siêu tham số | Chọn bằng quét 7 cấu hình ở RQ1: độ sâu 8, learning rate 0,08 | Dùng đúng cấu hình đó, không quét lại |
 | Đặc trưng | 78 đặc trưng, float32, không Timestamp, không IP | Giống hệt (đổi tên theo bảng ánh xạ) |
 | Cách lấy mẫu | 3,5 triệu dòng, 70 % Benign và 30 % tấn công, giữ 100 % lớp hiếm | Cùng công thức, trần theo số mẫu sẵn có |
-| Chia dữ liệu | Stratified 80/20 | Stratified 80/20 và thêm bộ giữ riêng theo thời gian |
+| Chia dữ liệu | Stratified 80/20 | Giống hệt: stratified 80/20, seed 42, lấy ngẫu nhiên từ toàn bộ dữ liệu, không bộ giữ riêng nào |
 | Chỉ số | Accuracy, Macro P/R/F1, FPR Benign, FNR tấn công (`ids_metrics.py`) | Giống hệt |
 | Giải thích | SHAP toàn cục và từng flow, LIME khóa cấu hình, độ đồng thuận, cổng chất lượng, độ ổn định, faithfulness, miền tri thức, nhóm lỗi (RQ2 GĐ0 đến 13) | Chạy lại cùng các giai đoạn trên mô hình mới |
 
@@ -37,7 +37,7 @@ Những chỗ **không** thể giống hệt, và cách xử lý:
 | Mã | Nội dung | Ghi chú |
 |---|---|---|
 | T1 | Test cũ (`test_set.parquet`) | Trong phân phối của M0, M0b, M2 |
-| T2 | Test stratified 20 % của bản improved và bộ giữ riêng theo thời gian | Trong phân phối của M1 |
+| T2 | Test stratified 20 % của bản improved | Trong phân phối của M1 |
 | T3 | Flow realtime của máy người dùng (`feeder_live`), có nhật ký hoạt động | Đo báo nhầm trên lưu lượng thật. Không dùng PCAP đã nạp |
 
 Siêu tham số XGBoost và cấu hình SHAP, LIME giữ nguyên của RQ1 và RQ2, không quét hay chọn lại.
@@ -58,12 +58,13 @@ Dữ liệu trung gian (`data/`) và mô hình (`models/`) không được commi
 
 | Hạng mục | Trạng thái |
 |---|---|
-| Bảng ánh xạ, kiểm toán CSV gốc và bản improved | Xong |
-| Dựng bộ dữ liệu M1 và bộ giữ riêng theo thời gian | Xong |
+| Bảng ánh xạ, so sánh hai bộ train (cũ và improved) | Xong |
+| Dựng train và test M1 theo công thức lấy mẫu của RQ1 | Xong |
 | Huấn luyện M0b và M1 (tham số RQ1, không quét lại) | Xong |
-| Đánh giá chéo T1, T2a, T2b, T3, có bản bỏ dòng trùng | Xong |
+| Đánh giá chéo T1, T2a, T3, có bản bỏ dòng trùng | Xong |
 | SHAP và LIME cho M1 (cấu hình RQ2 đã khóa, bỏ GĐ5 và GĐ9) | Xong |
 | M2 (thêm Benign vào train cũ) | Hoãn theo yêu cầu người dùng |
+| Kiểm tra riêng M1 (nhãn xáo trộn, đường cong học, gần trùng, Src IP theo lớp) | Xong |
 | Báo cáo đầy đủ | `report/Bao_cao_RQ4_so_sanh_dataset_cu_va_moi.docx`, dựng bằng `report/build_report.js` |
 
 Dựng lại báo cáo: `python scripts/11_report_data.py` rồi `node report/build_report.js <đầu ra.docx> <văn bản.txt>`.

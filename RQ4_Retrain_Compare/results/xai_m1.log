@@ -1,0 +1,232 @@
+=== m1: GĐ0 stage00_prepare_run
+2026-10-26 19:19:28,797 [INFO] stage00_prepare_run: ================================================================================
+2026-10-26 19:19:28,797 [INFO] stage00_prepare_run: GĐ 0: CHUẨN BỊ LẦN CHẠY
+2026-10-26 19:19:28,798 [INFO] stage00_prepare_run: ================================================================================
+2026-10-26 19:19:28,798 [WARNING] stage00_prepare_run: KHÔNG tìm thấy v1_archive tại C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\RQ4_Retrain_Compare\xai_runs\m1 — kết quả RQ2 cũ có thể chưa được lưu trữ.
+2026-10-26 19:19:28,798 [INFO] stage00_prepare_run: Đã chụp config.yaml -> C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\config_snapshot_gd0.yaml
+2026-10-26 19:19:28,800 [INFO] stage00_prepare_run: Đã tạo cấu trúc thư mục con cho 13 giai đoạn trong C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026
+2026-10-26 19:19:28,817 [INFO] stage00_prepare_run: run_prepare_info.json: {'run_id': '20261026', 'created_at': '2026-10-26T19:19:28.800494', 'git_commit': '984a04455d11bd2a65ffd190ab20313b26d2bd50', 'python_executable': 'C:\\Users\\LOQ\\AppData\\Local\\Programs\\Python\\Python314\\python.exe', 'seed': 42}
+2026-10-26 19:19:28,817 [INFO] stage00_prepare_run: GĐ 0 HOÀN TẤT. Run dir: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026
+=== m1: GĐ1 stage01_verify_env
+2026-10-26 19:19:30,206 [INFO] stage01_verify_env: ================================================================================
+2026-10-26 19:19:30,207 [INFO] stage01_verify_env: GĐ 1: KIỂM TRA DỮ LIỆU, MODEL VÀ MÔI TRƯỜNG
+2026-10-26 19:19:30,207 [INFO] stage01_verify_env: ================================================================================
+2026-10-26 19:19:30,227 [INFO] stage01_verify_env: Phiên bản môi trường: {'python': '3.14.7', 'xgboost': '3.4.1', 'shap': '0.52.0', 'lime': '0.2.0.1', 'scikit-learn': '1.9.1', 'pandas': '3.0.6', 'numpy': '2.5.3', 'scipy': '1.18.1', 'pyarrow': '25.0.1'}
+2026-10-26 19:19:30,855 [INFO] stage01_verify_env: Nạp model + label encoder trong 0.63s
+2026-10-26 19:19:30,997 [INFO] stage01_verify_env: Nạp test_set.parquet (682100 dòng) trong 0.14s
+2026-10-26 19:19:30,998 [INFO] stage01_verify_env: test_set.parquet: 682100 dòng, 79 cột (78 đặc trưng + Label=True) -> True
+2026-10-26 19:19:31,006 [INFO] stage01_verify_env: Thứ tự đặc trưng khớp model: True
+2026-10-26 19:19:31,006 [INFO] stage01_verify_env: Label encoder: 13 lớp (kỳ vọng 13) -> True
+2026-10-26 19:19:31,101 [INFO] stage01_verify_env: NaN=0, Inf=0 trong X_test -> True
+2026-10-26 19:19:32,054 [INFO] stage01_verify_env: Dự đoán 682100 dòng trong 0.84s
+2026-10-26 19:19:32,164 [INFO] stage01_verify_env: Kết quả chạy lại: {'accuracy_pct': 99.9965, 'macro_precision_pct': 99.9875, 'macro_recall_pct': 98.6914, 'macro_f1_pct': 99.3044}
+2026-10-26 19:19:32,164 [INFO] stage01_verify_env: RQ1 tham chiếu: {'accuracy_pct': 100.0, 'macro_precision_pct': 99.99, 'macro_recall_pct': 98.69, 'macro_f1_pct': 99.3} | sai lệch: {'accuracy_pct': 0.0035, 'macro_precision_pct': 0.0025, 'macro_recall_pct': 0.0014, 'macro_f1_pct': 0.0044} (ngưỡng 0.05) -> True
+2026-10-26 19:19:39,375 [INFO] stage01_verify_env: Dòng trùng (theo hash 78 đặc trưng) giữa train (2728397 dòng) và test (682100 dòng): 115467 (16.9282%) — 7.21s
+2026-10-26 19:19:39,906 [INFO] stage01_verify_env: Checksums: {'model': '6ed405c11b53e412a377b254afc8f0d6671d78d07040b0a470778be83c3bcb3b', 'label_encoder': 'f066be6612a2bcbb1845a8fd07d52e6f8a32f4f93f2baa57346ae9ec24fc7302', 'train_set': 'e34aef2ba5325a15c0720e09a6185644117e9e985573a3ffd48effd9da426b0e', 'test_set': 'a171d93522448f3228d7329b9a3287cfdeb7960e8d8bcea1ab3f1dc95ec152d4'}
+2026-10-26 19:19:40,072 [INFO] stage01_verify_env: --------------------------------------------------------------------------------
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] model_loads
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] test_set_78_features_plus_label
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] feature_order_matches_model
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] label_encoder_15_classes
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] no_nan_inf_in_test
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] metrics_match_rq1
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env:   [PASS] duplicate_check_recorded
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env: --------------------------------------------------------------------------------
+2026-10-26 19:19:40,073 [INFO] stage01_verify_env: GĐ 1 ĐẠT — có thể tiếp tục GĐ 2.
+=== m1: GĐ2 stage02_shap_global
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: ================================================================================
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: GĐ 2: SHAP TOÀN CỤC TRÊN TOÀN TEST SET
+2026-10-26 19:19:43,689 [INFO] stage02_shap_global: ================================================================================
+2026-10-26 19:19:45,581 [INFO] stage02_shap_global: Tổng 682100 flow, 13 lớp, 78 đặc trưng
+2026-10-26 19:21:18,031 [INFO] stage02_shap_global: Lớp Benign                    n_flows=477463  thời gian=92.2s (5180 flow/s)  Top1=Init Bwd Win Byts
+2026-10-26 19:21:22,795 [INFO] stage02_shap_global: Lớp Bot                       n_flows= 25162  thời gian=4.7s (5318 flow/s)  Top1=Dst Port
+2026-10-26 19:21:22,817 [INFO] stage02_shap_global: Lớp Brute Force -Web          n_flows=    25  thời gian=0.0s (1288 flow/s)  Top1=Fwd Header Len
+2026-10-26 19:21:22,840 [INFO] stage02_shap_global: Lớp Brute Force -XSS          n_flows=    23  thời gian=0.0s (1260 flow/s)  Top1=Bwd Pkt Len Max
+2026-10-26 19:21:33,779 [INFO] stage02_shap_global: Lớp DDOS attack-HOIC          n_flows= 59580  thời gian=10.9s (5467 flow/s)  Top1=Init Fwd Win Byts
+2026-10-26 19:21:33,876 [INFO] stage02_shap_global: Lớp DDOS attack-LOIC-UDP      n_flows=   344  thời gian=0.1s (3717 flow/s)  Top1=Fwd Pkts/b Avg
+2026-10-26 19:21:43,501 [INFO] stage02_shap_global: Lớp DDoS attacks-LOIC-HTTP    n_flows= 51354  thời gian=9.6s (5351 flow/s)  Top1=TotLen Fwd Pkts
+2026-10-26 19:21:44,246 [INFO] stage02_shap_global: Lớp DoS attacks-GoldenEye     n_flows=  3694  thời gian=0.7s (5018 flow/s)  Top1=Fwd Seg Size Min
+2026-10-26 19:21:51,469 [INFO] stage02_shap_global: Lớp DoS attacks-Hulk          n_flows= 38759  thời gian=7.2s (5395 flow/s)  Top1=Fwd Seg Size Min
+2026-10-26 19:21:51,650 [INFO] stage02_shap_global: Lớp DoS attacks-Slowloris     n_flows=   905  thời gian=0.2s (5090 flow/s)  Top1=Bwd IAT Mean
+2026-10-26 19:21:54,342 [INFO] stage02_shap_global: Lớp Infilteration             n_flows= 14303  thời gian=2.7s (5356 flow/s)  Top1=Pkt Len Mean
+2026-10-26 19:21:54,366 [INFO] stage02_shap_global: Lớp SQL Injection             n_flows=     7  thời gian=0.0s (321 flow/s)  Top1=Fwd Pkt Len Std
+2026-10-26 19:21:56,540 [INFO] stage02_shap_global: Lớp SSH-Bruteforce            n_flows= 10457  thời gian=2.2s (4841 flow/s)  Top1=Dst Port
+2026-10-26 19:21:56,571 [INFO] stage02_shap_global: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\rq2_shap_global_feature_importance_by_class.csv, C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\rq2_shap_global_top5_by_class.csv
+2026-10-26 19:21:59,095 [INFO] stage02_shap_global: Đã lưu 13 biểu đồ Top-5 vào C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd2_shap_global\figures
+2026-10-26 19:21:59,242 [INFO] stage02_shap_global: Additivity trên mẫu 300 flow: max_err=4.768e-06, mean_err=7.460e-07
+2026-10-26 19:21:59,242 [INFO] stage02_shap_global: GĐ 2 HOÀN TẤT.
+=== m1: GĐ3 stage03_cohorts
+2026-10-26 19:22:01,431 [INFO] stage03_cohorts: ================================================================================
+2026-10-26 19:22:01,431 [INFO] stage03_cohorts: GĐ 3: COHORT GHÉP CẶP, TẬP DEV VÀ COHORT LỖI
+2026-10-26 19:22:01,432 [INFO] stage03_cohorts: ================================================================================
+2026-10-26 19:22:04,556 [INFO] stage03_cohorts: Cohort — lớp Benign                   : chọn 100 / 477463 flow đúng dự đoán
+2026-10-26 19:22:04,559 [INFO] stage03_cohorts: Cohort — lớp Bot                      : chọn 100 / 25162 flow đúng dự đoán
+2026-10-26 19:22:04,565 [INFO] stage03_cohorts: Cohort — lớp Brute Force -Web         : chọn 25 / 25 flow đúng dự đoán
+2026-10-26 19:22:04,566 [INFO] stage03_cohorts: Cohort — lớp Brute Force -XSS         : chọn 23 / 23 flow đúng dự đoán
+2026-10-26 19:22:04,569 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-HOIC         : chọn 100 / 59580 flow đúng dự đoán
+2026-10-26 19:22:04,570 [INFO] stage03_cohorts: Cohort — lớp DDOS attack-LOIC-UDP     : chọn 100 / 344 flow đúng dự đoán
+2026-10-26 19:22:04,573 [INFO] stage03_cohorts: Cohort — lớp DDoS attacks-LOIC-HTTP   : chọn 100 / 51354 flow đúng dự đoán
+2026-10-26 19:22:04,575 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-GoldenEye    : chọn 100 / 3694 flow đúng dự đoán
+2026-10-26 19:22:04,578 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Hulk         : chọn 100 / 38759 flow đúng dự đoán
+2026-10-26 19:22:04,579 [INFO] stage03_cohorts: Cohort — lớp DoS attacks-Slowloris    : chọn 100 / 905 flow đúng dự đoán
+2026-10-26 19:22:04,582 [INFO] stage03_cohorts: Cohort — lớp Infilteration            : chọn 100 / 14303 flow đúng dự đoán
+2026-10-26 19:22:04,583 [INFO] stage03_cohorts: Cohort — lớp SQL Injection            : chọn 7 / 7 flow đúng dự đoán
+2026-10-26 19:22:04,585 [INFO] stage03_cohorts: Cohort — lớp SSH-Bruteforce           : chọn 100 / 10457 flow đúng dự đoán
+2026-10-26 19:22:04,604 [INFO] stage03_cohorts: Cohort lỗi: chọn 24 / 24 flow dự đoán sai (cap 20/lớp theo nhãn thật)
+2026-10-26 19:22:04,625 [INFO] stage03_cohorts: Tập dev: 250 flow. Phân bố lớp: {'Benign': 159, 'DDoS attacks-LOIC-HTTP': 29, 'DDOS attack-HOIC': 28, 'DoS attacks-Hulk': 11, 'Bot': 10, 'Infilteration': 8, 'SSH-Bruteforce': 5}
+2026-10-26 19:22:04,625 [INFO] stage03_cohorts: Kiểm tra không giao nhau — cohort&dev=0, cohort&error=0, dev&error=0 -> True
+2026-10-26 19:22:04,638 [INFO] stage03_cohorts: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\cohort_ids.csv (1055), C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\dev_ids.csv (250), C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\error_ids.csv (24)
+2026-10-26 19:22:04,672 [INFO] stage03_cohorts: GĐ 3 HOÀN TẤT — cohort=1055, dev=250, error=24, không giao nhau=True
+=== m1: GĐ4 stage04_shap_per_flow
+2026-10-26 19:22:09,205 [INFO] stage04_shap_per_flow: ================================================================================
+2026-10-26 19:22:09,206 [INFO] stage04_shap_per_flow: GĐ 4: SHAP PER-FLOW TRÊN COHORT
+2026-10-26 19:22:09,206 [INFO] stage04_shap_per_flow: ================================================================================
+2026-10-26 19:22:09,656 [INFO] stage04_shap_per_flow: Nạp 1055 flow_id từ C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd3_cohorts\cohort_ids.csv
+2026-10-26 19:22:10,103 [INFO] stage04_shap_per_flow:   ... 200 / 1055 flow xử lý
+2026-10-26 19:22:10,571 [INFO] stage04_shap_per_flow:   ... 800 / 1055 flow xử lý
+2026-10-26 19:22:11,328 [INFO] stage04_shap_per_flow: Đã lưu: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd4_shap_per_flow\shap_per_flow_long.csv (82290 dòng), C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd4_shap_per_flow\shap_per_flow_topk.csv (4220 dòng)
+2026-10-26 19:22:11,329 [INFO] stage04_shap_per_flow: Additivity: max=6.676e-06 mean=1.844e-06 | thời gian TB/flow=0.0004s
+2026-10-26 19:22:11,329 [INFO] stage04_shap_per_flow: GĐ 4 HOÀN TẤT.
+=== m1: GĐ5 bỏ qua, dùng cấu hình LIME đã khóa của RQ2
+=== m1: GĐ6 stage06_lime_per_flow
+2026-10-26 19:22:14,855 [INFO] stage06_lime_per_flow: ================================================================================
+2026-10-26 19:22:14,855 [INFO] stage06_lime_per_flow: GĐ 6: LIME PER-FLOW TRÊN COHORT (CẤU HÌNH ĐÃ KHÓA)
+2026-10-26 19:22:14,856 [INFO] stage06_lime_per_flow: ================================================================================
+2026-10-26 19:22:14,856 [INFO] stage06_lime_per_flow: Cấu hình đã khóa: {'kernel_width': 3.312, 'num_samples': 1000, 'discretize_continuous': False, 'num_features': 78, 'background_sample_size': 2000, 'background_seed': 42, 'selection_rule': 'highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec', 'dev_grid_sample_size': 150}
+2026-10-26 19:22:15,865 [INFO] stage06_lime_per_flow: Xác nhận 1055 flow_id khớp tuyệt đối với GĐ4.
+2026-10-26 19:22:16,174 [INFO] stage06_lime_per_flow:   ... 0 / 1055 flow (0.0s đã trôi qua)
+2026-10-26 19:22:22,833 [INFO] stage06_lime_per_flow:   ... 200 / 1055 flow (6.7s đã trôi qua)
+2026-10-26 19:22:29,744 [INFO] stage06_lime_per_flow:   ... 400 / 1055 flow (13.6s đã trôi qua)
+2026-10-26 19:22:36,526 [INFO] stage06_lime_per_flow:   ... 600 / 1055 flow (20.4s đã trôi qua)
+2026-10-26 19:22:43,242 [INFO] stage06_lime_per_flow:   ... 800 / 1055 flow (27.1s đã trôi qua)
+2026-10-26 19:22:50,032 [INFO] stage06_lime_per_flow:   ... 1000 / 1055 flow (33.9s đã trôi qua)
+2026-10-26 19:22:52,476 [INFO] stage06_lime_per_flow: Hoàn tất 1055 flow trong 35.8s (0.034s/flow). median_R2=0.5277, frac>=gate=72.70%
+2026-10-26 19:22:52,477 [INFO] stage06_lime_per_flow: GĐ 6 HOÀN TẤT.
+=== m1: GĐ7 stage07_agreement
+2026-10-26 19:22:55,451 [INFO] stage07_agreement: ================================================================================
+2026-10-26 19:22:55,451 [INFO] stage07_agreement: GĐ 7: AGREEMENT SHAP VÀ LIME
+2026-10-26 19:22:55,451 [INFO] stage07_agreement: ================================================================================
+2026-10-26 19:22:58,088 [INFO] stage07_agreement: Xây dựng rank cho 1055 flow (mỗi flow 78 đặc trưng)
+2026-10-26 19:23:04,662 [INFO] stage07_agreement: Đã lưu agreement theo từng flow: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd7_agreement\rq2_1_agreement_per_flow.csv (4220 dòng)
+2026-10-26 19:23:06,448 [INFO] stage07_agreement: Agreement tổng thể:
+ k  n_flows  jaccard_mean  jaccard_ci_lo  jaccard_ci_hi  spearman_topk_union_mean  spearman_topk_union_ci_lo  spearman_topk_union_ci_hi  kendall_tau_topk_union_mean  kendall_tau_topk_union_ci_lo  kendall_tau_topk_union_ci_hi  spearman_full78_mean  spearman_full78_ci_lo  spearman_full78_ci_hi  kendall_full78_mean  kendall_full78_ci_lo  kendall_full78_ci_hi  rbo_mean  rbo_ci_lo  rbo_ci_hi  sign_agreement_mean  sign_agreement_ci_lo  sign_agreement_ci_hi  jaccard_group_mean  jaccard_group_ci_lo  jaccard_group_ci_hi
+ 3     1055      0.249100       0.238102       0.261424                 -0.181909                  -0.214931                  -0.148484                    -0.158294                     -0.186483                     -0.130994              0.174735               0.168663               0.180667             0.118413              0.114008              0.122870  0.394491   0.373606   0.414076             0.933206              0.917287              0.948473            0.438768             0.421419             0.456493
+ 5     1055      0.213296       0.206114       0.220424                 -0.195148                  -0.218064                  -0.171885                    -0.150211                     -0.167855                     -0.133178              0.174735               0.168837               0.181103             0.118413              0.114329              0.122820  0.375873   0.360112   0.391668             0.865491              0.848198              0.882607            0.404570             0.392758             0.418587
+10     1055      0.188327       0.183260       0.193432                 -0.251681                  -0.266622                  -0.236944                    -0.192111                     -0.202647                     -0.181318              0.174735               0.168550               0.181018             0.118413              0.114025              0.122951  0.354276   0.341404   0.365890             0.792073              0.776875              0.807098            0.724630             0.719918             0.729600
+20     1055      0.219131       0.215397       0.222538                 -0.279659                  -0.289083                  -0.270727                    -0.206419                     -0.212748                     -0.199843              0.174735               0.168734               0.180528             0.118413              0.114135              0.122806  0.344939   0.335150   0.354418             0.602580              0.589298              0.616903            1.000000             1.000000             1.000000
+2026-10-26 19:23:22,829 [INFO] stage07_agreement: Đã lưu agreement theo lớp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd7_agreement\rq2_1_agreement_by_class.csv
+2026-10-26 19:23:22,831 [INFO] stage07_agreement: Không có lớp nào có Spearman (full-78) trung bình âm.
+2026-10-26 19:23:23,399 [INFO] stage07_agreement: Đường cơ sở ngẫu nhiên:
+ k  random_jaccard_mean  random_jaccard_ci_lo  random_jaccard_ci_hi  observed_jaccard_mean  fold_over_random
+ 3             0.023960              0.000000              0.200000               0.249100         10.396474
+ 5             0.037394              0.000000              0.250000               0.213296          5.703962
+10             0.071524              0.000000              0.176471               0.188327          2.633054
+20             0.149515              0.052632              0.250000               0.219131          1.465617
+2026-10-26 19:23:24,695 [INFO] stage07_agreement: Đã lưu biểu đồ vào C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd7_agreement\figures
+2026-10-26 19:23:24,703 [INFO] stage07_agreement: GĐ 7 HOÀN TẤT.
+=== m1: GĐ8 stage08_quality_gate
+2026-10-26 19:23:26,269 [INFO] stage08_quality_gate: ================================================================================
+2026-10-26 19:23:26,269 [INFO] stage08_quality_gate: GĐ 8: QUALITY GATE CỦA LIME VÀ R2 SO VỚI ĐỒNG THUẬN
+2026-10-26 19:23:26,269 [INFO] stage08_quality_gate: ================================================================================
+2026-10-26 19:23:26,269 [INFO] stage08_quality_gate: Ngưỡng quality gate (đã chốt ở GĐ5 trước khi xem kết quả cohort): R2 >= 0.30
+2026-10-26 19:23:26,281 [INFO] stage08_quality_gate: Toàn bộ cohort: 1055 flow. Vượt ngưỡng: 767 (72.70%).
+2026-10-26 19:23:26,294 [INFO] stage08_quality_gate: Tỷ lệ vượt ngưỡng theo lớp:
+pred_class
+Bot                       1.00
+DDOS attack-HOIC          1.00
+SQL Injection             1.00
+DoS attacks-Hulk          1.00
+DDoS attacks-LOIC-HTTP    1.00
+SSH-Bruteforce            1.00
+Benign                    0.96
+DoS attacks-GoldenEye     0.95
+Infilteration             0.61
+DoS attacks-Slowloris     0.05
+DDOS attack-LOIC-UDP      0.03
+Brute Force -XSS          0.00
+Brute Force -Web          0.00
+2026-10-26 19:23:26,357 [INFO] stage08_quality_gate: Đồng thuận theo mức Local R2 (k=5):
+    r2_bucket  n_flows  mean_jaccard  mean_spearman_full78  mean_sign_agreement
+  thấp (<0.1)      229      0.212536              0.199601             0.917424
+vừa (0.1–0.3)       59      0.365685              0.129663             0.677966
+  cao (>=0.3)      767      0.201801              0.170778             0.864964
+2026-10-26 19:23:26,357 [WARNING] stage08_quality_gate: Đồng thuận KHÔNG tăng đều theo mức Local R2 — ghi nhận đúng như thấy, không có bằng chứng rõ cho giả thuyết 'R2 thấp gây bất đồng'.
+2026-10-26 19:23:27,213 [INFO] stage08_quality_gate: GĐ 8 HOÀN TẤT.
+=== m1: GĐ9 bỏ qua theo yêu cầu của người dùng (độ ổn định và chịu nhiễu)
+=== m1: GĐ10 stage10_faithfulness
+2026-10-26 19:23:29,934 [INFO] stage10_faithfulness: ================================================================================
+2026-10-26 19:23:29,934 [INFO] stage10_faithfulness: GĐ 10: FAITHFULNESS (DELETION/INSERTION)
+2026-10-26 19:23:29,934 [INFO] stage10_faithfulness: ================================================================================
+2026-10-26 19:23:37,215 [INFO] stage10_faithfulness: -- Giá trị nền: global_median --
+2026-10-26 19:23:37,764 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8362 sufficiency_AUC=0.5082
+2026-10-26 19:23:38,151 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.5572 sufficiency_AUC=0.2715
+2026-10-26 19:23:38,561 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1073 sufficiency_AUC=0.1054
+2026-10-26 19:23:38,562 [INFO] stage10_faithfulness: -- Giá trị nền: global_mean --
+2026-10-26 19:23:38,938 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8452 sufficiency_AUC=0.4990
+2026-10-26 19:23:39,334 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.5558 sufficiency_AUC=0.2634
+2026-10-26 19:23:39,762 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1173 sufficiency_AUC=0.1018
+2026-10-26 19:23:39,762 [INFO] stage10_faithfulness: -- Giá trị nền: benign_median --
+2026-10-26 19:23:40,199 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8397 sufficiency_AUC=0.4366
+2026-10-26 19:23:40,693 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.5741 sufficiency_AUC=0.2393
+2026-10-26 19:23:41,144 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1096 sufficiency_AUC=0.0998
+2026-10-26 19:23:41,965 [INFO] stage10_faithfulness: Bảng AUC:
+     baseline method  comprehensiveness_auc  sufficiency_auc
+global_median   SHAP               0.836243         0.508163
+global_median   LIME               0.557236         0.271521
+global_median Random               0.107276         0.105419
+  global_mean   SHAP               0.845182         0.499012
+  global_mean   LIME               0.555774         0.263432
+  global_mean Random               0.117307         0.101752
+benign_median   SHAP               0.839730         0.436640
+benign_median   LIME               0.574068         0.239269
+benign_median Random               0.109644         0.099818
+2026-10-26 19:23:42,002 [INFO] stage10_faithfulness: Win-rate SHAP vs LIME (k=5, comprehensiveness):
+     baseline  k  shap_win_rate_vs_lime  wilcoxon_stat    wilcoxon_p  n_flows
+global_median  5               0.824645        49851.0 2.372001e-114     1055
+  global_mean  5               0.877725        25342.0 3.368169e-142     1055
+benign_median  5               0.833175        47132.0 1.447602e-117     1055
+2026-10-26 19:23:42,017 [INFO] stage10_faithfulness: Kết luận SHAP > LIME (comprehensiveness) ổn định qua mọi giá trị nền: True
+2026-10-26 19:23:44,081 [INFO] stage10_faithfulness: GĐ 10 HOÀN TẤT.
+=== m1: GĐ11 stage11_domain_validation
+2026-10-26 19:23:45,951 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 19:23:45,951 [INFO] stage11_domain_validation: GĐ 11: DOMAIN VALIDATION
+2026-10-26 19:23:45,951 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 19:23:46,171 [WARNING] stage11_domain_validation: Lớp DoS attacks-SlowHTTPTest thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 19:23:46,171 [WARNING] stage11_domain_validation: Lớp FTP-BruteForce thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 19:23:46,231 [INFO] stage11_domain_validation: Tóm tắt precision/recall/F1 so với tri thức miền:
+ scope method  precision_at_5   recall       f1
+ broad   LIME        0.100000 0.071429 0.083333
+ broad   SHAP        0.150000 0.105655 0.123932
+strict   LIME        0.016667 0.020833 0.018519
+strict   SHAP        0.100000 0.125000 0.111111
+2026-10-26 19:23:46,235 [INFO] stage11_domain_validation: Tỷ lệ đặc trưng 'dấu vân tay môi trường' trong Top-5 trung bình: SHAP=0.20 LIME=0.12
+2026-10-26 19:23:46,239 [INFO] stage11_domain_validation: F1 trung bình theo scope:
+scope      broad    strict
+method                    
+LIME    0.083333  0.018519
+SHAP    0.123932  0.111111
+2026-10-26 19:23:47,080 [INFO] stage11_domain_validation: GĐ 11 HOÀN TẤT.
+=== m1: GĐ12 stage12_error_cohort
+2026-10-26 19:23:51,705 [INFO] stage12_error_cohort: ================================================================================
+2026-10-26 19:23:51,705 [INFO] stage12_error_cohort: GĐ 12: GIẢI THÍCH KHI MODEL DỰ ĐOÁN SAI (COHORT LỖI)
+2026-10-26 19:23:51,705 [INFO] stage12_error_cohort: ================================================================================
+2026-10-26 19:23:52,607 [INFO] stage12_error_cohort: Cohort lỗi: 24 flow
+2026-10-26 19:23:53,148 [INFO] stage12_error_cohort:   ... 0 / 24 flow lỗi
+2026-10-26 19:23:55,817 [INFO] stage12_error_cohort: So sánh cohort lỗi vs cohort đúng:
+{'error_cohort_n_flows': 24, 'error_shap_concentration_mean': 0.7137912511825562, 'correct_cohort_shap_concentration_mean': 0.9225475406443217, 'error_shap_lime_jaccard5_mean': 0.09722222222222221, 'correct_cohort_shap_lime_jaccard5_mean': 0.2132964718272775, 'error_env_fraction_in_top5_mean': 0.24166666666666667, 'caveat': 'Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê.'}
+2026-10-26 19:23:56,118 [INFO] stage12_error_cohort: GĐ 12 HOÀN TẤT.
+=== m1: GĐ13 stage13_build_report_data
+2026-10-26 19:23:58,168 [INFO] stage13_build_report_data: ================================================================================
+2026-10-26 19:23:58,168 [INFO] stage13_build_report_data: GĐ 13a: TỔNG HỢP SỐ LIỆU CHO BÁO CÁO
+2026-10-26 19:23:58,169 [INFO] stage13_build_report_data: ================================================================================
+2026-10-26 19:23:58,184 [WARNING] stage13_build_report_data: GĐ9 chưa có đủ output — bỏ qua phần này trong tổng hợp.
+2026-10-26 19:23:58,194 [INFO] stage13_build_report_data: Đã ghi bảng tổng hợp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd13_report\rq2_master_summary.json
+2026-10-26 19:23:58,211 [INFO] stage13_build_report_data: So sánh v1 vs v2:
+                            chỉ số       v1          v2
+               Cohort chính (flow) 1339.000 1055.000000
+                 Cohort lỗi (flow)  151.000   24.000000
+LIME median Local R2 (toàn cohort)    0.068    0.527668
+     LIME % flow vượt gate R2>=0.3   12.300   72.701422
+      Jaccard@5 SHAP-LIME quan sát    0.213    0.213296
+2026-10-26 19:23:58,211 [INFO] stage13_build_report_data: GĐ 13a HOÀN TẤT.
+xong chuỗi giải thích cho m1

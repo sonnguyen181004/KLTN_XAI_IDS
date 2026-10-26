@@ -1,0 +1,251 @@
+﻿flow_id,true_label,pred_label
+1572,DoS attacks-Hulk,DoS attacks-Hulk
+5119,Benign,Benign
+13481,Benign,Benign
+14258,Benign,Benign
+15842,Benign,Benign
+18008,Benign,Benign
+26710,Benign,Benign
+27445,Infilteration,Infilteration
+42321,Benign,Benign
+43736,Bot,Bot
+47503,Benign,Benign
+49675,Benign,Benign
+61843,Benign,Benign
+62549,DDOS attack-HOIC,DDOS attack-HOIC
+71782,Benign,Benign
+78677,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+78921,Benign,Benign
+85801,Benign,Benign
+87989,Benign,Benign
+88230,DDOS attack-HOIC,DDOS attack-HOIC
+89550,Benign,Benign
+91615,Benign,Benign
+94139,Benign,Benign
+94362,Benign,Benign
+94570,DDOS attack-HOIC,DDOS attack-HOIC
+101970,Benign,Benign
+103881,DDOS attack-HOIC,DDOS attack-HOIC
+104459,Benign,Benign
+105029,Benign,Benign
+110774,Benign,Benign
+114400,SSH-Bruteforce,SSH-Bruteforce
+117425,Benign,Benign
+117499,Bot,Bot
+120361,Benign,Benign
+120869,DDOS attack-HOIC,DDOS attack-HOIC
+129236,DDOS attack-HOIC,DDOS attack-HOIC
+131377,Infilteration,Infilteration
+134908,DDOS attack-HOIC,DDOS attack-HOIC
+138127,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+149272,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+159034,DoS attacks-Hulk,DoS attacks-Hulk
+159964,Benign,Benign
+163847,DDOS attack-HOIC,DDOS attack-HOIC
+166555,Benign,Benign
+168227,Benign,Benign
+170140,Benign,Benign
+173978,Benign,Benign
+175835,Benign,Benign
+176305,Benign,Benign
+184592,Bot,Bot
+187637,SSH-Bruteforce,SSH-Bruteforce
+189395,DDOS attack-HOIC,DDOS attack-HOIC
+191313,Benign,Benign
+191351,Benign,Benign
+191525,Benign,Benign
+191700,Benign,Benign
+193348,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+195341,Benign,Benign
+195392,Benign,Benign
+195823,DDOS attack-HOIC,DDOS attack-HOIC
+197325,Benign,Benign
+197517,Benign,Benign
+197554,DDOS attack-HOIC,DDOS attack-HOIC
+198271,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+206268,Benign,Benign
+206545,Benign,Benign
+208019,DDOS attack-HOIC,DDOS attack-HOIC
+208288,Benign,Benign
+209859,Benign,Benign
+215553,Benign,Benign
+217624,Benign,Benign
+218570,Benign,Benign
+219755,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+221547,Bot,Bot
+222688,Benign,Benign
+223783,Benign,Benign
+225334,Benign,Benign
+227868,Benign,Benign
+229258,Benign,Benign
+233462,Benign,Benign
+233686,Benign,Benign
+246280,Benign,Benign
+247250,Benign,Benign
+247251,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+249616,Benign,Benign
+249794,Benign,Benign
+266032,Benign,Benign
+267906,Benign,Benign
+268805,Benign,Benign
+271032,Benign,Benign
+272553,Benign,Benign
+272819,Benign,Benign
+273550,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+274601,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+274716,Benign,Benign
+274887,Infilteration,Infilteration
+278313,Benign,Benign
+279607,Infilteration,Infilteration
+282234,Benign,Benign
+285912,Benign,Benign
+288361,Benign,Benign
+295946,DDOS attack-HOIC,DDOS attack-HOIC
+298622,Benign,Benign
+300065,Benign,Benign
+300313,Benign,Benign
+301956,Benign,Benign
+302750,Benign,Benign
+306586,Benign,Benign
+307325,DoS attacks-Hulk,DoS attacks-Hulk
+308797,Benign,Benign
+309956,Benign,Benign
+311302,Benign,Benign
+312454,Benign,Benign
+314396,DDOS attack-HOIC,DDOS attack-HOIC
+314936,DoS attacks-Hulk,DoS attacks-Hulk
+316653,Benign,Benign
+322366,Benign,Benign
+324783,Benign,Benign
+327776,Bot,Bot
+334053,Benign,Benign
+338693,DoS attacks-Hulk,DoS attacks-Hulk
+347044,DDOS attack-HOIC,DDOS attack-HOIC
+354282,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+358366,Benign,Benign
+362071,Benign,Benign
+362364,DDOS attack-HOIC,DDOS attack-HOIC
+367747,Benign,Benign
+369673,DDOS attack-HOIC,DDOS attack-HOIC
+371318,Bot,Bot
+371378,Bot,Bot
+372325,Benign,Benign
+376808,Benign,Benign
+378982,Benign,Benign
+383104,Benign,Benign
+389426,Benign,Benign
+397154,Benign,Benign
+397978,Benign,Benign
+399637,DDOS attack-HOIC,DDOS attack-HOIC
+401462,DoS attacks-Hulk,DoS attacks-Hulk
+402025,Benign,Benign
+408903,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+412575,Benign,Benign
+413449,Benign,Benign
+416030,Benign,Benign
+416156,Benign,Benign
+418603,Bot,Bot
+422649,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+426552,Benign,Benign
+427094,Benign,Benign
+431116,DDOS attack-HOIC,DDOS attack-HOIC
+431155,Benign,Benign
+431515,Benign,Benign
+432260,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+435692,Benign,Benign
+439770,DDOS attack-HOIC,DDOS attack-HOIC
+441234,DDOS attack-HOIC,DDOS attack-HOIC
+441599,Benign,Benign
+447004,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+448386,Benign,Benign
+448817,Benign,Benign
+449986,Benign,Benign
+450035,Infilteration,Infilteration
+452049,Benign,Benign
+455169,DDOS attack-HOIC,DDOS attack-HOIC
+455426,Benign,Benign
+460129,Benign,Benign
+462363,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+467435,DoS attacks-Hulk,DoS attacks-Hulk
+474958,Benign,Benign
+477292,Benign,Benign
+477353,Benign,Benign
+477925,Benign,Benign
+478313,Benign,Benign
+480564,Benign,Benign
+487209,Benign,Benign
+489645,DDOS attack-HOIC,DDOS attack-HOIC
+490634,Benign,Benign
+490815,Benign,Benign
+494446,SSH-Bruteforce,SSH-Bruteforce
+495145,Benign,Benign
+499892,DDOS attack-HOIC,DDOS attack-HOIC
+500997,Benign,Benign
+503585,Benign,Benign
+505699,Benign,Benign
+508087,DDOS attack-HOIC,DDOS attack-HOIC
+508418,Benign,Benign
+508952,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+511149,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+512064,SSH-Bruteforce,SSH-Bruteforce
+512300,Benign,Benign
+514070,Benign,Benign
+520100,Benign,Benign
+521515,Benign,Benign
+522298,Benign,Benign
+524493,Benign,Benign
+528141,Benign,Benign
+530654,Benign,Benign
+537057,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+539350,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+543949,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+544040,DDOS attack-HOIC,DDOS attack-HOIC
+548972,DoS attacks-Hulk,DoS attacks-Hulk
+551851,Benign,Benign
+554465,Benign,Benign
+556590,DoS attacks-Hulk,DoS attacks-Hulk
+564118,Benign,Benign
+572370,Benign,Benign
+575167,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+576889,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+577874,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+582425,Benign,Benign
+584222,Infilteration,Infilteration
+586914,Benign,Benign
+586959,Benign,Benign
+594102,Benign,Benign
+596824,DDOS attack-HOIC,DDOS attack-HOIC
+598691,Infilteration,Infilteration
+598762,Benign,Benign
+603552,Bot,Bot
+605125,Benign,Benign
+608582,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+609830,Benign,Benign
+618558,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+620809,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+622452,Benign,Benign
+622761,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+623574,Benign,Benign
+628571,Benign,Benign
+630092,Benign,Benign
+636308,Benign,Benign
+638308,Benign,Benign
+638430,Benign,Benign
+640099,Benign,Benign
+640847,Benign,Benign
+645173,Benign,Benign
+646128,DoS attacks-Hulk,DoS attacks-Hulk
+647825,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+649866,Benign,Benign
+650950,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+655083,DoS attacks-Hulk,DoS attacks-Hulk
+656384,Benign,Benign
+665707,Benign,Benign
+667162,DDOS attack-HOIC,DDOS attack-HOIC
+669006,Bot,Bot
+672472,Benign,Benign
+673697,Benign,Benign
+676319,SSH-Bruteforce,SSH-Bruteforce
+677335,Infilteration,Infilteration
+679811,Benign,Benign
+681129,Benign,Benign
