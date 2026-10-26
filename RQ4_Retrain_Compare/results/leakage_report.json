@@ -1,0 +1,28 @@
+{
+ "d2_test_rows_also_in_train": 113512,
+ "d2_test_rows": 650098,
+ "t2_holdout_rows_also_in_train": 47607,
+ "t2_holdout_rows": 422132,
+ "old_test_rows_also_in_train": 194149,
+ "old_test_rows": 700000,
+ "old_note": "Số của RQ2 (rq2_master_summary.json), dùng để so sánh.",
+ "time_ranks": {
+  "pool_upto": 0.78,
+  "gap_until": 0.8
+ },
+ "targets": {
+  "Bot": 111478,
+  "Brute Force -Web": 102,
+  "Brute Force -XSS": 88,
+  "DDOS attack-HOIC": 297900,
+  "DDOS attack-LOIC-UDP": 1730,
+  "DDoS attacks-LOIC-HTTP": 225675,
+  "DoS attacks-GoldenEye": 17596,
+  "DoS attacks-Hulk": 193802,
+  "DoS attacks-Slowloris": 4525,
+  "Infilteration": 69937,
+  "SQL Injection": 30,
+  "SSH-Bruteforce": 52285,
+  "Benign": 2275345
+ }
+}
