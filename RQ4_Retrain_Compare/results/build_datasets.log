@@ -1,0 +1,48 @@
+cache: 7686533 dòng; {'Benign': 4151111, 'DoS attacks-Hulk': 1803160, 'DDOS attack-HOIC': 1082293, 'DDoS attacks-LOIC-HTTP': 289328, 'Bot': 142921, 'SSH-Bruteforce': 94197, 'Infilteration': 89663, 'DoS attacks-GoldenEye': 22560, 'DoS attacks-Slowloris': 8490, 'DDOS attack-LOIC-UDP': 2527, 'Brute Force -Web': 131, 'Brute Force -XSS': 113, 'SQL Injection': 39}
+mục tiêu: {'Bot': 111478, 'Brute Force -Web': 102, 'Brute Force -XSS': 88, 'DDOS attack-HOIC': 297900, 'DDOS attack-LOIC-UDP': 1730, 'DDoS attacks-LOIC-HTTP': 225675, 'DoS attacks-GoldenEye': 17596, 'DoS attacks-Hulk': 193802, 'DoS attacks-Slowloris': 4525, 'Infilteration': 69937, 'SQL Injection': 30, 'SSH-Bruteforce': 52285, 'Benign': 2275345}
+Benign trong vùng ba điều kiện còn dư để thêm vào M2: 202647
+                          d2_train  d2_test  t2_holdout  old_train  old_test
+Label                                                                       
+Benign                     1820276   455069      200000    1960000    490000
+DDOS attack-HOIC            238320    59580       50000     238320     59580
+DDoS attacks-LOIC-HTTP      180540    45135       50000     205417     51354
+DoS attacks-Hulk            155042    38760       50000     155042     38760
+Bot                          89182    22296       28585     100650     25162
+Infilteration                55950    13987       17933      57258     14315
+SSH-Bruteforce               41828    10457       18840      41828     10457
+DoS attacks-GoldenEye        14077     3519        4512      14774      3694
+DoS attacks-Slowloris         3620      905        1698       3620       905
+DDOS attack-LOIC-UDP          1384      346         506       1384       346
+Brute Force -Web                82       20          27        487       122
+Brute Force -XSS                70       18          23        184        46
+SQL Injection                   24        6           8         70        17
+FTP-BruteForce                   0        0           0      14028      3507
+DoS attacks-SlowHTTPTest         0        0           0       6938      1735
+{
+ "d2_test_rows_also_in_train": 113512,
+ "d2_test_rows": 650098,
+ "t2_holdout_rows_also_in_train": 47607,
+ "t2_holdout_rows": 422132,
+ "old_test_rows_also_in_train": 194149,
+ "old_test_rows": 700000,
+ "old_note": "Số của RQ2 (rq2_master_summary.json), dùng để so sánh.",
+ "time_ranks": {
+  "pool_upto": 0.78,
+  "gap_until": 0.8
+ },
+ "targets": {
+  "Bot": 111478,
+  "Brute Force -Web": 102,
+  "Brute Force -XSS": 88,
+  "DDOS attack-HOIC": 297900,
+  "DDOS attack-LOIC-UDP": 1730,
+  "DDoS attacks-LOIC-HTTP": 225675,
+  "DoS attacks-GoldenEye": 17596,
+  "DoS attacks-Hulk": 193802,
+  "DoS attacks-Slowloris": 4525,
+  "Infilteration": 69937,
+  "SQL Injection": 30,
+  "SSH-Bruteforce": 52285,
+  "Benign": 2275345
+ }
+}
