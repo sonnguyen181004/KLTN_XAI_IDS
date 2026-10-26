@@ -1,0 +1,26 @@
+﻿nhan_improved,so_flow_improved,nhan_rq1,xu_ly
+BENIGN,59353486,Benign,giữ
+Botnet Ares,142921,Bot,giữ
+Botnet Ares - Attempted,262,,bỏ
+DoS Hulk,1803160,DoS attacks-Hulk,giữ
+FTP-BruteForce - Attempted,298874,,bỏ
+DoS Hulk - Attempted,86,,bỏ
+Web Attack - XSS,113,Brute Force -XSS,giữ
+Web Attack - Brute Force,131,Brute Force -Web,giữ
+Web Attack - Brute Force - Attempted,137,,bỏ
+Web Attack - SQL,39,SQL Injection,giữ
+Web Attack - SQL - Attempted,14,,bỏ
+Web Attack - XSS - Attempted,4,,bỏ
+Infiltration - NMAP Portscan,89374,Infilteration,giữ
+Infiltration - Communication Victim Attacker,204,Infilteration,giữ
+Infiltration - Dropbox Download,85,Infilteration,giữ
+Infiltration - Dropbox Download - Attempted,28,,bỏ
+DoS GoldenEye,22560,DoS attacks-GoldenEye,giữ
+DoS Slowloris,8490,DoS attacks-Slowloris,giữ
+DoS GoldenEye - Attempted,4301,,bỏ
+DoS Slowloris - Attempted,2280,,bỏ
+DDoS-LOIC-HTTP,289328,DDoS attacks-LOIC-HTTP,giữ
+DDoS-LOIC-UDP,2527,DDOS attack-LOIC-UDP,giữ
+DDoS-LOIC-UDP - Attempted,251,,bỏ
+SSH-BruteForce,94197,SSH-Bruteforce,giữ
+DDoS-HOIC,1082293,DDOS attack-HOIC,giữ

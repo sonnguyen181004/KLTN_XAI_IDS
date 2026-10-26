@@ -1,0 +1,47 @@
+xong Friday-02-03-2018_TrafficForML_CICFlowMeter.csv
+xong Friday-16-02-2018_TrafficForML_CICFlowMeter.csv
+xong Friday-23-02-2018_TrafficForML_CICFlowMeter.csv
+xong Thursday-01-03-2018_TrafficForML_CICFlowMeter.csv
+xong Thursday-15-02-2018_TrafficForML_CICFlowMeter.csv
+xong Thursday-22-02-2018_TrafficForML_CICFlowMeter.csv
+xong Wednesday-14-02-2018_TrafficForML_CICFlowMeter.csv
+xong Wednesday-21-02-2018_TrafficForML_CICFlowMeter.csv
+xong Wednesday-28-02-2018_TrafficForML_CICFlowMeter.csv
+{
+ "flows_all": 8284195,
+ "flows_tcp": 6504691,
+ "tcp_fin_ge1": 31893,
+ "tcp_syn_ge1": 256046,
+ "tcp_rst_ge1": 1356104,
+ "tcp_ack_ge1": 3225022,
+ "tcp_psh_ge1": 3258098,
+ "tcp_ge4pkts_each_way": 1924725,
+ "tcp_ge4pkts_each_way_fin": 1218,
+ "flag_values_seen": {
+  "fin": [
+   0,
+   1
+  ],
+  "syn": [
+   0,
+   1
+  ],
+  "rst": [
+   0,
+   1
+  ],
+  "ack": [
+   0,
+   1
+  ],
+  "psh": [
+   0,
+   1
+  ]
+ },
+ "rule": {
+  "min_fin": 1,
+  "min_fwd_pkt_len_max": 66,
+  "below_fwd_seg_size_min": 32
+ }
+}
