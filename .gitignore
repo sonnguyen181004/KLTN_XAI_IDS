@@ -40,3 +40,7 @@ Thumbs.db
 ~$*.docx
 ~$*.pptx
 ~$*.xlsx
+
+# RQ4 — dữ liệu trung gian và mô hình sinh ra lúc chạy, không commit (kết quả CSV và mã thì commit)
+RQ4_Retrain_Compare/data/
+RQ4_Retrain_Compare/models/
