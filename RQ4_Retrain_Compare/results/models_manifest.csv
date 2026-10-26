@@ -1,4 +1,0 @@
-﻿model,model_file,model_bytes,model_sha256,encoder_sha256,params,train_rows
-M0,../RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl,5010525,52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2,909df601aaf46699ce243171274ff39af5ccd09c93b0930d9d78d71b8ac79397,"depth 8, lr 0.08, 100 trees (RQ1)",2800000
-M0b,m0b_xgboost_model.pkl,4259273,27eae1bb3359dd1a318607c64426d2a99d58c62f1e36c7a6edfcefd842ef9540,f066be6612a2bcbb1845a8fd07d52e6f8a32f4f93f2baa57346ae9ec24fc7302,"depth 8, lr 0.08, 100 trees (RQ1, không quét lại)",2779034
-M1,m1_xgboost_model.pkl,2203889,becdc93bc0126e7d6a948d04b94343032ed6d66c1fc55eb14549c459c8a19a3a,f066be6612a2bcbb1845a8fd07d52e6f8a32f4f93f2baa57346ae9ec24fc7302,"depth 8, lr 0.08, 100 trees (RQ1, không quét lại)",2600395
