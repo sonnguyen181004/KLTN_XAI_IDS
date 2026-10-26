@@ -1,0 +1,49 @@
+﻿class,scope,method,top5,domain_set,precision_at_5,recall,f1
+DDOS attack-HOIC,strict,SHAP,Bwd Pkt Len Std;CWE Flag Count;Dst Port;Init Bwd Win Byts;Init Fwd Win Byts,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DDOS attack-HOIC,strict,LIME,Bwd Pkt Len Std;CWE Flag Count;ECE Flag Cnt;FIN Flag Cnt;Init Fwd Win Byts,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DDOS attack-HOIC,broad,SHAP,Bwd Pkt Len Std;CWE Flag Count;Dst Port;Init Bwd Win Byts;Init Fwd Win Byts,Flow Byts/s;Flow Duration;Flow IAT Mean;Flow IAT Std;Flow Pkts/s;Fwd Pkts/s;Tot Fwd Pkts;TotLen Fwd Pkts,0.0,0.0,0.0
+DDOS attack-HOIC,broad,LIME,Bwd Pkt Len Std;CWE Flag Count;ECE Flag Cnt;FIN Flag Cnt;Init Fwd Win Byts,Flow Byts/s;Flow Duration;Flow IAT Mean;Flow IAT Std;Flow Pkts/s;Fwd Pkts/s;Tot Fwd Pkts;TotLen Fwd Pkts,0.0,0.0,0.0
+DDOS attack-LOIC-UDP,strict,SHAP,Dst Port;Fwd Act Data Pkts;Fwd PSH Flags;Fwd Pkts/b Avg;Tot Bwd Pkts,Flow Byts/s;Flow Pkts/s;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DDOS attack-LOIC-UDP,strict,LIME,ACK Flag Cnt;Active Max;Active Mean;Active Min;Active Std,Flow Byts/s;Flow Pkts/s;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DDOS attack-LOIC-UDP,broad,SHAP,Dst Port;Fwd Act Data Pkts;Fwd PSH Flags;Fwd Pkts/b Avg;Tot Bwd Pkts,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s;Protocol;Tot Fwd Pkts;TotLen Fwd Pkts,0.0,0.0,0.0
+DDOS attack-LOIC-UDP,broad,LIME,ACK Flag Cnt;Active Max;Active Mean;Active Min;Active Std,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s;Protocol;Tot Fwd Pkts;TotLen Fwd Pkts,0.0,0.0,0.0
+DDoS attacks-LOIC-HTTP,strict,SHAP,Bwd Pkt Len Max;Bwd Pkt Len Std;Fwd Pkt Len Mean;Pkt Len Std;TotLen Fwd Pkts,Flow Byts/s;Flow IAT Mean;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DDoS attacks-LOIC-HTTP,strict,LIME,Bwd Pkt Len Std;CWE Flag Count;Fwd IAT Max;Fwd IAT Std;RST Flag Cnt,Flow Byts/s;Flow IAT Mean;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DDoS attacks-LOIC-HTTP,broad,SHAP,Bwd Pkt Len Max;Bwd Pkt Len Std;Fwd Pkt Len Mean;Pkt Len Std;TotLen Fwd Pkts,Dst Port;Flow Byts/s;Flow Duration;Flow IAT Mean;Flow Pkts/s;Fwd Header Len;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DDoS attacks-LOIC-HTTP,broad,LIME,Bwd Pkt Len Std;CWE Flag Count;Fwd IAT Max;Fwd IAT Std;RST Flag Cnt,Dst Port;Flow Byts/s;Flow Duration;Flow IAT Mean;Flow Pkts/s;Fwd Header Len;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DoS attacks-GoldenEye,strict,SHAP,Bwd IAT Mean;Bwd Pkt Len Std;Down/Up Ratio;Fwd IAT Std;Fwd Seg Size Min,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DoS attacks-GoldenEye,strict,LIME,Bwd Pkt Len Std;CWE Flag Count;Down/Up Ratio;Fwd Seg Size Min;RST Flag Cnt,Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s,0.0,0.0,0.0
+DoS attacks-GoldenEye,broad,SHAP,Bwd IAT Mean;Bwd Pkt Len Std;Down/Up Ratio;Fwd IAT Std;Fwd Seg Size Min,Dst Port;Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Header Len;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DoS attacks-GoldenEye,broad,LIME,Bwd Pkt Len Std;CWE Flag Count;Down/Up Ratio;Fwd Seg Size Min;RST Flag Cnt,Dst Port;Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Header Len;Fwd Pkts/s;Tot Fwd Pkts,0.0,0.0,0.0
+DoS attacks-Hulk,strict,SHAP,Bwd Header Len;Bwd Pkt Len Std;Fwd Seg Size Min;Init Fwd Win Byts;Tot Bwd Pkts,Flow Byts/s;Flow Duration;Flow Pkts/s;TotLen Fwd Pkts,0.0,0.0,0.0
+DoS attacks-Hulk,strict,LIME,Bwd Pkt Len Std;CWE Flag Count;FIN Flag Cnt;Fwd Seg Size Min;SYN Flag Cnt,Flow Byts/s;Flow Duration;Flow Pkts/s;TotLen Fwd Pkts,0.0,0.0,0.0
+DoS attacks-Hulk,broad,SHAP,Bwd Header Len;Bwd Pkt Len Std;Fwd Seg Size Min;Init Fwd Win Byts;Tot Bwd Pkts,Dst Port;Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s;Fwd Seg Size Min;TotLen Fwd Pkts,0.2,0.14285714285714285,0.16666666666666666
+DoS attacks-Hulk,broad,LIME,Bwd Pkt Len Std;CWE Flag Count;FIN Flag Cnt;Fwd Seg Size Min;SYN Flag Cnt,Dst Port;Flow Byts/s;Flow Duration;Flow Pkts/s;Fwd Pkts/s;Fwd Seg Size Min;TotLen Fwd Pkts,0.2,0.14285714285714285,0.16666666666666666
+DoS attacks-Slowloris,strict,SHAP,Bwd IAT Mean;Bwd IAT Std;Flow Byts/s;Fwd Seg Size Min;TotLen Bwd Pkts,Active Mean;Flow Duration;Flow IAT Max;Flow IAT Mean,0.0,0.0,0.0
+DoS attacks-Slowloris,strict,LIME,Bwd IAT Std;Flow Byts/s;Flow Pkts/s;Fwd Pkts/s;Fwd Seg Size Min,Active Mean;Flow Duration;Flow IAT Max;Flow IAT Mean,0.0,0.0,0.0
+DoS attacks-Slowloris,broad,SHAP,Bwd IAT Mean;Bwd IAT Std;Flow Byts/s;Fwd Seg Size Min;TotLen Bwd Pkts,Active Mean;Dst Port;Flow Duration;Flow IAT Max;Flow IAT Mean;Fwd Pkts/s;Idle Max;Idle Mean,0.0,0.0,0.0
+DoS attacks-Slowloris,broad,LIME,Bwd IAT Std;Flow Byts/s;Flow Pkts/s;Fwd Pkts/s;Fwd Seg Size Min,Active Mean;Dst Port;Flow Duration;Flow IAT Max;Flow IAT Mean;Fwd Pkts/s;Idle Max;Idle Mean,0.2,0.125,0.15384615384615385
+Bot,strict,SHAP,Bwd PSH Flags;Bwd Pkt Len Max;Dst Port;FIN Flag Cnt;Tot Fwd Pkts,Dst Port;Flow IAT Mean;Flow IAT Std;Idle Mean,0.2,0.25,0.22222222222222224
+Bot,strict,LIME,Bwd Pkt Len Max;Bwd Seg Size Avg;CWE Flag Count;Dst Port;FIN Flag Cnt,Dst Port;Flow IAT Mean;Flow IAT Std;Idle Mean,0.2,0.25,0.22222222222222224
+Bot,broad,SHAP,Bwd PSH Flags;Bwd Pkt Len Max;Dst Port;FIN Flag Cnt;Tot Fwd Pkts,Dst Port;Flow Duration;Flow IAT Mean;Flow IAT Std;Fwd Pkts/s;Idle Mean;Init Fwd Win Byts,0.2,0.14285714285714285,0.16666666666666666
+Bot,broad,LIME,Bwd Pkt Len Max;Bwd Seg Size Avg;CWE Flag Count;Dst Port;FIN Flag Cnt,Dst Port;Flow Duration;Flow IAT Mean;Flow IAT Std;Fwd Pkts/s;Idle Mean;Init Fwd Win Byts,0.2,0.14285714285714285,0.16666666666666666
+SSH-Bruteforce,strict,SHAP,Dst Port;Flow Duration;Flow IAT Max;Fwd PSH Flags;PSH Flag Cnt,Dst Port;Flow Duration;Init Fwd Win Byts;Tot Fwd Pkts,0.4,0.5,0.4444444444444445
+SSH-Bruteforce,strict,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;Fwd Seg Size Min;PSH Flag Cnt,Dst Port;Flow Duration;Init Fwd Win Byts;Tot Fwd Pkts,0.0,0.0,0.0
+SSH-Bruteforce,broad,SHAP,Dst Port;Flow Duration;Flow IAT Max;Fwd PSH Flags;PSH Flag Cnt,ACK Flag Cnt;Dst Port;Flow Duration;Fwd Pkts/s;Init Fwd Win Byts;SYN Flag Cnt;Tot Fwd Pkts,0.4,0.2857142857142857,0.3333333333333333
+SSH-Bruteforce,broad,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;Fwd Seg Size Min;PSH Flag Cnt,ACK Flag Cnt;Dst Port;Flow Duration;Fwd Pkts/s;Init Fwd Win Byts;SYN Flag Cnt;Tot Fwd Pkts,0.0,0.0,0.0
+Brute Force -Web,strict,SHAP,Bwd PSH Flags;Bwd Pkt Len Mean;Down/Up Ratio;Fwd PSH Flags;Subflow Fwd Byts,Dst Port;Flow Duration;Fwd Pkt Len Mean;Tot Fwd Pkts,0.0,0.0,0.0
+Brute Force -Web,strict,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;PSH Flag Cnt;TotLen Fwd Pkts,Dst Port;Flow Duration;Fwd Pkt Len Mean;Tot Fwd Pkts,0.0,0.0,0.0
+Brute Force -Web,broad,SHAP,Bwd PSH Flags;Bwd Pkt Len Mean;Down/Up Ratio;Fwd PSH Flags;Subflow Fwd Byts,ACK Flag Cnt;Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.0,0.0,0.0
+Brute Force -Web,broad,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;PSH Flag Cnt;TotLen Fwd Pkts,ACK Flag Cnt;Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.2,0.14285714285714285,0.16666666666666666
+Brute Force -XSS,strict,SHAP,ACK Flag Cnt;Bwd Pkt Len Max;Down/Up Ratio;Fwd Act Data Pkts;Pkt Len Std,Dst Port;Flow Duration;Fwd Pkt Len Max;Fwd Pkt Len Mean,0.0,0.0,0.0
+Brute Force -XSS,strict,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;PSH Flag Cnt;TotLen Fwd Pkts,Dst Port;Flow Duration;Fwd Pkt Len Max;Fwd Pkt Len Mean,0.0,0.0,0.0
+Brute Force -XSS,broad,SHAP,ACK Flag Cnt;Bwd Pkt Len Max;Down/Up Ratio;Fwd Act Data Pkts;Pkt Len Std,Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Max;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.0,0.0,0.0
+Brute Force -XSS,broad,LIME,Bwd PSH Flags;Fwd Act Data Pkts;Fwd PSH Flags;PSH Flag Cnt;TotLen Fwd Pkts,Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Max;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.2,0.14285714285714285,0.16666666666666666
+SQL Injection,strict,SHAP,Bwd IAT Min;Bwd IAT Std;Bwd Pkt Len Max;Bwd Pkt Len Std;Fwd Pkt Len Std,Dst Port;Flow Duration;Fwd Pkt Len Max;Fwd Pkt Len Mean,0.0,0.0,0.0
+SQL Injection,strict,LIME,Bwd Pkt Len Max;Bwd Pkt Len Mean;Bwd Pkt Len Std;FIN Flag Cnt;Pkt Len Std,Dst Port;Flow Duration;Fwd Pkt Len Max;Fwd Pkt Len Mean,0.0,0.0,0.0
+SQL Injection,broad,SHAP,Bwd IAT Min;Bwd IAT Std;Bwd Pkt Len Max;Bwd Pkt Len Std;Fwd Pkt Len Std,Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Max;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.0,0.0,0.0
+SQL Injection,broad,LIME,Bwd Pkt Len Max;Bwd Pkt Len Mean;Bwd Pkt Len Std;FIN Flag Cnt;Pkt Len Std,Dst Port;Flow Duration;Fwd Header Len;Fwd Pkt Len Max;Fwd Pkt Len Mean;PSH Flag Cnt;Tot Fwd Pkts,0.0,0.0,0.0
+Infilteration,strict,SHAP,Dst Port;Flow Duration;Fwd Seg Size Min;Pkt Len Max;Pkt Len Mean,Dst Port;Flow Duration;Init Fwd Win Byts;Protocol,0.4,0.5,0.4444444444444445
+Infilteration,strict,LIME,Bwd Pkt Len Max;Dst Port;Fwd Seg Size Min;Pkt Len Mean;RST Flag Cnt,Dst Port;Flow Duration;Init Fwd Win Byts;Protocol,0.2,0.25,0.22222222222222224
+Infilteration,broad,SHAP,Dst Port;Flow Duration;Fwd Seg Size Min;Pkt Len Max;Pkt Len Mean,Dst Port;Flow Duration;Fwd Pkt Len Mean;Fwd Seg Size Min;Init Fwd Win Byts;Protocol;Tot Fwd Pkts,0.6,0.42857142857142855,0.5
+Infilteration,broad,LIME,Bwd Pkt Len Max;Dst Port;Fwd Seg Size Min;Pkt Len Mean;RST Flag Cnt,Dst Port;Flow Duration;Fwd Pkt Len Mean;Fwd Seg Size Min;Init Fwd Win Byts;Protocol;Tot Fwd Pkts,0.4,0.2857142857142857,0.3333333333333333

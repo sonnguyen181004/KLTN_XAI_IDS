@@ -1,0 +1,8 @@
+2026-10-26 18:32:07,385 [INFO] stage00_prepare_run: ================================================================================
+2026-10-26 18:32:07,385 [INFO] stage00_prepare_run: GĐ 0: CHUẨN BỊ LẦN CHẠY
+2026-10-26 18:32:07,385 [INFO] stage00_prepare_run: ================================================================================
+2026-10-26 18:32:07,385 [WARNING] stage00_prepare_run: KHÔNG tìm thấy v1_archive tại C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\RQ4_Retrain_Compare\xai_runs\m1 — kết quả RQ2 cũ có thể chưa được lưu trữ.
+2026-10-26 18:32:07,393 [INFO] stage00_prepare_run: Đã chụp config.yaml -> C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\config_snapshot_gd0.yaml
+2026-10-26 18:32:07,396 [INFO] stage00_prepare_run: Đã tạo cấu trúc thư mục con cho 13 giai đoạn trong C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026
+2026-10-26 18:32:07,429 [INFO] stage00_prepare_run: run_prepare_info.json: {'run_id': '20261026', 'created_at': '2026-10-26T18:32:07.396962', 'git_commit': '39c66a33d28880b6e3043a42b7eb8d9f52f0a225', 'python_executable': 'C:\\Users\\LOQ\\AppData\\Local\\Programs\\Python\\Python314\\python.exe', 'seed': 42}
+2026-10-26 18:32:07,430 [INFO] stage00_prepare_run: GĐ 0 HOÀN TẤT. Run dir: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026

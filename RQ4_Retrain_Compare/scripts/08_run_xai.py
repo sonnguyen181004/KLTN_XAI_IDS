@@ -3,6 +3,8 @@
   python 08_run_xai.py m1            tạo xai_runs/m1, cấu hình riêng, rồi chạy các giai đoạn theo thứ tự
   python 08_run_xai.py m1 --from 5   chạy tiếp từ GĐ5
 
+GĐ9 (độ ổn định và chịu nhiễu) được bỏ qua theo yêu cầu của người dùng. GĐ13 tự bỏ phần GĐ9 khi thiếu dữ liệu.
+
 Chỉ ba thứ khác RQ2: đường dẫn (mô hình, bộ mã hóa nhãn, train, test), số lớp (13) và số liệu tham chiếu để GĐ1 kiểm tra
 (lấy từ kết quả huấn luyện của chính mô hình đó). Cấu hình LIME KHÔNG chọn lại: dùng đúng cấu hình đã khóa ở RQ2 GĐ5
 (kernel_width 3,312, num_samples 1000, discretize false, nền 2000 dòng, seed 42), nên GĐ5 được bỏ qua và báo cáo khóa của RQ2 được chép sang.
@@ -73,6 +75,9 @@ gd5 = work / "runs"
 env = dict(os.environ, XAI_WORKDIR=str(work), PYTHONIOENCODING="utf-8")
 for i, st in enumerate(STAGES):
     if i < a.start or i > a.stop:
+        continue
+    if st == "stage09_stability_robustness":
+        print(f"=== {a.name}: GĐ9 bỏ qua theo yêu cầu của người dùng (độ ổn định và chịu nhiễu)", flush=True)
         continue
     if st == "stage05_lock_lime_config":
         run_dirs = sorted((work / "runs").glob("*"))

@@ -1,0 +1,31 @@
+{
+  "locked_config": {
+    "kernel_width": 3.312,
+    "num_samples": 1000,
+    "discretize_continuous": false,
+    "num_features": 78,
+    "background_sample_size": 2000,
+    "background_seed": 42,
+    "selection_rule": "highest median_r2 on dev-grid-subsample; ties within 1e-3 broken by lowest total_time_sec",
+    "dev_grid_sample_size": 150
+  },
+  "full_dev_validation": {
+    "n_flows": 250,
+    "median_r2": 0.25821638766200083,
+    "mean_r2": 0.31333442091526015,
+    "frac_r2_pass_gate": 0.384,
+    "mean_time_sec": 0.021469426155090333,
+    "total_time_sec": 5.3716065883636475
+  },
+  "grid_best_row": {
+    "kernel_width": 3.312,
+    "discretize_continuous": false,
+    "num_samples": 1000,
+    "median_r2": 0.24687926059936488,
+    "mean_r2": 0.290905023903585,
+    "frac_r2_pass_gate": 0.31333333333333335,
+    "mean_time_sec": 0.022468813260396323,
+    "total_time_sec": 3.3739640712738037,
+    "n_flows": 150
+  }
+}
