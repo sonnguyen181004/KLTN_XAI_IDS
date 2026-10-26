@@ -1,0 +1,18 @@
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: GĐ 11: DOMAIN VALIDATION
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 18:36:40,952 [WARNING] stage11_domain_validation: Lớp DoS attacks-SlowHTTPTest thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 18:36:40,953 [WARNING] stage11_domain_validation: Lớp FTP-BruteForce thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 18:36:40,962 [INFO] stage11_domain_validation: Tóm tắt precision/recall/F1 so với tri thức miền:
+ scope method  precision_at_5   recall       f1
+ broad   LIME        0.116667 0.081845 0.096154
+ broad   SHAP        0.116667 0.083333 0.097222
+strict   LIME        0.033333 0.041667 0.037037
+strict   SHAP        0.083333 0.104167 0.092593
+2026-10-26 18:36:40,966 [INFO] stage11_domain_validation: Tỷ lệ đặc trưng 'dấu vân tay môi trường' trong Top-5 trung bình: SHAP=0.18 LIME=0.13
+2026-10-26 18:36:40,969 [INFO] stage11_domain_validation: F1 trung bình theo scope:
+scope      broad    strict
+method                    
+LIME    0.096154  0.037037
+SHAP    0.097222  0.092593
+2026-10-26 18:36:41,435 [INFO] stage11_domain_validation: GĐ 11 HOÀN TẤT.

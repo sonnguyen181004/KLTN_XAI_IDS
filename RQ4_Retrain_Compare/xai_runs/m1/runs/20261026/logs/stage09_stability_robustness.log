@@ -1,0 +1,6 @@
+2026-10-26 18:35:03,728 [INFO] stage09_stability_robustness: ================================================================================
+2026-10-26 18:35:03,729 [INFO] stage09_stability_robustness: GĐ 9: STABILITY VÀ ROBUSTNESS (SHAP VÀ LIME)
+2026-10-26 18:35:03,729 [INFO] stage09_stability_robustness: ================================================================================
+2026-10-26 18:35:09,553 [INFO] stage09_stability_robustness: -- 1. Stability theo seed --
+2026-10-26 18:35:27,457 [INFO] stage09_stability_robustness:   seed 1/10 hoàn tất (17.9s đã trôi qua)
+2026-10-26 18:35:45,233 [INFO] stage09_stability_robustness:   seed 2/10 hoàn tất (35.7s đã trôi qua)

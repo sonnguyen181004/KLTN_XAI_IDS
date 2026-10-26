@@ -1,0 +1,1 @@
+GĐ5 không chạy lại trong RQ4. Dùng cấu hình LIME đã khóa ở RQ2 (xem config.yaml, lime.locked_config); đây là bản sao báo cáo khóa của RQ2.

@@ -1,0 +1,77 @@
+=== m1: GĐ10 stage10_faithfulness
+2026-10-26 18:36:20,509 [INFO] stage10_faithfulness: ================================================================================
+2026-10-26 18:36:20,509 [INFO] stage10_faithfulness: GĐ 10: FAITHFULNESS (DELETION/INSERTION)
+2026-10-26 18:36:20,510 [INFO] stage10_faithfulness: ================================================================================
+2026-10-26 18:36:32,307 [INFO] stage10_faithfulness: -- Giá trị nền: global_median --
+2026-10-26 18:36:32,745 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8313 sufficiency_AUC=0.4842
+2026-10-26 18:36:33,130 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.4774 sufficiency_AUC=0.1614
+2026-10-26 18:36:33,487 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1050 sufficiency_AUC=0.1112
+2026-10-26 18:36:33,488 [INFO] stage10_faithfulness: -- Giá trị nền: global_mean --
+2026-10-26 18:36:33,843 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8402 sufficiency_AUC=0.5329
+2026-10-26 18:36:34,216 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.4701 sufficiency_AUC=0.1990
+2026-10-26 18:36:34,569 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1180 sufficiency_AUC=0.1116
+2026-10-26 18:36:34,569 [INFO] stage10_faithfulness: -- Giá trị nền: benign_median --
+2026-10-26 18:36:34,921 [INFO] stage10_faithfulness:   SHAP  : comprehensiveness_AUC=0.8575 sufficiency_AUC=0.4485
+2026-10-26 18:36:35,279 [INFO] stage10_faithfulness:   LIME  : comprehensiveness_AUC=0.5045 sufficiency_AUC=0.1262
+2026-10-26 18:36:35,657 [INFO] stage10_faithfulness:   Random: comprehensiveness_AUC=0.1132 sufficiency_AUC=0.1064
+2026-10-26 18:36:36,723 [INFO] stage10_faithfulness: Bảng AUC:
+     baseline method  comprehensiveness_auc  sufficiency_auc
+global_median   SHAP               0.831253         0.484228
+global_median   LIME               0.477380         0.161427
+global_median Random               0.105040         0.111186
+  global_mean   SHAP               0.840184         0.532854
+  global_mean   LIME               0.470137         0.198983
+  global_mean Random               0.118030         0.111624
+benign_median   SHAP               0.857526         0.448480
+benign_median   LIME               0.504536         0.126198
+benign_median Random               0.113163         0.106443
+2026-10-26 18:36:36,786 [INFO] stage10_faithfulness: Win-rate SHAP vs LIME (k=5, comprehensiveness):
+     baseline  k  shap_win_rate_vs_lime  wilcoxon_stat    wilcoxon_p  n_flows
+global_median  5               0.721956        50891.0 5.069887e-102     1043
+  global_mean  5               0.871524        19213.5 6.356841e-144     1043
+benign_median  5               0.825503        44337.5 4.383377e-111     1043
+2026-10-26 18:36:36,810 [INFO] stage10_faithfulness: Kết luận SHAP > LIME (comprehensiveness) ổn định qua mọi giá trị nền: True
+2026-10-26 18:36:39,161 [INFO] stage10_faithfulness: GĐ 10 HOÀN TẤT.
+=== m1: GĐ11 stage11_domain_validation
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: GĐ 11: DOMAIN VALIDATION
+2026-10-26 18:36:40,805 [INFO] stage11_domain_validation: ================================================================================
+2026-10-26 18:36:40,952 [WARNING] stage11_domain_validation: Lớp DoS attacks-SlowHTTPTest thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 18:36:40,953 [WARNING] stage11_domain_validation: Lớp FTP-BruteForce thiếu Top-5 ở SHAP hoặc LIME — bỏ qua.
+2026-10-26 18:36:40,962 [INFO] stage11_domain_validation: Tóm tắt precision/recall/F1 so với tri thức miền:
+ scope method  precision_at_5   recall       f1
+ broad   LIME        0.116667 0.081845 0.096154
+ broad   SHAP        0.116667 0.083333 0.097222
+strict   LIME        0.033333 0.041667 0.037037
+strict   SHAP        0.083333 0.104167 0.092593
+2026-10-26 18:36:40,966 [INFO] stage11_domain_validation: Tỷ lệ đặc trưng 'dấu vân tay môi trường' trong Top-5 trung bình: SHAP=0.18 LIME=0.13
+2026-10-26 18:36:40,969 [INFO] stage11_domain_validation: F1 trung bình theo scope:
+scope      broad    strict
+method                    
+LIME    0.096154  0.037037
+SHAP    0.097222  0.092593
+2026-10-26 18:36:41,435 [INFO] stage11_domain_validation: GĐ 11 HOÀN TẤT.
+=== m1: GĐ12 stage12_error_cohort
+2026-10-26 18:36:44,065 [INFO] stage12_error_cohort: ================================================================================
+2026-10-26 18:36:44,065 [INFO] stage12_error_cohort: GĐ 12: GIẢI THÍCH KHI MODEL DỰ ĐOÁN SAI (COHORT LỖI)
+2026-10-26 18:36:44,065 [INFO] stage12_error_cohort: ================================================================================
+2026-10-26 18:36:46,065 [INFO] stage12_error_cohort: Cohort lỗi: 21 flow
+2026-10-26 18:36:46,723 [INFO] stage12_error_cohort:   ... 0 / 21 flow lỗi
+2026-10-26 18:36:49,135 [INFO] stage12_error_cohort: So sánh cohort lỗi vs cohort đúng:
+{'error_cohort_n_flows': 21, 'error_shap_concentration_mean': 0.7128952855155581, 'correct_cohort_shap_concentration_mean': 0.9253809028641352, 'error_shap_lime_jaccard5_mean': 0.1921768707482993, 'correct_cohort_shap_lime_jaccard5_mean': 0.23722777701684697, 'error_env_fraction_in_top5_mean': 0.29523809523809524, 'caveat': 'Cỡ mẫu nhỏ (151 flow, nhiều lớp <10 flow) — chỉ mang tính thăm dò, KHÔNG khẳng định khác biệt có ý nghĩa thống kê.'}
+2026-10-26 18:36:49,552 [INFO] stage12_error_cohort: GĐ 12 HOÀN TẤT.
+=== m1: GĐ13 stage13_build_report_data
+2026-10-26 18:36:51,475 [INFO] stage13_build_report_data: ================================================================================
+2026-10-26 18:36:51,476 [INFO] stage13_build_report_data: GĐ 13a: TỔNG HỢP SỐ LIỆU CHO BÁO CÁO
+2026-10-26 18:36:51,476 [INFO] stage13_build_report_data: ================================================================================
+2026-10-26 18:36:51,488 [WARNING] stage13_build_report_data: GĐ9 chưa có đủ output — bỏ qua phần này trong tổng hợp.
+2026-10-26 18:36:51,495 [INFO] stage13_build_report_data: Đã ghi bảng tổng hợp: C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\xai_runs\m1\runs\20261026\gd13_report\rq2_master_summary.json
+2026-10-26 18:36:51,507 [INFO] stage13_build_report_data: So sánh v1 vs v2:
+                            chỉ số       v1          v2
+               Cohort chính (flow) 1339.000 1043.000000
+                 Cohort lỗi (flow)  151.000   21.000000
+LIME median Local R2 (toàn cohort)    0.068    0.548443
+     LIME % flow vượt gate R2>=0.3   12.300   72.483221
+      Jaccard@5 SHAP-LIME quan sát    0.213    0.237228
+2026-10-26 18:36:51,507 [INFO] stage13_build_report_data: GĐ 13a HOÀN TẤT.
+xong chuỗi giải thích cho m1
