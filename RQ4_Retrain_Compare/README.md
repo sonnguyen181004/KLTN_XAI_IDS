@@ -53,3 +53,17 @@ Siêu tham số XGBoost và cấu hình SHAP, LIME giữ nguyên của RQ1 và R
 7. Báo cáo đầy đủ.
 
 Dữ liệu trung gian (`data/`) và mô hình (`models/`) không được commit. Kết quả CSV, mã và tài liệu được commit.
+
+## Trạng thái (26/10/2026)
+
+| Hạng mục | Trạng thái |
+|---|---|
+| Bảng ánh xạ, kiểm toán CSV gốc và bản improved | Xong |
+| Dựng bộ dữ liệu M1 và bộ giữ riêng theo thời gian | Xong |
+| Huấn luyện M0b và M1 (tham số RQ1, không quét lại) | Xong |
+| Đánh giá chéo T1, T2a, T2b, T3, có bản bỏ dòng trùng | Xong |
+| SHAP và LIME cho M1 (cấu hình RQ2 đã khóa, bỏ GĐ5 và GĐ9) | Xong |
+| M2 (thêm Benign vào train cũ) | Hoãn theo yêu cầu người dùng |
+| Báo cáo đầy đủ | `report/Bao_cao_RQ4_so_sanh_dataset_cu_va_moi.docx`, dựng bằng `report/build_report.js` |
+
+Dựng lại báo cáo: `python scripts/11_report_data.py` rồi `node report/build_report.js <đầu ra.docx> <văn bản.txt>`.
