@@ -1,0 +1,13 @@
+id
+Flow ID
+Src IP
+Src Port
+Dst IP
+Timestamp
+Fwd RST Flags
+Bwd RST Flags
+ICMP Code
+ICMP Type
+Total TCP Flow Time
+Label
+Attempted Category

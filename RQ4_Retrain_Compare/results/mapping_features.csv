@@ -1,0 +1,79 @@
+﻿stt,ten_rq1_csv_goc,ten_ban_improved,co_trong_csv_goc,co_trong_improved,doi_ten
+1,Dst Port,Dst Port,True,True,False
+2,Protocol,Protocol,True,True,False
+3,Flow Duration,Flow Duration,True,True,False
+4,Tot Fwd Pkts,Total Fwd Packet,True,True,True
+5,Tot Bwd Pkts,Total Bwd packets,True,True,True
+6,TotLen Fwd Pkts,Total Length of Fwd Packet,True,True,True
+7,TotLen Bwd Pkts,Total Length of Bwd Packet,True,True,True
+8,Fwd Pkt Len Max,Fwd Packet Length Max,True,True,True
+9,Fwd Pkt Len Min,Fwd Packet Length Min,True,True,True
+10,Fwd Pkt Len Mean,Fwd Packet Length Mean,True,True,True
+11,Fwd Pkt Len Std,Fwd Packet Length Std,True,True,True
+12,Bwd Pkt Len Max,Bwd Packet Length Max,True,True,True
+13,Bwd Pkt Len Min,Bwd Packet Length Min,True,True,True
+14,Bwd Pkt Len Mean,Bwd Packet Length Mean,True,True,True
+15,Bwd Pkt Len Std,Bwd Packet Length Std,True,True,True
+16,Flow Byts/s,Flow Bytes/s,True,True,True
+17,Flow Pkts/s,Flow Packets/s,True,True,True
+18,Flow IAT Mean,Flow IAT Mean,True,True,False
+19,Flow IAT Std,Flow IAT Std,True,True,False
+20,Flow IAT Max,Flow IAT Max,True,True,False
+21,Flow IAT Min,Flow IAT Min,True,True,False
+22,Fwd IAT Tot,Fwd IAT Total,True,True,True
+23,Fwd IAT Mean,Fwd IAT Mean,True,True,False
+24,Fwd IAT Std,Fwd IAT Std,True,True,False
+25,Fwd IAT Max,Fwd IAT Max,True,True,False
+26,Fwd IAT Min,Fwd IAT Min,True,True,False
+27,Bwd IAT Tot,Bwd IAT Total,True,True,True
+28,Bwd IAT Mean,Bwd IAT Mean,True,True,False
+29,Bwd IAT Std,Bwd IAT Std,True,True,False
+30,Bwd IAT Max,Bwd IAT Max,True,True,False
+31,Bwd IAT Min,Bwd IAT Min,True,True,False
+32,Fwd PSH Flags,Fwd PSH Flags,True,True,False
+33,Bwd PSH Flags,Bwd PSH Flags,True,True,False
+34,Fwd URG Flags,Fwd URG Flags,True,True,False
+35,Bwd URG Flags,Bwd URG Flags,True,True,False
+36,Fwd Header Len,Fwd Header Length,True,True,True
+37,Bwd Header Len,Bwd Header Length,True,True,True
+38,Fwd Pkts/s,Fwd Packets/s,True,True,True
+39,Bwd Pkts/s,Bwd Packets/s,True,True,True
+40,Pkt Len Min,Packet Length Min,True,True,True
+41,Pkt Len Max,Packet Length Max,True,True,True
+42,Pkt Len Mean,Packet Length Mean,True,True,True
+43,Pkt Len Std,Packet Length Std,True,True,True
+44,Pkt Len Var,Packet Length Variance,True,True,True
+45,FIN Flag Cnt,FIN Flag Count,True,True,True
+46,SYN Flag Cnt,SYN Flag Count,True,True,True
+47,RST Flag Cnt,RST Flag Count,True,True,True
+48,PSH Flag Cnt,PSH Flag Count,True,True,True
+49,ACK Flag Cnt,ACK Flag Count,True,True,True
+50,URG Flag Cnt,URG Flag Count,True,True,True
+51,CWE Flag Count,CWR Flag Count,True,True,True
+52,ECE Flag Cnt,ECE Flag Count,True,True,True
+53,Down/Up Ratio,Down/Up Ratio,True,True,False
+54,Pkt Size Avg,Average Packet Size,True,True,True
+55,Fwd Seg Size Avg,Fwd Segment Size Avg,True,True,True
+56,Bwd Seg Size Avg,Bwd Segment Size Avg,True,True,True
+57,Fwd Byts/b Avg,Fwd Bytes/Bulk Avg,True,True,True
+58,Fwd Pkts/b Avg,Fwd Packet/Bulk Avg,True,True,True
+59,Fwd Blk Rate Avg,Fwd Bulk Rate Avg,True,True,True
+60,Bwd Byts/b Avg,Bwd Bytes/Bulk Avg,True,True,True
+61,Bwd Pkts/b Avg,Bwd Packet/Bulk Avg,True,True,True
+62,Bwd Blk Rate Avg,Bwd Bulk Rate Avg,True,True,True
+63,Subflow Fwd Pkts,Subflow Fwd Packets,True,True,True
+64,Subflow Fwd Byts,Subflow Fwd Bytes,True,True,True
+65,Subflow Bwd Pkts,Subflow Bwd Packets,True,True,True
+66,Subflow Bwd Byts,Subflow Bwd Bytes,True,True,True
+67,Init Fwd Win Byts,FWD Init Win Bytes,True,True,True
+68,Init Bwd Win Byts,Bwd Init Win Bytes,True,True,True
+69,Fwd Act Data Pkts,Fwd Act Data Pkts,True,True,False
+70,Fwd Seg Size Min,Fwd Seg Size Min,True,True,False
+71,Active Mean,Active Mean,True,True,False
+72,Active Std,Active Std,True,True,False
+73,Active Max,Active Max,True,True,False
+74,Active Min,Active Min,True,True,False
+75,Idle Mean,Idle Mean,True,True,False
+76,Idle Std,Idle Std,True,True,False
+77,Idle Max,Idle Max,True,True,False
+78,Idle Min,Idle Min,True,True,False

@@ -1,0 +1,15 @@
+﻿nhan_rq1,so_flow_csv_goc,trong_13_lop
+Benign,6112151,có
+Bot,286191,có
+DoS attacks-Hulk,461912,có
+DoS attacks-SlowHTTPTest,139890,không
+Brute Force -Web,611,có
+Brute Force -XSS,230,có
+SQL Injection,87,có
+Infilteration,161934,có
+DoS attacks-GoldenEye,41508,có
+DoS attacks-Slowloris,10990,có
+FTP-BruteForce,193360,không
+SSH-Bruteforce,187589,có
+DDOS attack-HOIC,686012,có
+DDOS attack-LOIC-UDP,1730,có
