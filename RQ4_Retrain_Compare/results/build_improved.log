@@ -1,0 +1,26 @@
+xong Friday-02-03-2018 giữ 573674
+xong Friday-16-02-2018 giữ 2186891
+xong Friday-23-02-2018 giữ 417986
+xong Thursday-01-03-2018 giữ 495469
+xong Thursday-15-02-2018 giữ 406798
+xong Thursday-22-02-2018 giữ 424536
+xong Tuesday-20-02-2018 giữ 693229
+xong Wednesday-14-02-2018 giữ 487126
+xong Wednesday-21-02-2018 giữ 1494834
+xong Wednesday-28-02-2018 giữ 505990
+{
+ "Benign": 4151111,
+ "Bot": 142921,
+ "DoS attacks-Hulk": 1803160,
+ "Brute Force -XSS": 113,
+ "Brute Force -Web": 131,
+ "SQL Injection": 39,
+ "Infilteration": 89663,
+ "DoS attacks-GoldenEye": 22560,
+ "DoS attacks-Slowloris": 8490,
+ "DDoS attacks-LOIC-HTTP": 289328,
+ "DDOS attack-LOIC-UDP": 2527,
+ "SSH-Bruteforce": 94197,
+ "DDOS attack-HOIC": 1082293
+}
+bỏ do NaN/inf: {'Benign': 1}

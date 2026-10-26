@@ -1,0 +1,53 @@
+{
+ "raw_label_counts": {
+  "BENIGN": 59353486,
+  "Botnet Ares": 142921,
+  "Botnet Ares - Attempted": 262,
+  "FTP-BruteForce - Attempted": 298874,
+  "DoS Hulk": 1803160,
+  "DoS Hulk - Attempted": 86,
+  "Web Attack - XSS": 113,
+  "Web Attack - Brute Force": 131,
+  "Web Attack - Brute Force - Attempted": 137,
+  "Web Attack - SQL": 39,
+  "Web Attack - SQL - Attempted": 14,
+  "Web Attack - XSS - Attempted": 4,
+  "Infiltration - NMAP Portscan": 89374,
+  "Infiltration - Communication Victim Attacker": 204,
+  "Infiltration - Dropbox Download": 85,
+  "Infiltration - Dropbox Download - Attempted": 28,
+  "DoS GoldenEye": 22560,
+  "DoS Slowloris": 8490,
+  "DoS GoldenEye - Attempted": 4301,
+  "DoS Slowloris - Attempted": 2280,
+  "DDoS-LOIC-HTTP": 289328,
+  "DDoS-LOIC-UDP": 2527,
+  "DDoS-LOIC-UDP - Attempted": 251,
+  "SSH-BruteForce": 94197,
+  "DDoS-HOIC": 1082293
+ },
+ "dropped_nan_or_inf": {
+  "Benign": 1
+ },
+ "kept_in_cache": {
+  "Benign": 4151111,
+  "Bot": 142921,
+  "DoS attacks-Hulk": 1803160,
+  "Brute Force -XSS": 113,
+  "Brute Force -Web": 131,
+  "SQL Injection": 39,
+  "Infilteration": 89663,
+  "DoS attacks-GoldenEye": 22560,
+  "DoS attacks-Slowloris": 8490,
+  "DDoS attacks-LOIC-HTTP": 289328,
+  "DDOS attack-LOIC-UDP": 2527,
+  "SSH-Bruteforce": 94197,
+  "DDOS attack-HOIC": 1082293
+ },
+ "benign_rate": 0.07,
+ "rule": {
+  "min_fin": 1,
+  "min_fwd_pkt_len_max": 66,
+  "below_fwd_seg_size_min": 32
+ }
+}

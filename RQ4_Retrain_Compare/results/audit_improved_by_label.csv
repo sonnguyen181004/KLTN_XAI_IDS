@@ -1,0 +1,44 @@
+﻿day,label,tcp_flows,fin,fin_data_gt0,fin_data_ge_min,zone
+Friday-02-03-2018,BENIGN,3951351,1789355,1555923,1355580,1353810
+Friday-02-03-2018,Botnet Ares,142921,142921,142921,142921,142921
+Friday-02-03-2018,Botnet Ares - Attempted,262,0,0,0,0
+Friday-16-02-2018,BENIGN,3060831,1363218,1173366,957499,955701
+Friday-16-02-2018,DoS Hulk,1803160,1802966,1802966,1802966,3614
+Friday-16-02-2018,DoS Hulk - Attempted,86,0,0,0,0
+Friday-16-02-2018,FTP-BruteForce - Attempted,105520,0,0,0,0
+Friday-23-02-2018,BENIGN,3446099,1976865,1753637,1516066,1513259
+Friday-23-02-2018,Web Attack - Brute Force,62,62,62,62,62
+Friday-23-02-2018,Web Attack - Brute Force - Attempted,61,61,60,60,60
+Friday-23-02-2018,Web Attack - SQL,23,23,23,23,23
+Friday-23-02-2018,Web Attack - SQL - Attempted,10,10,5,5,5
+Friday-23-02-2018,Web Attack - XSS,73,73,73,73,73
+Friday-23-02-2018,Web Attack - XSS - Attempted,1,1,1,1,1
+Thursday-01-03-2018,BENIGN,4019781,1879947,1641710,1417036,1413878
+Thursday-01-03-2018,Infiltration - Communication Victim Attacker,161,2,2,2,2
+Thursday-01-03-2018,Infiltration - Dropbox Download,39,13,13,6,6
+Thursday-01-03-2018,Infiltration - Dropbox Download - Attempted,13,8,8,5,5
+Thursday-01-03-2018,Infiltration - NMAP Portscan,39180,2398,2007,1069,1069
+Thursday-15-02-2018,BENIGN,2771024,1457466,1259779,1026424,1025167
+Thursday-15-02-2018,DoS GoldenEye,22560,17366,17366,17366,1
+Thursday-15-02-2018,DoS GoldenEye - Attempted,4301,0,0,0,0
+Thursday-15-02-2018,DoS Slowloris,8490,434,434,203,103
+Thursday-15-02-2018,DoS Slowloris - Attempted,2280,48,0,0,0
+Thursday-22-02-2018,BENIGN,3525031,2031252,1807258,1562986,1560782
+Thursday-22-02-2018,Web Attack - Brute Force,69,69,69,69,69
+Thursday-22-02-2018,Web Attack - Brute Force - Attempted,76,76,73,73,73
+Thursday-22-02-2018,Web Attack - SQL,16,16,16,16,16
+Thursday-22-02-2018,Web Attack - SQL - Attempted,4,4,3,3,3
+Thursday-22-02-2018,Web Attack - XSS,40,38,38,38,38
+Thursday-22-02-2018,Web Attack - XSS - Attempted,3,3,2,2,2
+Tuesday-20-02-2018,BENIGN,3226053,1471414,1261875,1032022,1029575
+Tuesday-20-02-2018,DDoS-LOIC-HTTP,289328,289328,289328,0,0
+Wednesday-14-02-2018,BENIGN,2997049,1468499,1276556,1044470,1043193
+Wednesday-14-02-2018,FTP-BruteForce - Attempted,193354,0,0,0,0
+Wednesday-14-02-2018,SSH-BruteForce,94197,94197,94197,94197,0
+Wednesday-21-02-2018,BENIGN,3305048,1587683,1381999,1144292,1141046
+Wednesday-21-02-2018,DDoS-HOIC,1082293,1082293,1082293,1082293,1082293
+Wednesday-28-02-2018,BENIGN,3911574,2032968,1791735,1556956,1554393
+Wednesday-28-02-2018,Infiltration - Communication Victim Attacker,43,1,1,1,1
+Wednesday-28-02-2018,Infiltration - Dropbox Download,46,31,31,27,27
+Wednesday-28-02-2018,Infiltration - Dropbox Download - Attempted,15,9,8,6,6
+Wednesday-28-02-2018,Infiltration - NMAP Portscan,49070,3184,2682,1410,1410
