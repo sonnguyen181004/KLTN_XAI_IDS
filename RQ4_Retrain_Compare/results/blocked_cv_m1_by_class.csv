@@ -1,0 +1,131 @@
+﻿fold,bo,class,recall_pct,n_test
+0,khoi_thoi_gian,Benign,99.99853393623461,477469
+0,khoi_thoi_gian,Bot,100.0,25162
+0,khoi_thoi_gian,Brute Force -Web,96.15384615384616,26
+0,khoi_thoi_gian,Brute Force -XSS,90.9090909090909,22
+0,khoi_thoi_gian,DDOS attack-HOIC,100.0,59579
+0,khoi_thoi_gian,DDOS attack-LOIC-UDP,100.0,345
+0,khoi_thoi_gian,DDoS attacks-LOIC-HTTP,100.0,51354
+0,khoi_thoi_gian,DoS attacks-GoldenEye,100.0,3693
+0,khoi_thoi_gian,DoS attacks-Hulk,100.0,38760
+0,khoi_thoi_gian,DoS attacks-Slowloris,84.40265486725663,904
+0,khoi_thoi_gian,Infilteration,99.71356713706861,14314
+0,khoi_thoi_gian,SQL Injection,85.71428571428571,7
+0,khoi_thoi_gian,SSH-Bruteforce,100.0,10456
+0,khoi_thoi_gian_sach,Benign,99.99804735989109,358489
+0,khoi_thoi_gian_sach,Bot,100.0,25162
+0,khoi_thoi_gian_sach,Brute Force -Web,96.15384615384616,26
+0,khoi_thoi_gian_sach,Brute Force -XSS,90.9090909090909,22
+0,khoi_thoi_gian_sach,DDOS attack-HOIC,100.0,59579
+0,khoi_thoi_gian_sach,DDOS attack-LOIC-UDP,100.0,345
+0,khoi_thoi_gian_sach,DDoS attacks-LOIC-HTTP,100.0,51354
+0,khoi_thoi_gian_sach,DoS attacks-GoldenEye,100.0,3693
+0,khoi_thoi_gian_sach,DoS attacks-Hulk,100.0,38760
+0,khoi_thoi_gian_sach,DoS attacks-Slowloris,82.375,800
+0,khoi_thoi_gian_sach,Infilteration,99.49779519843214,8164
+0,khoi_thoi_gian_sach,SQL Injection,85.71428571428571,7
+0,khoi_thoi_gian_sach,SSH-Bruteforce,100.0,10456
+1,khoi_thoi_gian,Benign,99.99769619033655,477470
+1,khoi_thoi_gian,Bot,100.0,25162
+1,khoi_thoi_gian,Brute Force -Web,96.15384615384616,26
+1,khoi_thoi_gian,Brute Force -XSS,100.0,23
+1,khoi_thoi_gian,DDOS attack-HOIC,99.9983215844243,59580
+1,khoi_thoi_gian,DDOS attack-LOIC-UDP,97.6878612716763,346
+1,khoi_thoi_gian,DDoS attacks-LOIC-HTTP,100.0,51354
+1,khoi_thoi_gian,DoS attacks-GoldenEye,100.0,3694
+1,khoi_thoi_gian,DoS attacks-Hulk,100.0,38760
+1,khoi_thoi_gian,DoS attacks-Slowloris,100.0,905
+1,khoi_thoi_gian,Infilteration,99.89521480964024,14315
+1,khoi_thoi_gian,SQL Injection,87.5,8
+1,khoi_thoi_gian,SSH-Bruteforce,100.0,10457
+1,khoi_thoi_gian_sach,Benign,99.9969841282897,364737
+1,khoi_thoi_gian_sach,Bot,100.0,25162
+1,khoi_thoi_gian_sach,Brute Force -Web,96.15384615384616,26
+1,khoi_thoi_gian_sach,Brute Force -XSS,100.0,23
+1,khoi_thoi_gian_sach,DDOS attack-HOIC,99.9983215844243,59580
+1,khoi_thoi_gian_sach,DDOS attack-LOIC-UDP,97.6878612716763,346
+1,khoi_thoi_gian_sach,DDoS attacks-LOIC-HTTP,100.0,51354
+1,khoi_thoi_gian_sach,DoS attacks-GoldenEye,100.0,3694
+1,khoi_thoi_gian_sach,DoS attacks-Hulk,100.0,38760
+1,khoi_thoi_gian_sach,DoS attacks-Slowloris,100.0,794
+1,khoi_thoi_gian_sach,Infilteration,99.80592573424764,7729
+1,khoi_thoi_gian_sach,SQL Injection,87.5,8
+1,khoi_thoi_gian_sach,SSH-Bruteforce,100.0,10457
+2,khoi_thoi_gian,Benign,99.9979056231923,477469
+2,khoi_thoi_gian,Bot,99.97218137741922,25163
+2,khoi_thoi_gian,Brute Force -Web,100.0,26
+2,khoi_thoi_gian,Brute Force -XSS,100.0,22
+2,khoi_thoi_gian,DDOS attack-HOIC,100.0,59580
+2,khoi_thoi_gian,DDOS attack-LOIC-UDP,100.0,346
+2,khoi_thoi_gian,DDoS attacks-LOIC-HTTP,100.0,51354
+2,khoi_thoi_gian,DoS attacks-GoldenEye,100.0,3693
+2,khoi_thoi_gian,DoS attacks-Hulk,100.0,38761
+2,khoi_thoi_gian,DoS attacks-Slowloris,100.0,905
+2,khoi_thoi_gian,Infilteration,99.81835964789715,14314
+2,khoi_thoi_gian,SQL Injection,100.0,8
+2,khoi_thoi_gian,SSH-Bruteforce,100.0,10457
+2,khoi_thoi_gian_sach,Benign,99.99728576546842,368428
+2,khoi_thoi_gian_sach,Bot,99.97218137741922,25163
+2,khoi_thoi_gian_sach,Brute Force -Web,100.0,26
+2,khoi_thoi_gian_sach,Brute Force -XSS,100.0,22
+2,khoi_thoi_gian_sach,DDOS attack-HOIC,100.0,59580
+2,khoi_thoi_gian_sach,DDOS attack-LOIC-UDP,100.0,346
+2,khoi_thoi_gian_sach,DDoS attacks-LOIC-HTTP,100.0,51354
+2,khoi_thoi_gian_sach,DoS attacks-GoldenEye,100.0,3693
+2,khoi_thoi_gian_sach,DoS attacks-Hulk,100.0,38761
+2,khoi_thoi_gian_sach,DoS attacks-Slowloris,100.0,798
+2,khoi_thoi_gian_sach,Infilteration,99.6568562755708,7577
+2,khoi_thoi_gian_sach,SQL Injection,100.0,8
+2,khoi_thoi_gian_sach,SSH-Bruteforce,100.0,10457
+3,khoi_thoi_gian,Benign,99.99664900412591,477470
+3,khoi_thoi_gian,Bot,100.0,25162
+3,khoi_thoi_gian,Brute Force -Web,100.0,26
+3,khoi_thoi_gian,Brute Force -XSS,100.0,23
+3,khoi_thoi_gian,DDOS attack-HOIC,100.0,59580
+3,khoi_thoi_gian,DDOS attack-LOIC-UDP,100.0,346
+3,khoi_thoi_gian,DDoS attacks-LOIC-HTTP,100.0,51354
+3,khoi_thoi_gian,DoS attacks-GoldenEye,100.0,3694
+3,khoi_thoi_gian,DoS attacks-Hulk,100.0,38760
+3,khoi_thoi_gian,DoS attacks-Slowloris,100.0,905
+3,khoi_thoi_gian,Infilteration,99.97205728257073,14315
+3,khoi_thoi_gian,SQL Injection,87.5,8
+3,khoi_thoi_gian,SSH-Bruteforce,100.0,10457
+3,khoi_thoi_gian_sach,Benign,99.99571595725595,373479
+3,khoi_thoi_gian_sach,Bot,100.0,25162
+3,khoi_thoi_gian_sach,Brute Force -Web,100.0,26
+3,khoi_thoi_gian_sach,Brute Force -XSS,100.0,23
+3,khoi_thoi_gian_sach,DDOS attack-HOIC,100.0,59580
+3,khoi_thoi_gian_sach,DDOS attack-LOIC-UDP,100.0,346
+3,khoi_thoi_gian_sach,DDoS attacks-LOIC-HTTP,100.0,51354
+3,khoi_thoi_gian_sach,DoS attacks-GoldenEye,100.0,3694
+3,khoi_thoi_gian_sach,DoS attacks-Hulk,100.0,38760
+3,khoi_thoi_gian_sach,DoS attacks-Slowloris,100.0,788
+3,khoi_thoi_gian_sach,Infilteration,99.94444444444444,7200
+3,khoi_thoi_gian_sach,SQL Injection,87.5,8
+3,khoi_thoi_gian_sach,SSH-Bruteforce,100.0,10457
+4,khoi_thoi_gian,Benign,99.99664900412591,477470
+4,khoi_thoi_gian,Bot,100.0,25163
+4,khoi_thoi_gian,Brute Force -Web,96.29629629629629,27
+4,khoi_thoi_gian,Brute Force -XSS,100.0,23
+4,khoi_thoi_gian,DDOS attack-HOIC,100.0,59581
+4,khoi_thoi_gian,DDOS attack-LOIC-UDP,100.0,347
+4,khoi_thoi_gian,DDoS attacks-LOIC-HTTP,100.0,51355
+4,khoi_thoi_gian,DoS attacks-GoldenEye,99.97292907417433,3694
+4,khoi_thoi_gian,DoS attacks-Hulk,99.9458218312221,38761
+4,khoi_thoi_gian,DoS attacks-Slowloris,82.560706401766,906
+4,khoi_thoi_gian,Infilteration,99.8393293747817,14315
+4,khoi_thoi_gian,SQL Injection,100.0,8
+4,khoi_thoi_gian,SSH-Bruteforce,100.0,10458
+4,khoi_thoi_gian_sach,Benign,99.99582171247114,382932
+4,khoi_thoi_gian_sach,Bot,100.0,25163
+4,khoi_thoi_gian_sach,Brute Force -Web,96.29629629629629,27
+4,khoi_thoi_gian_sach,Brute Force -XSS,100.0,23
+4,khoi_thoi_gian_sach,DDOS attack-HOIC,100.0,59581
+4,khoi_thoi_gian_sach,DDOS attack-LOIC-UDP,100.0,347
+4,khoi_thoi_gian_sach,DDoS attacks-LOIC-HTTP,100.0,51355
+4,khoi_thoi_gian_sach,DoS attacks-GoldenEye,99.97292907417433,3694
+4,khoi_thoi_gian_sach,DoS attacks-Hulk,99.9458218312221,38761
+4,khoi_thoi_gian_sach,DoS attacks-Slowloris,81.36792452830188,848
+4,khoi_thoi_gian_sach,Infilteration,99.7051282051282,7800
+4,khoi_thoi_gian_sach,SQL Injection,100.0,8
+4,khoi_thoi_gian_sach,SSH-Bruteforce,100.0,10458
