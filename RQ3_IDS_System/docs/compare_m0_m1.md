@@ -7,7 +7,11 @@ Trang `app/compare_dashboard.py` chạy hai mô hình trên cùng các flow đã
 
 Cả hai dùng 78 đặc trưng và cùng siêu tham số, nên cùng một flow đưa được vào cả hai mô hình.
 
-## Chạy
+## Tab trong dashboard chính
+
+Dashboard chính (`app/dashboard.py`) có tab thứ tư **Đối chiếu M0 / M1**. Tab theo lượt dữ liệu và nguồn đang chọn ở thanh bên (mặc định là lượt gần nhất) và tự làm mới mỗi 5 giây như tab Giám sát, nên khi bắt realtime thấy kết quả của cả hai mô hình trên flow mới. M0 vẫn là mô hình chạy chính của API; tab này chỉ đọc DB và tự dự đoán lại bằng M1.
+
+## Chạy trang riêng
 
 Từ thư mục `RQ3_IDS_System/`:
 
@@ -32,6 +36,12 @@ File mô hình M1 không được commit (`.gitignore` bỏ `*.pkl`). Nếu thi�
 | csv_upload | 105 | 89 | 29 | 0 |
 
 Không flow nào trong DB có nhãn thật (`label_true` trống). Với feeder_live, nhãn Benign do người dùng xác nhận bằng lời cho 784 flow ngày 26/10/2026, các flow mới hơn chưa được xác nhận. Nhãn của pcap_replay và csv_upload chưa được ghi lại trong DB nên không đánh giá đúng sai ở đó.
+
+## Kết quả test ngày 28/10/2026
+
+- Realtime (Wi-Fi, lưu lượng web bình thường tạo bằng curl): 159 flow. M0 báo Hulk 46 flow, tất cả nằm trong vùng FIN của Hulk. M1 báo Benign cả 159. Dự đoán M0 tính lại khớp 100% với dự đoán M0 hệ thống đã lưu.
+- CSV mẫu có nhãn thật (`results/system_test_csv.csv`): trên mẫu CSE-CIC-2018 cũ 15 lớp, tấn công bị báo Benign là 9 trên 98 ở M0 và 69 trên 98 ở M1. Trên mẫu 13 lớp chung là 10 trên 96 (M0) và 61 trên 96 (M1).
+- PCAP kịch bản ids-lab (`results/system_test_pcap.csv`): chưa có nhãn từng flow. M1 báo Benign cho gần như mọi flow (kể cả các PCAP hydra và SQL injection), M0 báo Hulk cho phần lớn flow. Không tính đúng sai.
 
 ## Cách đọc
 

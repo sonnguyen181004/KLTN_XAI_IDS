@@ -1,0 +1,5 @@
+﻿file,tap,model,n,n_attack,n_benign,attack_flagged_as_benign,benign_flagged_as_attack,exact_class_correct_common,n_common
+test_sample100_15classes_with_label.csv,"Mẫu CSE-CIC-2018 cũ, 15 lớp",M0,105,98,7,9,0,78,91
+test_sample100_15classes_with_label.csv,"Mẫu CSE-CIC-2018 cũ, 15 lớp",M1,105,98,7,69,0,20,91
+test_sample_with_label.csv,Mẫu 13 lớp chung,M0,104,96,8,10,0,91,104
+test_sample_with_label.csv,Mẫu 13 lớp chung,M1,104,96,8,61,1,22,104

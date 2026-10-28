@@ -22,6 +22,7 @@ from alert_hints import fin_data_hint, lime_badge, lime_note, shap_short, why_su
 from branch_help import branch_option, branch_short
 from branch_ui import render_branch
 from feature_help import describe, reading
+from compare_ui import render_compare
 
 cfg = yaml.safe_load((ROOT / 'config.yaml').read_text(encoding='utf-8'))
 API = os.environ.get('IDS_API_URL', f"http://{cfg['api']['host']}:{cfg['api']['port']}")
@@ -296,7 +297,7 @@ def status_bar():
 
 
 status_bar()
-live, capture_help, upload = st.tabs(['Giám sát flow', 'Realtime', 'Nạp CSV / PCAP'])
+live, capture_help, upload, compare = st.tabs(['Giám sát flow', 'Realtime', 'Nạp CSV / PCAP', 'Đối chiếu M0 / M1'])
 
 
 def storage_panel():
@@ -479,3 +480,13 @@ with capture_help:
 with upload:
     st.caption('CSV có đặc trưng sẵn hoặc PCAP qua extractor đều gửi về cùng /predict. Sau khi nạp, mở Giám sát flow để xem lượt tương ứng; không cần xóa lịch sử.')
     render_ingestion(API, ROOT)
+with compare:
+    def compare_run():
+        if choice == '__all__':
+            return ''
+        if choice != '__latest__':
+            return choice
+        runs = get('/runs')['runs']
+        return runs[0]['capture_run_id'] if runs else ''
+    render_compare(os.environ.get('IDS_DB_PATH', str(ROOT.parent / cfg['paths']['sqlite_db'])),
+                   '' if source == 'Tất cả' else source, compare_run, paused, key='cmp_main')

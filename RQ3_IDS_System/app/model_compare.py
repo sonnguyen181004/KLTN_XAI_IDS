@@ -75,12 +75,15 @@ def open_readonly(db_path: Path) -> sqlite3.Connection:
     return sqlite3.connect(f"file:{Path(db_path).as_posix()}?mode=ro", uri=True, timeout=10)
 
 
-def load_flows(db_path: Path, source: str | None = None, limit: int = 500) -> pd.DataFrame:
-    q = "SELECT flow_id, source, flow_timestamp, label_true, features_json FROM FlowRecord"
+def load_flows(db_path: Path, source: str | None = None, limit: int = 500, run_id: str | None = None) -> pd.DataFrame:
+    q = "SELECT flow_id, source, flow_timestamp, label_true, features_json FROM FlowRecord WHERE 1=1"
     params: list = []
     if source:
-        q += " WHERE source = ?"
+        q += " AND source = ?"
         params.append(source)
+    if run_id:
+        q += " AND capture_run_id = ?"
+        params.append(run_id)
     q += " ORDER BY COALESCE(flow_timestamp, received_at) DESC LIMIT ?"
     params.append(int(limit))
     conn = open_readonly(db_path)
@@ -91,6 +94,18 @@ def load_flows(db_path: Path, source: str | None = None, limit: int = 500) -> pd
     meta = pd.DataFrame([r[:4] for r in rows], columns=["flow_id", "source", "flow_timestamp", "label_true"])
     feats = pd.DataFrame([json.loads(r[4]) for r in rows])
     return pd.concat([meta, feats], axis=1)
+
+
+def list_runs(db_path: Path) -> list[tuple[str, str, str]]:
+    """(capture_run_id, run_name, lần nhận đầu tiên), mới nhất trước. Rỗng nếu DB cũ chưa có cột lượt."""
+    conn = open_readonly(db_path)
+    try:
+        return conn.execute("SELECT capture_run_id, COALESCE(run_name, ''), MIN(received_at) FROM FlowRecord "
+                            "WHERE capture_run_id IS NOT NULL GROUP BY capture_run_id ORDER BY MIN(received_at) DESC").fetchall()
+    except sqlite3.OperationalError:
+        return []
+    finally:
+        conn.close()
 
 
 def list_sources(db_path: Path) -> list[str]:
