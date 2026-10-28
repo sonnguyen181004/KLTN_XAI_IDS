@@ -345,6 +345,30 @@ c.push(H2("8.1 Giải thích: vì sao M1 cao hơn mô hình cũ, và M1 có họ
 c.push(P(`M1 không học từ bộ cũ. M1 được huấn luyện từ đầu, chỉ trên bộ train improved, không kế thừa trọng số hay dữ liệu của M0. Siêu tham số giống hệt RQ1: độ sâu 8, learning rate 0,08, 100 cây, tree_method hist, seed 42, không quét lại. Đặc trưng cũng giống: 78 đặc trưng, không Timestamp, không địa chỉ IP. Vì vậy mọi khác biệt giữa M1 và M0b chỉ đến từ dữ liệu huấn luyện và test.`));
 c.push(P(`Macro F1 của M1 là ${pc(R.M1.f1, 1)}, của M0b là ${pc(R.M0b.f1, 1)} (cùng 13 lớp). Phần lớn chênh lệch đến từ một lớp. Infilteration có F1 ${nf(PM.m0b.Infilteration, 3)} ở bộ cũ, vì phần lớn flow bị đoán thành Benign, và ${nf(PM.m1.Infilteration, 3)} ở bộ improved, vì Infilteration của bản improved có quét cổng nên dễ tách. Hầu hết các lớp còn lại đạt khoảng 1,0 ở cả hai mô hình. Vài lớp nhỏ (SQL Injection, Brute Force -Web) chênh nhau nhưng test chỉ có vài chục flow. Điểm cao hơn của M1 do đó phản ánh bộ improved dễ hơn trong chính nó, không chứng minh M1 tốt hơn M0 nói chung. Phép chia theo khối thời gian ở trên và đường cong học cùng cho thấy điều này.`));
 
+c.push(H2("8.2 Bộ dữ liệu improved có ổn không, và tổng hợp các lý do điểm cao"));
+c.push(P(`Nhóm đánh giá bộ improved theo hai hướng: nó có đủ sạch để huấn luyện và đo không, và nó có đại diện cho lưu lượng ngoài đời không. Câu trả lời là có cho hướng thứ nhất và chưa cho hướng thứ hai.`));
+const kc = D.scan.kept_in_cache, minTest = Math.min(...Object.values(D.composition).map((r) => r.d2_test).filter((v) => v > 0));
+c.push(T([3000, 6638], ["Khía cạnh", "Đánh giá"], [
+  ["Nhãn và dữ liệu", "Nhãn khớp tệp CSV improved ở mọi dòng đối chiếu được (" + nf(pvOk) + " trên " + nf(pvFound) + "), không có nhóm đặc trưng nào trùng mà khác nhãn, và chỉ " + nf(D.scan.dropped_nan_or_inf.Benign) + " dòng bị bỏ vì giá trị NaN hoặc vô cực. Ổn."],
+  ["Cờ TCP", "Cờ FIN nhận nhiều giá trị và " + pct(TC.moi.benign.fin, TC.moi.benign.tcp_rows, 1) + " flow Benign TCP mang FIN, gần với hành vi TCP thật hơn bộ cũ (" + pct(TC.cu.benign.fin, TC.cu.benign.tcp_rows, 2) + "). Ổn."],
+  ["Benign", "Lấy từ 10 ngày với " + nf(tp.find((r) => r.Label === "Benign").unique_src_ip) + " địa chỉ nguồn khác nhau. Tương đối đa dạng, nhưng vẫn là lưu lượng của một phòng lab."],
+  ["Tấn công", "Mỗi lớp là một công cụ chạy từ 1 đến 10 máy, chủ yếu trong một ngày. Bảy trong mười hai lớp chỉ có một địa chỉ nguồn. Dấu vết rất nhất quán nên rất dễ tách. Không đại diện cho tấn công ngoài đời."],
+  ["Lớp nhỏ", "Brute Force -Web chỉ có " + nf(kc["Brute Force -Web"]) + " flow, -XSS " + nf(kc["Brute Force -XSS"]) + " và SQL Injection " + nf(kc["SQL Injection"]) + ". Test chỉ có " + nf(minTest) + " flow ở lớp nhỏ nhất, nên F1 của các lớp này dao động mạnh."],
+  ["Trùng lặp", pct(D.leak.d2_test_rows_also_in_train, D.leak.d2_test_rows, 1) + " dòng test trùng hệt train và " + pc(NN.frac_below_0_01, 0) + " có dòng train gần như y hệt, vì công cụ tấn công gửi lặp cùng mẫu gói."],
+  ["Nhãn và lớp", "Thiếu SlowHTTPTest, FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted bị bỏ. Bốn loại Infiltration được gộp lại."],
+  ["Hulk", "Theo Engelen và cộng sự, Hulk bị cài đặt lỗi, nên mô hình có thể học thói quen của công cụ. Trong bộ train improved vùng ba điều kiện của Hulk chứa " + nf(TC.moi.zone_by_label.Benign) + " dòng Benign và chỉ " + nf(TC.moi.zone_by_label["DoS attacks-Hulk"]) + " dòng Hulk."],
+  ["Nguồn", "Nguồn tải chính xác của bản improved chưa được ghi lại trong dự án, cần xác nhận trước khi nộp bài."],
+]));
+c.push(cap("Bảng 15b. Đánh giá bộ dữ liệu improved."));
+c.push(P("Tổng hợp lý do M1 đạt điểm cao trên bộ improved:"));
+c.push(B(`Không phải do rò rỉ. Nhãn xáo trộn chỉ đạt ${pc(SA.shuffled_labels.accuracy, 1)}, bằng mức đoán lớp đông nhất. Bỏ dòng trùng hệt, bỏ 5 đặc trưng môi trường, hay chia theo 5 khối thời gian có vùng đệm đều cho Macro F1 từ ${pc(Math.min(...BK.map((r) => r.macro_f1)), 1)} trở lên.`));
+c.push(B(`Bài toán dễ: ${nf(LC["0.001"].train_rows)} dòng train đã cho Macro F1 ${pc(LC["0.001"].macro_f1, 1)}, và cây sâu 5 đạt Accuracy ${pc(ST["5"].accuracy, 1)}. Mỗi lớp tấn công có một chữ ký riêng do một công cụ trong lab tạo ra.`));
+c.push(B(`Test chứa nhiều dòng gần như y hệt dòng train, vì công cụ tấn công gửi lặp các mẫu gói.`));
+c.push(B(`Benign chiếm 70% nên Accuracy vốn dễ cao. Macro F1 và FPR mới là chỉ số đáng xét.`));
+c.push(B(`So với mô hình cũ, chênh lệch gần như chỉ do lớp Infilteration (F1 ${nf(PM.m0b.Infilteration, 3)} so với ${nf(PM.m1.Infilteration, 3)}) vì Infilteration của bản improved có quét cổng nên dễ tách.`));
+c.push(B(`Siêu tham số không phải nguyên nhân. M1 dùng đúng cấu hình RQ1 (độ sâu 8, learning rate 0,08, 100 cây, seed 42), giống M0. Mô hình nông hay chỉ ít dữ liệu đều cho điểm cao, nên điểm cao đến từ dữ liệu.`));
+c.push(P(`Điểm cao này vì vậy đo khả năng nhận ra chiến dịch tấn công trong chính phòng lab. Ngoài bộ đó M1 yếu: trên test cũ chỉ nhận ${pc(cr("M1", "T1_test_cu").hulk_recall_pct, 1)} đến ${pc(cr("M1", "T1_test_cu_sach").hulk_recall_pct, 1)} số flow Hulk và báo nhầm ${pc(cr("M1", "T1_test_cu").fpr_pct, 1)} Benign.`));
+
 // ================= 9. THẢO LUẬN =================
 c.push(H1("9. Thảo luận"));
 c.push(P("Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bộ train cũ gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là " + pct(TC.moi.benign.fin_data_gt0, TC.moi.benign.tcp_rows, 1) + " flow Benign TCP của bộ train improved. Mô hình học từ bộ cũ đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở hai cấp độ độc lập, gồm " + nf(cr("M0", "T2a_improved_stratified_sach").benign_zone_n) + " flow Benign trong vùng ở bộ test improved có nhãn thật, và " + nf(T3.t3_zone_flows) + " flow realtime do người dùng xác nhận."));

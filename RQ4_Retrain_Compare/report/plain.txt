@@ -629,6 +629,37 @@ So với M0b, phần lớn chênh lệch Macro F1 (88,7% so với 99,3%) đến 
 8.1 Giải thích: vì sao M1 cao hơn mô hình cũ, và M1 có học từ bộ cũ không
 M1 không học từ bộ cũ. M1 được huấn luyện từ đầu, chỉ trên bộ train improved, không kế thừa trọng số hay dữ liệu của M0. Siêu tham số giống hệt RQ1: độ sâu 8, learning rate 0,08, 100 cây, tree_method hist, seed 42, không quét lại. Đặc trưng cũng giống: 78 đặc trưng, không Timestamp, không địa chỉ IP. Vì vậy mọi khác biệt giữa M1 và M0b chỉ đến từ dữ liệu huấn luyện và test.
 Macro F1 của M1 là 99,3%, của M0b là 88,7% (cùng 13 lớp). Phần lớn chênh lệch đến từ một lớp. Infilteration có F1 0,247 ở bộ cũ, vì phần lớn flow bị đoán thành Benign, và 0,999 ở bộ improved, vì Infilteration của bản improved có quét cổng nên dễ tách. Hầu hết các lớp còn lại đạt khoảng 1,0 ở cả hai mô hình. Vài lớp nhỏ (SQL Injection, Brute Force -Web) chênh nhau nhưng test chỉ có vài chục flow. Điểm cao hơn của M1 do đó phản ánh bộ improved dễ hơn trong chính nó, không chứng minh M1 tốt hơn M0 nói chung. Phép chia theo khối thời gian ở trên và đường cong học cùng cho thấy điều này.
+8.2 Bộ dữ liệu improved có ổn không, và tổng hợp các lý do điểm cao
+Nhóm đánh giá bộ improved theo hai hướng: nó có đủ sạch để huấn luyện và đo không, và nó có đại diện cho lưu lượng ngoài đời không. Câu trả lời là có cho hướng thứ nhất và chưa cho hướng thứ hai.
+Khía cạnh
+Đánh giá
+Nhãn và dữ liệu
+Nhãn khớp tệp CSV improved ở mọi dòng đối chiếu được (858 trên 858), không có nhóm đặc trưng nào trùng mà khác nhãn, và chỉ 1 dòng bị bỏ vì giá trị NaN hoặc vô cực. Ổn.
+Cờ TCP
+Cờ FIN nhận nhiều giá trị và 49,9% flow Benign TCP mang FIN, gần với hành vi TCP thật hơn bộ cũ (0,74%). Ổn.
+Benign
+Lấy từ 10 ngày với 69.632 địa chỉ nguồn khác nhau. Tương đối đa dạng, nhưng vẫn là lưu lượng của một phòng lab.
+Tấn công
+Mỗi lớp là một công cụ chạy từ 1 đến 10 máy, chủ yếu trong một ngày. Bảy trong mười hai lớp chỉ có một địa chỉ nguồn. Dấu vết rất nhất quán nên rất dễ tách. Không đại diện cho tấn công ngoài đời.
+Lớp nhỏ
+Brute Force -Web chỉ có 131 flow, -XSS 113 và SQL Injection 39. Test chỉ có 8 flow ở lớp nhỏ nhất, nên F1 của các lớp này dao động mạnh.
+Trùng lặp
+16,9% dòng test trùng hệt train và 74% có dòng train gần như y hệt, vì công cụ tấn công gửi lặp cùng mẫu gói.
+Nhãn và lớp
+Thiếu SlowHTTPTest, FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted bị bỏ. Bốn loại Infiltration được gộp lại.
+Hulk
+Theo Engelen và cộng sự, Hulk bị cài đặt lỗi, nên mô hình có thể học thói quen của công cụ. Trong bộ train improved vùng ba điều kiện của Hulk chứa 405.347 dòng Benign và chỉ 330 dòng Hulk.
+Nguồn
+Nguồn tải chính xác của bản improved chưa được ghi lại trong dự án, cần xác nhận trước khi nộp bài.
+Bảng 15b. Đánh giá bộ dữ liệu improved.
+Tổng hợp lý do M1 đạt điểm cao trên bộ improved:
+Không phải do rò rỉ. Nhãn xáo trộn chỉ đạt 70,0%, bằng mức đoán lớp đông nhất. Bỏ dòng trùng hệt, bỏ 5 đặc trưng môi trường, hay chia theo 5 khối thời gian có vùng đệm đều cho Macro F1 từ 98,0% trở lên.
+Bài toán dễ: 2.739 dòng train đã cho Macro F1 96,6%, và cây sâu 5 đạt Accuracy 99,5%. Mỗi lớp tấn công có một chữ ký riêng do một công cụ trong lab tạo ra.
+Test chứa nhiều dòng gần như y hệt dòng train, vì công cụ tấn công gửi lặp các mẫu gói.
+Benign chiếm 70% nên Accuracy vốn dễ cao. Macro F1 và FPR mới là chỉ số đáng xét.
+So với mô hình cũ, chênh lệch gần như chỉ do lớp Infilteration (F1 0,247 so với 0,999) vì Infilteration của bản improved có quét cổng nên dễ tách.
+Siêu tham số không phải nguyên nhân. M1 dùng đúng cấu hình RQ1 (độ sâu 8, learning rate 0,08, 100 cây, seed 42), giống M0. Mô hình nông hay chỉ ít dữ liệu đều cho điểm cao, nên điểm cao đến từ dữ liệu.
+Điểm cao này vì vậy đo khả năng nhận ra chiến dịch tấn công trong chính phòng lab. Ngoài bộ đó M1 yếu: trên test cũ chỉ nhận 3,7% đến 11,8% số flow Hulk và báo nhầm 3,8% Benign.
 9. Thảo luận
 Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bộ train cũ gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là 43,6% flow Benign TCP của bộ train improved. Mô hình học từ bộ cũ đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở hai cấp độ độc lập, gồm 100.819 flow Benign trong vùng ở bộ test improved có nhãn thật, và 148 flow realtime do người dùng xác nhận.
 Thực nghiệm cũng cho thấy việc sửa dữ liệu không giải quyết hết vấn đề. Mô hình M1 loại bỏ được báo nhầm FIN nhưng vẫn dựa nhiều vào đặc trưng môi trường như cửa sổ nhận ban đầu và kích thước header tối thiểu. Những đặc trưng này khác nhau giữa các mạng, nên M1 có thể thất bại ở một môi trường khác dù đúng ở máy của người dùng. Đây cũng là điều Engelen và cộng sự cảnh báo khi nói về nguy cơ học đường tắt theo cấu hình lab.
