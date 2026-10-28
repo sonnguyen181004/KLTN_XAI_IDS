@@ -38,6 +38,7 @@ D["train_cmp"] = json.load(open(RESULTS / "compare_train_sets.json", encoding="u
 D["scan"] = json.load(open(RESULTS / "improved_scan_summary.json", encoding="utf-8"))
 D["perclass"] = {m: json.loads(pd.read_csv(RESULTS / m / "bang_chi_tiet_lop.csv", index_col=0)["f1-score"].to_json()) for m in ("m0b", "m1")}
 D["standalone"] = json.load(open(RESULTS / "m1_standalone_audit.json", encoding="utf-8"))
+D["blocked"] = json.loads(pd.read_csv(RESULTS / "blocked_cv_m1.csv").to_json(orient="records"))
 D["srcip"] = json.loads(pd.read_csv(RESULTS / "srcip_per_class.csv").to_json(orient="records"))
 
 # --- thành phần, rò rỉ, chẩn đoán, realtime

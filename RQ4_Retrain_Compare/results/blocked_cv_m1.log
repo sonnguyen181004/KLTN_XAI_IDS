@@ -1,0 +1,17 @@
+mẫu: 3410497
+fold 0 khoi_thoi_gian: n_test 682,091 | Acc 99.97 | Macro F1 98.11 | FPR 0.0015 | FNR 0.0347
+fold 0 khoi_thoi_gian_sach: n_test 556,857 | Acc 99.97 | Macro F1 98.01 | FPR 0.0020 | FNR 0.0358
+fold 1 khoi_thoi_gian: n_test 682,100 | Acc 99.99 | Macro F1 99.24 | FPR 0.0023 | FNR 0.0127
+fold 1 khoi_thoi_gian_sach: n_test 562,670 | Acc 99.99 | Macro F1 99.23 | FPR 0.0030 | FNR 0.0131
+fold 2 khoi_thoi_gian: n_test 682,098 | Acc 99.99 | Macro F1 99.99 | FPR 0.0021 | FNR 0.0161
+fold 2 khoi_thoi_gian_sach: n_test 566,213 | Acc 99.99 | Macro F1 99.98 | FPR 0.0027 | FNR 0.0167
+fold 3 khoi_thoi_gian: n_test 682,100 | Acc 100.00 | Macro F1 99.48 | FPR 0.0034 | FNR 0.0024
+fold 3 khoi_thoi_gian_sach: n_test 570,877 | Acc 100.00 | Macro F1 99.48 | FPR 0.0043 | FNR 0.0025
+fold 4 khoi_thoi_gian: n_test 682,108 | Acc 99.97 | Macro F1 99.05 | FPR 0.0034 | FNR 0.0938
+fold 4 khoi_thoi_gian_sach: n_test 580,997 | Acc 99.96 | Macro F1 98.98 | FPR 0.0042 | FNR 0.0969
+                    accuracy                 macro_f1                 macro_recall                 fpr_pct               fnr_pct              
+                        mean     min     max     mean     min     max         mean     min     max    mean    min    max    mean    min    max
+bo                                                                                                                                            
+khoi_thoi_gian        99.985  99.968  99.997   99.174  98.108  99.989       98.523  96.684  99.984   0.003  0.001  0.003   0.032  0.002  0.094
+khoi_thoi_gian_sach   99.982  99.962  99.996   99.136  98.006  99.980       98.464  96.511  99.971   0.003  0.002  0.004   0.033  0.003  0.097
+xong
