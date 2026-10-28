@@ -1,0 +1,160 @@
+﻿flow_id,source,flow_timestamp,label_true,M0_label,M0_conf,M1_label,M1_conf,in_zone,M0_attack,M1_attack,disagree
+b4c8c50e-f50a-4785-af3c-621e2decb2d5,feeder_live,2026-10-28T09:44:03,,Benign,0.9759292,Benign,0.99986756,False,False,False,False
+37b862d7-1131-45be-aee3-ca9ac9d81648,feeder_live,2026-10-28T09:44:03,,Benign,0.9761772,Benign,0.99986756,False,False,False,False
+ada476cf-4699-4747-9090-52571cf04c27,feeder_live,2026-10-28T09:44:03,,Benign,0.98853827,Benign,0.9992409,False,False,False,False
+0af45815-fb53-449e-9207-5052fb1f5f8d,feeder_live,2026-10-28T09:44:03,,Benign,0.9942873,Benign,0.99975246,False,False,False,False
+725ff351-6483-44ac-96d9-030d956c6325,feeder_live,2026-10-28T09:44:03,,Benign,0.9579677,Benign,0.99966407,False,False,False,False
+4a22b112-b4fc-427e-81f6-849f77c0905b,feeder_live,2026-10-28T09:44:02,,Benign,0.98636043,Benign,0.9961085,False,False,False,False
+7634699e-7447-491f-be10-3af8d8385a02,feeder_live,2026-10-28T09:44:01,,Benign,0.9695524,Benign,0.9994752,False,False,False,False
+8d89ad48-6865-4d66-ae5e-73864d32b27c,feeder_live,2026-10-28T09:43:57,,Benign,0.9894599,Benign,0.99958223,False,False,False,False
+d4396a25-a42e-4dc9-9dd7-1a4e2ee97558,feeder_live,2026-10-28T09:43:57,,Benign,0.9614297,Benign,0.9991461,False,False,False,False
+48317e57-bbd8-4836-bc4a-311289495c32,feeder_live,2026-10-28T09:43:56,,DoS attacks-Hulk,0.84468323,Benign,0.999566,True,True,False,True
+bb7a9ca9-cb55-43ab-b046-ccd0a3ecad85,feeder_live,2026-10-28T09:43:56,,DoS attacks-Hulk,0.784736,Benign,0.9996972,True,True,False,True
+a8d8e11c-5a31-4722-8c97-099d3ecbd6df,feeder_live,2026-10-28T09:43:56,,Benign,0.9720773,Benign,0.99986756,False,False,False,False
+ea6b4d0c-3ec9-4f39-88f3-3b43150f06cd,feeder_live,2026-10-28T09:43:56,,Benign,0.9720773,Benign,0.99986756,False,False,False,False
+fd25e1cc-e5a3-4357-ba0f-412b082694bb,feeder_live,2026-10-28T09:43:55,,DoS attacks-Hulk,0.65985084,Benign,0.99963427,True,True,False,True
+cd1941e9-cba4-4c3a-89e1-3ab4922f209b,feeder_live,2026-10-28T09:43:55,,DoS attacks-Hulk,0.66880494,Benign,0.9993519,True,True,False,True
+52053d07-a413-4351-8521-703cfb61232c,feeder_live,2026-10-28T09:43:55,,Benign,0.96759576,Benign,0.9955309,False,False,False,False
+c08029c7-f832-4fd5-bebc-90f56b573bb4,feeder_live,2026-10-28T09:43:55,,Benign,0.9731111,Benign,0.99974185,False,False,False,False
+e5307d21-7f1e-4689-9322-51fda08f34e0,feeder_live,2026-10-28T09:43:54,,DoS attacks-Hulk,0.6854026,Benign,0.9996574,True,True,False,True
+1e5e8765-f6e0-4b2a-b287-9052ef7bc125,feeder_live,2026-10-28T09:43:54,,Benign,0.9598756,Benign,0.99977857,False,False,False,False
+8d271aed-13c5-4f83-bda6-6bd3fcd357eb,feeder_live,2026-10-28T09:43:51,,DoS attacks-Hulk,0.9700015,Benign,0.9997415,True,True,False,True
+6c049018-5abd-4942-ae18-52a9db7f648c,feeder_live,2026-10-28T09:43:51,,Benign,0.9873711,Benign,0.9998739,False,False,False,False
+c112de58-d0e5-4808-8cf7-c8a170d207cb,feeder_live,2026-10-28T09:43:51,,Benign,0.9942595,Benign,0.99966645,False,False,False,False
+828617e9-b909-4834-96bf-4798e73ea363,feeder_live,2026-10-28T09:43:51,,Benign,0.9628692,Benign,0.99983394,False,False,False,False
+cadc52fa-2ae4-40f6-9154-a2464105f97e,feeder_live,2026-10-28T09:43:51,,Benign,0.969999,Benign,0.99859005,False,False,False,False
+e5a8808e-2025-4847-94dc-9a7e1a3ee9ac,feeder_live,2026-10-28T09:43:50,,DoS attacks-Hulk,0.97492844,Benign,0.9997718,True,True,False,True
+bcb1a69b-ee94-4bec-9fe2-7f99af62df1f,feeder_live,2026-10-28T09:43:49,,Benign,0.95211506,Benign,0.9997795,False,False,False,False
+07ee48cc-eb3d-44d3-8057-563b4d1beab2,feeder_live,2026-10-28T09:43:49,,Benign,0.9540333,Benign,0.9957858,False,False,False,False
+6c9551f6-0224-4ac3-8a39-60f18c22ab65,feeder_live,2026-10-28T09:43:49,,Benign,0.9761595,Benign,0.9997812,False,False,False,False
+9591492f-4a4e-45f1-b6ff-499bac713ad6,feeder_live,2026-10-28T09:43:47,,Benign,0.9939294,Benign,0.99974686,False,False,False,False
+f7118932-8fad-4a1c-8f69-5861bae33a22,feeder_live,2026-10-28T09:43:47,,Benign,0.9900766,Benign,0.9996289,False,False,False,False
+d4f5ae53-1d08-4e82-aec4-9299a4973f45,feeder_live,2026-10-28T09:43:46,,DoS attacks-Hulk,0.95311034,Benign,0.99970824,True,True,False,True
+f64e4863-9648-4f4b-954f-e2b17e3bed29,feeder_live,2026-10-28T09:43:46,,Benign,0.99412423,Benign,0.9997228,False,False,False,False
+28d9f263-9e74-40e4-8763-9fc6f9c9c094,feeder_live,2026-10-28T09:43:46,,Benign,0.9942859,Benign,0.9996216,False,False,False,False
+27d16c5d-66c2-407e-bde9-e518f18c4272,feeder_live,2026-10-28T09:43:46,,Benign,0.9913702,Benign,0.99975866,False,False,False,False
+2aa8ff4c-edd7-417e-9f52-b7f51b10387c,feeder_live,2026-10-28T09:43:46,,Benign,0.9929766,Benign,0.9996464,False,False,False,False
+f04eb3a7-4212-4b1d-8b85-a81581469d47,feeder_live,2026-10-28T09:43:46,,Benign,0.9713253,Benign,0.99986756,False,False,False,False
+cba34a1e-c9ad-4cb7-b9d1-7448f562d83c,feeder_live,2026-10-28T09:43:46,,Benign,0.97231257,Benign,0.99986756,False,False,False,False
+875faefc-2c24-4fb8-8705-e1a0c4f74036,feeder_live,2026-10-28T09:43:45,,Benign,0.9713253,Benign,0.99986756,False,False,False,False
+f6900a83-c941-427e-aa46-4ed27c0b6809,feeder_live,2026-10-28T09:43:45,,Benign,0.97231245,Benign,0.99986756,False,False,False,False
+fb9d8c9b-87da-4f6a-ace6-d1f171720d30,feeder_live,2026-10-28T09:43:44,,Benign,0.9697212,Benign,0.9997204,False,False,False,False
+323df977-13f0-41f2-aace-b228befe02a4,feeder_live,2026-10-28T09:43:41,,DoS attacks-Hulk,0.8524729,Benign,0.9996824,True,True,False,True
+73af8d5a-2edc-4204-937d-62d37a65052a,feeder_live,2026-10-28T09:43:41,,Benign,0.9894599,Benign,0.99958223,False,False,False,False
+6c8da43e-93f8-495b-9324-3f313feb84de,feeder_live,2026-10-28T09:43:40,,DoS attacks-Hulk,0.62068856,Benign,0.99935514,True,True,False,True
+9125fdd7-8940-421c-aa70-5e42f8c931bc,feeder_live,2026-10-28T09:43:40,,DoS attacks-Hulk,0.7876229,Benign,0.99962187,True,True,False,True
+fc96206d-5667-4149-b051-5e9fce99326d,feeder_live,2026-10-28T09:43:40,,Benign,0.9725833,Benign,0.99986756,False,False,False,False
+31bad8b4-ec7a-4dd0-aff3-8bf02c3540e3,feeder_live,2026-10-28T09:43:40,,Benign,0.9730206,Benign,0.99986756,False,False,False,False
+3b7914bb-c841-4877-8bf9-8f009fd46dd0,feeder_live,2026-10-28T09:43:39,,DoS attacks-Hulk,0.5937851,Benign,0.99971324,True,True,False,True
+5fdfa3d2-35f8-475f-9569-e95790aa3217,feeder_live,2026-10-28T09:43:39,,DoS attacks-Hulk,0.659851,Benign,0.9996344,True,True,False,True
+b23dd9ed-cf26-4b53-90a9-51a5cadb2418,feeder_live,2026-10-28T09:43:39,,Benign,0.9737246,Benign,0.9998784,False,False,False,False
+67313607-59ab-4278-9d40-98f981cc6af2,feeder_live,2026-10-28T09:43:33,,Benign,0.9759292,Benign,0.99986756,False,False,False,False
+418a885c-c45d-4ae5-acec-6c696f10d663,feeder_live,2026-10-28T09:43:33,,Benign,0.9761772,Benign,0.99986756,False,False,False,False
+a83572e6-37bc-4340-b8e9-e3094aaa82f8,feeder_live,2026-10-28T09:43:33,,Benign,0.9946104,Benign,0.99972314,False,False,False,False
+74af9cac-2141-4a2c-8db2-1a7c74901f1f,feeder_live,2026-10-28T09:43:33,,Benign,0.9941386,Benign,0.9998048,False,False,False,False
+58195123-40b2-4c52-8819-9b6209bc5c10,feeder_live,2026-10-28T09:43:32,,Benign,0.9809347,Benign,0.9998795,False,False,False,False
+4da72b96-299d-42c1-850b-3d1900f9890d,feeder_live,2026-10-28T09:43:31,,Benign,0.9913702,Benign,0.99975866,False,False,False,False
+4ca762ec-fb33-4943-8470-e2265bfca865,feeder_live,2026-10-28T09:43:30,,DoS attacks-Hulk,0.89119136,Benign,0.9994443,True,True,False,True
+d910a3b9-e680-47f2-8632-aa404a0be4b4,feeder_live,2026-10-28T09:43:30,,DoS attacks-Hulk,0.8335283,Benign,0.9996457,True,True,False,True
+06998667-6105-4a6d-853f-662ad38e7595,feeder_live,2026-10-28T09:43:26,,DoS attacks-Hulk,0.91941375,Benign,0.9996414,True,True,False,True
+f0dcf13f-b954-4683-b988-924e70db9b2a,feeder_live,2026-10-28T09:43:26,,Benign,0.9894599,Benign,0.99958223,False,False,False,False
+0764a578-2e80-405a-905c-77341a344417,feeder_live,2026-10-28T09:43:25,,DoS attacks-Hulk,0.596624,Benign,0.99934584,True,True,False,True
+6d2e3ef8-f263-4c17-9a58-66ca02713289,feeder_live,2026-10-28T09:43:25,,DoS attacks-Hulk,0.81588936,Benign,0.9995621,True,True,False,True
+0d96812c-a6d0-4548-8706-a404c2711183,feeder_live,2026-10-28T09:43:25,,Benign,0.98848546,Benign,0.9998597,False,False,False,False
+44de870d-d5c3-4fdd-8e01-01012556cb1a,feeder_live,2026-10-28T09:43:24,,DoS attacks-Hulk,0.6853789,Benign,0.99967766,True,True,False,True
+b71e826a-f7c0-457a-b400-d10dbcdab91c,feeder_live,2026-10-28T09:43:24,,DoS attacks-Hulk,0.659851,Benign,0.99963164,True,True,False,True
+9dee9297-36b7-435e-82c8-a649abaeba10,feeder_live,2026-10-28T09:43:24,,Benign,0.9466493,Benign,0.99932194,False,False,False,False
+102d9486-638c-4069-9536-a743d5e06fc4,feeder_live,2026-10-28T09:43:16,,Benign,0.9913702,Benign,0.99975866,False,False,False,False
+05485902-54e7-4756-8f76-8f3c0038237b,feeder_live,2026-10-28T09:43:15,,DoS attacks-Hulk,0.9531259,Benign,0.99940574,True,True,False,True
+bbdbbe3d-46ad-40e3-a027-d94b829bb6b3,feeder_live,2026-10-28T09:43:14,,Benign,0.964043,Benign,0.9996728,False,False,False,False
+b9d0f9ca-c7ce-4964-8af4-9255dfd8ef46,feeder_live,2026-10-28T09:43:11,,DoS attacks-Hulk,0.9290994,Benign,0.99965227,True,True,False,True
+a1e5726e-0094-4743-9d92-64b255696cc1,feeder_live,2026-10-28T09:43:11,,Benign,0.9894599,Benign,0.99958223,False,False,False,False
+6f5efbde-22f8-46a4-9b36-6d8c2f588a1c,feeder_live,2026-10-28T09:43:10,,DoS attacks-Hulk,0.6598508,Benign,0.99963164,True,True,False,True
+439aff46-e01a-4c83-85c8-540a7e2a3431,feeder_live,2026-10-28T09:43:10,,DoS attacks-Hulk,0.69078946,Benign,0.9993512,True,True,False,True
+1d44237e-6970-470a-944e-0c14349abb5e,feeder_live,2026-10-28T09:43:10,,DoS attacks-Hulk,0.8448678,Benign,0.999566,True,True,False,True
+e5b4ce7d-069d-49e1-bd9d-8d21f714cb15,feeder_live,2026-10-28T09:43:09,,Benign,0.9624672,Benign,0.9994055,False,False,False,False
+621eb6f2-17f5-4285-b17d-429981ea35a1,feeder_live,2026-10-28T09:43:09,,Benign,0.9624672,Benign,0.9994055,False,False,False,False
+811d9076-ad25-417c-b115-c489c8b1f9f6,feeder_live,2026-10-28T09:43:09,,Benign,0.9553044,Benign,0.99947685,False,False,False,False
+f4fa03fa-a294-4f9a-9d7d-258e86f7de74,feeder_live,2026-10-28T09:43:09,,DoS attacks-Hulk,0.6688333,Benign,0.9996753,True,True,False,True
+ddd625a3-74ff-4ba3-9dd5-90161977dba2,feeder_live,2026-10-28T09:43:09,,Benign,0.9731313,Benign,0.9998666,False,False,False,False
+d3040e75-589d-45d0-ae3e-7f071cff2eab,feeder_live,2026-10-28T09:43:09,,Benign,0.9731313,Benign,0.9998666,False,False,False,False
+27b4b5ef-fdb6-49e7-a46e-04300d76f68b,feeder_live,2026-10-28T09:43:06,,Benign,0.9648529,Benign,0.9788295,False,False,False,False
+a501d4e5-e638-433e-9e45-68bbc648b080,feeder_live,2026-10-28T09:43:03,,Benign,0.95355743,Benign,0.999869,False,False,False,False
+72935e83-1aea-4581-bf2a-24e79614ca0a,feeder_live,2026-10-28T09:43:01,,DoS attacks-Hulk,0.8888415,Benign,0.99942267,True,True,False,True
+7b7a87e6-e1bc-4a2f-b403-d8fb1edfd13c,feeder_live,2026-10-28T09:43:01,,Benign,0.97596663,Benign,0.99986756,False,False,False,False
+f283a04e-b375-4d37-870a-5980e5c66d59,feeder_live,2026-10-28T09:43:01,,Benign,0.97596663,Benign,0.99986756,False,False,False,False
+b15696b9-b3b1-404a-b13b-a0e8d4891d9e,feeder_live,2026-10-28T09:43:01,,Benign,0.9913702,Benign,0.99975866,False,False,False,False
+b84b47ae-3e6c-44ed-b8b9-0be186f32cad,feeder_live,2026-10-28T09:42:58,,Benign,0.9323754,Benign,0.99966407,False,False,False,False
+8f0af6cb-7f20-415d-9267-83cd04e805fc,feeder_live,2026-10-28T09:42:57,,DoS attacks-Hulk,0.8524729,Benign,0.9996824,True,True,False,True
+fcfff61a-0b2a-4d55-ada1-5001ae8a01ff,feeder_live,2026-10-28T09:42:57,,Benign,0.9722129,Benign,0.99986756,False,False,False,False
+7842439d-f1e7-4a05-b5e8-26fe8831c667,feeder_live,2026-10-28T09:42:57,,Benign,0.9751047,Benign,0.99986756,False,False,False,False
+c10c9a31-20a1-4094-aac8-5d81e26c4bfc,feeder_live,2026-10-28T09:42:57,,Benign,0.9894599,Benign,0.99958223,False,False,False,False
+aebe0526-70ba-433f-8119-73dae32b7b80,feeder_live,2026-10-28T09:42:56,,DoS attacks-Hulk,0.8335244,Benign,0.9995307,True,True,False,True
+16e3c21b-6b65-4e2a-9a3f-29ed3e0fe97b,feeder_live,2026-10-28T09:42:56,,DoS attacks-Hulk,0.81592953,Benign,0.9995647,True,True,False,True
+8e61d992-dde3-4eec-a10c-8a1695fefb26,feeder_live,2026-10-28T09:42:56,,DoS attacks-Hulk,0.86789966,Benign,0.9912856,True,True,False,True
+2f7109e9-c530-43d2-8af5-349584f41214,feeder_live,2026-10-28T09:42:56,,Benign,0.97954524,Benign,0.9878391,False,False,False,False
+de6f77e1-f80f-41a6-86ad-aa949e7d7839,feeder_live,2026-10-28T09:42:56,,Benign,0.99361986,Benign,0.9997639,False,False,False,False
+bb253dea-c54b-4adf-8dc1-505c163ddc80,feeder_live,2026-10-28T09:42:55,,DoS attacks-Hulk,0.6598411,Benign,0.9995759,True,True,False,True
+e6a9d408-2984-4b2f-83df-d763f3f4136b,feeder_live,2026-10-28T09:42:55,,DoS attacks-Hulk,0.66882056,Benign,0.9993383,True,True,False,True
+124e5477-741f-4b3c-8e43-2c8cb38fd412,feeder_live,2026-10-28T09:42:54,,DoS attacks-Hulk,0.68539727,Benign,0.99965286,True,True,False,True
+7997413c-7722-4809-ac07-4bcec5923ee5,feeder_live,2026-10-28T09:42:52,,Benign,0.988841,Benign,0.99983513,False,False,False,False
+d70fb1f9-4155-4578-91f6-7a92cb45e8b7,feeder_live,2026-10-28T09:42:48,,Benign,0.9115265,Benign,0.9989466,False,False,False,False
+845809d2-ff66-4e00-94e2-cdede481eee4,feeder_live,2026-10-28T09:42:48,,Benign,0.97379124,Benign,0.99977607,False,False,False,False
+a1c6e2a3-5bee-42c2-9bf3-dea140bb0db1,feeder_live,2026-10-28T09:42:46,,DoS attacks-Hulk,0.9530942,Benign,0.99970824,True,True,False,True
+c9106986-a6aa-4dbf-9a6d-6adf375dae01,feeder_live,2026-10-28T09:42:46,,Benign,0.9882592,Benign,0.99332607,False,False,False,False
+0d5536dd-e1ab-4ffb-9109-08938331b814,feeder_live,2026-10-28T09:42:46,,Benign,0.9913702,Benign,0.99975866,False,False,False,False
+5389a607-19dc-45c3-9b48-fb28d56d21d4,feeder_live,2026-10-28T09:42:45,,Benign,0.9697188,Benign,0.9997204,False,False,False,False
+d4f3128a-3625-41f4-b0b3-174d610c6aee,feeder_live,2026-10-28T09:42:41,,DoS attacks-Hulk,0.8159821,Benign,0.9995621,True,True,False,True
+4bca55c3-3fa6-42df-a4a4-50570e548879,feeder_live,2026-10-28T09:42:41,,DoS attacks-Hulk,0.9290995,Benign,0.9996624,True,True,False,True
+a26790d9-a21f-4650-ab21-01ea871e2d3d,feeder_live,2026-10-28T09:42:41,,Benign,0.9882492,Benign,0.99987936,False,False,False,False
+0f55714a-2ea9-48f5-b6c6-e6fd6e49f797,feeder_live,2026-10-28T09:42:41,,Benign,0.9751047,Benign,0.99986756,False,False,False,False
+36abfcd0-8eef-4b36-92ee-d04fea6afb8d,feeder_live,2026-10-28T09:42:41,,Benign,0.9894611,Benign,0.99958223,False,False,False,False
+9abfa5b9-46ad-4167-8ce5-3837e2764353,feeder_live,2026-10-28T09:42:40,,DoS attacks-Hulk,0.6688054,Benign,0.9993573,True,True,False,True
+5165f4b2-0f6a-47ba-badd-1ea699ae4d0b,feeder_live,2026-10-28T09:42:40,,DoS attacks-Hulk,0.7508681,Benign,0.99946326,True,True,False,True
+1c411b20-ba55-421b-b001-278a2f180fba,feeder_live,2026-10-28T09:42:40,,Benign,0.97596663,Benign,0.99986756,False,False,False,False
+ea189eca-acf9-457c-a3f6-82d720d38010,feeder_live,2026-10-28T09:42:40,,Benign,0.9720661,Benign,0.99986756,False,False,False,False
+c3861db6-fd60-4156-95d1-8c18262aebf7,feeder_live,2026-10-28T09:42:40,,Benign,0.9586303,Benign,0.9998784,False,False,False,False
+53e18e3c-fac8-45d6-aad4-129c570fb043,feeder_live,2026-10-28T09:42:40,,Benign,0.95275193,Benign,0.9998784,False,False,False,False
+78b8550b-392a-4a43-9f9a-e469b6c71a93,feeder_live,2026-10-28T09:42:39,,DoS attacks-Hulk,0.6599144,Benign,0.99963665,True,True,False,True
+1e3e5014-5dbd-4dfe-8245-1b3392699fa3,feeder_live,2026-10-28T09:42:39,,DoS attacks-Hulk,0.7516973,Benign,0.99955744,True,True,False,True
+ed2a3223-287b-41e3-b396-0d1cbf6db793,feeder_live,2026-10-28T09:42:39,,Benign,0.97051144,Benign,0.99986756,False,False,False,False
+c94b7753-4edd-4db9-a98a-0f4cf9d30a85,feeder_live,2026-10-28T09:42:39,,Benign,0.9790677,Benign,0.9998784,False,False,False,False
+d8fe1b91-d476-4114-b290-cbee24b0b270,feeder_live,2026-10-28T09:42:39,,Benign,0.9737246,Benign,0.9998784,False,False,False,False
+cde8c274-e27a-460c-8557-c21ab06342ec,feeder_live,2026-10-28T09:42:38,,DoS attacks-Hulk,0.6853928,Benign,0.9996538,True,True,False,True
+e02f20a2-7c8c-4b4f-9420-b5168332e2a8,feeder_live,2026-10-28T09:42:38,,DoS attacks-Hulk,0.9771851,Benign,0.9981376,True,True,False,True
+f15367f1-2d53-4b22-9c12-17e36efdd121,feeder_live,2026-10-28T09:42:38,,Benign,0.9731313,Benign,0.9998666,False,False,False,False
+517952a6-9a72-4948-92d3-5ec8ab25411c,feeder_live,2026-10-28T09:42:38,,Benign,0.9731265,Benign,0.9998666,False,False,False,False
+69721428-1b8d-4ceb-87e5-7ff35acb131e,feeder_live,2026-10-28T09:42:38,,Benign,0.9715208,Benign,0.99986756,False,False,False,False
+9497b178-0ca3-49f4-b7d2-be548a2b59bf,feeder_live,2026-10-28T09:42:37,,Benign,0.97560614,Benign,0.99983513,False,False,False,False
+f2edd6a8-ce88-47f8-8bf0-795304be8a45,feeder_live,2026-10-28T09:42:32,,Benign,0.96886605,Benign,0.99804115,False,False,False,False
+d6040522-91ed-440a-b981-0be2be4d9fff,feeder_live,2026-10-28T09:42:31,,Benign,0.9187326,Benign,0.97674334,False,False,False,False
+f31bc971-fdde-4571-9cda-255eafdbc8b6,feeder_live,2026-10-28T09:42:30,,DoS attacks-Hulk,0.95311034,Benign,0.999387,True,True,False,True
+0f491793-d072-420f-8b43-3852047ba368,feeder_live,2026-10-28T09:42:30,,Benign,0.9751065,Benign,0.99986756,False,False,False,False
+d79cf5cb-9eac-40c5-90d4-c94a7c27dc09,feeder_live,2026-10-28T09:42:30,,Benign,0.97106624,Benign,0.99986756,False,False,False,False
+10b80606-6a1c-48d3-8741-637a9babed95,feeder_live,2026-10-28T09:42:30,,Benign,0.97596174,Benign,0.99986756,False,False,False,False
+d1a91500-efb9-44c9-ae54-9cc4fb5ef145,feeder_live,2026-10-28T09:42:30,,Benign,0.97608256,Benign,0.99986756,False,False,False,False
+6d1e0dc9-90d7-4359-a81c-fcc48ff52f58,feeder_live,2026-10-28T09:42:30,,Benign,0.99169934,Benign,0.99975866,False,False,False,False
+3239dd5e-5b31-4166-998c-4e4a1f82a9ef,feeder_live,2026-10-28T09:42:29,,Benign,0.98648524,Benign,0.97889185,False,False,False,False
+933a99aa-a4db-4ca2-a563-5ac9fd57c694,feeder_live,2026-10-28T09:42:29,,Benign,0.98889065,Benign,0.99982846,False,False,False,False
+a8097421-1d8f-46b8-b8b4-19a9ada48fa0,feeder_live,2026-10-28T09:42:26,,Benign,0.9780335,Benign,0.9886933,False,False,False,False
+96483649-74d7-4435-83ba-8fc849837e17,feeder_live,2026-10-28T09:42:25,,DoS attacks-Hulk,0.93336844,Benign,0.99287343,True,True,False,True
+59c2a85b-290d-45c6-b7cf-500fb088564e,feeder_live,2026-10-28T09:42:25,,Benign,0.9525762,Benign,0.99672925,False,False,False,False
+e40b8646-0a62-48a9-8206-481781089bf2,feeder_live,2026-10-28T09:42:25,,Benign,0.9713253,Benign,0.99986756,False,False,False,False
+19dfa924-bc7a-4d42-9c6e-a3aed130a1ac,feeder_live,2026-10-28T09:42:25,,Benign,0.97231257,Benign,0.99986756,False,False,False,False
+e08856ce-c781-4192-80ff-a6ea57b9c9bb,feeder_live,2026-10-28T09:42:25,,Benign,0.99506384,Benign,0.9997284,False,False,False,False
+249ea872-1e74-4399-b04c-c30a11c1b1fd,feeder_live,2026-10-28T09:42:25,,Benign,0.99114156,Benign,0.99938464,False,False,False,False
+2d7c9c10-9c05-4871-866a-bc32c25d9f11,feeder_live,2026-10-28T09:42:24,,Benign,0.99398416,Benign,0.9997695,False,False,False,False
+b204ff2a-503e-47ab-ae39-a4c8327d747d,feeder_live,2026-10-28T09:42:24,,Benign,0.99668926,Benign,0.9996768,False,False,False,False
+ca468e49-2263-4053-85a0-458b4d4cf300,feeder_live,2026-10-28T09:42:23,,Benign,0.99028933,Benign,0.9994523,False,False,False,False
+13c7ccf2-d456-4746-b0d9-5b21157a4815,feeder_live,2026-10-28T09:42:22,,Benign,0.98352075,Benign,0.9856917,False,False,False,False
+873da649-7c8b-49c9-a7fe-104e06245ccb,feeder_live,2026-10-28T09:42:22,,Benign,0.9722049,Benign,0.9993104,False,False,False,False
+80499cf9-2261-47e2-9090-6947875525b8,feeder_live,2026-10-28T09:42:21,,Benign,0.9744719,Benign,0.99983823,False,False,False,False
+1b13e5e5-19a3-44ed-af00-f2ac69c9eb9c,feeder_live,2026-10-28T09:42:21,,Benign,0.98676735,Benign,0.9972811,False,False,False,False
+033616b5-e464-4cc8-b9d8-1ac95f7c2690,feeder_live,2026-10-28T09:42:20,,Benign,0.9310151,Benign,0.99324423,False,False,False,False
+7a8add9f-a331-4ce1-b9ef-f3f5489ed4c2,feeder_live,2026-10-28T09:42:20,,Benign,0.97144574,Benign,0.9989397,False,False,False,False
+efc6cdd8-1ae2-4cea-a7e5-80340d87799f,feeder_live,2026-10-28T09:42:20,,Benign,0.98301214,Benign,0.99801767,False,False,False,False
+de267b84-ea43-48d6-99e3-d8978c1f9474,feeder_live,2026-10-28T09:42:19,,Benign,0.9739993,Benign,0.99983513,False,False,False,False
+d28b6fbf-b97a-4e0e-91a3-a88a2f27c51f,feeder_live,2026-10-28T09:42:19,,Benign,0.9561955,Benign,0.99966264,False,False,False,False
+889aeb3e-667b-473a-9ff6-1c955d997c04,feeder_live,2026-10-28T09:42:19,,Benign,0.90011215,Benign,0.9993094,False,False,False,False
+6e7917e2-b661-46cb-88e8-1170cdbfd406,feeder_live,2026-10-28T09:42:19,,Benign,0.9849807,Benign,0.9984835,False,False,False,False
+f20fa210-5917-4ad0-9e38-833571545477,feeder_live,2026-10-28T09:42:18,,DoS attacks-Hulk,0.96381277,Benign,0.90829384,True,True,False,True

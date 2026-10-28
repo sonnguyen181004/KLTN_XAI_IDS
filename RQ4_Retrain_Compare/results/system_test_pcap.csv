@@ -1,0 +1,7 @@
+﻿pcap,flows,M0_attack,M0_labels,M1_attack,M1_labels
+A07,1,1,DoS attacks-Hulk 1,1,SSH-Bruteforce 1
+B03,1,1,DoS attacks-Hulk 1,1,SSH-Bruteforce 1
+C01,5,5,DoS attacks-Hulk 5,0,Benign 5
+D01,5,5,DoS attacks-Hulk 5,0,Benign 5
+SQL-I01,22,20,DoS attacks-Hulk 20; Benign 2,0,Benign 22
+WEB-B01,21,19,DoS attacks-Hulk 19; Benign 2,0,Benign 21

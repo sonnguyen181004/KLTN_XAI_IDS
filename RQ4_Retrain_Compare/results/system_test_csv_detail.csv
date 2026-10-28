@@ -1,0 +1,419 @@
+﻿file,model,true,pred
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,Infilteration,Infilteration
+test_sample100_15classes_with_label.csv,M0,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,SQL Injection,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Infilteration,Infilteration
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,Benign,Benign
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample100_15classes_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample100_15classes_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,SQL Injection,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,DoS attacks-SlowHTTPTest
+test_sample100_15classes_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample100_15classes_with_label.csv,M0,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M0,DoS attacks-SlowHTTPTest,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample100_15classes_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample100_15classes_with_label.csv,M0,SQL Injection,Brute Force -Web
+test_sample100_15classes_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M0,Bot,Bot
+test_sample100_15classes_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,DoS attacks-SlowHTTPTest
+test_sample100_15classes_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M0,FTP-BruteForce,FTP-BruteForce
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,Infilteration
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,Benign
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M1,Infilteration,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,Infilteration,Infilteration
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,Infilteration
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,Benign,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,Brute Force -Web,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-SlowHTTPTest,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,Benign
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,Infilteration
+test_sample100_15classes_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample100_15classes_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample100_15classes_with_label.csv,M1,SQL Injection,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-Slowloris,Benign
+test_sample100_15classes_with_label.csv,M1,Bot,Benign
+test_sample100_15classes_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample100_15classes_with_label.csv,M1,DoS attacks-GoldenEye,Infilteration
+test_sample100_15classes_with_label.csv,M1,FTP-BruteForce,Benign
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,Brute Force -Web,Benign
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,SQL Injection,Brute Force -Web
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,SQL Injection,Brute Force -Web
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,DDOS attack-LOIC-UDP,DDOS attack-LOIC-UDP
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,Brute Force -Web,Benign
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,SSH-Bruteforce,SSH-Bruteforce
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,SQL Injection,SQL Injection
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,Infilteration,Benign
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M0,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,Brute Force -Web,Brute Force -Web
+test_sample_with_label.csv,M0,DoS attacks-Hulk,DoS attacks-Hulk
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,Benign,Benign
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M0,Bot,Bot
+test_sample_with_label.csv,M0,DDOS attack-HOIC,DDOS attack-HOIC
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,Infilteration
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,SQL Injection,SQL Injection
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,DoS attacks-GoldenEye
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Brute Force -XSS
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,Benign
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,DDOS attack-LOIC-UDP,Benign
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-Hulk
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,DoS attacks-GoldenEye
+test_sample_with_label.csv,M1,DoS attacks-GoldenEye,Infilteration
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,SSH-Bruteforce,DoS attacks-Hulk
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,SQL Injection,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,Infilteration,Benign
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,DDoS attacks-LOIC-HTTP,DDoS attacks-LOIC-HTTP
+test_sample_with_label.csv,M1,Brute Force -XSS,Benign
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,Benign,DoS attacks-Hulk
+test_sample_with_label.csv,M1,Brute Force -Web,Benign
+test_sample_with_label.csv,M1,DoS attacks-Hulk,Infilteration
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,DoS attacks-Slowloris
+test_sample_with_label.csv,M1,Benign,Benign
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,DoS attacks-Slowloris,Benign
+test_sample_with_label.csv,M1,Bot,Benign
+test_sample_with_label.csv,M1,DDOS attack-HOIC,Benign
