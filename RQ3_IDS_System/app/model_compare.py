@@ -96,6 +96,21 @@ def load_flows(db_path: Path, source: str | None = None, limit: int = 500, run_i
     return pd.concat([meta, feats], axis=1)
 
 
+def search_flows(db_path: Path, text: str, limit: int = 100) -> pd.DataFrame:
+    """Tìm flow theo flow_id (một phần cũng được, không phân biệt hoa thường) trên toàn bộ DB, không lọc lượt hay nguồn."""
+    q = ("SELECT flow_id, source, flow_timestamp, label_true, features_json FROM FlowRecord "
+         "WHERE flow_id LIKE ? ESCAPE '!' ORDER BY COALESCE(flow_timestamp, received_at) DESC LIMIT ?")
+    like = "%" + text.replace("!", "!!").replace("%", "!%").replace("_", "!_") + "%"
+    conn = open_readonly(db_path)
+    try:
+        rows = conn.execute(q, (like, int(limit))).fetchall()
+    finally:
+        conn.close()
+    meta = pd.DataFrame([r[:4] for r in rows], columns=["flow_id", "source", "flow_timestamp", "label_true"])
+    feats = pd.DataFrame([json.loads(r[4]) for r in rows])
+    return pd.concat([meta, feats], axis=1)
+
+
 def list_runs(db_path: Path) -> list[tuple[str, str, str]]:
     """(capture_run_id, run_name, lần nhận đầu tiên), mới nhất trước. Rỗng nếu DB cũ chưa có cột lượt."""
     conn = open_readonly(db_path)

@@ -21,6 +21,14 @@ def _table(db_path: str, source: str, limit: int, run_id: str):
     return flows, get_pair().predict_table(flows)
 
 
+@st.cache_data(ttl=3)
+def _search(db_path: str, text: str):
+    flows = mc.search_flows(Path(db_path), text)
+    if flows.empty:
+        return flows, flows
+    return flows, get_pair().predict_table(flows)
+
+
 def _shap_chart(top_k):
     frame = pd.DataFrame(top_k)
     chart = alt.Chart(frame).mark_bar().encode(
@@ -43,14 +51,20 @@ def render_compare(db_path: str, source: str = "", run_id="", paused: bool = Fal
         c0, c1 = st.columns(2)
         limit = c0.slider("Số flow mới nhất", 100, 3000, 1000, step=100, key=key + "_limit")
         top_k = c1.slider("Số đặc trưng SHAP", 3, 10, 5, key=key + "_topk")
+        query = st.text_input("Tìm flow theo flow ID (gõ một phần cũng được)", key=key + "_q", placeholder="dán flow ID vào đây").strip()
         try:
-            flows, tb = _table(db_path, source, limit, run_id() if callable(run_id) else run_id)
+            if query:
+                flows, tb = _search(db_path, query)
+            else:
+                flows, tb = _table(db_path, source, limit, run_id() if callable(run_id) else run_id)
         except Exception as exc:  # DB đang bận hoặc chưa có bảng
             st.error(f"Không đọc được DB: {exc}")
             return
         if tb.empty:
-            st.info("Chưa có flow nào trong phạm vi đang chọn (lượt dữ liệu và nguồn ở thanh bên).")
+            st.info("Không có flow nào khớp flow ID này." if query else "Chưa có flow nào trong phạm vi đang chọn (lượt dữ liệu và nguồn ở thanh bên).")
             return
+        if query:
+            st.caption(f"Đang hiển thị {len(tb)} flow khớp «{query}» trên toàn bộ DB, bỏ qua lọc lượt và nguồn ở thanh bên. Xóa ô tìm để quay lại.")
         n = len(tb)
         c = st.columns(5)
         c[0].metric("Số flow", f"{n:,}")
@@ -69,7 +83,7 @@ def render_compare(db_path: str, source: str = "", run_id="", paused: bool = Fal
             st.dataframe(pd.crosstab(tb.M0_label, tb.M1_label), width="stretch")
 
         st.markdown("**Chọn một flow để xem SHAP của cả hai mô hình**")
-        only_dis = st.checkbox("Chỉ các flow hai mô hình khác nhãn", value=bool(tb.disagree.any()), key=key + "_dis")
+        only_dis = st.checkbox("Chỉ các flow hai mô hình khác nhãn", value=bool(tb.disagree.any()) and not query, key=key + "_dis")
         pick = tb[tb.disagree] if only_dis else tb
         if pick.empty:
             st.info("Không có flow phù hợp.")
