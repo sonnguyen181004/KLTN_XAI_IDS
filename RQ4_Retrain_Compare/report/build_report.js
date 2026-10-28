@@ -180,6 +180,9 @@ c.push(P(`Hulk trong bộ train cũ có trung vị ${nf(prof("cu", "hulk")["Tot 
 c.push(H2("5.2 Đặc trưng và nhãn"));
 c.push(P("Cả 78 đặc trưng của mô hình đều có tương ứng trong bản improved, trong đó 48 đặc trưng chỉ khác tên và được ánh xạ bằng bảng results/mapping_features.csv. Bản improved có thêm 5 cột mà mô hình không dùng, gồm Fwd RST Flags, Bwd RST Flags, ICMP Code, ICMP Type và Total TCP Flow Time. Tập nhãn thì không giống nhau. Bản improved không có DoS attacks-SlowHTTPTest, và FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted (tấn công thất bại) bị bỏ ra khỏi mọi thí nghiệm. Bốn loại Infiltration được gộp lại thành một lớp. Kết quả là không gian nhãn chung gồm 13 lớp, và bảng ánh xạ đầy đủ nằm ở results/mapping_labels_improved.csv."));
 
+c.push(H2("5.3 Hai bộ liên quan và khác nhau thế nào"));
+c.push(P("Hai bộ giống nhau ở nguồn gốc (CSE-CIC-IDS2018, cùng phòng lab và công cụ tấn công) và ở 78 tên đặc trưng của mô hình. Chúng khác nhau ở ba điểm. Thứ nhất, cách tính giá trị: bản improved dùng CICFlowMeter đã sửa lỗi nên cờ TCP không còn bị giới hạn ở 0 và 1, và cách cắt flow khác. Thứ hai, kiểu lưu lượng của cùng một nhãn: Hulk của hai bộ khác hẳn nhau (mục 5.1). Thứ ba, tập nhãn: bản improved không có SlowHTTPTest và FTP-BruteForce. Vì vậy một mô hình huấn luyện ở bộ này vẫn chạy được trên bộ kia, nhưng kết quả không còn mang cùng ý nghĩa (mục 7.5)."));
+
 // ================= 6. THIẾT KẾ =================
 c.push(H1("6. Thiết kế thực nghiệm mới"));
 c.push(H2("6.1 Nguyên tắc làm đúng như mô hình cũ"));
@@ -296,6 +299,20 @@ c.push(P(`Kết luận về phương pháp giữ nguyên. SHAP trung thành hơn
 c.push(P(`SHAP toàn cục của M1 cho lớp Hulk vẫn đặt ${X.M1.top5_hulk[0][0]} (${nf(X.M1.top5_hulk[0][1], 2)}) và ${X.M1.top5_hulk[1][0]} (${nf(X.M1.top5_hulk[1][1], 2)}) lên đầu, tức M1 vẫn nhận Hulk chủ yếu qua đặc trưng môi trường, dù không còn dùng cờ FIN. Với lớp Benign, đặc trưng đứng đầu của M1 là ${X.M1.top5_benign[0][0]} (${nf(X.M1.top5_benign[0][1], 2)}). Dữ liệu sửa lỗi bỏ được đường tắt FIN nhưng không bỏ được đường tắt môi trường.`));
 
 // ================= 8. CHẨN ĐOÁN =================
+c.push(H2("7.5 Đưa bộ test cũ vào M1"));
+const o1 = cr("M1", "T1_test_cu"), o1s = cr("M1", "T1_test_cu_sach"), o0 = cr("M0b", "T1_test_cu");
+c.push(P(`Test M1 trên bộ cũ là làm được, vì cả 78 đặc trưng đều có tương ứng ở hai bộ (48 đặc trưng chỉ khác tên và đã được ánh xạ), nên không cần bỏ đặc trưng nào, kể cả cờ FIN. Kết quả trên bộ test cũ giới hạn 13 lớp (${nf(o1.n)} dòng) rất khác so với M0b trên cùng bộ test này.`));
+c.push(T([3600, 2000, 2000, 2038], ["Trên test cũ (13 lớp)", "M0b (train cũ)", "M1, bản đầy đủ", "M1, đã bỏ trùng"], [
+  ["Accuracy", pc(o0.accuracy_pct, 1), pc(o1.accuracy_pct, 1), pc(o1s.accuracy_pct, 1)],
+  ["Macro F1", pc(o0.macro_f1_13_pct, 1), pc(o1.macro_f1_13_pct, 1), pc(o1s.macro_f1_13_pct, 1)],
+  ["Recall Hulk", pc(o0.hulk_recall_pct, 1), pc(o1.hulk_recall_pct, 1), pc(o1s.hulk_recall_pct, 1)],
+  ["Benign bị báo thành tấn công", pc(o0.fpr_pct, 2), pc(o1.fpr_pct, 2), pc(o1s.fpr_pct, 2)],
+  ["Tấn công bị báo thành Benign", pc(o0.fnr_pct, 1), pc(o1.fnr_pct, 1), pc(o1s.fnr_pct, 1)],
+]));
+c.push(cap("Bảng 13b. M1 trên bộ test cũ so với M0b trên cùng bộ test."));
+c.push(P("Hai bộ dữ liệu có liên quan nhưng không giống nhau. Chúng cùng nguồn gốc (CSE-CIC-IDS2018, cùng phòng lab, cùng công cụ tấn công) và cùng tên đặc trưng, nhưng giá trị đặc trưng được tính khác nhau. Bản improved dùng CICFlowMeter đã sửa lỗi, nên cờ FIN nhận từ 0 đến 5 trở lên thay vì chỉ 0 hoặc 1, cách cắt flow khác, và Hulk của hai bộ là hai kiểu lưu lượng khác nhau (Bảng 4). Một mô hình học trên các giá trị này vì vậy không còn dùng được khi giá trị đặc trưng đổi nghĩa. Đây không phải lỗi mô hình, và cũng không có nghĩa là hai bộ không so sánh được. Nó chính là phát hiện của bài: hai phiên bản của cùng một bộ dữ liệu làm hai mô hình hành xử rất khác nhau."));
+c.push(P("Nhóm chưa thử huấn luyện M1 không có các cột cờ TCP rồi test trên bộ cũ, nên chưa biết bỏ cờ có làm kết quả trên bộ cũ khá hơn không. Đây là thí nghiệm có thể làm thêm."));
+
 c.push(H1("8. Kiểm tra riêng M1"));
 const dg = D.diag, SA = D.standalone, LC = SA.learning_curve, ST = SA.shallow_trees, NN = SA.nearest_neighbor, PM = D.perclass;
 const pv = SA.provenance_check;
@@ -323,6 +340,10 @@ c.push(P(`Để loại khả năng test trùng thời điểm với train, nhóm
 const imp = dg.importance_M1;
 c.push(P(`Tổng gain của XGBoost cho thấy M1 dựa nhiều nhất vào Init Fwd Win Byts (${nf(imp["Init Fwd Win Byts"], 1)}%), Init Bwd Win Byts (${nf(imp["Init Bwd Win Byts"], 1)}%), Dst Port (${nf(imp["Dst Port"], 1)}%) và Fwd Seg Size Min (${nf(imp["Fwd Seg Size Min"], 1)}%), tổng khoảng ${nf(imp["Init Fwd Win Byts"] + imp["Init Bwd Win Byts"] + imp["Dst Port"] + imp["Fwd Seg Size Min"], 0)}%. Bỏ cả các đặc trưng này mô hình vẫn đạt Macro F1 ${pc(dg.M1_bo_dac_trung_moi_truong_test_stratified.macro_f1, 1)}, nên điểm cao không phụ thuộc vào vài đặc trưng cụ thể.`));
 c.push(P(`So với M0b, phần lớn chênh lệch Macro F1 (${pc(R.M0b.f1, 1)} so với ${pc(R.M1.f1, 1)}) đến từ lớp Infilteration: F1 là ${nf(PM.m0b.Infilteration, 3)} ở M0b và ${nf(PM.m1.Infilteration, 3)} ở M1. Infilteration của bộ cũ khó nhận, còn Infilteration của bản improved (có quét cổng bằng Nmap) dễ tách. Các lớp còn lại gần như bằng nhau, trừ vài lớp nhỏ (SQL Injection ${nf(PM.m0b["SQL Injection"], 3)} so với ${nf(PM.m1["SQL Injection"], 3)}, Brute Force -Web ${nf(PM.m0b["Brute Force -Web"], 3)} so với ${nf(PM.m1["Brute Force -Web"], 3)}) mà test chỉ có vài chục flow. Vì vậy nhóm không kết luận bản improved làm mô hình tốt hơn nói chung. Kết luận hợp lý là: không phát hiện rò rỉ, điểm cao phản ánh bài toán dễ trong chính phòng lab với nhiều dòng gần trùng, và bằng chứng rõ nhất về giới hạn là M1 chỉ nhận ${pc(cr("M1", "T1_test_cu").hulk_recall_pct, 1)} số flow Hulk của bộ test cũ.`));
+
+c.push(H2("8.1 Giải thích: vì sao M1 cao hơn mô hình cũ, và M1 có học từ bộ cũ không"));
+c.push(P(`M1 không học từ bộ cũ. M1 được huấn luyện từ đầu, chỉ trên bộ train improved, không kế thừa trọng số hay dữ liệu của M0. Siêu tham số giống hệt RQ1: độ sâu 8, learning rate 0,08, 100 cây, tree_method hist, seed 42, không quét lại. Đặc trưng cũng giống: 78 đặc trưng, không Timestamp, không địa chỉ IP. Vì vậy mọi khác biệt giữa M1 và M0b chỉ đến từ dữ liệu huấn luyện và test.`));
+c.push(P(`Macro F1 của M1 là ${pc(R.M1.f1, 1)}, của M0b là ${pc(R.M0b.f1, 1)} (cùng 13 lớp). Phần lớn chênh lệch đến từ một lớp. Infilteration có F1 ${nf(PM.m0b.Infilteration, 3)} ở bộ cũ, vì phần lớn flow bị đoán thành Benign, và ${nf(PM.m1.Infilteration, 3)} ở bộ improved, vì Infilteration của bản improved có quét cổng nên dễ tách. Hầu hết các lớp còn lại đạt khoảng 1,0 ở cả hai mô hình. Vài lớp nhỏ (SQL Injection, Brute Force -Web) chênh nhau nhưng test chỉ có vài chục flow. Điểm cao hơn của M1 do đó phản ánh bộ improved dễ hơn trong chính nó, không chứng minh M1 tốt hơn M0 nói chung. Phép chia theo khối thời gian ở trên và đường cong học cùng cho thấy điều này.`));
 
 // ================= 9. THẢO LUẬN =================
 c.push(H1("9. Thảo luận"));
