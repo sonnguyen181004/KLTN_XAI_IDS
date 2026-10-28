@@ -534,6 +534,100 @@ Tấn công bị báo thành Benign
 Bảng 13b. M1 trên bộ test cũ so với M0b trên cùng bộ test.
 Hai bộ dữ liệu có liên quan nhưng không giống nhau. Chúng cùng nguồn gốc (CSE-CIC-IDS2018, cùng phòng lab, cùng công cụ tấn công) và cùng tên đặc trưng, nhưng giá trị đặc trưng được tính khác nhau. Bản improved dùng CICFlowMeter đã sửa lỗi, nên cờ FIN nhận từ 0 đến 5 trở lên thay vì chỉ 0 hoặc 1, cách cắt flow khác, và Hulk của hai bộ là hai kiểu lưu lượng khác nhau (Bảng 4). Một mô hình học trên các giá trị này vì vậy không còn dùng được khi giá trị đặc trưng đổi nghĩa. Đây không phải lỗi mô hình, và cũng không có nghĩa là hai bộ không so sánh được. Nó chính là phát hiện của bài: hai phiên bản của cùng một bộ dữ liệu làm hai mô hình hành xử rất khác nhau.
 Nhóm chưa thử huấn luyện M1 không có các cột cờ TCP rồi test trên bộ cũ, nên chưa biết bỏ cờ có làm kết quả trên bộ cũ khá hơn không. Đây là thí nghiệm có thể làm thêm.
+7.6 Chạy thử trên hệ thống IDS: CSV, PCAP và bắt realtime
+Nhóm chạy hệ thống RQ3 thật, thao tác qua giao diện, theo kịch bản gồm bốn phần: nạp CSV mẫu, nạp PCAP, bắt realtime trên Wi-Fi, rồi đối chiếu M0 với M1 trên từng lượt dữ liệu. Mỗi lần chạy dùng một cơ sở dữ liệu demo riêng, trống ngay từ đầu (0 flow, 0 dự đoán, 0 cảnh báo), nên không lẫn với dữ liệu cũ. Ảnh chụp lưu ở RQ4_Retrain_Compare/report/demo_screenshots, đánh số theo thứ tự thao tác.
+Cần nói rõ cách M1 tham gia. API và đường xử lý chính (capture, feeder, /predict) vẫn chỉ chạy M0. M1 nằm ở tab «Đối chiếu M0 / M1» của dashboard: tab đọc các flow đã lưu trong cơ sở dữ liệu ở chế độ chỉ đọc, tự dự đoán lại bằng M1 và đặt kết quả cạnh M0, làm mới mỗi 5 giây. Kết quả của M1 không được lưu và M1 chưa có cảnh báo hay SHAP chạy nền; SHAP của M1 chỉ tính khi chọn một flow trong tab. Dự đoán M0 tính lại trong tab khớp 100% với dự đoán M0 hệ thống đã lưu (kiểm tra trên 159 flow realtime ở lần thử trước).
+Nguồn dữ liệu
+Số flow
+M0 báo tấn công
+M1 báo tấn công
+Hai mô hình khác nhãn
+CSV mẫu 15 lớp (bộ cũ, 7 flow mỗi lớp)
+105
+89 (84,8%)
+29 (27,6%)
+76
+PCAP test.pcapng
+38
+5 (13,2%)
+0
+5
+Realtime Wi-Fi, lưu lượng web bình thường
+256
+62 (24,2%)
+0
+62
+Bảng 13c. Kết quả chạy thử hệ thống. Cả 5 flow PCAP và cả 62 flow realtime mà M0 báo tấn công đều nằm trong vùng ba điều kiện của Hulk.
+HINH demo_screenshots/01_he_thong_trong.png
+Ảnh 1. Hệ thống ở trạng thái trống.
+Cơ sở dữ liệu demo chưa có flow nào. Thanh trạng thái cho thấy API hoạt động, mô hình đã nạp 15 lớp (đây là M0), chưa có phiên capture và hàng đợi SHAP 0/200. Đây là điểm xuất phát để mọi số liệu về sau chỉ đến từ lần chạy này.
+HINH demo_screenshots/02_nap_csv_xong.png
+Ảnh 2. Nạp CSV mẫu qua tab «Nạp CSV / PCAP».
+File test_sample100_15classes_no_label.csv gồm 105 flow của bộ dữ liệu cũ, 7 flow mỗi lớp trên 15 lớp. Hệ thống báo 105 flow thành công, 0 dòng lỗi. Mỗi flow đi qua /predict nên được chuẩn hóa 78 đặc trưng, dự đoán bằng M0 và lưu.
+HINH demo_screenshots/03_giam_sat_csv.png
+Ảnh 3. Tab «Giám sát flow» sau khi nạp CSV.
+Có 105 flow, trong đó 16 Benign (15,2%) và 89 cảnh báo (84,8%). Tỷ lệ cảnh báo cao vì mẫu cố ý chứa nhiều tấn công, nó không phải tỷ lệ báo nhầm. SHAP đã xong cho 89 trên 89 cảnh báo. Phân nhánh giải thích cho 46 cảnh báo cần xem lại (43 có dấu hiệu đặc trưng môi trường, 4 thuộc lớp hiếm) và 43 cảnh báo bình thường.
+HINH demo_screenshots/04_csv_m0_shap_hulk.png
+Ảnh 4. SHAP của M0 cho một flow Hulk trong CSV.
+M0 dự đoán DoS attacks-Hulk với xác suất 99,95%. Lời giải thích nêu hai đặc trưng đẩy mạnh nhất là header nhỏ nhất chiều đi (32 byte) và tổng gói chiều về (0 gói). Header nhỏ nhất chiều đi là Fwd Seg Size Min, một đặc trưng gắn với môi trường lab, nên hệ thống đánh dấu flow thuộc nhánh B (cần xem lại) với 2 trên 4 đặc trưng nhạy môi trường trong Top-5.
+HINH demo_screenshots/05_csv_m0_lime_hulk.png
+Ảnh 5. LIME của M0 cho cùng flow, bấm yêu cầu theo nhu cầu.
+LIME chạy được và được đánh giá là hợp lệ. Hệ số dương lớn nhất là Fwd Seg Size Min (khoảng +0,052) rồi ACK Flag Cnt, các hệ số âm là Fwd Pkt Len Max, Fwd Pkt Len Std và Fwd Act Data Pkts. Đặc trưng đứng đầu trùng với SHAP ở ảnh 4. Lưu ý: flow này lấy từ bộ dữ liệu cũ, cùng phân phối với nền LIME, nên LIME dùng được. Ở PCAP và realtime kết quả khác (ảnh 11 và 19).
+HINH demo_screenshots/06_csv_doi_chieu_tong_quan.png
+Ảnh 6. Tab «Đối chiếu M0 / M1» cho lượt CSV.
+Trên cùng 105 flow, M0 báo tấn công 84,8% và M1 báo 27,6%. Hai mô hình khác nhãn ở 76 flow. Không flow nào nằm trong vùng ba điều kiện của Hulk vì CSV này lấy từ bộ cũ. M1 báo Benign cho phần lớn tấn công của bộ cũ (76 trên 105 flow), phù hợp với kết quả ở mục 7.5: M1 học từ bộ improved nên gần như không nhận ra các tấn công của bộ cũ.
+HINH demo_screenshots/07_csv_doi_chieu_shap_m0_m1.png
+Ảnh 7. SHAP của M0 và M1 cạnh nhau cho một flow CSV khác nhãn.
+Cùng một flow, M0 dự đoán FTP-BruteForce (63,2%) còn M1 dự đoán Benign (92,3%). Mỗi mô hình có biểu đồ SHAP riêng cho lớp mà nó dự đoán, kèm sai số cộng dồn SHAP và phiên bản mô hình. M1 không có lớp FTP-BruteForce nên không thể đưa ra nhãn đó.
+HINH demo_screenshots/08_nap_pcap_test_xong.png
+Ảnh 8. Nạp PCAP test.pcapng.
+Hệ thống trích đặc trưng từ PCAP bằng CICFlowMeter rồi gửi từng flow vào /predict. Kết quả: 38 flow thành công, 0 dòng lỗi.
+HINH demo_screenshots/09_pcap_giam_sat.png
+Ảnh 9. Tab «Giám sát flow» cho lượt PCAP.
+Trong 38 flow có 33 Benign (86,8%) và 5 cảnh báo (13,2%), SHAP xong 5 trên 5. Flow Benign không tạo cảnh báo và không chạy SHAP hay LIME, đó là thiết kế của hệ thống.
+HINH demo_screenshots/10_pcap_m0_shap.png
+Ảnh 10. SHAP của M0 cho một cảnh báo trong PCAP.
+M0 dự đoán Hulk với xác suất 96,98%. Hai đặc trưng đẩy mạnh nhất là số gói có cờ FIN (2 gói) và độ dài gói lớn nhất (78 byte), đúng vùng ba điều kiện của Hulk. Hệ thống kèm gợi ý có thể báo nhầm: flow đóng kết nối bằng FIN và có gửi dữ liệu, kiểu mà trong dữ liệu train chỉ gặp ở Hulk (445 trên 445).
+HINH demo_screenshots/11_pcap_m0_lime.png
+Ảnh 11. LIME của M0 cho cảnh báo này: không đủ tin cậy.
+Hệ thống báo LIME chưa giải thích được đáng tin cậy cho flow này, không phải lỗi vẽ biểu đồ. Trong 1.000 mẫu LIME sinh ra, cỡ mẫu hiệu dụng chỉ khoảng 1 mẫu, vì flow nằm quá xa các mẫu nền. Ví dụ Bwd PSH Flags của flow bằng 1 trong khi cả 2.000 mẫu nền đều bằng 0. Giải thích đầy đủ ở phần «Vì sao LIME không dùng được trên flow thật» bên dưới.
+HINH demo_screenshots/12_pcap_doi_chieu_tong_quan.png
+Ảnh 12. Tab «Đối chiếu M0 / M1» cho lượt PCAP.
+M0 báo tấn công 13,2% (5 flow), M1 báo 0%. Cả 5 flow M0 báo đều nằm trong vùng ba điều kiện của Hulk và M1 gán Benign cho cả 5.
+HINH demo_screenshots/13_pcap_doi_chieu_shap_m0_m1.png
+Ảnh 13. SHAP của M0 và M1 cạnh nhau cho flow PCAP.
+M0 dự đoán Hulk với xác suất 75,9% (Benign 24,1%), SHAP chỉ vào cờ FIN. M1 dự đoán Benign. Nhãn thật của flow trong PCAP chưa được ghi lại, nên chỉ so được hai mô hình báo gì, chưa kết luận đúng sai.
+HINH demo_screenshots/14_realtime_truoc_khi_bat.png
+Ảnh 14. Tab «Realtime» trước khi bắt.
+Điều khiển bắt traffic nằm ở tab này: nhập interface (Wi-Fi), bấm «Bắt đầu capture» và «Dừng capture». Backend tự tạo CSV, checkpoint và lượt dữ liệu mới.
+HINH demo_screenshots/15_realtime_dang_bat.png
+Ảnh 15. Đang bắt.
+Trạng thái «Đang bắt», ở thời điểm chụp đã nhận 126 gói và xuất 1 flow. Trong lúc bắt, nhóm tạo lưu lượng web bình thường bằng các lệnh curl tới vài trang web công khai (khoảng 60 giây). Flow chỉ xuất khi kết nối đóng, hết thời gian chờ hoặc khi dừng.
+HINH demo_screenshots/16_realtime_hoan_tat.png
+Ảnh 16. Bắt xong.
+Sau khi bấm «Dừng capture», trạng thái chuyển «Đang gửi nốt flow» rồi «Đã hoàn tất». Tổng cộng 23.260 gói đã nhận và 256 flow đã xuất, cả 256 flow được API xác nhận.
+HINH demo_screenshots/17_realtime_giam_sat.png
+Ảnh 17. Tab «Giám sát flow» cho lượt realtime.
+Trong 256 flow có 194 Benign (75,8%) và 62 cảnh báo (24,2%), SHAP xong 62 trên 62. Lưu lượng chỉ là truy cập web bình thường, nên 62 cảnh báo này nhiều khả năng là hiện tượng M0 báo nhầm kiểu Hulk đã mô tả ở các mục trước (máy vẫn có traffic nền, nhãn từng flow chưa được xác nhận). Số cảnh báo không phải FPR vì flow chưa có nhãn xác nhận từng dòng.
+HINH demo_screenshots/18_realtime_m0_shap.png
+Ảnh 18. SHAP của M0 cho một cảnh báo realtime.
+M0 dự đoán Hulk với xác suất 95,88%. Hai đặc trưng đẩy mạnh nhất là số gói có cờ FIN (1 gói) và độ dài gói lớn nhất (1.466 byte). Đây là kiểu kết nối HTTP đóng bằng FIN và có dữ liệu, đúng vùng mà RQ3 đã tìm ra.
+HINH demo_screenshots/19_realtime_m0_lime.png
+Ảnh 19. LIME của M0 cho cảnh báo realtime: không đủ tin cậy.
+Giống ảnh 11, cỡ mẫu hiệu dụng của LIME chỉ khoảng 1 mẫu nên hệ thống không hiển thị lời giải thích LIME. Dự đoán của M0 giữ nguyên và SHAP vẫn dùng được.
+HINH demo_screenshots/20_realtime_doi_chieu_tong_quan.png
+Ảnh 20. Tab «Đối chiếu M0 / M1» cho lượt realtime.
+Trên 256 flow, M0 báo tấn công 24,2% và M1 báo 0%. 62 flow khác nhãn, và cả 62 nằm trong vùng ba điều kiện của Hulk. Bảng M0 so với M1 cho thấy mọi flow M0 báo Hulk đều được M1 gán Benign.
+HINH demo_screenshots/21_realtime_doi_chieu_shap_m0_m1.png
+Ảnh 21. SHAP của M0 và M1 cho cùng một flow realtime.
+Flow này có FIN Flag Cnt bằng 2, Fwd Pkt Len Max 132, Fwd Seg Size Min 20 và Dst Port 80, tức một yêu cầu HTTP thường. M0 dự đoán Hulk (93,0%) và đặc trưng đóng góp lớn nhất là FIN Flag Cnt. M1 dự đoán Benign (100%) và đặc trưng đóng góp lớn nhất là Init Bwd Win Byts, một đặc trưng cửa sổ nhận gắn với môi trường. M1 đúng trên flow này nhưng vì một đặc trưng môi trường, không phải vì hành vi.
+HINH demo_screenshots/22_tim_flow_theo_id.png
+Ảnh 22. Tìm một flow theo flow ID.
+Gõ một phần flow ID vào ô tìm, tab tìm trên toàn bộ cơ sở dữ liệu (bỏ qua lọc lượt và nguồn) và hiển thị riêng flow đó với kết quả của hai mô hình. Cách này dùng để lần lại một flow cụ thể từ bảng cảnh báo.
+Vì sao LIME không dùng được trên flow thật
+LIME giải thích một flow bằng cách tạo khoảng 1.000 phiên bản thay đổi đặc trưng của nó, hỏi mô hình dự đoán từng phiên bản, rồi học một mô hình tuyến tính đơn giản trên các phiên bản đó. Những phiên bản càng gần flow gốc càng được tính trọng số cao, theo một hàm nhân có độ rộng kernel_width bằng 3,312, giá trị đã khóa từ RQ2 và được chuẩn hóa theo 2.000 mẫu nền lấy từ dữ liệu train cũ.
+Ở CSV mẫu (ảnh 5), flow cùng phân phối với mẫu nền nên nhiều phiên bản có trọng số đáng kể và LIME hợp lệ. Ở PCAP và realtime (ảnh 11 và 19), flow nằm xa mẫu nền. Ví dụ Bwd PSH Flags bằng 1 ở flow, trong khi cả 2.000 mẫu nền đều bằng 0. Khoảng cách chuẩn hóa vì thế lớn, trọng số của các phiên bản gần như bằng 0, cỡ mẫu hiệu dụng chỉ còn khoảng 1 mẫu, và mô hình tuyến tính bị chi phối bởi đúng một mẫu. Khi đó hệ thống từ chối hiển thị LIME và ghi rõ lý do, thay vì vẽ một biểu đồ trông có vẻ hợp lệ. Hệ số R bình phương bằng 1 trong trường hợp chỉ còn một mẫu không chứng minh giải thích tốt.
+Hai điều đáng ghi nhận cho bài báo. Thứ nhất, LIME chỉ đáng tin khi flow cần giải thích gần dữ liệu nền, nên không dùng được làm đối chiếu độc lập cho SHAP trên lưu lượng thật. Thứ hai, không đổi cấu hình LIME để ép ra biểu đồ, vì cấu hình đã khóa ở RQ2 và đổi nó làm kết quả không so sánh được. M1 hiện chưa có LIME trong hệ thống: hệ thống dùng mẫu nền của M0 (dữ liệu train cũ), nên muốn có LIME cho M1 cần dựng mẫu nền từ train improved, việc chưa làm.
 8. Kiểm tra riêng M1
 M1 đạt Accuracy 100,00%, Macro F1 99,30% và FPR 0,0015%. Con số này quá cao nên nhóm kiểm tra M1 như một mô hình riêng, trước khi so với M0. M1 dùng đúng 78 đặc trưng của RQ1, không có Timestamp, địa chỉ IP hay mã định danh flow nào trong số đó, và bộ train và test lấy theo đúng công thức của RQ1.
 Kiểm tra
@@ -721,6 +815,8 @@ Lỗi lịch sử của công cụ trích xuất chưa được kiểm chứng t
 Bảy trong mười hai lớp tấn công chỉ có đúng một địa chỉ nguồn, nên không thể chia train và test tách theo máy gửi. Phép chia ngẫu nhiên theo RQ1 vì vậy cho điểm lạc quan hơn một phép chia tách theo máy.
 Ba lớp tấn công nhỏ nhất (Brute Force -Web, Brute Force -XSS, SQL Injection) chỉ có 26, 23 và 8 flow trong test M1, nên F1 của chúng dao động mạnh và kéo Macro F1 lên xuống.
 Hulk của CICFlowMeter-V3 có cài đặt lỗi theo tài liệu của Engelen và cộng sự, nên bài báo nên dùng Hulk như một ca nghiên cứu về học đường tắt, không dùng như bằng chứng khả năng phát hiện DoS nói chung.
+M1 chưa nằm trong đường xử lý chính của hệ thống. Tab đối chiếu đọc flow đã lưu rồi tự dự đoán lại bằng M1, nên kết quả M1 không được lưu, chưa có cảnh báo hay SHAP nền và chưa có LIME cho M1.
+Phần chạy thử hệ thống dùng lưu lượng web bình thường tạo bằng curl trên một máy và một mạng, cùng một PCAP (test.pcapng, 38 flow) chưa có nhãn từng flow, nên chỉ so được hai mô hình báo gì, chưa tính đúng sai.
 Cách chọn siêu tham số của RQ1 dựa trên điểm test của chính mô hình, và được giữ nguyên theo yêu cầu để so sánh cùng điều kiện.
 12. Tái lập
 Mã, kết quả và tài liệu nằm trong thư mục RQ4_Retrain_Compare. Các tập dữ liệu trung gian và file mô hình .pkl không được commit theo cấu hình của repo, nhưng mã và số liệu kết quả đều có trong git.
@@ -746,6 +842,12 @@ scripts/09_diagnose_m1.py, 13_audit_m1_standalone.py
 Chẩn đoán và kiểm tra riêng M1
 scripts/10_t3_explain.py
 SHAP và phản thực trên flow realtime
+scripts/14_blocked_cv_m1.py
+Đánh giá M1 theo khối thời gian liên tục có vùng đệm
+scripts/15_system_test_csv.py
+Test M0 và M1 trên CSV mẫu có nhãn của hệ thống RQ3
+RQ3_IDS_System/app/compare_ui.py, model_compare.py
+Tab «Đối chiếu M0 / M1» của dashboard
 scripts/11_report_data.py
 Gom số liệu và vẽ hình cho báo cáo
 results/ và xai_runs/m1/

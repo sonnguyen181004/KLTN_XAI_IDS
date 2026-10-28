@@ -41,7 +41,7 @@ Không flow nào trong DB có nhãn thật (`label_true` trống). Với feeder_
 
 - Realtime (Wi-Fi, lưu lượng web bình thường tạo bằng curl): 159 flow. M0 báo Hulk 46 flow, tất cả nằm trong vùng FIN của Hulk. M1 báo Benign cả 159. Dự đoán M0 tính lại khớp 100% với dự đoán M0 hệ thống đã lưu.
 - CSV mẫu có nhãn thật (`results/system_test_csv.csv`): trên mẫu CSE-CIC-2018 cũ 15 lớp, tấn công bị báo Benign là 9 trên 98 ở M0 và 69 trên 98 ở M1. Trên mẫu 13 lớp chung là 10 trên 96 (M0) và 61 trên 96 (M1).
-- PCAP kịch bản ids-lab (`results/system_test_pcap.csv`): chưa có nhãn từng flow. M1 báo Benign cho gần như mọi flow (kể cả các PCAP hydra và SQL injection), M0 báo Hulk cho phần lớn flow. Không tính đúng sai.
+- PCAP `test.pcapng` (38 flow, chạy qua giao diện): M0 báo 5 flow là Hulk (cả 5 nằm trong vùng FIN), M1 báo Benign cả 38. Chưa có nhãn từng flow nên không tính đúng sai. Ảnh chụp từng bước nằm ở `RQ4_Retrain_Compare/report/demo_screenshots/`.
 
 ## Cách đọc
 
