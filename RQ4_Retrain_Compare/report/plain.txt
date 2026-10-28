@@ -166,6 +166,8 @@ Bảng 4. Trung vị đặc trưng của flow Hulk và Benign trong hai bộ tra
 Hulk trong bộ train cũ có trung vị 2 gói chiều đi, Fwd Pkt Len Max bằng 0 và FIN bằng 0, tức phần lớn là những flow rất ngắn không mang dữ liệu. Hulk trong bộ improved là kết nối HTTP đầy đủ với 5 gói chiều đi, Fwd Pkt Len Max 348, FIN 2 và cửa sổ nhận ban đầu 26.883 so với 225. Hai bộ vì vậy mô tả cùng một công cụ tấn công bằng hai kiểu đặc trưng khác nhau, và một mô hình học từ bộ này không thể nhận ra Hulk của bộ kia.
 5.2 Đặc trưng và nhãn
 Cả 78 đặc trưng của mô hình đều có tương ứng trong bản improved, trong đó 48 đặc trưng chỉ khác tên và được ánh xạ bằng bảng results/mapping_features.csv. Bản improved có thêm 5 cột mà mô hình không dùng, gồm Fwd RST Flags, Bwd RST Flags, ICMP Code, ICMP Type và Total TCP Flow Time. Tập nhãn thì không giống nhau. Bản improved không có DoS attacks-SlowHTTPTest, và FTP-BruteForce chỉ có dạng Attempted. Các nhãn Attempted (tấn công thất bại) bị bỏ ra khỏi mọi thí nghiệm. Bốn loại Infiltration được gộp lại thành một lớp. Kết quả là không gian nhãn chung gồm 13 lớp, và bảng ánh xạ đầy đủ nằm ở results/mapping_labels_improved.csv.
+5.3 Hai bộ liên quan và khác nhau thế nào
+Hai bộ giống nhau ở nguồn gốc (CSE-CIC-IDS2018, cùng phòng lab và công cụ tấn công) và ở 78 tên đặc trưng của mô hình. Chúng khác nhau ở ba điểm. Thứ nhất, cách tính giá trị: bản improved dùng CICFlowMeter đã sửa lỗi nên cờ TCP không còn bị giới hạn ở 0 và 1, và cách cắt flow khác. Thứ hai, kiểu lưu lượng của cùng một nhãn: Hulk của hai bộ khác hẳn nhau (mục 5.1). Thứ ba, tập nhãn: bản improved không có SlowHTTPTest và FTP-BruteForce. Vì vậy một mô hình huấn luyện ở bộ này vẫn chạy được trên bộ kia, nhưng kết quả không còn mang cùng ý nghĩa (mục 7.5).
 6. Thiết kế thực nghiệm mới
 6.1 Nguyên tắc làm đúng như mô hình cũ
 Hạng mục
@@ -503,6 +505,35 @@ Tỷ lệ đặc trưng môi trường trong Top-5 của flow sai
 Bảng 13. Kết quả giải thích của M0 và M1 theo cùng một quy trình.
 Kết luận về phương pháp giữ nguyên. SHAP trung thành hơn LIME ở cả hai mô hình với AUC comprehensiveness 0,84 so với 0,56 ở M1, và SHAP thắng ở 82% số flow. Hai phương pháp đồng ý với nhau nhiều hơn mức ngẫu nhiên nhưng vẫn thấp. LIME của M1 đạt cổng chất lượng ở ít flow hơn M0 (72,7% so với 86,0%). Nhóm lỗi của M1 chỉ có 24 flow nên các so sánh trên nhóm lỗi chỉ mang tính tham khảo.
 SHAP toàn cục của M1 cho lớp Hulk vẫn đặt Fwd Seg Size Min (3,78) và Init Fwd Win Byts (0,99) lên đầu, tức M1 vẫn nhận Hulk chủ yếu qua đặc trưng môi trường, dù không còn dùng cờ FIN. Với lớp Benign, đặc trưng đứng đầu của M1 là Init Bwd Win Byts (2,02). Dữ liệu sửa lỗi bỏ được đường tắt FIN nhưng không bỏ được đường tắt môi trường.
+7.5 Đưa bộ test cũ vào M1
+Test M1 trên bộ cũ là làm được, vì cả 78 đặc trưng đều có tương ứng ở hai bộ (48 đặc trưng chỉ khác tên và đã được ánh xạ), nên không cần bỏ đặc trưng nào, kể cả cờ FIN. Kết quả trên bộ test cũ giới hạn 13 lớp (694.758 dòng) rất khác so với M0b trên cùng bộ test này.
+Trên test cũ (13 lớp)
+M0b (train cũ)
+M1, bản đầy đủ
+M1, đã bỏ trùng
+Accuracy
+98,1%
+72,6%
+79,8%
+Macro F1
+88,7%
+25,8%
+27,0%
+Recall Hulk
+100,0%
+3,7%
+11,8%
+Benign bị báo thành tấn công
+0,24%
+3,83%
+4,54%
+Tấn công bị báo thành Benign
+5,9%
+60,0%
+55,1%
+Bảng 13b. M1 trên bộ test cũ so với M0b trên cùng bộ test.
+Hai bộ dữ liệu có liên quan nhưng không giống nhau. Chúng cùng nguồn gốc (CSE-CIC-IDS2018, cùng phòng lab, cùng công cụ tấn công) và cùng tên đặc trưng, nhưng giá trị đặc trưng được tính khác nhau. Bản improved dùng CICFlowMeter đã sửa lỗi, nên cờ FIN nhận từ 0 đến 5 trở lên thay vì chỉ 0 hoặc 1, cách cắt flow khác, và Hulk của hai bộ là hai kiểu lưu lượng khác nhau (Bảng 4). Một mô hình học trên các giá trị này vì vậy không còn dùng được khi giá trị đặc trưng đổi nghĩa. Đây không phải lỗi mô hình, và cũng không có nghĩa là hai bộ không so sánh được. Nó chính là phát hiện của bài: hai phiên bản của cùng một bộ dữ liệu làm hai mô hình hành xử rất khác nhau.
+Nhóm chưa thử huấn luyện M1 không có các cột cờ TCP rồi test trên bộ cũ, nên chưa biết bỏ cờ có làm kết quả trên bộ cũ khá hơn không. Đây là thí nghiệm có thể làm thêm.
 8. Kiểm tra riêng M1
 M1 đạt Accuracy 100,00%, Macro F1 99,30% và FPR 0,0015%. Con số này quá cao nên nhóm kiểm tra M1 như một mô hình riêng, trước khi so với M0. M1 dùng đúng 78 đặc trưng của RQ1, không có Timestamp, địa chỉ IP hay mã định danh flow nào trong số đó, và bộ train và test lấy theo đúng công thức của RQ1.
 Kiểm tra
@@ -595,6 +626,9 @@ Bảng 15 cho thấy lý do không chia train và test tách theo máy gửi. B�
 Để loại khả năng test trùng thời điểm với train, nhóm chạy thêm một phép chia chặt hơn phép chia của RQ1 (scripts/14_blocked_cv_m1.py). Mỗi lớp được cắt thành 5 đoạn thời gian liên tục, mỗi lượt giữ một đoạn làm test và huấn luyện trên bốn đoạn còn lại, bỏ 1% thứ hạng thời gian sát hai đầu đoạn test khỏi train, rồi bỏ khỏi test các dòng giống hệt dòng train. Cấu hình XGBoost vẫn là cấu hình RQ1. Kết quả năm lượt: Accuracy trung bình 99,98%, Macro F1 trung bình 99,14% (thấp nhất 98,01%, cao nhất 99,98%), FPR trung bình 0,0032%, FNR trung bình 0,033%. Điểm gần như không giảm so với phép chia ngẫu nhiên, nên con số cao không đến từ việc test trùng thời điểm với train. Các lớp yếu nhất là Slowloris (recall thấp nhất 81,4%) và SQL Injection (85,7%), cả hai chỉ có vài chục đến vài nghìn flow. Phép đo này vẫn nằm trong cùng một lab, cùng công cụ, cùng ngày, nên chỉ nguồn độc lập mới kiểm tra được khả năng tổng quát hóa, và ở đó M1 yếu như mục 7.2 cho thấy.
 Tổng gain của XGBoost cho thấy M1 dựa nhiều nhất vào Init Fwd Win Byts (19,6%), Init Bwd Win Byts (18,6%), Dst Port (15,6%) và Fwd Seg Size Min (14,8%), tổng khoảng 69%. Bỏ cả các đặc trưng này mô hình vẫn đạt Macro F1 98,7%, nên điểm cao không phụ thuộc vào vài đặc trưng cụ thể.
 So với M0b, phần lớn chênh lệch Macro F1 (88,7% so với 99,3%) đến từ lớp Infilteration: F1 là 0,247 ở M0b và 0,999 ở M1. Infilteration của bộ cũ khó nhận, còn Infilteration của bản improved (có quét cổng bằng Nmap) dễ tách. Các lớp còn lại gần như bằng nhau, trừ vài lớp nhỏ (SQL Injection 0,643 so với 0,933, Brute Force -Web 0,743 so với 0,980) mà test chỉ có vài chục flow. Vì vậy nhóm không kết luận bản improved làm mô hình tốt hơn nói chung. Kết luận hợp lý là: không phát hiện rò rỉ, điểm cao phản ánh bài toán dễ trong chính phòng lab với nhiều dòng gần trùng, và bằng chứng rõ nhất về giới hạn là M1 chỉ nhận 3,7% số flow Hulk của bộ test cũ.
+8.1 Giải thích: vì sao M1 cao hơn mô hình cũ, và M1 có học từ bộ cũ không
+M1 không học từ bộ cũ. M1 được huấn luyện từ đầu, chỉ trên bộ train improved, không kế thừa trọng số hay dữ liệu của M0. Siêu tham số giống hệt RQ1: độ sâu 8, learning rate 0,08, 100 cây, tree_method hist, seed 42, không quét lại. Đặc trưng cũng giống: 78 đặc trưng, không Timestamp, không địa chỉ IP. Vì vậy mọi khác biệt giữa M1 và M0b chỉ đến từ dữ liệu huấn luyện và test.
+Macro F1 của M1 là 99,3%, của M0b là 88,7% (cùng 13 lớp). Phần lớn chênh lệch đến từ một lớp. Infilteration có F1 0,247 ở bộ cũ, vì phần lớn flow bị đoán thành Benign, và 0,999 ở bộ improved, vì Infilteration của bản improved có quét cổng nên dễ tách. Hầu hết các lớp còn lại đạt khoảng 1,0 ở cả hai mô hình. Vài lớp nhỏ (SQL Injection, Brute Force -Web) chênh nhau nhưng test chỉ có vài chục flow. Điểm cao hơn của M1 do đó phản ánh bộ improved dễ hơn trong chính nó, không chứng minh M1 tốt hơn M0 nói chung. Phép chia theo khối thời gian ở trên và đường cong học cùng cho thấy điều này.
 9. Thảo luận
 Câu hỏi bộ dữ liệu cũ thiếu gì có câu trả lời cụ thể hơn sau thực nghiệm này. Bộ train cũ gần như không có Benign nào vừa đóng bằng FIN vừa mang dữ liệu, trong khi đó là 43,6% flow Benign TCP của bộ train improved. Mô hình học từ bộ cũ đã gán nhãn Hulk cho toàn bộ vùng này, và điều đó được kiểm chứng ở hai cấp độ độc lập, gồm 100.819 flow Benign trong vùng ở bộ test improved có nhãn thật, và 148 flow realtime do người dùng xác nhận.
 Thực nghiệm cũng cho thấy việc sửa dữ liệu không giải quyết hết vấn đề. Mô hình M1 loại bỏ được báo nhầm FIN nhưng vẫn dựa nhiều vào đặc trưng môi trường như cửa sổ nhận ban đầu và kích thước header tối thiểu. Những đặc trưng này khác nhau giữa các mạng, nên M1 có thể thất bại ở một môi trường khác dù đúng ở máy của người dùng. Đây cũng là điều Engelen và cộng sự cảnh báo khi nói về nguy cơ học đường tắt theo cấu hình lab.
