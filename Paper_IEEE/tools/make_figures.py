@@ -123,30 +123,36 @@ for s in ("top", "right"):
 save(fig, "fig5_blocked")
 
 # ---------- Fig. 6: LIME validity ----------
-keep = ["windows_live", "lab_WEB-B01", "lab_A07", "lab_B03"]
-a = pd.read_csv(R4 + r"\lab_m1\lime_validity_M0_nen_cu.csv"); a = a[a.source.isin(keep)]
-c = pd.read_csv(R4 + r"\lab_m1\lime_validity_M1_nen_M1.csv"); c = c[c.source.isin(keep)]
-fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.2), dpi=300, gridspec_kw={"width_ratios": [1.1, 1]})
+sw = pd.read_csv(R4 + r"\lab_m1\lime_kernel_sweep.csv")
+a = sw[(sw.model == "M0_nen_goc") & (sw.kernel_width == 3.312)]
+c = sw[(sw.model == "M1_nen_da_sua") & (sw.kernel_width == 3.312)]
+fig, axes = plt.subplots(1, 3, figsize=(7.1, 2.2), dpi=300, gridspec_kw={"width_ratios": [1.1, 0.9, 1.0]})
 ax = axes[0]
-labels = ["RQ2 test cohort,\nall classes (1,339)", "RQ2 test cohort,\nbenign flows (100)", "Real flows, M0 and\noriginal background (313)", "Real flows, M1 and\ncorrected background (313)"]
-vals = [85.96, 23.0, 100 * a["pass_r2_0.3"].mean(), 100 * c["pass_r2_0.3"].mean()]
+labels = ["RQ2 cohort (1,339)", "RQ2 benign (100)", "Real flows, M0 (313)", "Real flows, M1 (313)"]
+vals = [85.96, 23.0, 100 * a["passed"].mean(), 100 * c["passed"].mean()]
 ax.barh(range(4), vals[::-1], color=["white", "white", "0.35", "0.35"], edgecolor="black", height=0.6)
-ax.set_yticks(range(4)); ax.set_yticklabels(labels[::-1], fontsize=6.8)
+ax.set_yticks(range(4)); ax.set_yticklabels(labels[::-1], fontsize=6.6)
 for i, v in enumerate(vals[::-1]):
-    ax.text(v + 1.5, i, f"{v:.1f}%", va="center", fontsize=7)
-ax.set_xlim(0, 105); ax.set_xlabel("Flows with local fit R$^2$ at least 0.3 (%)", fontsize=7.5)
-ax.set_title("(a) Share of valid LIME fits", fontsize=8)
+    ax.text(v + 1.5, i, f"{v:.1f}%", va="center", fontsize=6.8)
+ax.set_xlim(0, 112); ax.set_xlabel("Flows with R$^2$ at least 0.3 (%)", fontsize=7)
+ax.set_title("(a) Valid fits, kernel 3.312", fontsize=7.6)
 ax = axes[1]
 bins = np.logspace(0, np.log10(250), 26)
-ax.hist(a.ess, bins=bins, histtype="stepfilled", color="0.75", edgecolor="black", label="M0, original background")
-ax.hist(c.ess, bins=bins, histtype="step", color="black", hatch="///", label="M1, corrected background", lw=1.0)
+ax.hist(a.ess, bins=bins, histtype="stepfilled", color="0.75", edgecolor="black", label="M0, original")
+ax.hist(c.ess, bins=bins, histtype="step", color="black", hatch="///", label="M1, corrected", lw=1.0)
 ax.axvline(2, color="black", ls="--", lw=0.9)
-ax.set_xscale("log"); ax.set_xlabel("Effective sample size of the perturbed samples", fontsize=7.5); ax.set_ylabel("Real flows", fontsize=7.5)
-ax.text(2.2, ax.get_ylim()[1] * 0.55, "validity limit", fontsize=6.8, rotation=90, va="center")
-ax.legend(frameon=False, fontsize=6.8, loc="upper right"); ax.set_title("(b) Neighborhood size on real flows", fontsize=8)
+ax.set_xscale("log"); ax.set_xlabel("Effective sample size", fontsize=7); ax.set_ylabel("Real flows", fontsize=7)
+ax.legend(frameon=False, fontsize=6.4, loc="upper right"); ax.set_title("(b) Neighborhood size", fontsize=7.6)
+ax = axes[2]
+for model, style, lab in (("M0_nen_goc", "--", "M0"), ("M1_nen_da_sua", "-", "M1")):
+    g = sw[sw.model == model].groupby("kernel_width").passed.mean() * 100
+    ax.plot(g.index, g.values, style, marker="o", color="black", ms=3, lw=1.0, label=lab)
+ax.set_xscale("log"); ax.set_ylim(-3, 108)
+ax.set_xlabel("Kernel width", fontsize=7); ax.set_ylabel("Real flows with R$^2$ at least 0.3 (%)", fontsize=6.8)
+ax.legend(frameon=False, fontsize=6.4, loc="center right"); ax.set_title("(c) Wider kernels", fontsize=7.6)
 for ax in axes:
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
+    for s_ in ("top", "right"):
+        ax.spines[s_].set_visible(False)
 fig.tight_layout()
 save(fig, "fig6_lime")
 

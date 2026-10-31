@@ -12,8 +12,10 @@ def plain(tex):
     return out if cut < 0 else out[:cut]
 
 
-en = plain("main.tex")
-vi = plain("main_vi.tex")
+from pathlib import Path
+BASE = Path(__file__).resolve().parents[1]
+en = plain(str(BASE / "main.tex"))
+vi = plain(str(BASE / "main_vi.tex"))
 en = en[: en.find("References")] if "References" in en else en
 
 

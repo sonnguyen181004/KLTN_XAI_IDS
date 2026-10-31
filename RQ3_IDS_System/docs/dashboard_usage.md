@@ -296,6 +296,10 @@ Nếu vẫn không dừng, kiểm tra đúng terminal và giữ log để chẩn
 - Yêu cầu LIME thủ công; suy biến thì giữ thông báo, không coi Top-5 bằng 0 là bằng chứng.
 - Test pipeline chạy được không tự chứng minh accuracy/FPR ngoài thực tế.
 
+## Chạy với mô hình M1
+
+Bản chạy với mô hình M1 (13 lớp) nằm ở `IDS_M1_Lab/`, dùng cùng giao diện. Hướng dẫn riêng: [dashboard_usage_m1.md](../../IDS_M1_Lab/docs/dashboard_usage_m1.md).
+
 ## Đọc màn hình
 
 ### LIME và đối chứng đặc trưng (bổ sung)

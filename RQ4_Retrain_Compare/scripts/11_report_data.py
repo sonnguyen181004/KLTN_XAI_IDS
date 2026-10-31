@@ -78,8 +78,8 @@ json.dump(D, open(RESULTS / "report_data.json", "w", encoding="utf-8"), indent=1
 # ---------- hình 1: Benign bị báo thành tấn công
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
 BLUE, ORANGE, AQUA, INK = "#2a78d6", "#eb6834", "#1baf7a", "#0b0b0b"
-sets = [("T1_test_cu_sach", "Test cũ\n(đã bỏ trùng)"), ("T2a_improved_stratified_sach", "Test improved\n(đã bỏ trùng)"),
-        ("T3_realtime_benign", "Realtime của\nbạn (784 flow)")]
+sets = [("T1_test_cu_sach", "Bộ kiểm thử cũ\nđã bỏ trùng"), ("T2a_improved_stratified_sach", "Bộ kiểm thử improved\nđã bỏ trùng"),
+        ("T3_realtime_benign", "784 flow Benign\nthực tế")]
 labels = {"M0": "M0 (mô hình cũ, 15 lớp)", "M0b": "M0b (dữ liệu cũ, 13 lớp)", "M1": "M1 (dữ liệu improved)"}
 fig, ax = plt.subplots(figsize=(8.2, 4.1), dpi=200)
 w = 0.26

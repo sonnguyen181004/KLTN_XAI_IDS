@@ -2,7 +2,9 @@
 import json
 import re
 
-T = open("main.tex", encoding="utf-8").read()
+import pathlib
+BASE = pathlib.Path(__file__).resolve().parents[1]
+T = open(BASE / "main.tex", encoding="utf-8").read()
 R4 = r"C:\Users\LOQ\Downloads\SELF_KLTN\RQ4_Retrain_Compare\results"
 pc = json.load(open(R4 + r"\paper_checks.json", encoding="utf-8"))
 t3 = json.load(open(R4 + r"\t3_explain.json", encoding="utf-8"))
@@ -52,4 +54,10 @@ check("dup share 27.8", round(rq1["dup_share"], 1) == 27.8 and has("rqDupShare")
 check("macro F1 deduplicated drop about 7.6", abs((rq1["summary"]["full_macro_f1"][0] - rq1["summary"]["dedup_macro_f1"][0]) - 7.63) < 0.05 and has("7.6 points"))
 check("M0 F1 range statement 0.3 to 1.1", True, "mean 86.42 vs 85.81; seeds 86.09, 86.92, 86.23: differences 0.28, 1.11, 0.42")
 check("abstract and conclusion agree", has("19.0\\%", "97.9\\%", "99.97\\%", "0.47\\%"))
+sw = json.load(open(R4 + r"\lab_m1\lime_kernel_sweep_summary.json", encoding="utf-8"))
+m1 = [sw[f"M1_nen_da_sua|{k}"]["passed_r2_0_3"] for k in ("3.312", "30.0", "300.0", "3000.0", "30000.0")]
+check("LIME sweep M1 pass counts 0,136,265,304,313", m1 == [0, 136, 265, 304, 313] and has("136 at width 30", "265 at 300", "304 at 3,000", "313 at 30,000"), str(m1))
+check("LIME sweep M0 at 3.312: ESS<2 255, pass 3", sw["M0_nen_goc|3.312"]["ess_below_2"] == 255 and sw["M0_nen_goc|3.312"]["passed_r2_0_3"] == 3 and has("255 flows", "only three flows"))
+check("LIME sweep M0 at 30000: 41 pass", sw["M0_nen_goc|30000.0"]["passed_r2_0_3"] == 41 and has("41 of 313"))
+check("LIME sweep ESS median 999 to 1000 from width 300", sw["M1_nen_da_sua|300.0"]["ess_median"] >= 999 and has("999 to 1,000"))
 print("ALL PASS" if ok else "SOME FAILED")
