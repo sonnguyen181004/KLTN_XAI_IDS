@@ -33,15 +33,30 @@ Không tiếp tục feeder dùng checkpoint cũ sau reset (ACK cũ có thể khi
 
 <a id="capture-control"></a>
 
-## Chạy nhanh (một lệnh)
+## Chạy nhanh (RQ3, mô hình M0)
 
-Từ thư mục `RQ3_IDS_System`, mở PowerShell (quyền Administrator nếu Npcap yêu cầu) và chạy:
+Mở hai terminal tại `RQ3_IDS_System` (quyền Administrator nếu Npcap yêu cầu). Cả hai dùng **cùng một token**.
+
+Terminal 1, API (lệnh in ra token, sao chép nó):
 
 ```powershell
-.un_ids.ps1
+Remove-Item Env:IDS_DB_PATH -ErrorAction SilentlyContinue
+Remove-Item Env:IDS_CAPTURE_SESSION_DIR -ErrorAction SilentlyContinue
+$env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
+$env:IDS_CAPTURE_CONTROL_TOKEN
+$env:IDS_CAPTURE_API_URL = 'http://127.0.0.1:8000'
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
 ```
 
-Script tự tạo token mới, mở hai cửa sổ (API cổng 8000, Dashboard cổng 8501) dùng chung token đó. Mở `http://127.0.0.1:8501`, vào tab **Realtime**. Không cần làm tay các bước 2 và 3 bên dưới; mục đó giữ lại để hiểu từng biến môi trường. Bản M1 chạy cùng cách bằng `IDS_M1_Labun_ids.ps1`; không bật hai bản cùng lúc vì dùng chung cổng.
+Terminal 2, Dashboard (dán đúng token vừa in):
+
+```powershell
+$env:IDS_CAPTURE_CONTROL_TOKEN = 'TOKEN_VỪA_IN'.Trim()
+$env:IDS_API_URL = 'http://127.0.0.1:8000'
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
+```
+
+Mở `http://127.0.0.1:8501`, vào tab **Realtime**. Bản M1 chạy khác: một lệnh `IDS_M1_Labun_ids.ps1`. Không bật hai bản cùng lúc vì dùng chung cổng.
 
 ### Hiện hành: chạy nút Bắt đầu/Dừng trong tab Realtime
 

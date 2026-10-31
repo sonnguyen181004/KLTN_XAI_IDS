@@ -95,7 +95,7 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 | Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
 | Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
-**Chạy nhanh:** `RQ3_IDS_Systemun_ids.ps1` (mô hình M0) hoặc `IDS_M1_Labun_ids.ps1` (mô hình M1). Mỗi script tự tạo token, mở API (8000) và dashboard (8501); chỉ bật một bản mỗi lần.
+**Chạy nhanh:** RQ3 (M0) chạy bằng hai terminal với token, lệnh ở đầu `RQ3_IDS_System/docs/dashboard_usage.md`. M1 chạy một lệnh `IDS_M1_Labun_ids.ps1`. Chỉ bật một bản mỗi lần (cùng cổng 8000 và 8501).
 
 UI hiện có Giám sát flow, Realtime và Nạp CSV / PCAP; nút điều khiển capture bật bằng token local theo hướng dẫn HT4.4. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
 
