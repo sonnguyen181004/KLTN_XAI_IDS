@@ -68,3 +68,16 @@ Dữ liệu trung gian (`data/`) và mô hình (`models/`) không được commi
 | Báo cáo đầy đủ | `report/Bao_cao_RQ4_so_sanh_dataset_cu_va_moi.docx`, dựng bằng `report/build_report.js` |
 
 Dựng lại báo cáo: `python scripts/11_report_data.py` rồi `node report/build_report.js <đầu ra.docx> <văn bản.txt>`.
+
+## Bổ sung cho bài báo IEEE (31/10/2026)
+
+| Hạng mục | Trạng thái |
+|---|---|
+| Đánh giá M1 theo khối thời gian (`scripts/14_blocked_cv_m1.py`, `results/blocked_cv_m1*.csv`) | Xong, đã đưa vào bài |
+| Kiểm tra riêng cho bài báo (`scripts/17_paper_checks.py` ghi `results/paper_checks.json`): khoảng tin cậy Wilson, SHAP cùng lớp đầu ra Hulk cho M0 và M1, kiểm tra cộng dồn TreeSHAP, kiểm chứng vùng FIN theo phiên thu và trên tập test Benign, độ trễ, mã băm tệp | Xong |
+| Flow lab qua cùng bộ trích xuất, dự đoán M0 và M1 (`scripts/18_lab_predict_m0_m1.py`, `results/lab_m1/`) | Xong. Bài chỉ dùng ca duyệt web và hai flow SSH brute force đã xác nhận nhãn |
+| LIME trên 313 flow thật với M0 và nền gốc, với M1 và nền đã sửa (`scripts/19_lab_lime_validity.py`, `results/lab_m1/lime_validity_*.csv`) | Xong. Nền đã sửa không khắc phục được LIME |
+| Chạy lại RQ1 theo ba lần chia (`RQ1_Model_Training_xboost/3_repeat_resplits.py`) | Xong |
+| Kiểm tra theo khối thời gian cho M0 trên dữ liệu gốc | Không làm |
+
+Bản nháp bài báo và cách dựng lại nằm ở `Paper_IEEE/` (xem README gốc, mục 8). Các script 18 và 19 đọc cơ sở dữ liệu của bản sao hệ thống `IDS_M1_Lab/` (không được commit), nên chỉ chạy lại được trên máy có thư mục đó.

@@ -79,7 +79,7 @@ Hướng dẫn đầy đủ: [UI và test](RQ3_IDS_System/docs/dashboard_usage.m
 Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XAI) cho hệ thống phát hiện xâm nhập (IDS)** trên bộ dữ liệu CSE-CIC-IDS2018. Mô hình phát hiện là XGBoost (so sánh với Random Forest ở RQ1); phần giải thích dùng **SHAP** và **LIME**.
 
 - Dữ liệu: CSE-CIC-IDS2018 đã xử lý, 78 đặc trưng, 15 lớp (1 Benign + 14 loại tấn công), test set 700.000 flow.
-- Trạng thái: **RQ1 xong · RQ2 chạy lại từ đầu (2026-10-09) theo pipeline 14 giai đoạn, đủ kết quả cho cả 5 câu hỏi (agreement, quality gate, stability/robustness, faithfulness, domain validation) + cohort lỗi · RQ3 đang xây dựng, Bước 1–13/16 xong (API + SHAP/LIME + Dashboard chạy được, test thật bằng traffic thật qua Wireshark/CICFlowMeter), còn Docker Compose + 2 thí nghiệm E1/E5 + mốc traffic tấn công thật (M4/M5).**
+- Trạng thái: **RQ1 xong · RQ2 chạy lại từ đầu (2026-10-09) theo pipeline 14 giai đoạn, đủ kết quả cho cả 5 câu hỏi (agreement, quality gate, stability/robustness, faithfulness, domain validation) + cohort lỗi · RQ3 đang xây dựng, Bước 1–13/16 xong (API + SHAP/LIME + Dashboard chạy được, test thật bằng traffic thật qua Wireshark/CICFlowMeter), còn Docker Compose + 2 thí nghiệm E1/E5 + mốc traffic tấn công thật (M4/M5).** RQ4 (huấn luyện lại trên dữ liệu đã sửa, mô hình M1) đã có kết quả ở `RQ4_Retrain_Compare/`, xem mục 8. Bài báo theo mẫu IEEE (tiếng Anh và tiếng Việt) ở `Paper_IEEE/`.
 
 ---
 
@@ -118,6 +118,8 @@ SELF_KLTN/
 │   ├── app/                          # main.py (API), dashboard.py (Streamlit), db.py, predict.py, explain_shap.py, explain_lime.py, reliability.py, feeder.py
 │   ├── scripts/                      # stage0N_*.py (test từng bước) + run_live_capture.py + make_synthetic_pcap.py
 │   └── data/                         # DB SQLite + dữ liệu chạy (không commit — xem .gitignore)
+├── RQ4_Retrain_Compare/             # RQ4: huấn luyện lại trên dữ liệu đã sửa (M1), đánh giá và kiểm tra phục vụ bài báo — xem mục 8
+├── Paper_IEEE/                      # Bài báo theo mẫu IEEE (main.tex tiếng Anh, main_vi.tex tiếng Việt), hình, số liệu, script kiểm tra
 ├── cicflowmeter_capture_demo/       # (CŨ, không dùng nữa — RQ3 xây lại từ đầu ở RQ3_IDS_System/)
 ├── Tai_lieu_tham_khao/              # Nhãn CICIDS2018, bài báo, hỏi–đáp bảo vệ
 ├── Report/                          # Proposal và hướng dẫn khóa luận
@@ -145,6 +147,7 @@ SELF_KLTN/
 - **Kết quả trên test set:** Accuracy 97,91% · Macro Precision 90,84% · Macro Recall 83,99% · **Macro F1 85,81%** · thời gian huấn luyện ≈ 2,67 phút.
 - **Tuning:** 7 cấu hình; cấu hình depth 12 / lr 0,08 đạt F1 85,95% nhưng bản depth 8 được giữ làm mô hình giải thích.
 - **Hạn chế cần nói rõ:** test set được dùng để chọn cấu hình (không có validation riêng) nên số liệu hơi lạc quan.
+- **Chạy lại ba lần chia (31/10/2026):** gộp train và test (3,5 triệu flow), chia lại phân tầng 80/20 với seed 1, 2, 3 và huấn luyện lại đúng siêu tham số trên. Accuracy 97,894 ± 0,004%, macro F1 86,42 ± 0,45%, tỷ lệ cảnh báo trên Benign 0,245 ± 0,006%, FNR 5,787 ± 0,018%. Trên phần test đã bỏ các dòng trùng với train (27,8% test), macro F1 còn 78,78 ± 0,92%. Macro F1 gốc 85,81% nằm ở đầu thấp của khoảng này. Mã `3_repeat_resplits.py`, kết quả ở `results/repeat_runs/`.
 - **Đính chính FPR (16/10/2026):** code và bảng kết quả đã tách FPR = 1.139 / 490.000 ≈ **0,2324%** (Benign bị báo thành Attack) với FNR = 12.071 / 210.000 ≈ **5,7481%** (Attack bị bỏ sót thành Benign). Bảng tuning cũ được đổi tên cột sai thành FNR, không suy đoán FPR của từng cấu hình. Xem [định nghĩa và giới hạn](RQ1_Model_Training_xboost/FPR_CORRECTION.md). Đây là số liệu test dataset, không phải FPR traffic live.
 
 Chạy lại:
@@ -442,3 +445,34 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 - Không di chuyển riêng thư mục `.venv` trong `cicflowmeter_capture_demo/` (môi trường ảo phụ thuộc đường dẫn).
 - Tệp bắt đầu bằng `~$` là khóa tạm của Word, tự biến mất khi đóng tài liệu.
 - Số liệu trong README lấy từ các file `summary_*.csv` / `run_info.json` mới nhất trong từng thư mục output; nếu chạy lại, hãy cập nhật.
+
+---
+
+## 8. RQ4 và bài báo IEEE (`RQ4_Retrain_Compare/`, `Paper_IEEE/`)
+
+**Câu chuyện nghiên cứu (RQ1 đến RQ4):** RQ1 huấn luyện M0 (XGBoost trên dữ liệu gốc). RQ2 chọn cách giải thích (SHAP luôn bật, LIME theo yêu cầu). RQ3 triển khai hệ thống trực tuyến, và M0 báo tấn công trên lưu lượng bình thường của chính máy thu. RQ4 truy nguyên nguyên nhân bằng SHAP và đường đi trong cây, rồi huấn luyện lại M1 (cùng thuật toán và siêu tham số, dữ liệu dựng lại bằng bộ trích xuất đã sửa và nhãn đã sửa, 13 lớp) để kiểm tra lỗi có đến từ dữ liệu huấn luyện không.
+
+**Kết quả chính (đều có script kiểm tra, xem `Paper_IEEE/verify_numbers.py`):**
+
+| Nội dung | Kết quả |
+|---|---|
+| M0 trên 784 flow thực đã xác nhận bình thường | 149 cảnh báo tấn công (19,01%, khoảng Wilson 95% từ 16,41 đến 21,90), 148 cảnh báo mang nhãn Hulk |
+| M1 trên cùng 784 flow | 0 cảnh báo (cận trên 95% là 0,47%) |
+| Vùng FIN (số cờ FIN từ 1, gói forward lớn nhất từ 66 B, header forward nhỏ nhất dưới 32 B) | Chứa 148 trong 149 cảnh báo thực và 100.817 trong 100.849 cảnh báo sai trên tập test Benign có nhãn |
+| Nội dung vùng FIN trong train | Gốc: 445 Hulk, 0 Benign. Đã sửa: 405.347 Benign, 330 Hulk (và các lớp tấn công khác) |
+| LIME với M1 và nền lấy từ dữ liệu đã sửa | 0 trên 313 flow thật qua ngưỡng R² từ 0,3 (cỡ mẫu hiệu dụng dưới 2) |
+| TreeSHAP trên 784 flow | Sai số cộng dồn lớn nhất 4,8e-6 (M0) và 3,8e-6 (M1) |
+| Độ trễ (1.025 flow, 219 cảnh báo) | Phân loại trung vị 12,4 ms, SHAP 32,5 ms, nhưng flow thực trung vị kéo dài 1,35 s (phân vị 90 là 49,0 s) |
+
+**Phạm vi kết luận:**
+- Nguyên nhân do bộ trích xuất cắt flow tại gói FIN đầu tiên mới là giả thuyết. Dự án không có PCAP gốc tương ứng để kiểm tra trực tiếp.
+- Các phép đặt một đặc trưng (ví dụ FIN về 0) chỉ đo độ nhạy của mô hình, không phải bằng chứng nhân quả.
+- M1 không báo cảnh báo nào trên các flow bình thường đã thu, nhưng bộ chuẩn của nó dễ (16,9% test trùng train, cây độ sâu 3 đạt 96,4%), nên điểm 99,996% không dự báo hiệu năng ngoài thực tế. Chưa biết M1 có phát hiện được tấn công trong mạng thật hay không.
+- Nhãn bình thường của 784 flow dựa vào lời xác nhận của nhóm, không có nhật ký hoạt động. Hai flow SSH brute force chỉ là kiểm tra nhanh, không đủ để tính tỷ lệ phát hiện.
+- Kết luận về LIME chỉ đúng với cấu hình đã thử (kernel 3,312, 1.000 mẫu, nền 2.000 flow).
+
+**Các thư mục:**
+- `RQ4_Retrain_Compare/`: mã dựng dữ liệu, huấn luyện M0b và M1, đánh giá, kiểm tra riêng M1, `scripts/17_paper_checks.py` (khoảng tin cậy, SHAP cùng lớp đầu ra, kiểm tra cộng dồn, kiểm chứng vùng FIN theo phiên, độ trễ), `scripts/18_lab_predict_m0_m1.py` và `scripts/19_lab_lime_validity.py` (flow lab, LIME với nền khác). Kết quả ở `results/` (`paper_checks.json`, `lab_m1/`).
+- `Paper_IEEE/`: `main.tex` (tiếng Anh) và `main_vi.tex` (tiếng Việt) theo mẫu IEEEtran, `refs.bib` (15 tài liệu đã kiểm chứng nguồn), `figures/` và `figures_vi/`, `main.pdf` và `main_vi.pdf` đã dựng.
+
+**Dựng lại bài báo:** bản tiếng Anh biên dịch được bằng pdfLaTeX hoặc XeLaTeX. Bản tiếng Việt dùng phông TeX Gyre Termes nên phải biên dịch bằng **XeLaTeX** (trên Overleaf chọn compiler XeLaTeX). Trên máy có Tectonic: `tectonic main.tex` và `tectonic main_vi.tex`. Hình dựng lại bằng `python make_figures.py` và `python make_figures_vi.py`; số RQ1 sinh bằng `python fill_numbers.py`. Kiểm tra trước khi nộp: `python check_tex.py` (tham chiếu, nhãn, môi trường) và `python verify_numbers.py` (đối chiếu số trong bài với file kết quả). Tên tác giả bản tiếng Anh viết không dấu vì phông Times của mẫu IEEE không có chữ Việt có dấu.
