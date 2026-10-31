@@ -1,0 +1,95 @@
+# RQ3 IDS System — cấu hình dự án. Mọi script/app chỉ đọc tham số từ đây,
+# không ghi cứng đường dẫn hay số liệu trong code.
+
+seed: 42
+
+# Cảnh báo quan sát, không phải quota hoặc lệnh tự xóa. Không thay cap capture.
+storage:
+  warning_free_bytes: 1073741824  # 1 GiB trên ổ chứa DB
+
+# Đường dẫn tính từ gốc repo (SELF_KLTN/), không phải từ RQ3_IDS_System/
+paths:
+  model: "IDS_M1_Lab/models/m1_xgboost_model.pkl"
+  label_encoder: "IDS_M1_Lab/models/m1_label_encoder.pkl"
+  train_set: "RQ4_Retrain_Compare/data/d2_train.parquet"
+  test_set: "RQ4_Retrain_Compare/data/d2_test.parquet"
+  # Tập A: cohort 1.339 flow gốc của RQ2 — bắt buộc dùng nguyên vẹn cho E5.
+  rq2_cohort_ids: "RQ2/runs/20261009/gd3_cohorts/cohort_ids.csv"
+  # Bảng tra theo lớp (stability/robustness/domain...) nạp 1 lần lúc khởi động.
+  rq2_master_summary: "RQ2/runs/20261009/gd13_report/rq2_master_summary.json"
+  # Tập B: dữ liệu sạch (loại trùng train/test) — do stage00 của RQ3 tự sinh ra.
+  clean_set_out: "IDS_M1_Lab/data/clean_holdout_set.csv"
+  sqlite_db: "IDS_M1_Lab/data/ids_system.db"
+
+n_classes_expected: 13
+n_features_expected: 78
+
+# Cấu hình LIME — PHẢI khớp y hệt cấu hình đã khóa ở RQ2 GĐ5 để so sánh được.
+lime:
+  # Lab M1: RQ2 khóa 3.312, nhưng flow PCAP thật (vd A07) nằm quá xa nền nên LIME báo
+  # insufficient_neighborhood. Thử 3000 -> A07 ra status ok, R2 0.96 (xem scripts/m1_lime_sweep.py).
+  kernel_width: 3000
+  num_samples: 1000
+  discretize_continuous: false
+  num_features: 78
+  background_sample_size: 2000
+  background_seed: 42
+
+# 4 đặc trưng "nghi nhạy môi trường" — CHỈ dùng làm cờ cảnh báo tham khảo,
+# không phải bằng chứng (xem RQ3_IDS_System/docs/plan.md, mục cảnh báo overclaim).
+# FIN Flag Cnt thêm 18/10/2026 sau khi truy leaf cây quyết định thật: 445/2.800.000
+# dòng train rơi đúng vùng (Fwd Seg Size Min<32, FIN Flag Cnt>=1, Fwd Pkt Len Max>=66)
+# đều là DoS attacks-Hulk, 0 dòng Benign — xem feature_compatibility.md.
+environment_fingerprint_features:
+  - "Dst Port"
+  - "Fwd Seg Size Min"
+  - "Init Fwd Win Byts"
+  - "FIN Flag Cnt"
+environment_fingerprint_flag_threshold: 2  # Top-5 có >= 2 cái này thì bật cờ
+
+# Gợi ý "đóng FIN + có dữ liệu" trên cảnh báo Hulk (app/alert_hints.py). Chỉ là gợi ý đọc, không đổi nhãn.
+# Ngưỡng nằm ở đây; số flow Hulk/Benign trong vùng này được ĐẾM trực tiếp từ paths.train_set lúc chạy.
+hulk_fin_hint:
+  label: "DoS attacks-Hulk"
+  benign_label: "Benign"
+  min_fin_flag_cnt: 1        # flow có ít nhất 1 gói cờ FIN (đóng kết nối bằng FIN)
+  min_fwd_pkt_len_max: 66    # gói lớn nhất chiều đi >= ngưỡng này thì coi là có gửi dữ liệu
+  below_fwd_seg_size_min: 32 # header TCP nhỏ hơn 32 byte (kiểu máy thường); lab Hulk dùng 32
+
+rare_class_min_train_samples: 100  # lớp có dưới ngưỡng này thì bật cờ "lớp hiếm"
+
+# Tập B (dữ liệu sạch dùng để demo/test, không dính nghi vấn "model học thuộc").
+clean_dataset:
+  target_size: 250
+  max_per_class: 30
+  exclude_duplicates_with_train: true
+
+# Faithfulness proxy tính tại chỗ (runtime) — CHỈ là bản rút gọn, xem cảnh báo overclaim.
+faithfulness_proxy:
+  k: 5
+  baseline: "global_median"  # chỉ 1 trong 3 giá trị nền RQ2 từng dùng
+
+api:
+  host: "127.0.0.1"
+  port: 8000
+  # Số tác vụ SHAP đang CHỜ (không tính tác vụ worker đang chạy).
+  # Đầy thì bỏ tác vụ SHAP mới, vẫn giữ dự đoán/cảnh báo. Cần restart API khi đổi.
+  max_explain_queue: 200
+  # LIME tốn CPU hơn hẳn SHAP (~148ms, gấp ~8 lần) và chạy ĐỒNG BỘ trong POST /explain
+  # (analyst đang chờ kết quả nên không đưa vào hàng đợi nền như SHAP) — giới hạn số
+  # lượt LIME chạy cùng lúc để tránh nghẽn thread pool của FastAPI khi nhiều analyst
+  # bấm xin LIME cùng lúc. Vượt ngưỡng thì trả 429 (đúng bảng API trong tài liệu kiến trúc).
+  max_concurrent_lime: 4
+
+feeder:
+  # File CSV mà feeder theo dõi. Khi test giả lập: tự ghi dần vào đây. Khi có
+  # CICFlowMeter thật: đổi thành đường dẫn CICFlowMeter xuất ra (qua tham số
+  # --watch, không cần sửa code).
+  default_watch_csv: "IDS_M1_Lab/data/live_feed_simulated.csv"
+  poll_interval_sec: 1.0
+  # CICFlowMeter thật xuất thời gian theo giây, Tập A/B đã sẵn micro giây —
+  # xem lý do ở app/normalize.py. Để False khi test giả lập bằng Tập B.
+  convert_seconds_to_microseconds: false
+
+dashboard:
+  port: 8501

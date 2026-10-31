@@ -119,10 +119,13 @@ SELF_KLTN/
 │   ├── scripts/                      # stage0N_*.py (test từng bước) + run_live_capture.py + make_synthetic_pcap.py
 │   └── data/                         # DB SQLite + dữ liệu chạy (không commit — xem .gitignore)
 ├── RQ4_Retrain_Compare/             # RQ4: huấn luyện lại trên dữ liệu đã sửa (M1), đánh giá và kiểm tra phục vụ bài báo — xem mục 8
-├── Paper_IEEE/                      # Bài báo theo mẫu IEEE (main.tex tiếng Anh, main_vi.tex tiếng Việt), hình, số liệu, script kiểm tra
-├── cicflowmeter_capture_demo/       # (CŨ, không dùng nữa — RQ3 xây lại từ đầu ở RQ3_IDS_System/)
+│   └── lab_captures/                 # PCAP và flow của các ca lab (WEB-B01, A07, B03)
+├── IDS_M1_Lab/                      # Bản chạy hệ thống IDS với M1 (13 lớp), kernel LIME 3000 — xem IDS_M1_Lab/README.md
+├── Paper_IEEE/                      # Bài báo theo mẫu IEEE (main.tex tiếng Anh, main_vi.tex tiếng Việt), hình, số liệu
+│   └── tools/                        # make_figures*.py, fill_numbers.py, check_tex.py, verify_numbers.py, verify_vi_vs_en.py
 ├── Tai_lieu_tham_khao/              # Nhãn CICIDS2018, bài báo, hỏi–đáp bảo vệ
-├── Report/                          # Proposal và hướng dẫn khóa luận
+├── Report/                          # Proposal, hướng dẫn khóa luận, góp ý
+├── Slide/                           # Slide và kịch bản thuyết trình FIN, tài liệu hỏi đáp RQ1 đến RQ4
 ├── Kiem_thu_noi_bo/                 # PDF/PNG kiểm thử khi dựng tài liệu (không phải kết quả nghiên cứu)
 ├── pptskill/                        # Công cụ tạo slide, tách biệt khỏi mã nghiên cứu
 ├── Tong_hop_XAI_IDS_5_tai_lieu.docx # Tổng hợp 5 tài liệu XAI cho IDS
@@ -452,7 +455,7 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 
 **Câu chuyện nghiên cứu (RQ1 đến RQ4):** RQ1 huấn luyện M0 (XGBoost trên dữ liệu gốc). RQ2 chọn cách giải thích (SHAP luôn bật, LIME theo yêu cầu). RQ3 triển khai hệ thống trực tuyến, và M0 báo tấn công trên lưu lượng bình thường của chính máy thu. RQ4 truy nguyên nguyên nhân bằng SHAP và đường đi trong cây, rồi huấn luyện lại M1 (cùng thuật toán và siêu tham số, dữ liệu dựng lại bằng bộ trích xuất đã sửa và nhãn đã sửa, 13 lớp) để kiểm tra lỗi có đến từ dữ liệu huấn luyện không.
 
-**Kết quả chính (đều có script kiểm tra, xem `Paper_IEEE/verify_numbers.py`):**
+**Kết quả chính (đều có script kiểm tra, xem `Paper_IEEE/tools/verify_numbers.py`):**
 
 | Nội dung | Kết quả |
 |---|---|
@@ -460,7 +463,7 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 | M1 trên cùng 784 flow | 0 cảnh báo (cận trên 95% là 0,47%) |
 | Vùng FIN (số cờ FIN từ 1, gói forward lớn nhất từ 66 B, header forward nhỏ nhất dưới 32 B) | Chứa 148 trong 149 cảnh báo thực và 100.817 trong 100.849 cảnh báo sai trên tập test Benign có nhãn |
 | Nội dung vùng FIN trong train | Gốc: 445 Hulk, 0 Benign. Đã sửa: 405.347 Benign, 330 Hulk (và các lớp tấn công khác) |
-| LIME với M1 và nền lấy từ dữ liệu đã sửa | 0 trên 313 flow thật qua ngưỡng R² từ 0,3 (cỡ mẫu hiệu dụng dưới 2) |
+| LIME với M1 và nền lấy từ dữ liệu đã sửa | Kernel khóa 3,312: 0 trên 313 flow thật qua ngưỡng R² từ 0,3. Quét kernel 3,312 / 30 / 300 / 3.000 / 30.000: 0 / 136 / 265 / 304 / 313 flow qua cổng, nhưng cỡ mẫu hiệu dụng trung vị lên 1.000 (trọng số gần đều, khớp gần toàn cục). M0 với nền gốc đạt tối đa 41 trên 313 ở kernel 30.000 |
 | TreeSHAP trên 784 flow | Sai số cộng dồn lớn nhất 4,8e-6 (M0) và 3,8e-6 (M1) |
 | Độ trễ (1.025 flow, 219 cảnh báo) | Phân loại trung vị 12,4 ms, SHAP 32,5 ms, nhưng flow thực trung vị kéo dài 1,35 s (phân vị 90 là 49,0 s) |
 
@@ -469,10 +472,10 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 - Các phép đặt một đặc trưng (ví dụ FIN về 0) chỉ đo độ nhạy của mô hình, không phải bằng chứng nhân quả.
 - M1 không báo cảnh báo nào trên các flow bình thường đã thu, nhưng bộ chuẩn của nó dễ (16,9% test trùng train, cây độ sâu 3 đạt 96,4%), nên điểm 99,996% không dự báo hiệu năng ngoài thực tế. Chưa biết M1 có phát hiện được tấn công trong mạng thật hay không.
 - Nhãn bình thường của 784 flow dựa vào lời xác nhận của nhóm, không có nhật ký hoạt động. Hai flow SSH brute force chỉ là kiểm tra nhanh, không đủ để tính tỷ lệ phát hiện.
-- Kết luận về LIME chỉ đúng với cấu hình đã thử (kernel 3,312, 1.000 mẫu, nền 2.000 flow).
+- Kết luận về LIME chỉ đúng với cấu hình đã thử (kernel từ 3,312 đến 30.000, 1.000 mẫu, nền 2.000 flow).
 
 **Các thư mục:**
 - `RQ4_Retrain_Compare/`: mã dựng dữ liệu, huấn luyện M0b và M1, đánh giá, kiểm tra riêng M1, `scripts/17_paper_checks.py` (khoảng tin cậy, SHAP cùng lớp đầu ra, kiểm tra cộng dồn, kiểm chứng vùng FIN theo phiên, độ trễ), `scripts/18_lab_predict_m0_m1.py` và `scripts/19_lab_lime_validity.py` (flow lab, LIME với nền khác). Kết quả ở `results/` (`paper_checks.json`, `lab_m1/`).
 - `Paper_IEEE/`: `main.tex` (tiếng Anh) và `main_vi.tex` (tiếng Việt) theo mẫu IEEEtran, `refs.bib` (15 tài liệu đã kiểm chứng nguồn), `figures/` và `figures_vi/`, `main.pdf` và `main_vi.pdf` đã dựng.
 
-**Dựng lại bài báo:** bản tiếng Anh biên dịch được bằng pdfLaTeX hoặc XeLaTeX. Bản tiếng Việt dùng phông TeX Gyre Termes nên phải biên dịch bằng **XeLaTeX** (trên Overleaf chọn compiler XeLaTeX). Trên máy có Tectonic: `tectonic main.tex` và `tectonic main_vi.tex`. Hình dựng lại bằng `python make_figures.py` và `python make_figures_vi.py`; số RQ1 sinh bằng `python fill_numbers.py`. Kiểm tra trước khi nộp: `python check_tex.py` (tham chiếu, nhãn, môi trường) và `python verify_numbers.py` (đối chiếu số trong bài với file kết quả). Tên tác giả bản tiếng Anh viết không dấu vì phông Times của mẫu IEEE không có chữ Việt có dấu.
+**Dựng lại bài báo:** bản tiếng Anh biên dịch được bằng pdfLaTeX hoặc XeLaTeX. Bản tiếng Việt dùng phông TeX Gyre Termes nên phải biên dịch bằng **XeLaTeX** (trên Overleaf chọn compiler XeLaTeX). Trên máy có Tectonic: `tectonic main.tex` và `tectonic main_vi.tex`. Chạy các công cụ trong `Paper_IEEE/tools/`: hình dựng lại bằng `python tools/make_figures.py` và `python tools/make_figures_vi.py`; số RQ1 sinh bằng `python tools/fill_numbers.py`. Kiểm tra trước khi nộp: `python tools/check_tex.py` (tham chiếu, nhãn, môi trường) và `python tools/verify_numbers.py` (đối chiếu số trong bài với file kết quả). Tên tác giả bản tiếng Anh viết không dấu vì phông Times của mẫu IEEE không có chữ Việt có dấu.

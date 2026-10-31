@@ -77,10 +77,19 @@ Thí nghiệm ngoại tuyến, không đổi hệ thống hay cấu hình đã k
 
 | Mô hình và nền | Flow có cỡ mẫu hiệu dụng dưới 2 | Flow qua ngưỡng R² từ 0,3 |
 |---|---|---|
-| M0 và nền gốc (2.000 flow train gốc) | 255 trên 313 | 2 trên 313 |
+| M0 và nền gốc (2.000 flow train gốc) | 255 trên 313 | 3 trên 313 |
 | M1 và nền lấy từ train đã sửa | 313 trên 313 | 0 trên 313 |
 
-Giả thuyết "nền lấy từ dữ liệu đã sửa sẽ giúp LIME" không được ủng hộ. Kết luận chỉ đúng với cấu hình đã thử. Chưa thử kernel width hoặc số mẫu khác. Dữ liệu ở `RQ4_Retrain_Compare/results/lab_m1/lime_validity_*.csv`, mã ở `RQ4_Retrain_Compare/scripts/19_lab_lime_validity.py`.
+Giả thuyết "nền lấy từ dữ liệu đã sửa sẽ giúp LIME" không được ủng hộ với kernel đã khóa.
+
+Quét độ rộng kernel (giữ 1.000 mẫu nhiễu, nền 2.000 flow, cùng 313 flow; số flow qua ngưỡng R² từ 0,3):
+
+| Độ rộng kernel | 3,312 | 30 | 300 | 3.000 | 30.000 |
+|---|---|---|---|---|---|
+| M0, nền gốc | 3 | 32 | 32 | 32 | 41 |
+| M1, nền đã sửa | 0 | 136 | 265 | 304 | 313 |
+
+Với M1, kernel rộng làm cổng R² qua được, nhưng cỡ mẫu hiệu dụng trung vị lên 1.000 tức trọng số gần như đều. Mô hình tuyến tính khi đó khớp trên toàn vùng nhiễu, gần với giải thích toàn cục hơn là giải thích cục bộ quanh flow. Vì vậy số qua cổng tăng không có nghĩa giải thích tốt hơn. Kết luận chỉ đúng với các cấu hình đã thử. Dữ liệu ở `RQ4_Retrain_Compare/results/lab_m1/lime_kernel_sweep.csv`, mã ở `RQ4_Retrain_Compare/scripts/20_lime_kernel_sweep.py`. Dữ liệu ở `RQ4_Retrain_Compare/results/lab_m1/lime_validity_*.csv`, mã ở `RQ4_Retrain_Compare/scripts/19_lab_lime_validity.py`.
 
 ## Việc chưa làm
 
