@@ -1,0 +1,59 @@
+{
+ "n": 3,
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "summary": {
+  "full_accuracy": [
+   97.8937,
+   0.0044
+  ],
+  "full_macro_precision": [
+   91.9293,
+   0.8035
+  ],
+  "full_macro_recall": [
+   84.4251,
+   0.5451
+  ],
+  "full_macro_f1": [
+   86.4159,
+   0.4466
+  ],
+  "full_fpr": [
+   0.2452,
+   0.0056
+  ],
+  "full_fnr": [
+   5.7867,
+   0.0179
+  ],
+  "dedup_accuracy": [
+   98.1886,
+   0.0114
+  ],
+  "dedup_macro_precision": [
+   83.1546,
+   1.5862
+  ],
+  "dedup_macro_recall": [
+   76.7836,
+   0.6409
+  ],
+  "dedup_macro_f1": [
+   78.7841,
+   0.9177
+  ],
+  "dedup_fpr": [
+   0.279,
+   0.0042
+  ],
+  "dedup_fnr": [
+   6.9081,
+   0.0244
+  ]
+ },
+ "dup_share": 27.829571428571427
+}

@@ -1,0 +1,228 @@
+{
+ "intervals_95": {
+  "M0_alerts_on_784": {
+   "k": 149,
+   "n": 784,
+   "rate_pct": 19.01,
+   "wilson": [
+    16.41,
+    21.9
+   ],
+   "clopper_pearson": [
+    16.316,
+    21.93
+   ]
+  },
+  "M0_hulk_alerts_on_784": {
+   "k": 148,
+   "n": 784,
+   "rate_pct": 18.88,
+   "wilson": [
+    16.29,
+    21.77
+   ],
+   "clopper_pearson": [
+    16.196,
+    21.796
+   ]
+  },
+  "M1_alerts_on_784": {
+   "k": 0,
+   "n": 784,
+   "rate_pct": 0.0,
+   "wilson": [
+    0.0,
+    0.49
+   ],
+   "clopper_pearson": [
+    0.0,
+    0.469
+   ]
+  },
+  "M0_hulk_on_web_browsing_21": {
+   "k": 19,
+   "n": 21,
+   "rate_pct": 90.48,
+   "wilson": [
+    71.09,
+    97.35
+   ],
+   "clopper_pearson": [
+    69.623,
+    98.825
+   ]
+  },
+  "M1_alerts_on_web_browsing_21": {
+   "k": 0,
+   "n": 21,
+   "rate_pct": 0.0,
+   "wilson": [
+    0.0,
+    15.46
+   ],
+   "clopper_pearson": [
+    0.0,
+    16.11
+   ]
+  }
+ },
+ "live_sessions": [
+  {
+   "run": "9946f127-ea20-4167-bb4e-c8e1c415b56b",
+   "start": "2026-10-22T12:40:29.067880+00:00",
+   "flows": 34,
+   "alerts": 20,
+   "zone_flows": 19,
+   "alerts_in_zone": 19
+  },
+  {
+   "run": "db1a7624-e200-4ae1-a91e-f6c65d40113e",
+   "start": "2026-10-22T12:46:40.197671+00:00",
+   "flows": 32,
+   "alerts": 19,
+   "zone_flows": 19,
+   "alerts_in_zone": 19
+  },
+  {
+   "run": "0bdbe85c-09b5-4791-b869-a935fbd4faa9",
+   "start": "2026-10-22T12:53:32.582004+00:00",
+   "flows": 242,
+   "alerts": 27,
+   "zone_flows": 27,
+   "alerts_in_zone": 27
+  },
+  {
+   "run": "c8fe22aa-1362-4bd2-abe6-df7678ae377f",
+   "start": "2026-10-22T13:58:22.931020+00:00",
+   "flows": 476,
+   "alerts": 83,
+   "zone_flows": 83,
+   "alerts_in_zone": 83
+  }
+ ],
+ "live_zone": {
+  "flows": 784,
+  "zone_flows": 148,
+  "alerts": 149,
+  "alerts_in_zone": 148,
+  "zone_flows_not_alerted": 0
+ },
+ "corrected_test_benign": {
+  "benign": 477470,
+  "alerts": 100849,
+  "zone_flows": 100819,
+  "alerts_in_zone": 100817,
+  "alerts_outside_zone": 32,
+  "alerts_hulk": 100774
+ },
+ "shap_hulk_class_M0": {
+  "predicted_on_zone": {
+   "DoS attacks-Hulk": 148
+  },
+  "top8": {
+   "FIN Flag Cnt": 5.865,
+   "Fwd Pkt Len Max": 2.6,
+   "Dst Port": -0.523,
+   "Fwd IAT Min": -0.332,
+   "Init Fwd Win Byts": -0.217,
+   "TotLen Bwd Pkts": -0.147,
+   "Fwd Seg Size Min": 0.141,
+   "Tot Fwd Pkts": -0.136
+  },
+  "fin_mean": 5.865
+ },
+ "shap_hulk_class_M1": {
+  "predicted_on_zone": {
+   "Benign": 148
+  },
+  "top8": {
+   "Fwd Seg Size Min": -2.419,
+   "TotLen Bwd Pkts": -0.731,
+   "Bwd Pkt Len Std": -0.494,
+   "FIN Flag Cnt": -0.079,
+   "Init Fwd Win Byts": 0.072,
+   "Subflow Fwd Byts": 0.062,
+   "Bwd Pkts/s": -0.052,
+   "ACK Flag Cnt": -0.032
+  },
+  "fin_mean": -0.079
+ },
+ "treeshap_additivity_M0": {
+  "flows": 784,
+  "max_abs_error": 4.76837158203125e-06,
+  "mean_abs_error": 1.5551946601089166e-06
+ },
+ "treeshap_additivity_M1": {
+  "flows": 784,
+  "max_abs_error": 3.814697265625e-06,
+  "mean_abs_error": 1.1063351923105668e-06
+ },
+ "latency_ms": {
+  "lime": {
+   "n": 3,
+   "p50": 39.3,
+   "p95": 56.6,
+   "max": 58.5
+  },
+  "normalize": {
+   "n": 1025,
+   "p50": 2.5,
+   "p95": 3.6,
+   "max": 20.9
+  },
+  "predict": {
+   "n": 1025,
+   "p50": 12.4,
+   "p95": 22.4,
+   "max": 88.0
+  },
+  "reliability": {
+   "n": 219,
+   "p50": 26.7,
+   "p95": 41.7,
+   "max": 50.2
+  },
+  "shap": {
+   "n": 219,
+   "p50": 32.5,
+   "p95": 40.3,
+   "max": 47.4
+  },
+  "shap_queue_wait": {
+   "n": 219,
+   "p50": 2199.9,
+   "p95": 5014.8,
+   "max": 5814.9
+  },
+  "total": {
+   "n": 1025,
+   "p50": 19.3,
+   "p95": 66.5,
+   "max": 252.6
+  }
+ },
+ "live_flow_duration_s": {
+  "n": 290,
+  "p50": 1.35,
+  "p90": 49.01,
+  "max": 89.9
+ },
+ "sha256_16": {
+  "M0_model": "52eb5a671ee82109",
+  "M0_encoder": "909df601aaf46699",
+  "M1_model": "6ed405c11b53e412",
+  "M1_encoder": "f066be6612a2bcbb",
+  "original_train": "baa16f4546f39cf7",
+  "original_test": "c8df6be5d6bb779b",
+  "corrected_train": "e34aef2ba5325a15",
+  "corrected_test": "a171d93522448f32",
+  "live_784": "a70849078571f25d"
+ },
+ "versions": {
+  "python": "3.14.7",
+  "xgboost": "3.4.1",
+  "shap": "0.52.0",
+  "scikit_learn": "1.9.1",
+  "pandas": "3.0.6"
+ }
+}

@@ -71,6 +71,17 @@ python -B RQ3_IDS_System/scripts/stage14_test_dashboard_redesign.py
 
 PASS kiểm thử số học normal/degenerate/flat, seed và gọi đồng thời; bộ regression dùng DB/server tạm đã PASS real prediction, SHAP, LIME, tab đối chứng, cảnh báo suy biến, CSV/PCAP và feeder. Không xóa/sửa DB demo trong lúc kiểm thử. Chưa nghiệm thu trực tiếp bằng trình duyệt người dùng sau bản sửa; cần restart API/Streamlit.
 
+## Bổ sung 31/10/2026: thử nền LIME lấy từ dữ liệu đã sửa
+
+Thí nghiệm ngoại tuyến, không đổi hệ thống hay cấu hình đã khóa. Chạy LIME với cấu hình khóa của RQ2 (kernel 3,312, 1.000 mẫu, nền 2.000 flow) trên 313 flow thật gồm 290 flow của một phiên thực, 21 flow duyệt web và 2 flow SSH.
+
+| Mô hình và nền | Flow có cỡ mẫu hiệu dụng dưới 2 | Flow qua ngưỡng R² từ 0,3 |
+|---|---|---|
+| M0 và nền gốc (2.000 flow train gốc) | 255 trên 313 | 2 trên 313 |
+| M1 và nền lấy từ train đã sửa | 313 trên 313 | 0 trên 313 |
+
+Giả thuyết "nền lấy từ dữ liệu đã sửa sẽ giúp LIME" không được ủng hộ. Kết luận chỉ đúng với cấu hình đã thử. Chưa thử kernel width hoặc số mẫu khác. Dữ liệu ở `RQ4_Retrain_Compare/results/lab_m1/lime_validity_*.csv`, mã ở `RQ4_Retrain_Compare/scripts/19_lab_lime_validity.py`.
+
 ## Việc chưa làm
 
 - Chưa sửa định nghĩa extractor/dataset hoặc đánh giá lại độ chính xác live.
