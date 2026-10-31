@@ -1,5 +1,6 @@
 ﻿# Chạy IDS_M1_Lab: API (8000) + Dashboard (8501) cùng một token điều khiển realtime.
-# Chạy từ thư mục IDS_M1_Lab:  .un_ids.ps1   (mở PowerShell bằng quyền Administrator nếu Npcap yêu cầu)
+# Chạy từ thư mục IDS_M1_Lab:  .
+un_ids.ps1   (mở PowerShell bằng quyền Administrator nếu Npcap yêu cầu)
 # Token tạo mới mỗi lần chạy, không lưu vào file. Không chạy song song với bản RQ3_IDS_System (cùng cổng 8000 và 8501).
 $env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
 $env:IDS_CAPTURE_API_URL = 'http://127.0.0.1:8000'

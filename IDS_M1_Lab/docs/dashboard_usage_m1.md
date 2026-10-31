@@ -7,10 +7,12 @@ Giao diện giống bản RQ3 (xem [dashboard_usage.md](../../RQ3_IDS_System/doc
 Mở PowerShell tại `IDS_M1_Lab` (quyền Administrator nếu Npcap yêu cầu) và chạy:
 
 ```powershell
-.un_ids.ps1
+.
+un_ids.ps1
 ```
 
-Script tạo token điều khiển mới, mở API (cổng 8000) và dashboard (`http://127.0.0.1:8501`) dùng chung token đó. Bản RQ3 chạy cùng cách bằng `RQ3_IDS_Systemun_ids.ps1`. Hai bản dùng chung cổng nên chỉ bật một bản mỗi lần.
+Script tạo token điều khiển mới, mở API (cổng 8000) và dashboard (`http://127.0.0.1:8501`) dùng chung token đó. Bản RQ3 chạy cùng cách bằng `RQ3_IDS_System
+un_ids.ps1`. Hai bản dùng chung cổng nên chỉ bật một bản mỗi lần.
 
 ## 2. Ba cách nạp dữ liệu
 
