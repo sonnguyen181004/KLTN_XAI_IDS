@@ -2,11 +2,15 @@
 
 Giao diện giống bản RQ3 (xem [dashboard_usage.md](../../RQ3_IDS_System/docs/dashboard_usage.md) cho từng màn hình). Tài liệu này chỉ ghi phần khác khi chạy M1.
 
-## 1. Bật hệ thống
+## 1. Bật hệ thống (một lệnh)
 
-1. Mở terminal tại `IDS_M1_Lab`.
-2. Chạy `.\run_ids.ps1`. API ở cổng 8000, dashboard ở `http://127.0.0.1:8501`.
-3. Đợi dashboard hiện trạng thái API là sẵn sàng. Nếu cổng 8000 đang bị bản RQ3 dùng thì tắt bản đó trước, vì hai API không dùng chung một DB.
+Mở PowerShell tại `IDS_M1_Lab` (quyền Administrator nếu Npcap yêu cầu) và chạy:
+
+```powershell
+.un_ids.ps1
+```
+
+Script tạo token điều khiển mới, mở API (cổng 8000) và dashboard (`http://127.0.0.1:8501`) dùng chung token đó. Bản RQ3 chạy cùng cách bằng `RQ3_IDS_Systemun_ids.ps1`. Hai bản dùng chung cổng nên chỉ bật một bản mỗi lần.
 
 ## 2. Ba cách nạp dữ liệu
 

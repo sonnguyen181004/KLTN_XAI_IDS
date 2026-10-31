@@ -33,6 +33,16 @@ Không tiếp tục feeder dùng checkpoint cũ sau reset (ACK cũ có thể khi
 
 <a id="capture-control"></a>
 
+## Chạy nhanh (một lệnh)
+
+Từ thư mục `RQ3_IDS_System`, mở PowerShell (quyền Administrator nếu Npcap yêu cầu) và chạy:
+
+```powershell
+.un_ids.ps1
+```
+
+Script tự tạo token mới, mở hai cửa sổ (API cổng 8000, Dashboard cổng 8501) dùng chung token đó. Mở `http://127.0.0.1:8501`, vào tab **Realtime**. Không cần làm tay các bước 2 và 3 bên dưới; mục đó giữ lại để hiểu từng biến môi trường. Bản M1 chạy cùng cách bằng `IDS_M1_Labun_ids.ps1`; không bật hai bản cùng lúc vì dùng chung cổng.
+
 ### Hiện hành: chạy nút Bắt đầu/Dừng trong tab Realtime
 
 Đã tích hợp điều khiển, các đoạn “chưa có nút” trong nhật ký phía dưới mô tả mốc cũ. Chỉ cần **hai terminal API + UI**, không mở capture/feeder riêng khi dùng nút. Backend tự tạo CSV/checkpoint/lượt mới, không reset DB. Giữ cap mặc định; có thể dừng lỗi khi tải cao: lượt 30s đã chạm cap, smoke 10s mới PASS, chưa phải chứng nhận chạy lâu.

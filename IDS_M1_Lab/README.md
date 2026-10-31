@@ -38,12 +38,15 @@ Chạy từ thư mục `IDS_M1_Lab`, trong môi trường đã cài `requirement
 .\run_ids.ps1
 ```
 
-Script đặt biến môi trường `IDS_CAPTURE_CONTROL_TOKEN` (token cục bộ cho nút điều khiển capture), mở API ở cổng 8000, đợi 15 giây rồi mở dashboard ở cổng 8501 (`http://127.0.0.1:8501`). Chạy tay:
+Script tạo token điều khiển mới mỗi lần (không lưu vào file), mở API ở cổng 8000, đợi 15 giây rồi mở dashboard ở cổng 8501 (`http://127.0.0.1:8501`). Bản RQ3 chạy cùng cách bằng `RQ3_IDS_System
+un_ids.ps1`. Chạy tay (cần cùng một token ở cả hai terminal):
 
 ```powershell
-$env:IDS_CAPTURE_CONTROL_TOKEN = '<chuỗi bất kỳ dài từ 32 ký tự>'
-uvicorn app.main:app --port 8000
-streamlit run app/dashboard.py --server.port 8501 --server.address 127.0.0.1
+$env:IDS_CAPTURE_CONTROL_TOKEN = [guid]::NewGuid().ToString('N')
+# terminal 1
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+# terminal 2 (cùng token)
+python -m streamlit run app/dashboard.py --server.address 127.0.0.1 --server.port 8501
 ```
 
 Không bật hai API cùng dùng một DB. Bắt gói thật cần Npcap và môi trường capture (`requirements-capture.txt`); nếu `IDS_M1_Lab/.venv_capture` chưa có, hệ thống dùng `RQ3_IDS_System/.venv_capture`.

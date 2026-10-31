@@ -95,6 +95,8 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 | Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
 | Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
+**Chạy nhanh:** `RQ3_IDS_Systemun_ids.ps1` (mô hình M0) hoặc `IDS_M1_Labun_ids.ps1` (mô hình M1). Mỗi script tự tạo token, mở API (8000) và dashboard (8501); chỉ bật một bản mỗi lần.
+
 UI hiện có Giám sát flow, Realtime và Nạp CSV / PCAP; nút điều khiển capture bật bằng token local theo hướng dẫn HT4.4. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
 
 **HT2 — 18/10/2026:** mặc định CLI/PCAP dùng `rq3-cfm-0.5.0-lifecycle-v3`: biên timeout nhất quán, nhận biết dấu hiệu đóng/mở TCP, tách rõ packet lệch timestamp. Không đổi model hoặc ép cờ nhị phân. Hai PCAP bảo toàn 1.148 packet; 99 flow thay cho 92 do phân phiên mới, không phải bằng chứng giảm FPR. Tra mục đích, kiểm thử và giới hạn ở [tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md); lịch sử/commit ở [tiến độ HT2](RQ3_IDS_System/docs/plan.md). Chọn `--extractor project-v2` nếu cần đối chiếu baseline; không trộn hai bản trong cùng CSV.
