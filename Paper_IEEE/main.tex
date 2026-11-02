@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{makecell}
 \usepackage{textcomp}
 \usepackage{url}
 \input{rq1_numbers.tex}
@@ -217,18 +218,19 @@ SHAP gives a mean contribution for each feature, but it does not describe a regi
 \caption{Alerts of M0 on benign flows and their position relative to the FIN zone.}
 \label{tab:zone}
 \centering
-\small
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lrrrr}
 \toprule
-Set & Flows & In zone & Alerts & Alerts in zone \\
+Set & Flows & In zone & Alerts & \makecell[r]{Alerts\\in zone} \\
 \midrule
-Live session 1 & 34 & 19 & 20 & 19 \\
-Live session 2 & 32 & 19 & 19 & 19 \\
-Live session 3 & 242 & 27 & 27 & 27 \\
-Live session 4 & 476 & 83 & 83 & 83 \\
+Session 1 & 34 & 19 & 20 & 19 \\
+Session 2 & 32 & 19 & 19 & 19 \\
+Session 3 & 242 & 27 & 27 & 27 \\
+Session 4 & 476 & 83 & 83 & 83 \\
 Live, all & 784 & 148 & 149 & 148 \\
 \midrule
-Labeled test flows & 477,470 & 100,819 & 100,849 & 100,817 \\
+Labeled test & 477,470 & 100,819 & 100,849 & 100,817 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -240,17 +242,18 @@ Large SHAP values show where the model looks, but they do not show that the labe
 \caption{Feature-intervention tests of M0 on the 784 live flows. M0 raises 149 alerts before any change.}
 \label{tab:interv}
 \centering
-\small
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lrr}
 \toprule
-Change applied to all flows & Labels changed & Alerts left \\
+Change applied to all flows & \makecell[r]{Labels\\changed} & \makecell[r]{Alerts\\left} \\
 \midrule
-FIN Flag Cnt set to 0 & 148 & 4 \\
-Fwd Pkt Len Max set to 0 & 148 & 3 \\
-Fwd Seg Size Min set to 32 & 165 & 22 \\
+FIN Flag Cnt = 0 & 148 & 4 \\
+Fwd Pkt Len Max = 0 & 148 & 3 \\
+Fwd Seg Size Min = 32 & 165 & 22 \\
 \midrule
-Init Fwd Win Byts set to 64,240 (control) & 1 & 148 \\
-Dst Port set to 80 (control) & 5 & 148 \\
+Init Fwd Win Byts = 64,240 (control) & 1 & 148 \\
+Dst Port = 80 (control) & 5 & 148 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -337,7 +340,7 @@ Table~\ref{tab:inventory} lists the data, software, and seeds of the experiments
 \label{tab:inventory}
 \centering
 \footnotesize
-\begin{tabular}{>{\raggedright\arraybackslash}p{1.05in}>{\raggedright\arraybackslash}p{2.2in}}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{2.1in}}
 \toprule
 Item & Value \\
 \midrule
