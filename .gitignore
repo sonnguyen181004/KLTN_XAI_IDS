@@ -43,13 +43,10 @@ Thumbs.db
 
 # RQ4 — dữ liệu trung gian và mô hình sinh ra lúc chạy, không commit (kết quả CSV và mã thì commit)
 RQ4_Retrain_Compare/data/
-RQ4_Retrain_Compare/models/
 
 # Dữ liệu lớn, đầu ra tạm và thư mục build, không commit
 dataset/CICID-2018_original_csv/
 dataset/CSECICIDS2018_improved/
-IDS_M1_Lab/data/
-IDS_M1_Lab/models/
 Paper_IEEE/build/
 Paper_IEEE/build_vi/
 Claude outputs/
@@ -57,3 +54,9 @@ tmp/
 
 # Bắt gói thô của lab (có thể chứa lưu lượng cá nhân), chỉ giữ trên máy
 RQ4_Retrain_Compare/lab_captures/
+
+# Ngoại lệ trong IDS_M1_Lab/data: file tạm của lúc chạy
+IDS_M1_Lab/data/*.db-shm
+IDS_M1_Lab/data/*.db-wal
+IDS_M1_Lab/data/*.lock
+IDS_M1_Lab/data/capture_sessions/
