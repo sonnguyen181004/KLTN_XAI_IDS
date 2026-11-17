@@ -276,3 +276,17 @@ Có 34/78 giá trị khác nhau giữa hai extractor trên riêng flow numeric g
 Card Windows kiểm tra ngày 17/11: VMnet1 đang Up, IP 192.168.11.1; VMnet8 đang Up, IP 192.168.52.1. Nếu Kali/Ubuntu dùng lab 192.168.11.x, chọn VMnet1 trong Realtime. Trước kịch bản tấn công, tạo HTTP/SSH hợp lệ và kiểm tra flow có đúng IP hai VM. Cùng VMnet1 không tự bảo đảm Windows thấy mọi unicast VM↔VM: nếu thiếu gói, cần xác minh bằng Wireshark và bố trí mirror/TAP hoặc cho traffic đi qua máy IDS. Không coi việc Java mở được card là đã nhìn thấy traffic lab.
 
 Đợt tiếp theo: lưu PCAP gốc và nhật ký kịch bản cho từng phiên Hulk/SSH; trích Java và Python từ cùng PCAP; chạy đúng artifact M0/M1, đánh giá phát hiện/bỏ sót và đặc trưng. Không so hai lượt traffic khác nhau rồi quy khác biệt cho extractor.
+
+## Chẩn đoán phiên Wi-Fi người dùng xác nhận là traffic bình thường
+
+Phiên `ff127eeb80c7` ngày 17/11/2026: log xác nhận task Java `liveTrial`, cùng GUID Wi-Fi, 37.215 packet được nhận, 138 flow đóng trong phiên và 146 flow ghi lúc dừng. CSV có 284 dòng, đều hữu hạn và đủ 78 cột. Chạy lại đúng M0 checksum `52eb5a671ee82109…` thu được 176 Benign, 68 DoS attacks-Hulk, 40 DDOS attack-HOIC. Người dùng mô tả toàn bộ traffic là bình thường; theo mô tả đó, 108 cảnh báo là báo nhầm. Chưa có xác minh nhãn độc lập từng flow để dùng như benchmark FPR.
+
+Tính lại SHAP cho cả 108 cảnh báo: trong 68 Hulk, FIN Flag Cnt là đóng góp dương mạnh nhất ở mọi flow; 60 flow có FIN=2, 8 flow FIN=1. Ví dụ flow 3: FIN=2 đóng góp +5,865 vào raw margin Hulk; Fwd Pkt Len Max=1400 góp +2,491; xác suất Hulk≈84,64%. FIN đóng kết nối hợp lệ và payload lớn đều có thể gặp trong traffic thường. Việc đã có 8 Hulk với FIN=1 cho thấy không thể quy tất cả sai nhãn chỉ cho giá trị cờ vượt 1 hoặc coi nhị phân hóa cờ là chắc chắn sửa được.
+
+Trong 40 HOIC, Init Fwd Win Byts là đóng góp dương mạnh nhất ở mọi flow; ví dụ flow 20 có window=65535, đóng góp +5,240 vào raw margin HOIC, xác suất≈88,81%. Cả 40 flow có cổng đích 53; riêng cổng không xác minh ứng dụng hay nhãn thật. Window là thông số TCP, không phải bằng chứng HOIC. Sai số cộng tính SHAP lớn nhất khoảng 3,34×10⁻⁶: lời giải thích khớp phép tính model, không làm nhãn thành đúng.
+
+Kết luận chẩn đoán: bộ trích xuất đúng là Java đang được thử, ánh xạ/đơn vị đã qua kiểm tra, nhưng tương thích ngữ nghĩa Java–train chưa đạt đầy đủ như bảng audit trên. M0 phản ứng mạnh với FIN/window trong các ca này; SHAP chỉ chỉ ra cách model tính, không chứng minh mọi nguyên nhân của báo nhầm. Không đổi model, không sửa đặc trưng đầu vào hoặc ép nhãn Benign trong bước này. Bằng chứng tổng hợp không chứa IP: `live_m0_diagnosis_ff127eeb80c7.json`. Tái lập:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/audit_live_m0.py Java_CICFlowMeter_M0_Trial/output/dashboard_ff127eeb80c7.csv --output Java_CICFlowMeter_M0_Trial/output/live_m0_diagnosis.json
+```

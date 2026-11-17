@@ -1,0 +1,358 @@
+{
+  "source": "dashboard_ff127eeb80c7.csv",
+  "source_sha256": "fe5eb7c4afe03ed92e4ba7d1d42c6aa5cec11551726ce4262dae5032f5f17eca",
+  "model_sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+  "csv_rows": 284,
+  "valid_rows": 284,
+  "invalid_rows": 0,
+  "labels": {
+    "Benign": 176,
+    "DoS attacks-Hulk": 68,
+    "DDOS attack-HOIC": 40
+  },
+  "ground_truth": "User reports this session contains normal traffic; no per-flow independent labels",
+  "per_label": {
+    "Benign": {
+      "fin_values": {
+        "0": 155,
+        "1": 13,
+        "2": 8
+      },
+      "destination_ports": {
+        "443": 111,
+        "53": 17,
+        "80": 12,
+        "5353": 4,
+        "123": 3,
+        "4729": 2,
+        "46325": 2,
+        "45934": 2,
+        "50835": 2,
+        "7500": 2,
+        "5228": 2,
+        "23739": 1,
+        "50062": 1,
+        "19627": 1,
+        "9841": 1,
+        "28978": 1,
+        "29112": 1,
+        "32666": 1,
+        "11111": 1,
+        "49434": 1,
+        "49407": 1,
+        "49454": 1,
+        "60504": 1,
+        "49360": 1,
+        "49491": 1,
+        "50796": 1,
+        "57568": 1,
+        "2737": 1
+      }
+    },
+    "DoS attacks-Hulk": {
+      "fin_values": {
+        "2": 60,
+        "1": 8
+      },
+      "destination_ports": {
+        "443": 66,
+        "80": 1,
+        "49491": 1
+      },
+      "top_positive_shap_feature_counts": {
+        "FIN Flag Cnt": 68
+      },
+      "max_additivity_error": 2.86102294921875e-06
+    },
+    "DDOS attack-HOIC": {
+      "fin_values": {
+        "2": 40
+      },
+      "destination_ports": {
+        "53": 40
+      },
+      "top_positive_shap_feature_counts": {
+        "Init Fwd Win Byts": 40
+      },
+      "max_additivity_error": 3.337860107421875e-06
+    }
+  },
+  "examples": [
+    {
+      "flow_id": 3,
+      "label": "DoS attacks-Hulk",
+      "confidence": 0.8464377522468567,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 1400.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 24.0,
+        "Dst Port": 443.0,
+        "Flow Duration": 544754.0
+      },
+      "shap": {
+        "class_explained": "DoS attacks-Hulk",
+        "base_value": 1.2430287599563599,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 2.0,
+            "phi": 5.8652215003967285
+          },
+          {
+            "feature": "Fwd Pkt Len Max",
+            "value": 1400.0,
+            "phi": 2.4906704425811768
+          },
+          {
+            "feature": "Dst Port",
+            "value": 443.0,
+            "phi": -0.4655914902687073
+          },
+          {
+            "feature": "Fwd IAT Min",
+            "value": 0.0,
+            "phi": -0.4620874226093292
+          },
+          {
+            "feature": "Fwd Seg Size Min",
+            "value": 20.0,
+            "phi": 0.30342596769332886
+          }
+        ],
+        "additivity_error": 2.86102294921875e-06
+      }
+    },
+    {
+      "flow_id": 5,
+      "label": "DoS attacks-Hulk",
+      "confidence": 0.8464652895927429,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 1400.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 19.0,
+        "Dst Port": 443.0,
+        "Flow Duration": 290898.0
+      },
+      "shap": {
+        "class_explained": "DoS attacks-Hulk",
+        "base_value": 1.2430287599563599,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 2.0,
+            "phi": 5.8652215003967285
+          },
+          {
+            "feature": "Fwd Pkt Len Max",
+            "value": 1400.0,
+            "phi": 2.4730520248413086
+          },
+          {
+            "feature": "Dst Port",
+            "value": 443.0,
+            "phi": -0.48320454359054565
+          },
+          {
+            "feature": "Fwd IAT Min",
+            "value": 0.0,
+            "phi": -0.48086726665496826
+          },
+          {
+            "feature": "Fwd Seg Size Min",
+            "value": 20.0,
+            "phi": 0.2846261262893677
+          }
+        ],
+        "additivity_error": 1.9073486328125e-06
+      }
+    },
+    {
+      "flow_id": 6,
+      "label": "DoS attacks-Hulk",
+      "confidence": 0.8464398980140686,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 1400.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 18.0,
+        "Dst Port": 443.0,
+        "Flow Duration": 317034.0
+      },
+      "shap": {
+        "class_explained": "DoS attacks-Hulk",
+        "base_value": 1.2430287599563599,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 2.0,
+            "phi": 5.8652215003967285
+          },
+          {
+            "feature": "Fwd Pkt Len Max",
+            "value": 1400.0,
+            "phi": 2.4730520248413086
+          },
+          {
+            "feature": "Dst Port",
+            "value": 443.0,
+            "phi": -0.48320454359054565
+          },
+          {
+            "feature": "Fwd IAT Min",
+            "value": 0.0,
+            "phi": -0.4797058403491974
+          },
+          {
+            "feature": "Fwd Seg Size Min",
+            "value": 20.0,
+            "phi": 0.28578150272369385
+          }
+        ],
+        "additivity_error": 1.9073486328125e-06
+      }
+    },
+    {
+      "flow_id": 20,
+      "label": "DDOS attack-HOIC",
+      "confidence": 0.8880820274353027,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 43.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 10.0,
+        "Dst Port": 53.0,
+        "Flow Duration": 27682.0
+      },
+      "shap": {
+        "class_explained": "DDOS attack-HOIC",
+        "base_value": 1.660548448562622,
+        "top_k": [
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 65535.0,
+            "phi": 5.239870548248291
+          },
+          {
+            "feature": "Dst Port",
+            "value": 53.0,
+            "phi": -1.5621753931045532
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 14165.0,
+            "phi": -0.16191792488098145
+          },
+          {
+            "feature": "Tot Bwd Pkts",
+            "value": 6.0,
+            "phi": 0.08155477046966553
+          },
+          {
+            "feature": "Fwd IAT Tot",
+            "value": 20144.0,
+            "phi": 0.02127137966454029
+          }
+        ],
+        "additivity_error": 3.337860107421875e-06
+      }
+    },
+    {
+      "flow_id": 21,
+      "label": "DDOS attack-HOIC",
+      "confidence": 0.8879067897796631,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 43.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 10.0,
+        "Dst Port": 53.0,
+        "Flow Duration": 28551.0
+      },
+      "shap": {
+        "class_explained": "DDOS attack-HOIC",
+        "base_value": 1.660548448562622,
+        "top_k": [
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 65535.0,
+            "phi": 5.239870548248291
+          },
+          {
+            "feature": "Dst Port",
+            "value": 53.0,
+            "phi": -1.5621753931045532
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 14165.0,
+            "phi": -0.16191792488098145
+          },
+          {
+            "feature": "Tot Bwd Pkts",
+            "value": 6.0,
+            "phi": 0.08155477046966553
+          },
+          {
+            "feature": "Fwd IAT Tot",
+            "value": 21822.0,
+            "phi": 0.02127137966454029
+          }
+        ],
+        "additivity_error": 3.337860107421875e-06
+      }
+    },
+    {
+      "flow_id": 22,
+      "label": "DDOS attack-HOIC",
+      "confidence": 0.8874692916870117,
+      "features": {
+        "FIN Flag Cnt": 2.0,
+        "Fwd Pkt Len Max": 43.0,
+        "Fwd Seg Size Min": 20.0,
+        "ACK Flag Cnt": 10.0,
+        "Dst Port": 53.0,
+        "Flow Duration": 33895.0
+      },
+      "shap": {
+        "class_explained": "DDOS attack-HOIC",
+        "base_value": 1.660548448562622,
+        "top_k": [
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 65535.0,
+            "phi": 5.239870548248291
+          },
+          {
+            "feature": "Dst Port",
+            "value": 53.0,
+            "phi": -1.5621753931045532
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 14165.0,
+            "phi": -0.16191792488098145
+          },
+          {
+            "feature": "Tot Bwd Pkts",
+            "value": 6.0,
+            "phi": 0.08155477046966553
+          },
+          {
+            "feature": "Fwd IAT Tot",
+            "value": 26141.0,
+            "phi": 0.02127137966454029
+          }
+        ],
+        "additivity_error": 3.337860107421875e-06
+      }
+    }
+  ],
+  "java_log_evidence": [
+    ":liveTrial",
+    "capture_started=\\Device\\NPF_{B3ED4BCD-100F-431A-BA73-183AD1644467}",
+    "accepted_packets=37215 closed_flows=138 flushed_flows=146",
+    "BUILD SUCCESSFUL in 2m 26s"
+  ]
+}
