@@ -72,11 +72,26 @@ Trong file HTTP, ở 368/378 cặp ghép được, Python có nhiều hơn Java 
 
 Để tái lập, chuyển hai PCAPNG bằng `editcap -F pcap`, chạy Java `exeCMD` với từng PCAP, chạy Python `run_live_capture.py --extractor project` trên **cùng PCAP sau chuyển**, chạy `predict_m0.py` với `--format java` hoặc `--format python`, sau đó `python Java_CICFlowMeter_M0_Trial/compare_extractors.py restore HTTP-CPU025-02 --report extra_pcap_comparison.json`.
 
-### Việc còn cần xác minh
+## Thử CSV mẫu và CSV realtime đã lưu (17/11/2026)
 
-1. Chuyển `test.pcapng` và `tesst2.pcapng` sang PCAP bằng công cụ đọc PCAPNG đáng tin cậy; ghi số packet trước/sau chuyển.
-2. Chạy cùng PCAP qua Java và Python hiện tại, đối chiếu flow bằng IP/cổng/giao thức/thời gian, rồi so từng đặc trưng. Không ghép theo số dòng.
-3. Đối chiếu những flow có nhãn thực được xác minh trước khi so số Benign/Hulk. Kiểm tra đơn vị thời gian theo từng cột; Java README ghi micro giây nên script hiện không nhân 1e6.
+Chạy `python Java_CICFlowMeter_M0_Trial/audit_csv_m0.py` từ gốc repo. Script đọc CSV trực tiếp, chuẩn hóa như feeder, dự đoán M0 trong bộ nhớ và chỉ ghi số tổng hợp vào `csv_and_saved_live_m0_20261117.json`. Không gọi API, không ghi DB. CSV mẫu đã ở đơn vị train; CSV live được đổi các cột thời gian từ giây sang micro giây theo feeder hiện tại.
+
+| CSV | Dòng hợp lệ | Benign dự đoán | Hulk dự đoán | Khác |
+|---|---:|---:|---:|---:|
+| Mẫu 15 lớp có nhãn | 105/105 | 16 | 7 | 86/105 khớp nhãn tham chiếu; 7 Benign thật đều được dự đoán Benign |
+| `live_review_01.csv` | 669/669 | 551 | 117 | 1 Bot |
+| `live_manual_01.csv` | 267/267 | 221 | 46 | 0 |
+| `live_phone_01.csv` | 22/22 | 21 | 1 | 0 |
+
+CSV mẫu có 7 dòng mỗi lớp, được chọn để demo; 86/105 không phải chất lượng chung của model. Ba CSV live không có nhãn thật từng flow, nên các cảnh báo không được gọi là FPR. `live_review` và `live_manual` ghi extractor `rq3-cfm-0.5.0-fixes-v2`; `live_phone` không lưu phiên bản. Các file này là traffic đã thu và lưu trước đây, không phải phiên bắt realtime mới trong ngày 17/11.
+
+Chỉ có CSV thì không thể chạy lại **CICFlowMeter Java** để so trích xuất: Java cần gói tin PCAP gốc của cùng phiên. Phép thử CSV kiểm tra đường chuẩn hóa và M0; phép thử PCAP phía trên mới so Java với Python.
+
+## Việc còn cần xác minh
+
+1. Xác minh từng flow Hulk bằng log hoạt động/PCAP và thời điểm bắt gói; chưa gán nhãn toàn bộ traffic live chỉ từ tên file.
+2. Đối chiếu quy ước tính gói và độ dài của Java/Python với bộ tạo dữ liệu train M0; không ghép flow theo số dòng.
+3. Đối chiếu các flow có nhãn thực được xác minh trước khi so Benign/Hulk. Kiểm tra đơn vị thời gian theo từng cột; Java README ghi micro giây nên script hiện không nhân 1e6.
 4. Nếu thử realtime Java: kiểm tra riêng việc bắt trên card, xuất CSV khi flow đóng, timeout, flush khi dừng và feeder đọc dòng mới. Chưa kết nối vào nút capture của RQ3.
 
 Model hiện có: M0 (`RQ1_Model_Training_xboost/saved_models/`, 15 lớp), M0b (`RQ4_Retrain_Compare/models/`, 13 lớp), M1 (`RQ4_Retrain_Compare/models/` và bản trong `IDS_M1_Lab/models/`, 13 lớp). M2 chỉ là kế hoạch hoãn, chưa có file model đã huấn luyện.

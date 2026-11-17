@@ -1,0 +1,97 @@
+{
+  "labeled_csv": {
+    "source": "RQ3_IDS_System/data/test_samples/test_sample100_15classes_with_label.csv",
+    "rows": 105,
+    "valid_rows": 105,
+    "rejected_rows": 0,
+    "predicted_labels": {
+      "Brute Force -Web": 6,
+      "DoS attacks-Hulk": 7,
+      "DDOS attack-LOIC-UDP": 6,
+      "FTP-BruteForce": 11,
+      "Infilteration": 2,
+      "Benign": 16,
+      "Brute Force -XSS": 7,
+      "DoS attacks-GoldenEye": 7,
+      "DoS attacks-Slowloris": 7,
+      "DDoS attacks-LOIC-HTTP": 8,
+      "SSH-Bruteforce": 7,
+      "Bot": 7,
+      "DDOS attack-HOIC": 7,
+      "SQL Injection": 4,
+      "DoS attacks-SlowHTTPTest": 3
+    },
+    "attack_alerts": 89,
+    "reference_labels": {
+      "Brute Force -Web": 7,
+      "DoS attacks-Hulk": 7,
+      "DDOS attack-LOIC-UDP": 7,
+      "FTP-BruteForce": 7,
+      "Infilteration": 7,
+      "Brute Force -XSS": 7,
+      "DoS attacks-GoldenEye": 7,
+      "DoS attacks-Slowloris": 7,
+      "DDoS attacks-LOIC-HTTP": 7,
+      "SSH-Bruteforce": 7,
+      "Bot": 7,
+      "Benign": 7,
+      "DDOS attack-HOIC": 7,
+      "SQL Injection": 7,
+      "DoS attacks-SlowHTTPTest": 7
+    },
+    "matches": 86,
+    "sample_accuracy": 0.819047619047619,
+    "benign_rows": 7,
+    "benign_alerts": 0,
+    "attack_rows": 98,
+    "attack_detected_any_attack_label": 89,
+    "exact_class_confusions": {
+      "Infilteration -> Benign": 5,
+      "Brute Force -Web -> Benign": 4,
+      "SQL Injection -> Brute Force -Web": 3,
+      "DoS attacks-SlowHTTPTest -> FTP-BruteForce": 5,
+      "DDOS attack-LOIC-UDP -> DDoS attacks-LOIC-HTTP": 1,
+      "FTP-BruteForce -> DoS attacks-SlowHTTPTest": 1
+    }
+  },
+  "live_review": {
+    "source": "RQ3_IDS_System/data/live_review_01.csv",
+    "rows": 669,
+    "valid_rows": 669,
+    "rejected_rows": 0,
+    "predicted_labels": {
+      "Benign": 551,
+      "DoS attacks-Hulk": 117,
+      "Bot": 1
+    },
+    "attack_alerts": 118,
+    "extractor_versions": {
+      "rq3-cfm-0.5.0-fixes-v2": 669
+    }
+  },
+  "live_manual": {
+    "source": "RQ3_IDS_System/data/live_manual_01.csv",
+    "rows": 267,
+    "valid_rows": 267,
+    "rejected_rows": 0,
+    "predicted_labels": {
+      "Benign": 221,
+      "DoS attacks-Hulk": 46
+    },
+    "attack_alerts": 46,
+    "extractor_versions": {
+      "rq3-cfm-0.5.0-fixes-v2": 267
+    }
+  },
+  "live_phone": {
+    "source": "RQ3_IDS_System/data/live_phone_01.csv",
+    "rows": 22,
+    "valid_rows": 22,
+    "rejected_rows": 0,
+    "predicted_labels": {
+      "Benign": 21,
+      "DoS attacks-Hulk": 1
+    },
+    "attack_alerts": 1
+  }
+}
