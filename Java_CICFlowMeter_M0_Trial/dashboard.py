@@ -215,6 +215,7 @@ def monitor(model):
 def capture_controls(model):
     state = call("GET", "/status", model)
     st.caption("Một phiên Java/Npcap cấp flow cho hai model. Chuyển M0 ↔ M1 không bắt lại traffic.")
+    st.caption("Lab VMware 192.168.11.x: chọn VMnet1; duyệt web trên Windows: chọn Wi-Fi. Card được chọn phải nhìn thấy traffic của hai máy lab.")
     options = interfaces()
     if not options:
         st.error("Java/Npcap chưa thấy card mạng.")
@@ -222,21 +223,27 @@ def capture_controls(model):
     choice = st.selectbox("Interface cần bắt", range(len(options)),
         format_func=lambda i: f"{options[i]['description']} [{options[i]['name']}]",
         index=next((i for i, x in enumerate(options) if "WiFi" in x["description"]), 0),
-        disabled=state["phase"] in ("capturing", "stopping"))
+        disabled=state["phase"] in ("starting", "capturing", "stopping"))
     seconds = st.number_input("Thời gian (giây); 0 = đến khi bấm Dừng", 0, 3600, 0,
-                              disabled=state["phase"] in ("capturing", "stopping"))
+                              disabled=state["phase"] in ("starting", "capturing", "stopping"))
     a, b = st.columns(2)
-    if a.button("Bắt đầu Java", type="primary", disabled=state["phase"] in ("capturing", "stopping")):
+    if a.button("Bắt đầu Java", type="primary", disabled=state["phase"] in ("starting", "capturing", "stopping")):
         call("POST", "/start", json={"interface": options[choice]["name"], "seconds": int(seconds)})
         st.rerun()
-    if b.button("Dừng và ghi nốt flow", disabled=state["phase"] != "capturing"):
+    if b.button("Dừng và ghi nốt flow", disabled=state["phase"] not in ("starting", "capturing")):
         call("POST", "/stop")
         st.rerun()
     st.write(f"Trạng thái: **{state['phase']}** · Flow: **{state['rows']}**")
+    if state["phase"] == "starting":
+        st.info("Java/Gradle đang khởi động; chưa xác nhận đã mở card mạng.")
+    elif state["phase"] == "capturing":
+        st.caption("Java đã mở card mạng. Có flow mới khi Java đóng flow hoặc khi bấm Dừng.")
     if state["error"]:
         st.error(state["error"])
     if state["packet_summary"]:
         st.caption(state["packet_summary"])
+        if state["packet_summary"].startswith("accepted_packets=0 "):
+            st.warning("Phiên đã kết thúc nhưng Java không nhận được gói TCP/UDP hợp lệ. Kiểm tra đúng card và tạo traffic trên mạng đó; chưa có dữ liệu để đánh giá model.")
     st.info("Flow còn mở chưa có dự đoán; khi dừng, Java ghi nốt flow rồi hai model xử lý.")
 
 

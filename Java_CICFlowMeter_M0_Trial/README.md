@@ -147,6 +147,18 @@ Thiết kế thử: `launch_dashboard.py` sở hữu API ở `127.0.0.1:8765` v�
 
 Các chức năng giống cách dùng dashboard RQ3/M1: phạm vi M0/M1 riêng, trạng thái capture, biểu đồ nhãn và thời gian, bảng lọc và phân trang, nhóm cảnh báo 5 phút, chi tiết flow, xác suất các lớp, SHAP, LIME có kiểm tra hiệu lực, đối chứng 78 đặc trưng với trung vị train, nạp CSV/PCAP. **Giới hạn của khu thử:** chưa có DB/lịch sử qua lần khởi động, hàng đợi SHAP nền, chỉ số thời gian API, hay giao diện so sánh M0/M1 (người dùng không yêu cầu so sánh). SHAP cảnh báo được tính ngay trong tiến trình đọc CSV, nên PCAP nhiều flow hoặc traffic dày có thể khiến UI/API chậm; chưa kiểm thử tải cao. Bản Java và model M1 vẫn cần đánh giá tương thích đặc trưng và nhãn thật; khác biệt số cảnh báo không phải bằng chứng model nào tốt hơn.
 
-## Đọc hai CSV phiên lab 04/11/2026 bằng M0
+## Kiểm tra card lab và trạng thái capture (17/11/2026)
+
+Mục đích: xác minh người dùng chọn được card lab và tránh hiển thị đang bắt khi Gradle chưa mở card. Java/Npcap liệt kê được VMnet1, VMnet8, Wi-Fi, hai card VirtualBox. Windows hiện có VMnet1 = 192.168.11.1, VMnet8 = 192.168.52.1, Wi-Fi = 192.168.3.6; IP có thể thay đổi. Lab dùng mạng 192.168.11.x thì chọn **VMware Virtual Ethernet Adapter for VMnet1** trong tab Realtime. Không dùng số thứ tự card làm định danh cố định.
+
+Đã tách trạng thái `starting` (Java/Gradle khởi động) và `capturing` (Java xác nhận mở card bằng `capture_started`). Có thể Dừng khi đang khởi động. Import/bắt trùng bị chặn ở giai đoạn đó. UI cảnh báo khi phiên kết thúc với 0 gói hợp lệ. Lỗi liệt kê card được trả về dưới dạng lỗi xử lý được và có timeout 90 giây.
+
+Kiểm thử `python Java_CICFlowMeter_M0_Trial/smoke_live_api.py --interface VMnet1`: mở đúng GUID VMnet1, chạy thời hạn capture 8 giây, từ chối bắt trùng, kết thúc thành công nhưng 0 packet/0 flow. Chỉ xác minh mở/đóng card; chưa xác minh khả năng nhìn thấy traffic giữa hai VM. Streamlit AppTest chọn flow, LIME và chuyển M1 cũng PASS sau sửa.
+
+Kiểm tra tiếp trong lab: bật capture trên VMnet1, tạo một phiên HTTP/SSH hợp lệ giữa Kali và Ubuntu trong cùng mạng lab, bấm Dừng và kiểm tra bảng có đúng cặp IP/cổng. Nếu không có flow, kiểm tra mạng ảo và đường gói bằng Wireshark trên cùng card; chưa dùng nhãn model để đánh giá. Việc thấy card VMnet1 không tự chứng minh Windows nhìn thấy toàn bộ traffic giữa hai VM.
+
+Ưu tiên cải thiện sau kiểm tra đường gói: hàng đợi SHAP nền để dự đoán không phải chờ giải thích, DB riêng giữ lịch sử, thông số packet/drop và tài nguyên trong lúc chạy, kiểm thử tải lâu với traffic có nhãn. Chưa coi 0 packet là test dự đoán thành công, chưa kết luận ổn định dài hạn.
+
+## Đọc hai CSV phiên lab 04/11/2026 bằng M0 (kết quả cũ)
 
 Theo yêu cầu, đã đọc trực tiếp `IDS_M1_Lab/data/capture_sessions/ff8f0fa5051b45389a9393023effc083/flows.csv` và `.../a10c3bc274594a00be959997bf552236/flows.csv`, áp ánh xạ/đơn vị như feeder rồi chạy M0 trong khu thử riêng. Cả 101 flow của phiên mang tên Hulk được M0 dự đoán Hulk. Trong phiên SSH, M0 dự đoán 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration. Riêng 323 flow đích cổng 22: 135 Hulk, 128 Benign, 60 SSH-Bruteforce. Đây là **nhãn do M0 trả về**, chưa phải phép đo đúng/sai từng flow vì cần nhãn thực và mốc thời gian của kịch bản. Không có PCAP trong hai thư mục phiên, nên không thể dùng Java CICFlowMeter trích xuất lại chính traffic đó từ các CSV.

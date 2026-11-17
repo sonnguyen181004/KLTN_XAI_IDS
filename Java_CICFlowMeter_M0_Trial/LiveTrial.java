@@ -46,6 +46,8 @@ public class LiveTrial {
         });
         Pcap capture = Pcap.openLive(selected.getName(), 65535, Pcap.MODE_PROMISCUOUS, 1000, error);
         if (capture == null) throw new IllegalStateException("Open capture failed: " + error);
+        System.out.println("capture_started=" + selected.getName());
+        System.out.flush();
         final int[] packets = {0};
         long deadline = seconds == 0 ? Long.MAX_VALUE : System.nanoTime() + seconds * 1000000000L;
         try {

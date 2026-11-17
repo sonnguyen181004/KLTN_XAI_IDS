@@ -28,7 +28,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        if manager.phase in ("capturing", "stopping"):
+        if manager.phase in ("starting", "capturing", "stopping"):
             try:
                 manager.stop()
                 if manager.thread:

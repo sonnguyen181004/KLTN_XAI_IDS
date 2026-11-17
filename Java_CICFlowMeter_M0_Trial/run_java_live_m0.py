@@ -29,16 +29,16 @@ def list_interfaces():
     command = [str(TRIAL / "upstream" / "gradlew.bat"), "liveTrial",
                "-PtrialArgs=--list", "--offline", "--no-daemon", "--console=plain"]
     proc = subprocess.run(command, cwd=TRIAL / "upstream", env=java_environment(),
-                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+                          capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=90)
     if proc.returncode:
-        raise SystemExit("Cannot list Java/Npcap interfaces:\n" + proc.stdout + proc.stderr)
+        raise RuntimeError("Cannot list Java/Npcap interfaces:\n" + proc.stdout + proc.stderr)
     devices = []
     for line in proc.stdout.splitlines():
         if line.startswith("\\Device\\NPF_") and " | " in line:
             name, description = line.split(" | ", 1)
             devices.append((name, description))
     if not devices:
-        raise SystemExit("Java/Npcap returned no interfaces. Run this terminal with capture permission.")
+        raise RuntimeError("Java/Npcap returned no interfaces. Run this terminal with capture permission.")
     return devices
 
 

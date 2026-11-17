@@ -110,7 +110,7 @@ class TrialManager:
         if not matches:
             raise HTTPException(422, "Interface is not in Java/Npcap device list")
         with self.lock:
-            if self.phase in ("capturing", "stopping", "importing"):
+            if self.phase in ("starting", "capturing", "stopping", "importing"):
                 raise HTTPException(409, "A capture or import is already running")
             self.run_id = uuid.uuid4().hex[:12]
             self.interface = matches[0]
@@ -128,7 +128,7 @@ class TrialManager:
             with self.log_path.open("w", encoding="utf-8") as log:
                 self.process = subprocess.Popen(cmd, cwd=TRIAL / "upstream",
                                                 env=java_environment(), stdout=log, stderr=subprocess.STDOUT)
-            self.phase = "capturing"
+            self.phase = "starting"
             self.thread = threading.Thread(target=self._monitor, daemon=True)
             self.thread.start()
             return self.status()
@@ -149,6 +149,11 @@ class TrialManager:
         header = None
         while proc.poll() is None or (csv_path.exists() and csv_path.stat().st_size > offset):
             try:
+                log_text = self.log_path.read_text(encoding="utf-8", errors="replace")
+                if "capture_started=" in log_text:
+                    with self.lock:
+                        if self.phase == "starting":
+                            self.phase = "capturing"
                 if csv_path.exists():
                     with csv_path.open("rb") as source:
                         source.seek(offset)
@@ -313,7 +318,7 @@ class TrialManager:
 
     def import_csv(self, name: str, content: str, convert_seconds: bool = False, internal: bool = False):
         with self.lock:
-            if self.phase in ("capturing", "stopping") or (self.phase == "importing" and not internal):
+            if self.phase in ("starting", "capturing", "stopping") or (self.phase == "importing" and not internal):
                 raise HTTPException(409, "Stop capture/import before importing CSV")
         if len(content.encode("utf-8")) > 20_000_000:
             raise HTTPException(413, "CSV is larger than 20 MB")
@@ -325,7 +330,7 @@ class TrialManager:
         if len(rows) > 10_000:
             raise HTTPException(413, "CSV is limited to 10,000 flows per import")
         with self.lock:
-            if self.phase in ("capturing", "stopping") or (self.phase == "importing" and not internal):
+            if self.phase in ("starting", "capturing", "stopping") or (self.phase == "importing" and not internal):
                 raise HTTPException(409, "Stop capture/import before importing CSV")
             self.phase = "importing"
             self.records = []
@@ -340,7 +345,7 @@ class TrialManager:
 
     def import_pcap(self, filename: str):
         with self.lock:
-            if self.phase in ("capturing", "stopping", "importing"):
+            if self.phase in ("starting", "capturing", "stopping", "importing"):
                 raise HTTPException(409, "Stop capture/import before importing PCAP")
         imports = (TRIAL / "output" / "imports").resolve()
         path = (imports / filename).resolve()
