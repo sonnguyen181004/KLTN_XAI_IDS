@@ -2,6 +2,8 @@
 
 Mục đích: kiểm tra bản Java V4 trích xuất traffic/PCAP thành flow, rồi cho M0 (15 lớp) và M1 (13 lớp) dự đoán, giải thích riêng trên cùng flow. Tên thư mục giữ từ giai đoạn chỉ thử M0. Khu này có API/UI riêng, không ghi DB hoặc sửa model của RQ3/IDS_M1_Lab. Kết quả Java không tự chứng minh tương thích với bộ train của hai model.
 
+**Kết luận kiểm tra mới nhất 17/11/2026:** đúng là Java trích xuất, nhưng chưa tương thích đầy đủ với bộ train M0 hoặc bộ improved tham chiếu M1. M1 đang dùng trong IDS_M1_Lab đã khác checksum bản M1 nghiên cứu lưu ở RQ4. Trên hai CSV lab cũ do Python xuất, M1 hiện tại trả toàn bộ Benign; không dùng việc ít cảnh báo khi duyệt web để kết luận M1 tốt hơn. Xem mục kiểm tra CSV và ngữ nghĩa đặc trưng cuối tài liệu.
+
 ## Chạy dashboard và tự bấm Bắt/Dừng
 
 Mở một terminal **PowerShell trong VS Code**, dán cả khối sau:
@@ -223,3 +225,52 @@ python Java_CICFlowMeter_M0_Trial/test_realtime_ui.py
 ```
 
 Lệnh này thực sự mở card Wi-Fi, tạo traffic HTTPS nhẹ, dừng sau khoảng 30 giây rồi kiểm tra XAI và UI. Kết quả mới ghi `output/realtime_ui_latest.json`; không ghi đè kết quả đã lưu trong Git. Khi muốn tự sử dụng dashboard, vẫn chạy `python Java_CICFlowMeter_M0_Trial/launch_dashboard.py`, mở cổng 8502 và chọn model/interface như phần hướng dẫn trên.
+
+## Kiểm tra CSV lab và ngữ nghĩa đặc trưng Java–train (17/11/2026)
+
+Mục đích: xác minh bộ trích xuất thật, chạy lại hai CSV lab được chỉ định bằng hai model hiện có, và kiểm tra tương thích bằng dữ liệu train cùng packet biết trước. Script `audit_lab_and_semantics.py`; kết quả `lab_semantics_audit_20261117.json`. Không sửa model, extractor, nhãn hay DB. Toàn bộ bước này chạy offline, không phát gói tấn công.
+
+### Bằng chứng đang dùng Java
+
+Upstream là `https://github.com/ahlashkari/CICFlowMeter.git`, commit `98a5ebad0df579cc8b43eedd3421b3ae87699901`. Thư mục lõi `src/main/java/cic/cs/unb/ca/jnetpcap` không có thay đổi so với commit này. `LiveTrial.java` của khu thử trùng checksum với source trong thư mục build. Task Gradle `liveTrial` chạy lớp `cic.cs.unb.ca.ifm.LiveTrial`, gọi `Pcap.openLive` và `FlowGenerator`; log lượt `5e1b1eae9e28` có `capture_started`, `accepted_packets=16163 closed_flows=20 flushed_flows=36`. Python đảm nhiệm điều phối, đọc CSV, dự đoán và giao diện; không phải bộ trích xuất của lượt live đó. Đây không phải bằng chứng bản Java hiện tại chính là commit lịch sử đã tạo dataset 2018.
+
+### Hai CSV lab cũ
+
+Cả CSV và capture.log của hai phiên ghi `rq3-cfm-0.5.0-lifecycle-v3`: đây là CSV Python. Không có PCAP/PCAPNG trong hai thư mục phiên, nên chưa thể trích lại chính hai phiên đó bằng Java. Audit đổi tên cột theo feeder, đổi các cột thời gian giây → micro giây đúng một lần, giữ nguyên các rate; sau đó nhập CSV tên cột model vào service Java trial. Cả 474 vector đều đủ 78 cột hữu hạn. Dự đoán qua service khớp chạy trực tiếp model cho mọi dòng. Đây là kiểm tra suy luận từ CSV, không phải Java chuyển CSV thành packet.
+
+| Phiên | Số flow | M0 hiện tại | M1 hiện tại |
+| --- | ---: | --- | --- |
+| Hulk, `ff8f0fa5051b45389a9393023effc083/flows.csv` | 101 | 101 Hulk | 101 Benign |
+| SSH, `a10c3bc274594a00be959997bf552236/flows.csv` | 373 | 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration | 373 Benign |
+| Riêng flow đích cổng 22 trong phiên SSH | 323 | 128 Benign, 135 Hulk, 60 SSH-Bruteforce | 323 Benign |
+
+Các cảnh báo M0 có SHAP tự động, không lỗi; sai số cộng tính lớn nhất 2,86×10⁻⁶. Nhãn do model trả về không thay thế ground truth của từng flow. Nếu nhật ký kịch bản xác nhận các flow là tấn công, kết quả M1 toàn Benign cần được tính là bỏ sót tương ứng, không coi là cải thiện báo nhầm. CSV Python không thể chứng minh Java sẽ có cùng nhãn khi bắt lại.
+
+M0 checksum `52eb5a671ee82109…` khớp model RQ1. M1 đang chạy checksum `3b858ed12c374f28…`, khác M1 nghiên cứu RQ4 `6ed405c11b53e412…` trong `models_manifest.csv`. Audit ghi đủ checksum, đường dẫn và tập lớp. `d2_train.parquet` được dùng làm bộ train improved tham chiếu; chưa có manifest tái tạo liên kết chắc chắn bộ này với M1 đã thay ngày 17/11. Không gán các kết quả nghiên cứu của M1 cũ sang artifact mới.
+
+### Phần khớp và phần lệch đã đo lại
+
+Đã quét toàn bộ 2.800.000 dòng train M0 và 2.728.397 dòng `d2_train.parquet`; thứ tự 78 cột đều khớp danh sách model. Tạo PCAP tổng hợp 21 packet với timestamp, chiều, payload, cờ và window biết trước, rồi chạy Java và Python lifecycle-v3 trên cùng PCAP. Đây là kiểm thử ngữ nghĩa, không phải traffic tấn công hay phép đo độ chính xác.
+
+| Đặc trưng/quy tắc | Java đang dùng | Bằng chứng đối chiếu |
+| --- | --- | --- |
+| Đơn vị thời gian | Micro giây | 5 packet kéo dài 0,4 giây → Flow Duration 400.000. CSV Java không nhân thêm 10⁶. |
+| Độ dài packet | Payload TCP/UDP | Ba packet forward payload 10/30/50 byte → tổng 90; Python đo frame → tổng 252. Không thể đổi tên cột để xóa sai khác này. |
+| Std độ dài packet | Sample SD | Fixture forward trả 20; Python trả 16,33 (population SD). Trong train M0, 35.079/35.079 ca forward và 59.954/59.954 ca backward đủ điều kiện hai gói khớp sample SD. Train improved tham chiếu cũng khớp sample SD ở các ca đủ điều kiện. |
+| Down/Up Ratio | Chia nguyên, fixture 2/3 → 0 | Train M0: 1.057.559/1.057.559 ca tỷ lệ không nguyên khớp floor. Train improved: 1.104.362/1.104.362 ca khớp tỷ lệ thực, tức Java hiện tại lệch bộ improved. |
+| FIN/SYN/ACK/PSH và các cờ tổng | Đếm số gói có cờ | Fixture PSH=5, ACK=5; toàn bộ train M0 chỉ có giá trị 0/1 ở các cờ tổng. Train improved có giá trị lớn hơn 1. Không tự ép cờ về 0/1 khi chưa có quy ước lịch sử đầy đủ. |
+| Fwd/Bwd PSH Flags | Chỉ cập nhật khi khởi tạo flow | Fixture có 3 PSH forward, 2 backward nhưng Java trả 1/0, Python trả 3/2. Java gần phạm vi train M0 (Fwd 0/1, Bwd toàn 0) nhưng lệch đếm cờ trong improved. |
+| Pkt Len Mean và Pkt Size Avg | Packet đầu tham gia thống kê độ dài toàn flow hai lần | Fixture payload tổng 150 của 5 gói: Java Mean=160/6, Size Avg=160/5. Train M0 thỏa `SizeAvg*n=Mean*(n+1)` trên 2,8M dòng; improved thỏa hai mean bằng nhau trên toàn bộ 2.728.397 dòng. Khớp dấu vết số học không chứng minh bản lịch sử giống hoàn toàn. |
+| Init Bwd Win Byts | Bị ghi lại bằng window packet backward sau | Window đầu 2000, sau 3000 → Java trả 3000; Python trả 2000. Chưa chứng nhận đây là quy ước bộ train. |
+| Subflow, bulk, active | Có sai khác trong fixture | Ví dụ numeric flow Java Subflow Fwd Pkts=0, Python=3. Không khẳng định tương thích toàn bộ nhóm chỉ vì có cùng tên cột. |
+| Đóng flow và ghi flow một gói | Có quy tắc FIN và bỏ flow một gói tại bước flush | PCAP 21 packet → Java 6 dòng chứa tổng 20 packet; Python 5 dòng chứa đủ 21. ACK cuối của ca FIN-forward thành flow một gói bị loại khỏi CSV Java. Source flush có điều kiện `packetCount()>1`; không gọi đây là mất gói ở NIC. |
+
+Có 34/78 giá trị khác nhau giữa hai extractor trên riêng flow numeric gồm đúng 5 packet. Mười sáu kiểm tra Java khớp quy ước quan sát trong source, bao gồm các hành vi bất thường; PASS ở đây không có nghĩa 78 đặc trưng đã đúng về ngữ nghĩa mạng hoặc khớp hoàn toàn train. Fixture FIN cũng tái hiện khác biệt khi FIN backward đến trước; code cộng `getBwdFINFlags()` hai lần ở điều kiện đóng flow. Lõi chưa sửa trong bước audit để không âm thầm đổi đường dữ liệu trước khi có baseline.
+
+**Kết luận:** Java dùng được để thử nghiệm có kiểm soát, nhưng chưa phải bộ trích xuất tương thích hoàn toàn cho cả M0/M1. Cần tách hồ sơ tương thích từng model, truy manifest của M1 hiện tại và lưu PCAP của phiên lab mới để so cùng packet. Không tự sửa cờ/window/tỷ lệ theo mục tiêu làm nhãn đẹp hơn. Thiếu source preprocessing/commit extractor lịch sử và cặp PCAP–CSV gốc nên chưa thể chứng nhận toàn bộ 78 đặc trưng của dataset.
+
+### Bắt lại từ hai máy ảo
+
+Card Windows kiểm tra ngày 17/11: VMnet1 đang Up, IP 192.168.11.1; VMnet8 đang Up, IP 192.168.52.1. Nếu Kali/Ubuntu dùng lab 192.168.11.x, chọn VMnet1 trong Realtime. Trước kịch bản tấn công, tạo HTTP/SSH hợp lệ và kiểm tra flow có đúng IP hai VM. Cùng VMnet1 không tự bảo đảm Windows thấy mọi unicast VM↔VM: nếu thiếu gói, cần xác minh bằng Wireshark và bố trí mirror/TAP hoặc cho traffic đi qua máy IDS. Không coi việc Java mở được card là đã nhìn thấy traffic lab.
+
+Đợt tiếp theo: lưu PCAP gốc và nhật ký kịch bản cho từng phiên Hulk/SSH; trích Java và Python từ cùng PCAP; chạy đúng artifact M0/M1, đánh giá phát hiện/bỏ sót và đặc trưng. Không so hai lượt traffic khác nhau rồi quy khác biệt cho extractor.
