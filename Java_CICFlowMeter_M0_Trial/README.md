@@ -2,6 +2,28 @@
 
 Mục đích: kiểm tra bản Java V4 trích xuất traffic/PCAP thành flow, rồi cho M0 (15 lớp) và M1 (13 lớp) dự đoán, giải thích riêng trên cùng flow. Tên thư mục giữ từ giai đoạn chỉ thử M0. Khu này có API/UI riêng, không ghi DB hoặc sửa model của RQ3/IDS_M1_Lab. Kết quả Java không tự chứng minh tương thích với bộ train của hai model.
 
+## Chạy dashboard và tự bấm Bắt/Dừng
+
+Mở một terminal **PowerShell trong VS Code**, dán cả khối sau:
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN
+python Java_CICFlowMeter_M0_Trial/launch_dashboard.py
+```
+
+Giữ terminal này chạy và mở **http://127.0.0.1:8502**. Launcher tự chạy API và dashboard; không cần mở thêm terminal feeder hoặc chép token.
+
+1. Chọn **M0** hoặc **M1** ở đầu trang.
+2. Mở tab **Realtime**, chọn **Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter** để bắt traffic Wi-Fi của Windows. Kiểm tra ngày 17/11/2026: card đang Up, IP `192.168.3.6`; IP có thể thay đổi khi đổi mạng. Nếu test lab mạng `192.168.11.x`, chọn **VMware Virtual Ethernet Adapter for VMnet1**.
+3. Giữ ô thời gian là **0**: chạy đến khi bạn bấm Dừng, không tự dừng sau một số giây. Chỉ nhập số lớn hơn 0 khi muốn tự dừng theo thời lượng.
+4. Bấm **Bắt đầu Java**. Đợi `starting` chuyển sang `capturing`, rồi lướt web hoặc tạo traffic hợp lệ trên mạng lab đang chọn.
+5. Khi muốn kết thúc, bấm **Dừng và ghi nốt flow**, đợi `finished`. Flow còn mở sẽ được ghi nốt để model xử lý.
+6. Vào **Giám sát flow**, chọn flow để xem nhãn, xác suất, SHAP và bấm **Tính LIME cho flow này** nếu cần. Chuyển M0/M1 để xem kết quả riêng trên cùng lượt dữ liệu.
+
+Nếu chưa có flow trong lúc bắt, thử tạo traffic rồi bấm Dừng để ghi nốt. Nếu kết thúc vẫn báo 0 gói, kiểm tra card được chọn và đường gói; chưa có dữ liệu để đánh giá model.
+
+**Đóng hoặc chạy lại sau cập nhật:** bấm Dừng, đợi `finished`, sau đó nhấn **Ctrl+C** trong terminal. Muốn mở bản mới, chạy lại khối lệnh trên và tải lại trang. Lịch sử trên giao diện hiện ở RAM, đóng launcher sẽ mất; CSV và log capture nằm trong `Java_CICFlowMeter_M0_Trial/output/`.
+
 ## Đã kiểm tra ngày 17/11/2026
 
 - Clone `ahlashkari/CICFlowMeter` vào `upstream/` (bản V4, Gradle 4.2, Java 8).
