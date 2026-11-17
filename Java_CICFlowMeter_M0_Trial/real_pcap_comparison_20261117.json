@@ -1,0 +1,286 @@
+{
+  "test": {
+    "java_rows": 38,
+    "python_rows": 38,
+    "java_packet_sum": 510,
+    "python_packet_sum": 511,
+    "uniquely_matched_pairs": 33,
+    "unmatched_or_ambiguous_java": 5,
+    "unmatched_or_ambiguous_python": 5,
+    "m0_java_labels": {
+      "Benign": 36,
+      "DoS attacks-Hulk": 1
+    },
+    "m0_python_labels": {
+      "DoS attacks-Hulk": 5,
+      "Benign": 33
+    },
+    "uniquely_matched_prediction_pairs": 33,
+    "matched_prediction_disagreements": 4,
+    "features_with_any_difference": 63,
+    "top_feature_differences": [
+      {
+        "feature": "TotLen Fwd Pkts",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 108.0
+      },
+      {
+        "feature": "TotLen Bwd Pkts",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Fwd Pkt Len Max",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Fwd Pkt Len Min",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Fwd Pkt Len Mean",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Max",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Min",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Mean",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Flow Byts/s",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 1197.1268954509178
+      },
+      {
+        "feature": "Pkt Len Min",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Pkt Len Max",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Pkt Len Mean",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 52.33333333333333
+      },
+      {
+        "feature": "Pkt Size Avg",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 46.0
+      },
+      {
+        "feature": "Fwd Seg Size Avg",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Seg Size Avg",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Subflow Fwd Byts",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 140.0
+      },
+      {
+        "feature": "Subflow Bwd Byts",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 90.0
+      },
+      {
+        "feature": "Active Mean",
+        "compared": 33,
+        "different": 33,
+        "median_abs_diff": 150831.66666666663
+      },
+      {
+        "feature": "Pkt Len Std",
+        "compared": 33,
+        "different": 32,
+        "median_abs_diff": 3.7707429412135482
+      },
+      {
+        "feature": "Pkt Len Var",
+        "compared": 33,
+        "different": 32,
+        "median_abs_diff": 29.916666666666668
+      }
+    ]
+  },
+  "tesst2": {
+    "java_rows": 60,
+    "python_rows": 61,
+    "java_packet_sum": 635,
+    "python_packet_sum": 637,
+    "uniquely_matched_pairs": 58,
+    "unmatched_or_ambiguous_java": 2,
+    "unmatched_or_ambiguous_python": 3,
+    "m0_java_labels": {
+      "DoS attacks-Hulk": 1,
+      "Benign": 59
+    },
+    "m0_python_labels": {
+      "DoS attacks-Hulk": 3,
+      "Benign": 58
+    },
+    "uniquely_matched_prediction_pairs": 58,
+    "matched_prediction_disagreements": 2,
+    "features_with_any_difference": 62,
+    "top_feature_differences": [
+      {
+        "feature": "TotLen Fwd Pkts",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 162.0
+      },
+      {
+        "feature": "TotLen Bwd Pkts",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 108.0
+      },
+      {
+        "feature": "Fwd Pkt Len Max",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Fwd Pkt Len Min",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Fwd Pkt Len Mean",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Max",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Min",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Pkt Len Mean",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Flow Byts/s",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 618.2469341661409
+      },
+      {
+        "feature": "Pkt Len Min",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Pkt Len Max",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Pkt Len Mean",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 55.58333333333333
+      },
+      {
+        "feature": "Pkt Size Avg",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 51.06666666666666
+      },
+      {
+        "feature": "Fwd Seg Size Avg",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Bwd Seg Size Avg",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 54.0
+      },
+      {
+        "feature": "Subflow Fwd Byts",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 187.5
+      },
+      {
+        "feature": "Subflow Bwd Byts",
+        "compared": 58,
+        "different": 58,
+        "median_abs_diff": 183.5
+      },
+      {
+        "feature": "Pkt Len Std",
+        "compared": 58,
+        "different": 57,
+        "median_abs_diff": 3.6791053836183103
+      },
+      {
+        "feature": "Pkt Len Var",
+        "compared": 58,
+        "different": 57,
+        "median_abs_diff": 29.996153846153845
+      },
+      {
+        "feature": "Active Mean",
+        "compared": 58,
+        "different": 57,
+        "median_abs_diff": 123206.0
+      }
+    ]
+  }
+}

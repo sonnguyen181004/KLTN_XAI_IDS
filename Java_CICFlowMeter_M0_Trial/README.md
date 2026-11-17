@@ -28,6 +28,35 @@ python Java_CICFlowMeter_M0_Trial/predict_m0.py Java_CICFlowMeter_M0_Trial/outpu
 
 Đổi `trialInput` sang PCAP cần thử; đầu ra là `<tên PCAP>_Flow.csv`. `Cmd` của bản Java này chỉ nhận `.pcap`; các file `.pcapng` phải chuyển sang PCAP trước khi thử, giữ bản gốc để đối chiếu. Không dùng CSV từ phiên khác để kết luận về PCAP này.
 
+## Đối chiếu PCAP thật ngày 17/11/2026
+
+Đã chuyển `test.pcapng` và `tesst2.pcapng` sang PCAP bằng Wireshark `editcap -F pcap`. Số frame trước/sau của `test` là 515/515; Java/Python đều đọc chính file PCAP sau chuyển. Dùng Python extractor `project` (lifecycle v3) của RQ3. Kết quả chi tiết không chứa IP nằm trong `real_pcap_comparison_20261117.json`.
+
+| File | Java / Python flow CSV | Gói tính vào CSV Java / Python | Cặp flow ghép duy nhất | M0 Hulk Java / Python | Nhãn khác nhau trên cặp ghép |
+|---|---:|---:|---:|---:|---:|
+| test | 38 / 38 | 510 / 511 | 33 | 1 / 5 | 4 |
+| tesst2 | 60 / 61 | 635 / 637 | 58 | 1 / 3 | 2 |
+
+Ghép bằng IP nguồn/đích, cổng, giao thức và giây bắt đầu; flow trùng khóa hoặc không có phía đối ứng được loại khỏi so sánh theo cặp. Trên 33 và 58 cặp, lần lượt 63 và 62 trong 78 đặc trưng có ít nhất một giá trị khác. Các cột độ dài gói lệch có hệ thống, thường khoảng 54 byte; đây là dấu hiệu khác quy ước tính header/payload, cần xác minh bằng gói gốc trước khi kết luận nguyên nhân. `test` có 1 dòng Java với `Flow Bytes/s` và `Flow Packets/s` không hữu hạn, nên chỉ 37/38 dòng được M0 dự đoán. Script từ chối dòng đó, không điền 0.
+
+Hai PCAP này chưa có nhãn từng flow được kiểm chứng. Số Hulk thay đổi **không phải** độ chính xác hay FPR; cũng chưa thể kết luận bản Java đúng hơn. Java README ghi thời gian micro giây và script không nhân lại 1e6. Môi trường chạy model hiện tại có cảnh báo phiên bản XGBoost/scikit-learn khác lúc lưu pickle; cần kiểm tra trước khi dùng số liệu làm kết quả luận văn.
+
+Lệnh tái lập sau khi có hai file `.pcap` trong `input/`:
+
+```powershell
+cd Java_CICFlowMeter_M0_Trial/upstream
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk1.8.0_431'
+$env:GRADLE_USER_HOME = (Join-Path (Get-Location) '.gradle-home')
+.\gradlew.bat exeCMD -PtrialInput='..\input' -PtrialOutput='..\output' --offline --no-daemon
+cd ..\..
+foreach ($name in @('test','tesst2')) {
+  .\RQ3_IDS_System\.venv_capture\Scripts\python.exe RQ3_IDS_System\scripts\run_live_capture.py --pcap-input "Java_CICFlowMeter_M0_Trial\input\$name.pcap" --output "Java_CICFlowMeter_M0_Trial\output\${name}_python.csv" --extractor project
+  python Java_CICFlowMeter_M0_Trial\predict_m0.py "Java_CICFlowMeter_M0_Trial\output\${name}.pcap_Flow.csv" --format java --output "Java_CICFlowMeter_M0_Trial\output\${name}_java_m0.csv"
+  python Java_CICFlowMeter_M0_Trial\predict_m0.py "Java_CICFlowMeter_M0_Trial\output\${name}_python.csv" --format python --output "Java_CICFlowMeter_M0_Trial\output\${name}_python_m0.csv"
+}
+python Java_CICFlowMeter_M0_Trial\compare_extractors.py
+```
+
 ## Bước kiểm chứng tiếp
 
 1. Chuyển `test.pcapng` và `tesst2.pcapng` sang PCAP bằng công cụ đọc PCAPNG đáng tin cậy; ghi số packet trước/sau chuyển.
