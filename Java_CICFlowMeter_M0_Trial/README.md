@@ -115,6 +115,18 @@ python Java_CICFlowMeter_M0_Trial/run_java_live_m0.py --interface 'Realtek RTL88
 
 Chạy PowerShell có quyền bắt gói trên card đã chọn. Để có các phép đo về traffic thật, cần chạy phiên có ghi ground truth/hoạt động rõ ràng, lưu PCAP cùng phiên để đối chiếu packet, và đánh giá tương thích đặc trưng Java với train M0. Không gọi 6 Hulk là báo nhầm chỉ vì người dùng không chủ động tạo tấn công trong 20 giây.
 
+### Lệnh chạy gọn và chọn interface
+
+Tại thư mục `SELF_KLTN`, dùng **một lệnh**:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/run_java_live_m0.py
+```
+
+Chương trình liệt kê các card Java/Npcap thấy được, cho nhập **số thứ tự** card (Wi-Fi thường có tên `Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter`; số thứ tự có thể thay đổi). Mặc định bắt 20 giây, flow nào Java đóng sẽ được M0 dự đoán ngay; khi hết thời gian Java ghi nốt flow còn mở. Chỉ định thời lượng khác: thêm `--seconds 30` (giới hạn 1–120 giây cho khu thử). Muốn xem card mà chưa bắt: `python Java_CICFlowMeter_M0_Trial/run_java_live_m0.py --list`. Bỏ qua menu nếu biết chính xác tên card: `--interface 'Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter'`.
+
+Đây là menu **trong terminal của khu thử riêng**, chưa phải nút/chọn card trên dashboard chính. CSV và log Java từng lượt nằm trong `Java_CICFlowMeter_M0_Trial/output/` (không commit). Đã kiểm tra `--list` thấy card Wi-Fi thật; lệnh bắt trực tiếp 20 giây đã được kiểm tra ở lượt trên. Menu không dùng API/DB và không thay cách chạy M1.
+
 ## Đọc hai CSV phiên lab 04/11/2026 bằng M0
 
 Theo yêu cầu, đã đọc trực tiếp `IDS_M1_Lab/data/capture_sessions/ff8f0fa5051b45389a9393023effc083/flows.csv` và `.../a10c3bc274594a00be959997bf552236/flows.csv`, áp ánh xạ/đơn vị như feeder rồi chạy M0 trong khu thử riêng. Cả 101 flow của phiên mang tên Hulk được M0 dự đoán Hulk. Trong phiên SSH, M0 dự đoán 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration. Riêng 323 flow đích cổng 22: 135 Hulk, 128 Benign, 60 SSH-Bruteforce. Đây là **nhãn do M0 trả về**, chưa phải phép đo đúng/sai từng flow vì cần nhãn thực và mốc thời gian của kịch bản. Không có PCAP trong hai thư mục phiên, nên không thể dùng Java CICFlowMeter trích xuất lại chính traffic đó từ các CSV.

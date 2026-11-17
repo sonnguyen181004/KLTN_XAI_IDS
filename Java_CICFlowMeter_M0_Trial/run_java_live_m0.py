@@ -18,6 +18,43 @@ sys.path.insert(0, str(ROOT / "RQ4_Retrain_Compare" / "scripts"))
 from rq4_common import FEATURE_MAP  # noqa: E402
 
 
+def java_environment():
+    env = os.environ.copy()
+    env["JAVA_HOME"] = r"C:\Program Files\Java\jdk1.8.0_431"
+    env["GRADLE_USER_HOME"] = str(TRIAL / "upstream" / ".gradle-home")
+    return env
+
+
+def list_interfaces():
+    command = [str(TRIAL / "upstream" / "gradlew.bat"), "liveTrial",
+               "-PtrialArgs=--list", "--offline", "--no-daemon", "--console=plain"]
+    proc = subprocess.run(command, cwd=TRIAL / "upstream", env=java_environment(),
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if proc.returncode:
+        raise SystemExit("Cannot list Java/Npcap interfaces:\n" + proc.stdout + proc.stderr)
+    devices = []
+    for line in proc.stdout.splitlines():
+        if line.startswith("\\Device\\NPF_") and " | " in line:
+            name, description = line.split(" | ", 1)
+            devices.append((name, description))
+    if not devices:
+        raise SystemExit("Java/Npcap returned no interfaces. Run this terminal with capture permission.")
+    return devices
+
+
+def choose_interface(devices):
+    print("Chọn card mạng để Java bắt traffic:")
+    for number, (_, description) in enumerate(devices, 1):
+        print(f"  {number}. {description}")
+    while True:
+        answer = input("Nhập số card mạng (Enter để hủy): ").strip()
+        if not answer:
+            raise SystemExit("Đã hủy; chưa bắt traffic.")
+        if answer.isdigit() and 1 <= int(answer) <= len(devices):
+            return devices[int(answer) - 1][0]
+        print("Số không hợp lệ, hãy chọn lại.")
+
+
 def complete_rows(path):
     if not path.exists():
         return []
@@ -31,24 +68,31 @@ def complete_rows(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface", required=True, help="Exact Npcap device name or description from Java --list")
+    parser.add_argument("--interface", help="Exact Npcap name/description; omit to choose from menu")
+    parser.add_argument("--list", action="store_true", help="Show interfaces and exit")
     parser.add_argument("--seconds", type=int, default=20)
     args = parser.parse_args()
     if not 1 <= args.seconds <= 120:
         parser.error("--seconds must be 1..120")
+    if args.list:
+        for number, (name, description) in enumerate(list_interfaces(), 1):
+            print(f"{number}. {description} [{name}]")
+        return
+    interface = args.interface or choose_interface(list_interfaces())
     model = joblib.load(ROOT / "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl")
     encoder = joblib.load(ROOT / "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl")
     features = list(model.feature_names_in_)
     output = TRIAL / "output" / f"java_live_{uuid.uuid4().hex[:12]}.csv"
     output.parent.mkdir(exist_ok=True)
     cmd = [str(TRIAL / "upstream" / "gradlew.bat"), "liveTrial",
-           f"-PtrialArgs={args.interface}|{args.seconds}|{output}", "--offline", "--no-daemon"]
-    env = os.environ.copy()
-    env["JAVA_HOME"] = r"C:\Program Files\Java\jdk1.8.0_431"
-    env["GRADLE_USER_HOME"] = str(TRIAL / "upstream" / ".gradle-home")
+           f"-PtrialArgs={interface}|{args.seconds}|{output}", "--offline", "--no-daemon"]
+    env = java_environment()
+    log = output.with_suffix(".log")
+    log_file = log.open("w", encoding="utf-8")
     process = subprocess.Popen(cmd, cwd=TRIAL / "upstream", env=env,
-                               stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-    print(f"Java capture started; CSV: {output}", flush=True)
+                               stdout=log_file, stderr=subprocess.STDOUT)
+    log_file.close()
+    print(f"Java capture started on {interface}; {args.seconds}s; CSV: {output}", flush=True)
     seen = 0
     counts = {}
     while process.poll() is None or len(complete_rows(output)) > seen:
@@ -69,6 +113,7 @@ def main():
     code = process.wait()
     print(f"Java exit={code}; CSV rows={seen}; M0 labels={counts}")
     if code:
+        print(f"Java log: {log}")
         raise SystemExit(code)
 
 
