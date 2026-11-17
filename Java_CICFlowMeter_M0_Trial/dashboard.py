@@ -14,8 +14,9 @@ import streamlit as st
 TRIAL = Path(__file__).resolve().parent
 sys.path.insert(0, str(TRIAL.parent / "RQ3_IDS_System" / "app"))
 from feature_help import describe  # noqa: E402
+from ui_style import badge, card, paint, COLORS
 
-API = "http://127.0.0.1:8765"
+API = os.environ.get("JAVA_TRIAL_API_URL", "http://127.0.0.1:8765")
 HEADERS = {"X-Trial-Token": os.environ.get("JAVA_M0_TRIAL_TOKEN", "")}
 
 
@@ -50,10 +51,38 @@ def bars(data, name, value, signed=False, percent=False):
     st.altair_chart(chart.properties(height=max(150, 28 * len(frame))), width="stretch")
 
 
+def feature_meaning(name):
+    info = describe(name).copy()
+    if 'Python' in info['meaning']:
+        info['meaning'] = 'Thống kê ' + info['title'].lower() + ' do Java CICFlowMeter xuất; cần đối chiếu quy ước Java khi so với dataset.'
+    return info
+
+
+def explain_features(items, features, label, method):
+    st.markdown('**Đọc từng đặc trưng bằng lời**')
+    st.caption('Fwd cùng chiều gói đầu của flow; Bwd là chiều ngược lại.')
+    for item in items:
+        name = item.get('feature', item.get('feature_desc'))
+        weight = item.get('phi', item.get('weight'))
+        info = feature_meaning(name)
+        with st.expander(f"{name} — {info['title']}"):
+            st.write(info['meaning'])
+            st.write(f"Giá trị flow: {features.get(name)} {info['unit']}")
+            if weight is not None:
+                direction = 'tăng' if weight > 0 else 'giảm' if weight < 0 else 'không đổi'
+                st.write(f"Đóng góp {method}: {weight:.4g}; {direction} điểm lớp {label} trong lời giải thích này.")
+            st.caption('Không dùng riêng đặc trưng này làm quy tắc kết luận tấn công.')
+
+
 def show_detail(flow_id, model):
-    flow = call("GET", f"/flows/{flow_id}", model)
-    info_model = call("GET", "/model-info", model)
-    st.subheader(f"Chi tiết flow {flow_id} · {model}")
+    try:
+        flow = call("GET", f"/flows/{flow_id}", model)
+        info_model = call("GET", "/model-info", model)
+    except (RuntimeError, requests.RequestException) as exc:
+        st.error(f"Không tải được chi tiết flow {flow_id}: {exc}")
+        return
+    st.subheader("Chi tiết flow đang chọn")
+    st.caption(f"Flow ID: {flow_id} · Model: {model}")
     a, b, c = st.columns(3)
     a.metric("Dự đoán", flow["prediction"] or "Không hợp lệ")
     b.metric("Xác suất lớp thắng", f"{flow['confidence']:.2%}" if flow["confidence"] is not None else "—")
@@ -66,13 +95,16 @@ def show_detail(flow_id, model):
     right.write(f"Gói đầu của flow: {flow['time'] or '?'}")
     if flow["error"]:
         st.warning(flow["error"])
+    if flow.get("invalid_features"):
+        st.error("Flow có đặc trưng không hợp lệ nên không được dự đoán. Các ô này hiển thị trống; không thay bằng 0.")
+        st.dataframe([{"Đặc trưng lỗi": k, "Giá trị gốc": v} for k, v in flow["invalid_features"].items()], hide_index=True)
     if flow["branch"]:
         st.info(f"Nhánh {flow['branch']} · {flow['env_fingerprint_count']} đặc trưng nhạy môi trường trong Top-5 SHAP"
                 + (" · lớp hiếm trong train" if flow["rare_class_flag"] else "")
                 + ". Nhánh chỉ nhắc xem lại giải thích, không đổi dự đoán.")
 
-    probability, shap_tab, lime_tab, feature_tab, raw_tab = st.tabs(
-        ["Xác suất các lớp", "SHAP", "LIME theo yêu cầu", "Đối chứng đặc trưng", "78 đặc trưng"])
+    probability, shap_tab, lime_tab, feature_tab, reliability_tab, raw_tab = st.tabs(
+        ["Xác suất các lớp", "SHAP tự động", "LIME theo yêu cầu", "Đối chứng đặc trưng", "Đánh giá giải thích", "Đặc trưng và thời gian"])
     with probability:
         bars([{"Lớp": k, "Xác suất": v} for k, v in flow["probabilities"].items()],
              "Lớp", "Xác suất", percent=True)
@@ -86,7 +118,8 @@ def show_detail(flow_id, model):
             bars(shap["top_k"], "feature", "phi", signed=True)
             st.caption("Đỏ tăng điểm lớp đang giải thích; xanh giảm điểm. SHAP ở raw margin, không phải phần trăm xác suất.")
             st.dataframe(pd.DataFrame(shap["top_k"]), hide_index=True, width="stretch")
-            st.caption(f"Sai số cộng tính: {shap['additivity_error']:.2g}")
+            st.caption(f"Sai số cộng tính: {shap['additivity_error']}")
+            explain_features(shap['top_k'], flow['features'], flow['prediction'], 'SHAP')
     with lime_tab:
         if flow["prediction"]:
             if st.button("Tính LIME cho flow này", key=f"lime_{model}_{flow_id}"):
@@ -99,14 +132,16 @@ def show_detail(flow_id, model):
                 if lime["status"] == "ok":
                     bars(lime["top_k"], "feature_desc", "weight", signed=True)
                     st.dataframe(pd.DataFrame(lime["top_k"]), hide_index=True, width="stretch")
-                    st.caption(f"R² cục bộ: {lime['local_r2']:.3f} · Cỡ mẫu hiệu dụng: {diag.get('effective_sample_size', 0):.1f}")
+                    st.caption(f"R² cục bộ: {lime.get('local_r2')} · Cỡ mẫu hiệu dụng: {diag.get('effective_sample_size')}")
+                    explain_features(lime['top_k'], flow['features'], flow['prediction'], 'LIME')
                 else:
-                    st.warning(f"LIME chưa cho giải thích hữu ích: {lime['status']} · cỡ mẫu hiệu dụng {diag.get('effective_sample_size', 0):.1f}.")
+                    st.warning(f"LIME chưa cho giải thích hữu ích: {lime['status']} · cỡ mẫu hiệu dụng {diag.get('effective_sample_size')}.")
+                    st.write('LIME tạo các mẫu biến đổi quanh flow rồi học mô hình đơn giản. Khi gần như chỉ một mẫu có trọng số, không đủ dữ liệu lân cận để giải thích; đây không phải xác nhận model đúng.')
                 st.caption("LIME xấp xỉ cục bộ trên xác suất; không so trực tiếp trọng số với SHAP raw margin.")
     with feature_tab:
         rows = []
         for name, value in flow["features"].items():
-            info = describe(name)
+            info = feature_meaning(name)
             median = info_model["global_median"].get(name)
             note = info.get("note", "")
             if "Python" in note or "rq3-cfm" in note:
@@ -117,98 +152,26 @@ def show_detail(flow_id, model):
                          "Ý nghĩa": info["meaning"], "Lưu ý": note})
         st.caption("Nền là trung vị train của đúng model đang xem. Khác nền không đồng nghĩa đặc trưng quan trọng.")
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", height=480)
+        feature = st.selectbox('Đặc trưng để đối chứng', list(flow['features']), key=f'feature_{model}_{flow_id}')
+        st.write(feature_meaning(feature)['meaning'])
+        value = flow['features'][feature]
+        median = info_model['global_median'].get(feature)
+        bars([{'Nguồn': k, 'Giá trị': v} for k, v in [('Flow', value), ('Trung vị train', median)] if v is not None], 'Nguồn', 'Giá trị')
+    with reliability_tab:
+        lime = flow.get("lime") or {}
+        shap = flow.get("shap") or {}
+        diagnostics = lime.get("diagnostics") or {}
+        st.dataframe([{"Chỉ số": k, "Giá trị": str(v) if v is not None else "Chưa có"} for k, v in [
+            ("Nhánh", flow.get("branch")), ("Số đặc trưng nhạy môi trường", flow.get("env_fingerprint_count")),
+            ("Cờ lớp hiếm", flow.get("rare_class_flag")), ("Sai số cộng tính SHAP", shap.get("additivity_error")),
+            ("Trạng thái LIME", lime.get("status")), ("R² cục bộ", lime.get("local_r2")),
+            ("Cỡ mẫu hiệu dụng", diagnostics.get("effective_sample_size"))]], hide_index=True, width="stretch")
+        st.caption("Các chỉ số đánh giá lời giải thích; không xác nhận nhãn đúng và không tạo điểm tin cậy tổng hợp.")
     with raw_tab:
+        st.write("Gói đầu của flow: " + str(flow.get("time") or "Chưa có"))
+        duration = flow["features"].get("Flow Duration")
+        st.write(f"Thời lượng flow: {duration / 1e6:.6f} giây" if duration is not None else "Thời lượng không hợp lệ")
         st.json({"flow_id": flow_id, "model": model, "features": flow["features"]})
-
-
-@st.fragment(run_every="3s")
-def monitor(model):
-    status = call("GET", "/status", model)
-    rows = call("GET", "/flows", model)
-    benign = sum(r["prediction"] == "Benign" for r in rows)
-    alerts = sum(r["prediction"] not in (None, "Benign") for r in rows)
-    st.caption(f"Lượt: {status['run_id'] or 'chưa có'} · Java: {status['phase']} · {status['n_classes']} lớp · làm mới 3 giây")
-    a, b, c, d = st.columns(4)
-    a.metric("Tổng flow", len(rows))
-    b.metric("Benign", benign)
-    c.metric("Cảnh báo", alerts)
-    d.metric("SHAP có kết quả", sum(r["shap"] is not None for r in rows))
-    st.caption("Tỷ lệ cảnh báo không phải FPR; cần nhãn thật để đo báo nhầm.")
-    if status["error"]:
-        st.error(status["error"])
-    if status["packet_summary"]:
-        st.caption("Java: " + status["packet_summary"])
-    if not rows:
-        st.info("Chưa có flow. Java xuất flow khi kết nối đóng hoặc khi bạn dừng và ghi nốt flow.")
-        return
-    labels = pd.Series([r["prediction"] or "Không hợp lệ" for r in rows]).value_counts()
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Phân bố nhãn dự đoán**")
-        bars([{"Nhãn": k, "Flow": int(v)} for k, v in labels.items()], "Nhãn", "Flow")
-    with right:
-        st.markdown("**Flow theo phút**")
-        times = pd.to_datetime([r["time"] for r in rows], format="mixed", errors="coerce", dayfirst=True)
-        timeline = pd.DataFrame({"Phút": times.strftime("%H:%M"),
-                                 "Loại": ["Benign" if r["prediction"] == "Benign" else "Cảnh báo" for r in rows]})
-        timeline = timeline.dropna().groupby(["Phút", "Loại"]).size().reset_index(name="Flow")
-        if not timeline.empty:
-            st.altair_chart(alt.Chart(timeline).mark_bar().encode(
-                x=alt.X("Phút:O", title="Giờ flow"), y="Flow:Q", color="Loại:N",
-                tooltip=["Phút", "Loại", "Flow"]).properties(height=210), width="stretch")
-    st.subheader(f"Lịch sử flow · {model}")
-    src = st.text_input("Lọc IP nguồn hoặc đích", key=f"ip_{model}").strip().lower()
-    chosen = st.selectbox("Lọc nhãn", ["Tất cả"] + list(labels.index), key=f"label_{model}")
-    window = st.selectbox("Khoảng thời gian gói đầu", ["Toàn bộ lượt", "5 phút", "15 phút", "1 giờ", "Hôm nay"],
-                          key=f"window_{model}")
-    alerts_only = st.checkbox("Chỉ cảnh báo", key=f"alerts_{model}")
-    now = pd.Timestamp.now()
-    minutes = {"5 phút": 5, "15 phút": 15, "1 giờ": 60}
-    cutoff = now - pd.Timedelta(minutes=minutes[window]) if window in minutes else None
-    def within_window(row):
-        if window == "Toàn bộ lượt":
-            return True
-        timestamp = pd.to_datetime(row["time"], format="mixed", errors="coerce", dayfirst=True)
-        if pd.isna(timestamp):
-            return False
-        if window == "Hôm nay":
-            return timestamp.date() == now.date()
-        return cutoff <= timestamp <= now
-    filtered = [r for r in rows if (not src or src in (r["src_ip"] or "").lower() or src in (r["dst_ip"] or "").lower())
-                and (chosen == "Tất cả" or r["prediction"] == chosen)
-                and within_window(r)
-                and (not alerts_only or r["prediction"] not in (None, "Benign"))]
-    pages = max(1, (len(filtered) + 49) // 50)
-    page = st.number_input("Trang (50 flow/trang)", 1, pages, 1, key=f"page_{model}")
-    subset = filtered[::-1][(page - 1) * 50:page * 50]
-    st.caption(f"{len(filtered)} flow khớp bộ lọc · trang {page}/{pages} · mới nhất trước")
-    st.dataframe(pd.DataFrame([{"ID": r["id"], "Gói đầu": r["time"],
-        "Nguồn": f"{r['src_ip'] or '?'}:{r['src_port'] or '?'}",
-        "Đích": f"{r['dst_ip'] or '?'}:{r['dst_port'] or '?'}", "Nhãn": r["prediction"],
-        "Xác suất": f"{r['confidence']:.1%}" if r["confidence"] is not None else "—",
-        "SHAP": "Có" if r["shap"] else "Theo yêu cầu", "Nhánh": r["branch"] or "—"} for r in subset]),
-        hide_index=True, width="stretch", height=350)
-    if subset:
-        selected = st.selectbox("Chọn flow để xem chi tiết", [r["id"] for r in subset],
-                                format_func=lambda v: f"Flow {v}", key=f"flow_{model}_{page}")
-        show_detail(selected, model)
-    with st.expander("Nhóm cảnh báo · cửa sổ 5 phút"):
-        groups = {}
-        for row in filtered:
-            if row["prediction"] in (None, "Benign"):
-                continue
-            when = pd.to_datetime(row["time"], format="mixed", errors="coerce", dayfirst=True)
-            bucket = when.floor("5min").strftime("%d/%m/%Y %H:%M") if not pd.isna(when) else "Không rõ giờ"
-            key = (bucket, row["src_ip"], row["dst_ip"], row["dst_port"], row["prediction"])
-            groups.setdefault(key, []).append(row["id"])
-        st.caption("Chỉ gom để xem; mỗi flow vẫn giữ nguyên dự đoán và giải thích riêng.")
-        if groups:
-            summary = [{"Cửa sổ": k[0], "Nguồn": k[1], "Đích": k[2], "Cổng đích": k[3],
-                        "Nhãn": k[4], "Số flow": len(ids), "Flow ID": ", ".join(map(str, ids))}
-                       for k, ids in list(groups.items())[-100:][::-1]]
-            st.dataframe(pd.DataFrame(summary), hide_index=True, width="stretch", height=260)
-        else:
-            st.info("Chưa có cảnh báo để gom nhóm.")
 
 
 @st.fragment(run_every="3s")
@@ -279,18 +242,33 @@ def import_files():
     st.caption("CSV đã có đặc trưng không thể trích lại bằng Java. PCAPNG cần Wireshark editcap.")
 
 
-st.set_page_config(page_title="IDS Java · M0 / M1", layout="wide")
-st.title("IDS · Java CICFlowMeter và giải thích")
-st.caption("Gói tin → Java gom flow → model dự đoán → SHAP cho cảnh báo → LIME theo yêu cầu.")
-model = st.radio("Hệ thống đang xem", ["M0", "M1"], horizontal=True,
-                 format_func=lambda x: "M0 · mô hình gốc (15 lớp)" if x == "M0" else "M1 · mô hình mới (13 lớp)")
+st.set_page_config(page_title="IDS · Giám sát và giải thích", layout="wide")
+st.markdown('<style>[data-stale="true"] {opacity: 1 !important; transition: none !important;}</style>', unsafe_allow_html=True)
+st.markdown("## IDS · Giám sát traffic và giải thích")
+st.caption("Java CICFlowMeter → flow hoàn tất → dự đoán → SHAP. LIME chạy khi yêu cầu.")
 try:
+    with st.sidebar:
+        st.header("Phạm vi giám sát")
+        model = st.radio("Hệ thống đang xem", ["M0", "M1"], horizontal=True)
+        info = call("GET", "/model-info", model)
+        st.selectbox("Lượt dữ liệu", ["Lượt hiện tại"])
+        st.caption("Khu Java hiện lưu lượt đang chạy trong RAM; chưa có lịch sử DB.")
+        window = st.selectbox("Khoảng thời gian gói đầu", ["Toàn bộ lượt", "5 phút", "15 phút", "1 giờ", "Hôm nay"])
+        src = st.text_input("IP nguồn (để trống = tất cả)").strip()
+        dst = st.text_input("IP đích (để trống = tất cả)").strip()
+        label = st.selectbox("Nhãn dự đoán", ["Tất cả", "Không hợp lệ"] + info["classes"], key="label_"+model)
+        alerts = st.checkbox("Chỉ cảnh báo")
+        paused = st.checkbox("Tạm dừng tự làm mới")
+        st.button("Làm mới ngay")
+        st.caption(f"Model: {model} · {len(info['classes'])} lớp")
+    scope = dict(label=label, src_ip=src, dst_ip=dst, alerts=alerts, window=window)
+    from monitor_ui import render_monitor
     monitor_tab, realtime_tab, upload_tab = st.tabs(["Giám sát flow", "Realtime", "Nạp CSV / PCAP"])
     with monitor_tab:
-        monitor(model)
+        st.fragment(run_every=None if paused else "5s")(render_monitor)(model, scope, call, show_detail)
     with realtime_tab:
         capture_controls(model)
     with upload_tab:
         import_files()
-except Exception as exc:
-    st.error(f"Dịch vụ Java–{model} chưa sẵn sàng: {exc}")
+except (RuntimeError, requests.RequestException) as exc:
+    st.error(f"Dịch vụ Java chưa sẵn sàng: {exc}")

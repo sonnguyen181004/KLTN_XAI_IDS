@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import os
 import re
 import shutil
@@ -19,6 +20,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 TRIAL = Path(__file__).resolve().parent
@@ -34,6 +36,24 @@ from run_java_live_m0 import java_environment, list_interfaces  # noqa: E402
 TOKEN = os.environ.get("JAVA_M0_TRIAL_TOKEN", "")
 if not TOKEN:
     raise RuntimeError("JAVA_M0_TRIAL_TOKEN must be set by launch_dashboard.py")
+
+
+def json_safe(value):
+    """JSON has no NaN/Infinity. Preserve invalid input separately; never impute model data."""
+    if isinstance(value, dict):
+        return {str(k): json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_safe(v) for v in value]
+    if isinstance(value, (float, np.floating)):
+        return float(value) if math.isfinite(value) else None
+    if isinstance(value, np.integer):
+        return int(value)
+    return value
+
+
+class StrictJSONResponse(JSONResponse):
+    def render(self, content):
+        return super().render(json_safe(content))
 
 
 def authorized(x_trial_token: str | None = Header(None)):
@@ -200,7 +220,9 @@ class TrialManager:
                   "src_ip": row.get("Src IP"), "src_port": row.get("Src Port"),
                   "dst_ip": row.get("Dst IP"), "dst_port": row.get("Dst Port"),
                   "protocol": row.get("Protocol"), "features": values.to_dict(),
-                  "models": {}, "error": None}
+                  "models": {}, "error": None,
+                  "invalid_features": {n: str(row.get(FEATURE_MAP[n], row.get(n)))
+                                       for n in self.names if not np.isfinite(values[n])}}
         valid = np.isfinite(values.to_numpy(dtype=float)).all()
         if not valid:
             record["error"] = "NaN/Inf or missing feature; no prediction"
@@ -305,8 +327,9 @@ class TrialManager:
         shared = {k: record[k] for k in ("id", "time", "src_ip", "src_port", "dst_ip", "dst_port", "protocol")}
         if detail:
             shared["features"] = record["features"].copy()
+            shared["invalid_features"] = record.get("invalid_features", {}).copy()
         shared.update(record["models"][name].copy())
-        return shared
+        return json_safe(shared)
 
     def flow(self, flow_id: int, name: str = "M0"):
         name = model_name(name)
@@ -334,7 +357,7 @@ class TrialManager:
                 raise HTTPException(409, "Stop capture/import before importing CSV")
             self.phase = "importing"
             self.records = []
-            self.run_id = "csv:" + name[:80]
+            self.run_id = "csv:" + uuid.uuid4().hex[:8] + ":" + name[:80]
             self.error = None
             self.packet_summary = None
         for row in rows:
@@ -354,6 +377,8 @@ class TrialManager:
         if path.stat().st_size > 100_000_000:
             raise HTTPException(413, "PCAP is larger than 100 MB")
         with self.lock:
+            if self.phase in ("starting", "capturing", "stopping", "importing"):
+                raise HTTPException(409, "Stop capture/import before importing PCAP")
             self.phase = "importing"
         try:
             return self._import_pcap_file(path)
@@ -390,7 +415,7 @@ class TrialManager:
 
 
 manager = TrialManager()
-app = FastAPI(title="Isolated Java CICFlowMeter + M0/M1 trial")
+app = FastAPI(title="Isolated Java CICFlowMeter + M0/M1 trial", default_response_class=StrictJSONResponse)
 
 
 @app.get("/interfaces", dependencies=[Depends(authorized)])

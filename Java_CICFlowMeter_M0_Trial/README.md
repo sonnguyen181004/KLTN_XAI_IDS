@@ -18,13 +18,23 @@ Giữ terminal này chạy và mở **http://127.0.0.1:8502**. Launcher tự ch�
 3. Giữ ô thời gian là **0**: chạy đến khi bạn bấm Dừng, không tự dừng sau một số giây. Chỉ nhập số lớn hơn 0 khi muốn tự dừng theo thời lượng.
 4. Bấm **Bắt đầu Java**. Đợi `starting` chuyển sang `capturing`, rồi lướt web hoặc tạo traffic hợp lệ trên mạng lab đang chọn.
 5. Khi muốn kết thúc, bấm **Dừng và ghi nốt flow**, đợi `finished`. Flow còn mở sẽ được ghi nốt để model xử lý.
-6. Vào **Giám sát flow**, chọn flow để xem nhãn, xác suất, SHAP và bấm **Tính LIME cho flow này** nếu cần. Chuyển M0/M1 để xem kết quả riêng trên cùng lượt dữ liệu.
+6. Vào **Giám sát flow**, **bấm trực tiếp một dòng trong bảng** để hiện chi tiết ngay bên dưới, gồm xác suất, SHAP, LIME và đặc trưng. Không cần chọn thêm trong danh sách. Flow đang xem được giữ khi có flow mới. Chọn M0/M1 ở thanh bên trái để xem kết quả riêng trên cùng lượt dữ liệu.
 
 Nếu chưa có flow trong lúc bắt, thử tạo traffic rồi bấm Dừng để ghi nốt. Nếu kết thúc vẫn báo 0 gói, kiểm tra card được chọn và đường gói; chưa có dữ liệu để đánh giá model.
 
 **Đóng hoặc chạy lại sau cập nhật:** bấm Dừng, đợi `finished`, sau đó nhấn **Ctrl+C** trong terminal. Muốn mở bản mới, chạy lại khối lệnh trên và tải lại trang. Lịch sử trên giao diện hiện ở RAM, đóng launcher sẽ mất; CSV và log capture nằm trong `Java_CICFlowMeter_M0_Trial/output/`.
 
 ## Đã kiểm tra ngày 17/11/2026
+
+### Sửa lỗi 500 khi mở chi tiết và đồng bộ bố cục IDS_M1
+
+Lượt Java `dashboard_86b5e6f743c5.csv`, dòng flow 108 có `Flow Duration=0`, `Flow Bytes/s=Infinity`, `Flow Packets/s=Infinity`. Bộ dự đoán đã từ chối dòng này nhưng API cũ vẫn đưa số vô hạn vào JSON chi tiết nên trả HTTP 500. Đã sửa phản hồi JSON: các số không hữu hạn hiển thị `null`, kèm `invalid_features` ghi giá trị gốc. Vector nội bộ vẫn được kiểm tra và không dự đoán; không điền 0, không đổi nhãn. Cơ chế này cũng áp dụng cho phản hồi SHAP/LIME và các chỉ số chưa hữu hạn.
+
+Giao diện dùng bố cục trình bày của IDS_M1: bộ lọc bên trái, thanh trạng thái, sáu ô chỉ số, biểu đồ thời gian và nhãn, bảng tô màu với chọn dòng trực tiếp, nút Trang trước/Trang sau, sáu tab chi tiết (Xác suất, SHAP tự động, LIME, Đối chứng đặc trưng, Đánh giá giải thích, Đặc trưng và thời gian). Flow lỗi có nhóm riêng, không tính vào cảnh báo. Lỗi lấy chi tiết được hiển thị gọn và không giữ chi tiết của flow trước. Model và lượt dữ liệu có khóa lựa chọn riêng; nạp lại cùng tên CSV vẫn tạo mã lượt mới.
+
+Kiểm thử riêng trên cổng 18765/18766 để không can thiệp phiên người dùng: `test_invalid_flow.py` tái hiện dòng 108 và thêm NaN, -Infinity, giá trị thiếu cho cả M0/M1; chi tiết trả 200 với JSON hợp lệ, SHAP/LIME cho flow lỗi trả 422, không có token trả 403, flow không tồn tại trả 404. `smoke_ui.py` gửi sự kiện chọn dòng bảng thật qua Streamlit AppTest, kiểm tra chi tiết flow lỗi/hợp lệ, SHAP/LIME từng model, giữ lựa chọn khi có dòng mới và bộ lọc Không hợp lệ. Đây là kiểm thử giao diện bằng AppTest, không phải kiểm tra ảnh từng pixel trong trình duyệt.
+
+Sau cập nhật cần dừng capture rồi khởi động lại launcher để API nạp bản sửa. CSV phiên cũ vẫn ở `output/`; có thể nạp lại qua tab CSV để xem sau khi restart. Bố cục theo IDS_M1 nhưng các phần vận hành chưa triển khai (DB lịch sử, hàng đợi SHAP, đo độ trễ đầy đủ) vẫn giữ giới hạn đã ghi bên dưới; không hiển thị số liệu giả cho những phần đó.
 
 - Clone `ahlashkari/CICFlowMeter` vào `upstream/` (bản V4, Gradle 4.2, Java 8).
 - Thay dependency jNetPcap bằng JAR có sẵn trong kho, chỉ trong bản clone thử nghiệm.
