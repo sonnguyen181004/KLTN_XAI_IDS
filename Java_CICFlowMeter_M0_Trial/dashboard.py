@@ -192,6 +192,23 @@ def monitor(model):
         selected = st.selectbox("Chọn flow để xem chi tiết", [r["id"] for r in subset],
                                 format_func=lambda v: f"Flow {v}", key=f"flow_{model}_{page}")
         show_detail(selected, model)
+    with st.expander("Nhóm cảnh báo · cửa sổ 5 phút"):
+        groups = {}
+        for row in filtered:
+            if row["prediction"] in (None, "Benign"):
+                continue
+            when = pd.to_datetime(row["time"], format="mixed", errors="coerce", dayfirst=True)
+            bucket = when.floor("5min").strftime("%d/%m/%Y %H:%M") if not pd.isna(when) else "Không rõ giờ"
+            key = (bucket, row["src_ip"], row["dst_ip"], row["dst_port"], row["prediction"])
+            groups.setdefault(key, []).append(row["id"])
+        st.caption("Chỉ gom để xem; mỗi flow vẫn giữ nguyên dự đoán và giải thích riêng.")
+        if groups:
+            summary = [{"Cửa sổ": k[0], "Nguồn": k[1], "Đích": k[2], "Cổng đích": k[3],
+                        "Nhãn": k[4], "Số flow": len(ids), "Flow ID": ", ".join(map(str, ids))}
+                       for k, ids in list(groups.items())[-100:][::-1]]
+            st.dataframe(pd.DataFrame(summary), hide_index=True, width="stretch", height=260)
+        else:
+            st.info("Chưa có cảnh báo để gom nhóm.")
 
 
 @st.fragment(run_every="3s")
