@@ -194,3 +194,32 @@ Kiểm tra tiếp trong lab: bật capture trên VMnet1, tạo một phiên HTTP
 ## Đọc hai CSV phiên lab 04/11/2026 bằng M0 (kết quả cũ)
 
 Theo yêu cầu, đã đọc trực tiếp `IDS_M1_Lab/data/capture_sessions/ff8f0fa5051b45389a9393023effc083/flows.csv` và `.../a10c3bc274594a00be959997bf552236/flows.csv`, áp ánh xạ/đơn vị như feeder rồi chạy M0 trong khu thử riêng. Cả 101 flow của phiên mang tên Hulk được M0 dự đoán Hulk. Trong phiên SSH, M0 dự đoán 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration. Riêng 323 flow đích cổng 22: 135 Hulk, 128 Benign, 60 SSH-Bruteforce. Đây là **nhãn do M0 trả về**, chưa phải phép đo đúng/sai từng flow vì cần nhãn thực và mốc thời gian của kịch bản. Không có PCAP trong hai thư mục phiên, nên không thể dùng Java CICFlowMeter trích xuất lại chính traffic đó từ các CSV.
+
+## Kiểm thử realtime qua điều khiển dashboard sau sửa lỗi 500 (17/11/2026)
+
+Mục đích: kiểm tra luồng Wi-Fi thật → Java → CSV → hai model → chọn dòng xem chi tiết, sau thay đổi xử lý NaN/Infinity và giao diện. Đã chạy `test_realtime_ui.py` lúc khoảng 19:56–19:57, dùng API riêng cổng 18767 và Streamlit AppTest thực thi nút Bắt đầu/Dừng của dashboard. Không giả lập card hoặc CSV, không đổi model, không reset DB. Đây là kiểm thử chức năng UI bằng AppTest; chưa phải kiểm tra hình ảnh trên trình duyệt thật.
+
+Phiên `5e1b1eae9e28` dùng card Realtek RTL8852BE WiFi 6. Script tạo sáu yêu cầu HTTPS tới example.com, đều HTTP 200; capture đồng thời chứa traffic nền trên card, không chỉ sáu yêu cầu này. Dùng chế độ thời lượng 0 rồi bấm Dừng: 31,32 giây từ lúc phát hiện Java đã mở card tới khi gửi Dừng; 33,19 giây tới khi đọc hết dữ liệu. Thời gian này không bao gồm khởi động Gradle.
+
+| Kiểm tra | Kết quả |
+| --- | --- |
+| Gói TCP/UDP Java nhận | 16.163 |
+| Flow xuất khi đang bắt / ghi nốt khi dừng | 20 / 36 |
+| Đối soát CSV / API M0 / API M1 | 56 / 56 / 56; không có dòng không hợp lệ |
+| M0 | 50 Benign, 6 DoS attacks-Hulk |
+| M1 hiện tại | 56 Benign |
+| GET chi tiết từng flow | 112/112 HTTP 200, JSON hợp lệ |
+| Bấm dòng trên bảng | Flow 56 hiện đúng chi tiết ở cả M0 và M1 |
+| SHAP theo yêu cầu trên flow 56 | Đúng lớp được dự đoán; sai số cộng tính M0 1,91×10⁻⁶, M1 3,81×10⁻⁶ |
+| LIME trên flow 56 | M0: insufficient_neighborhood, ESS=1; M1: ok, ESS≈1000, R²≈0,646 |
+| Dừng và giải phóng tiến trình | Java exit 0, luồng đọc CSV kết thúc, API kiểm thử tắt |
+
+Kết quả chi tiết và SHA-256 của hai model nằm trong `realtime_ui_20261117.json`. CSV/log gốc ở `output/dashboard_5e1b1eae9e28.*`, chỉ giữ cục bộ. Kết quả này xác minh chức năng realtime và chọn flow sau sửa; không chứng minh không mất gói ở NIC/Npcap, không đo FPR, không chứng minh ổn định tải cao hoặc dài hạn. LIME M0 vẫn không có giải thích hữu ích cho flow đã thử; trạng thái `ok` của M1 không chứng nhận nhãn đúng hay lời giải thích có tính nhân quả. Phiên này không phát sinh Infinity, nên lỗi Infinity được kiểm tra riêng bằng `test_invalid_flow.py`, không quy cho phiên realtime này.
+
+Chạy lại test khi không có phiên Java capture khác đang chạy:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/test_realtime_ui.py
+```
+
+Lệnh này thực sự mở card Wi-Fi, tạo traffic HTTPS nhẹ, dừng sau khoảng 30 giây rồi kiểm tra XAI và UI. Kết quả mới ghi `output/realtime_ui_latest.json`; không ghi đè kết quả đã lưu trong Git. Khi muốn tự sử dụng dashboard, vẫn chạy `python Java_CICFlowMeter_M0_Trial/launch_dashboard.py`, mở cổng 8502 và chọn model/interface như phần hướng dẫn trên.
