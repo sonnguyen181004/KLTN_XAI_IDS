@@ -95,3 +95,22 @@ Chỉ có CSV thì không thể chạy lại **CICFlowMeter Java** để so trí
 4. Nếu thử realtime Java: kiểm tra riêng việc bắt trên card, xuất CSV khi flow đóng, timeout, flush khi dừng và feeder đọc dòng mới. Chưa kết nối vào nút capture của RQ3.
 
 Model hiện có: M0 (`RQ1_Model_Training_xboost/saved_models/`, 15 lớp), M0b (`RQ4_Retrain_Compare/models/`, 13 lớp), M1 (`RQ4_Retrain_Compare/models/` và bản trong `IDS_M1_Lab/models/`, 13 lớp). M2 chỉ là kế hoạch hoãn, chưa có file model đã huấn luyện.
+
+## Java bắt Wi-Fi realtime → flow → M0 (17/11/2026)
+
+Đã thêm `LiveTrial.java` cho CLI Java thử riêng. Mã này bắt trên card Npcap theo tên chính xác, giới hạn 1–120 giây, ghi một dòng CSV khi Java đóng flow và ghi nốt flow còn mở khi hết thời gian. `run_java_live_m0.py` theo dõi CSV, dự đoán M0 từng dòng hoàn chỉnh ngay trong lúc capture chạy. Không gọi API, không dùng DB, không dùng M1; file CSV có IP được giữ trong `output/` và không commit.
+
+Lượt 20 giây trên `Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter` đã kết thúc với mã 0; 57 dòng flow hợp lệ, M0 dự đoán 51 Benign và 6 DoS attacks-Hulk. Trong lúc Java còn bắt, đã thấy ít nhất 8 dự đoán được in ra trước khi tiến trình kết thúc. Đây là bằng chứng đường live hoạt động, **không** là bằng chứng 6 cảnh báo đúng hay sai vì không ghi nhãn từng flow/nhật ký hoạt động. Cũng chưa đo số packet nhận và packet mất ở NIC/Npcap; lượt 20 giây chưa kiểm chứng độ ổn định lâu dài.
+
+Chạy lại từ thư mục gốc dự án sau khi clone Java, áp `trial-build.patch` và chép `LiveTrial.java` vào `upstream/src/main/java/cic/cs/unb/ca/ifm/`:
+
+```powershell
+cd Java_CICFlowMeter_M0_Trial/upstream
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk1.8.0_431'
+$env:GRADLE_USER_HOME = (Join-Path (Get-Location) '.gradle-home')
+.\gradlew.bat liveTrial -PtrialArgs=--list --offline --no-daemon
+cd ..\..
+python Java_CICFlowMeter_M0_Trial/run_java_live_m0.py --interface 'Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter' --seconds 20
+```
+
+Chạy PowerShell có quyền bắt gói trên card đã chọn. Để có các phép đo về traffic thật, cần chạy phiên có ghi ground truth/hoạt động rõ ràng, lưu PCAP cùng phiên để đối chiếu packet, và đánh giá tương thích đặc trưng Java với train M0. Không gọi 6 Hulk là báo nhầm chỉ vì người dùng không chủ động tạo tấn công trong 20 giây.

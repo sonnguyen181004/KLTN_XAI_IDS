@@ -1,15 +1,37 @@
 diff --git a/build.gradle b/build.gradle
+index d766d1f..cf722d3 100644
 --- a/build.gradle
 +++ b/build.gradle
-@@ -17,7 +17,7 @@ dependencies {
+@@ -17,7 +17,7 @@ repositories {
+ dependencies {
      compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
      compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.25'
 -    compile group: 'org.jnetpcap', name: 'jnetpcap', version:'1.4.1'
 +    compile files('jnetpcap/win/jnetpcap-1.4.r1425/jnetpcap.jar')
-@@ -111,6 +111,9 @@ task exeCMD(type: JavaExec){
+     compile group: 'junit', name: 'junit', version:'4.12'
+     compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.6'
+     compile group: 'org.apache.commons', name: 'commons-math3', version:'3.5'
+@@ -110,6 +110,9 @@ task execute(type: JavaExec) {
+ task exeCMD(type: JavaExec){
      main = "cic.cs.unb.ca.ifm.Cmd" //main class
      classpath = sourceSets.main.runtimeClasspath
 +    if (project.hasProperty('trialInput') && project.hasProperty('trialOutput')) {
 +        args project.property('trialInput'), project.property('trialOutput')
 +    }
      String osName = System.getProperty('os.name').toLowerCase()
+     if(osName.contains('windows')){
+         jvmArgs '-Djava.library.path=jnetpcap/win/jnetpcap-1.4.r1425'
+@@ -119,6 +122,13 @@ task exeCMD(type: JavaExec){
+     //args = ["/home/yzhang29/0a/Capture/", "/home/yzhang29/0a/Capture/out/"]
+ }
+ 
++task liveTrial(type: JavaExec) {
++    main = "cic.cs.unb.ca.ifm.LiveTrial"
++    classpath = sourceSets.main.runtimeClasspath
++    jvmArgs '-Djava.library.path=jnetpcap/win/jnetpcap-1.4.r1425'
++    if (project.hasProperty('trialArgs')) args project.property('trialArgs').split('\\|', -1)
++}
++
+ 
+ task cmdScript(type: CreateStartScripts) {
+     mainClassName = "cic.cs.unb.ca.ifm.Cmd"

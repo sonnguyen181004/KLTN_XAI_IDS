@@ -1,0 +1,15 @@
+{
+  "purpose": "isolated Java CICFlowMeter live capture to M0 prediction smoke test",
+  "interface_description": "Realtek RTL8852BE WiFi 6 802.11ax PCIe Adapter",
+  "requested_capture_seconds": 20,
+  "java_exit_code": 0,
+  "csv_flow_rows": 57,
+  "m0_predictions": {
+    "Benign": 51,
+    "DoS attacks-Hulk": 6
+  },
+  "prediction_observed_before_capture_end": true,
+  "ground_truth_available": false,
+  "packet_drop_measured": false,
+  "notes": "No API, database, UI or M1 was used. Short smoke test only; labels are model outputs, not verified attack or FPR. Raw CSV with IPs stays ignored in output/."
+}
