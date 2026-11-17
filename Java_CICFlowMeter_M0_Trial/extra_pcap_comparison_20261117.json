@@ -1,0 +1,292 @@
+{
+  "restore": {
+    "java_rows": 3,
+    "python_rows": 3,
+    "java_packet_sum": 31,
+    "python_packet_sum": 33,
+    "uniquely_matched_pairs": 3,
+    "unmatched_or_ambiguous_java": 0,
+    "unmatched_or_ambiguous_python": 0,
+    "matched_packet_count_delta_python_minus_java": {
+      "1": 2,
+      "0": 1
+    },
+    "m0_java_labels": {
+      "Benign": 3
+    },
+    "m0_python_labels": {
+      "DoS attacks-Hulk": 2,
+      "Benign": 1
+    },
+    "uniquely_matched_prediction_pairs": 3,
+    "matched_prediction_disagreements": 2,
+    "features_with_any_difference": 49,
+    "top_feature_differences": [
+      {
+        "feature": "TotLen Fwd Pkts",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 404.0
+      },
+      {
+        "feature": "TotLen Bwd Pkts",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 272.0
+      },
+      {
+        "feature": "Fwd Pkt Len Max",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Fwd Pkt Len Min",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Fwd Pkt Len Mean",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 63.633333333333326
+      },
+      {
+        "feature": "Fwd Pkt Len Std",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 8.765220656250953
+      },
+      {
+        "feature": "Bwd Pkt Len Max",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Bwd Pkt Len Min",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Bwd Pkt Len Mean",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 67.59999999999997
+      },
+      {
+        "feature": "Flow Byts/s",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 1431.3919619278308
+      },
+      {
+        "feature": "Flow IAT Std",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 12821.371850417912
+      },
+      {
+        "feature": "Fwd IAT Std",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 44903.46323001024
+      },
+      {
+        "feature": "Bwd IAT Std",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 1893.7951620224248
+      },
+      {
+        "feature": "Fwd PSH Flags",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 1.0
+      },
+      {
+        "feature": "Bwd PSH Flags",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 1.0
+      },
+      {
+        "feature": "Fwd Header Len",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 48.0
+      },
+      {
+        "feature": "Bwd Header Len",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 56.0
+      },
+      {
+        "feature": "Pkt Len Min",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Pkt Len Max",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Pkt Len Mean",
+        "compared": 3,
+        "different": 3,
+        "median_abs_diff": 67.45454545454547
+      }
+    ]
+  },
+  "HTTP-CPU025-02": {
+    "java_rows": 378,
+    "python_rows": 387,
+    "java_packet_sum": 3063,
+    "python_packet_sum": 3440,
+    "uniquely_matched_pairs": 378,
+    "unmatched_or_ambiguous_java": 0,
+    "unmatched_or_ambiguous_python": 9,
+    "matched_packet_count_delta_python_minus_java": {
+      "1": 368,
+      "0": 10
+    },
+    "m0_java_labels": {
+      "Benign": 378
+    },
+    "m0_python_labels": {
+      "DoS attacks-Hulk": 378,
+      "Benign": 9
+    },
+    "uniquely_matched_prediction_pairs": 378,
+    "matched_prediction_disagreements": 377,
+    "features_with_any_difference": 60,
+    "top_feature_differences": [
+      {
+        "feature": "TotLen Fwd Pkts",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 338.0
+      },
+      {
+        "feature": "TotLen Bwd Pkts",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 206.0
+      },
+      {
+        "feature": "Fwd Pkt Len Max",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Fwd Pkt Len Min",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Fwd Pkt Len Mean",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 62.45
+      },
+      {
+        "feature": "Fwd Pkt Len Std",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 10.981362313128052
+      },
+      {
+        "feature": "Bwd Pkt Len Max",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 74.0
+      },
+      {
+        "feature": "Bwd Pkt Len Min",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Bwd Pkt Len Mean",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 68.66666666666667
+      },
+      {
+        "feature": "Flow Byts/s",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 181.25752836865934
+      },
+      {
+        "feature": "Flow IAT Std",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 174623.19897397043
+      },
+      {
+        "feature": "Fwd IAT Std",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 432868.3196866722
+      },
+      {
+        "feature": "Bwd IAT Std",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 620437.6544582255
+      },
+      {
+        "feature": "Fwd PSH Flags",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 1.0
+      },
+      {
+        "feature": "Fwd Header Len",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 36.0
+      },
+      {
+        "feature": "Bwd Header Len",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 44.0
+      },
+      {
+        "feature": "Pkt Len Min",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Pkt Len Max",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 66.0
+      },
+      {
+        "feature": "Pkt Len Mean",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 68.0
+      },
+      {
+        "feature": "Pkt Len Std",
+        "compared": 378,
+        "different": 378,
+        "median_abs_diff": 2.936761261882154
+      }
+    ]
+  }
+}

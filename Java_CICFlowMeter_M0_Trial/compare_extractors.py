@@ -1,5 +1,6 @@
 """Compare two frozen extractors without assuming CSV row order or ground truth."""
 import json
+import argparse
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -36,9 +37,13 @@ def key(row, fields):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("names", nargs="*", default=["test", "tesst2"])
+    parser.add_argument("--report", default="extractor_comparison.json")
+    args = parser.parse_args()
     out = {}
     base = Path(__file__).parent / "output"
-    for name in ("test", "tesst2"):
+    for name in args.names:
         j, jx, ji = normalized_frame(base / f"{name}.pcap_Flow.csv", "java")
         p, px, pi = normalized_frame(base / f"{name}_python.csv", "python")
         groups = [defaultdict(list), defaultdict(list)]
@@ -47,6 +52,9 @@ def main():
                 group[key(row, fields)].append(i)
         pairs = [(groups[0][k][0], groups[1][k][0]) for k in groups[0].keys() & groups[1].keys()
                  if len(groups[0][k]) == len(groups[1][k]) == 1]
+        packet_deltas = Counter(int((px.at[pi_, "Tot Fwd Pkts"] + px.at[pi_, "Tot Bwd Pkts"])
+                                    - (jx.at[ji_, "Tot Fwd Pkts"] + jx.at[ji_, "Tot Bwd Pkts"]))
+                                for ji_, pi_ in pairs)
         diffs = []
         for feature in FEATURES:
             a = np.array([jx.at[i, feature] for i, _ in pairs], dtype=float)
@@ -74,13 +82,14 @@ def main():
                          uniquely_matched_pairs=len(pairs),
                          unmatched_or_ambiguous_java=len(j)-len(pairs),
                          unmatched_or_ambiguous_python=len(p)-len(pairs),
+                         matched_packet_count_delta_python_minus_java=dict(packet_deltas),
                          m0_java_labels=dict(Counter(pd.read_csv(base / f"{name}_java_m0.csv")["predicted_label"])),
                          m0_python_labels=dict(Counter(pd.read_csv(base / f"{name}_python_m0.csv")["predicted_label"])),
                          uniquely_matched_prediction_pairs=len(label_pairs),
                          matched_prediction_disagreements=sum(a != b for a, b in label_pairs),
                          features_with_any_difference=sum(v["different"] > 0 for v in diffs),
                          top_feature_differences=sorted(diffs, key=lambda v: v["different"], reverse=True)[:20])
-    target = base / "extractor_comparison.json"
+    target = base / args.report
     target.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(out, ensure_ascii=False, indent=2))
 

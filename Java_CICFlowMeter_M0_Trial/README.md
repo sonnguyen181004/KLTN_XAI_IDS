@@ -59,6 +59,21 @@ python Java_CICFlowMeter_M0_Trial\compare_extractors.py
 
 ## Bước kiểm chứng tiếp
 
+### Thử thêm hai PCAP ngày 17/11/2026
+
+Thử `ddos/restore.pcapng` (33 frame) và `ddos/HTTP-CPU025-02.pcapng` (3.440 frame). `editcap -F pcap` giữ nguyên số frame ở cả hai file. Kết quả đầy đủ không chứa IP trong `extra_pcap_comparison_20261117.json`.
+
+| File | Flow Java / Python | Gói cộng từ CSV Java / Python | Cặp ghép duy nhất | M0 Hulk Java / Python | Cặp đổi nhãn |
+|---|---:|---:|---:|---:|---:|
+| restore | 3 / 3 | 31 / 33 | 3 | 0 / 2 | 2 |
+| HTTP-CPU025-02 | 378 / 387 | 3.063 / 3.440 | 378 | 0 / 378 | 377 |
+
+Trong file HTTP, ở 368/378 cặp ghép được, Python có nhiều hơn Java đúng một gói trong tổng số gói của flow. Các cột độ dài gói cũng khác ở cả 378 cặp; độ lệch trung vị `Fwd Pkt Len Max` là 66 byte. Đây là **bất tương thích trích xuất đáng kể**. Chưa xác minh nguyên nhân chính xác từ mã nguồn và từng packet; không xem Java là bản sửa lỗi cho M0. Tên file chứa `ddos` không phải nhãn chuẩn của từng flow. Không có log tấn công và nhãn từng flow để đo recall, FPR hay chọn bộ trích xuất tốt hơn.
+
+Để tái lập, chuyển hai PCAPNG bằng `editcap -F pcap`, chạy Java `exeCMD` với từng PCAP, chạy Python `run_live_capture.py --extractor project` trên **cùng PCAP sau chuyển**, chạy `predict_m0.py` với `--format java` hoặc `--format python`, sau đó `python Java_CICFlowMeter_M0_Trial/compare_extractors.py restore HTTP-CPU025-02 --report extra_pcap_comparison.json`.
+
+### Việc còn cần xác minh
+
 1. Chuyển `test.pcapng` và `tesst2.pcapng` sang PCAP bằng công cụ đọc PCAPNG đáng tin cậy; ghi số packet trước/sau chuyển.
 2. Chạy cùng PCAP qua Java và Python hiện tại, đối chiếu flow bằng IP/cổng/giao thức/thời gian, rồi so từng đặc trưng. Không ghép theo số dòng.
 3. Đối chiếu những flow có nhãn thực được xác minh trước khi so số Benign/Hulk. Kiểm tra đơn vị thời gian theo từng cột; Java README ghi micro giây nên script hiện không nhân 1e6.
