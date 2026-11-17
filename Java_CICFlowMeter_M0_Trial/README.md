@@ -127,6 +127,20 @@ Chương trình liệt kê các card Java/Npcap thấy được, cho nhập **s�
 
 Đây là menu **trong terminal của khu thử riêng**, chưa phải nút/chọn card trên dashboard chính. CSV và log Java từng lượt nằm trong `Java_CICFlowMeter_M0_Trial/output/` (không commit). Đã kiểm tra `--list` thấy card Wi-Fi thật; lệnh bắt trực tiếp 20 giây đã được kiểm tra ở lượt trên. Menu không dùng API/DB và không thay cách chạy M1.
 
+## Dashboard riêng Java + M0 + SHAP/LIME
+
+Lệnh chạy **một terminal** tại gốc `SELF_KLTN`:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/launch_dashboard.py
+```
+
+Mở `http://127.0.0.1:8502`. Chọn interface trong danh sách, chọn thời gian `0` để chạy tới khi bấm **Dừng và ghi nốt flow**, hoặc nhập 1–3600 giây để tự dừng. Khi Java đóng flow, API riêng đọc dòng CSV mới, M0 dự đoán và SHAP tự tính cho cảnh báo. Chọn một flow để xem thông tin kết nối, xác suất lớp dự đoán, biểu đồ SHAP và 78 giá trị đặc trưng. LIME chỉ tính khi bấm nút; nếu `effective_sample_size` quá thấp, UI báo không đủ vùng mẫu thay vì trình bày trọng số như giải thích đáng tin. Dashboard làm mới mỗi 2 giây. Đóng bằng Ctrl+C ở terminal đã chạy lệnh; launcher yêu cầu Java dừng và ghi nốt flow trước khi thoát.
+
+Thiết kế thử: `launch_dashboard.py` sở hữu API ở `127.0.0.1:8765` và tiến trình Streamlit ở `127.0.0.1:8502`. API giữ trạng thái capture qua mỗi lần Streamlit vẽ lại, chặn bắt trùng và dùng token phiên cục bộ cho các request. `service.py` quản lý Java, dự đoán M0, SHAP và LIME; `dashboard.py` chỉ hiển thị/gửi lệnh. Java vẫn là bộ trích xuất, Python là bộ điều phối và chạy model/XAI. Dữ liệu thô lưu trong `output/` và không dùng DB hay API/dashboard của RQ3 hoặc M1.
+
+Đã kiểm tra: API mở/dừng Java thật trên Wi-Fi, từ chối bắt trùng, đọc dòng CSV mới và ghi nốt flow lúc dừng (lượt kiểm tra sau cùng: 647 gói Java nhận, 27 flow, M0: 25 Benign và 2 Hulk). Kiểm tra offline từ CSV Java: SHAP giải thích đúng lớp Hulk với sai số cộng tính `2,86×10⁻⁶`; LIME trả `insufficient_neighborhood`, ESS=1. Kiểm tra giao diện bằng Streamlit AppTest: danh sách card, bảng flow, chọn flow và nút LIME đều hoạt động. Lượt ngắn này **chưa** kiểm chứng độ ổn định lâu dài, độ đúng nhãn hay tương thích đặc trưng Java–train M0. Tiến trình capture trong bản thử vẫn cần launcher còn sống; nếu hệ điều hành kết thúc launcher đột ngột, cần kiểm tra tiến trình Java còn lại trước khi mở lượt mới.
+
 ## Đọc hai CSV phiên lab 04/11/2026 bằng M0
 
 Theo yêu cầu, đã đọc trực tiếp `IDS_M1_Lab/data/capture_sessions/ff8f0fa5051b45389a9393023effc083/flows.csv` và `.../a10c3bc274594a00be959997bf552236/flows.csv`, áp ánh xạ/đơn vị như feeder rồi chạy M0 trong khu thử riêng. Cả 101 flow của phiên mang tên Hulk được M0 dự đoán Hulk. Trong phiên SSH, M0 dự đoán 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration. Riêng 323 flow đích cổng 22: 135 Hulk, 128 Benign, 60 SSH-Bruteforce. Đây là **nhãn do M0 trả về**, chưa phải phép đo đúng/sai từng flow vì cần nhãn thực và mốc thời gian của kịch bản. Không có PCAP trong hai thư mục phiên, nên không thể dùng Java CICFlowMeter trích xuất lại chính traffic đó từ các CSV.

@@ -24,15 +24,16 @@ public class LiveTrial {
             for (PcapIf device : devices) System.out.println(device.getName() + " | " + device.getDescription());
             return;
         }
-        if (args.length != 3) throw new IllegalArgumentException("interface-name seconds output.csv");
+        if (args.length != 4) throw new IllegalArgumentException("interface-name seconds output.csv stop-file");
         PcapIf selected = null;
         for (PcapIf device : devices)
             if (device.getName().equals(args[0]) || (device.getDescription() != null && device.getDescription().equals(args[0])))
                 selected = device;
         if (selected == null) throw new IllegalArgumentException("Interface not found; run --list first");
         int seconds = Integer.parseInt(args[1]);
-        if (seconds < 1 || seconds > 120) throw new IllegalArgumentException("seconds must be 1..120");
+        if (seconds < 0) throw new IllegalArgumentException("seconds must be >= 0 (0 means until stop-file)");
         File output = new File(args[2]).getAbsoluteFile();
+        File stopFile = new File(args[3]).getAbsoluteFile();
         if (output.exists()) throw new IllegalArgumentException("Output exists: " + output);
         output.getParentFile().mkdirs();
         FlowGenerator flows = new FlowGenerator(true, 120000000L, 5000000L);
@@ -46,9 +47,9 @@ public class LiveTrial {
         Pcap capture = Pcap.openLive(selected.getName(), 65535, Pcap.MODE_PROMISCUOUS, 1000, error);
         if (capture == null) throw new IllegalStateException("Open capture failed: " + error);
         final int[] packets = {0};
-        long deadline = System.nanoTime() + seconds * 1000000000L;
+        long deadline = seconds == 0 ? Long.MAX_VALUE : System.nanoTime() + seconds * 1000000000L;
         try {
-            while (System.nanoTime() < deadline) {
+            while (System.nanoTime() < deadline && !stopFile.exists()) {
                 int status = capture.dispatch(100, (PcapPacket packet, String unused) -> {
                     PcapPacket copy = new PcapPacket(Type.POINTER);
                     packet.transferStateAndDataTo(copy);

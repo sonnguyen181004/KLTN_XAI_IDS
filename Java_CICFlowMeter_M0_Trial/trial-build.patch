@@ -1,5 +1,5 @@
 diff --git a/build.gradle b/build.gradle
-index d766d1f..cf722d3 100644
+index d766d1f..e3fbd0e 100644
 --- a/build.gradle
 +++ b/build.gradle
 @@ -17,7 +17,7 @@ repositories {
@@ -29,7 +29,7 @@ index d766d1f..cf722d3 100644
 +    main = "cic.cs.unb.ca.ifm.LiveTrial"
 +    classpath = sourceSets.main.runtimeClasspath
 +    jvmArgs '-Djava.library.path=jnetpcap/win/jnetpcap-1.4.r1425'
-+    if (project.hasProperty('trialArgs')) args project.property('trialArgs').split('\\|', -1)
++    if (project.hasProperty('trialArgs')) args project.property('trialArgs').split('~', -1)
 +}
 +
  

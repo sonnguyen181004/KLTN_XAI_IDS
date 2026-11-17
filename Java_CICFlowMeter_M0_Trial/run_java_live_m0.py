@@ -84,8 +84,9 @@ def main():
     features = list(model.feature_names_in_)
     output = TRIAL / "output" / f"java_live_{uuid.uuid4().hex[:12]}.csv"
     output.parent.mkdir(exist_ok=True)
+    stop_file = output.with_suffix(".stop")
     cmd = [str(TRIAL / "upstream" / "gradlew.bat"), "liveTrial",
-           f"-PtrialArgs={interface}|{args.seconds}|{output}", "--offline", "--no-daemon"]
+           f"-PtrialArgs={interface}~{args.seconds}~{output}~{stop_file}", "--offline", "--no-daemon"]
     env = java_environment()
     log = output.with_suffix(".log")
     log_file = log.open("w", encoding="utf-8")
