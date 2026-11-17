@@ -4,6 +4,8 @@ Mục đích: kiểm tra bản Java V4 trích xuất traffic/PCAP thành flow, r
 
 **Kết luận kiểm tra mới nhất 17/11/2026:** đúng là Java trích xuất, nhưng chưa tương thích đầy đủ với bộ train M0 hoặc bộ improved tham chiếu M1. M1 đang dùng trong IDS_M1_Lab đã khác checksum bản M1 nghiên cứu lưu ở RQ4. Trên hai CSV lab cũ do Python xuất, M1 hiện tại trả toàn bộ Benign; không dùng việc ít cảnh báo khi duyệt web để kết luận M1 tốt hơn. Xem mục kiểm tra CSV và ngữ nghĩa đặc trưng cuối tài liệu.
 
+**Dọn phần thử ngày 17/11/2026:** bỏ `smoke_dashboard.py` chỉ kiểm tra M0; chuyển kiểm tra SHAP tự động và LIME cảnh báo vào `smoke_dual_models.py` để giữ phạm vi kiểm thử. Giữ các JSON kết quả có ngày vì chúng lưu phiên bản/model và bằng chứng khác nhau. `input/`, `output/`, `upstream/` và cache Python không đưa lên Git; không xóa PCAP, CSV hay model cục bộ. README gốc có liên kết vào hướng dẫn này.
+
 ## Chạy dashboard và tự bấm Bắt/Dừng
 
 Mở một terminal **PowerShell trong VS Code**, dán cả khối sau:

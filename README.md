@@ -1,5 +1,9 @@
 # KLTN_XAI_IDS
 
+## Khu thử Java CICFlowMeter + M0/M1 — 17/11/2026
+
+[Hướng dẫn chạy, kết quả realtime và kiểm tra tương thích đặc trưng](Java_CICFlowMeter_M0_Trial/README.md). Chạy `python Java_CICFlowMeter_M0_Trial/launch_dashboard.py`, mở `http://127.0.0.1:8502`. Đây là khu thử riêng, chưa chứng nhận Java tương thích hoàn toàn với bộ train; xem các giới hạn và kết quả CSV lab trước khi kết luận chất lượng model.
+
 ## Bộ tài liệu đọc hiểu hệ thống — 18/10/2026
 
 - [Quyển 1 — Hiểu và sử dụng IDS RQ3 (PDF, 21 trang)](RQ3_IDS_System/docs/handbooks/01_Hieu_va_su_dung_he_thong_IDS_RQ3.pdf): IDS/SOC, vị trí cảm biến mạng so với endpoint/EDR/SIEM, kiến trúc, phần đã làm/chưa làm, chạy API/UI, test realtime/CSV/PCAP, đọc Dashboard/XAI, 15 nhãn và từ điển 78 đặc trưng.

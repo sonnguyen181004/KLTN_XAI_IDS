@@ -16,6 +16,13 @@ assert manager.import_csv(source.name, text)["rows"] == len(rows)
 for name, count in (("M0", 15), ("M1", 13)):
     status = manager.status(name)
     assert status["rows"] == len(rows) and status["n_classes"] == count
+    alerts = [r for r in manager.flows(name) if r['prediction'] not in (None, 'Benign')]
+    if name == 'M0':
+        assert alerts, 'Reference PCAP must exercise automatic alert SHAP'
+    for alert in alerts:
+        assert alert['shap'] is not None
+        assert alert['shap']['class_explained'] == alert['prediction']
+        assert alert['shap']['additivity_error'] < 1e-3
     valid = next(r for r in manager.flows(name) if r["prediction"])
     detail = manager.flow(valid["id"], name)
     assert len(detail["probabilities"]) == count
@@ -25,6 +32,11 @@ for name, count in (("M0", 15), ("M1", 13)):
     lime = manager.explain_lime(valid["id"], name)
     assert lime["status"] in ("ok", "insufficient_neighborhood", "zero_coefficients", "undefined_fit")
     print(name, status["labels"], "shap_error", shap["additivity_error"], "lime", lime["status"])
+
+# Preserve the alert-LIME check from the retired M0-only smoke script.
+alert = next(r for r in manager.flows('M0') if r['prediction'] not in (None, 'Benign'))
+assert manager.explain_lime(alert['id'], 'M0')['status'] in (
+    'ok', 'insufficient_neighborhood', 'zero_coefficients', 'undefined_fit')
 
 # A CSV with canonical model column names must enter the same feature vector.
 original = manager.flow(1, "M0")
