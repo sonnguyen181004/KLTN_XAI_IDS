@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import csv
+import io
+import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -25,6 +28,7 @@ sys.path.insert(0, str(ROOT / "RQ3_IDS_System" / "app"))
 from rq4_common import FEATURE_MAP  # noqa: E402
 from explain_shap import ShapExplainer  # noqa: E402
 from explain_lime import LimeExplainer  # noqa: E402
+from normalize import TIME_COLUMNS  # noqa: E402
 from run_java_live_m0 import java_environment, list_interfaces  # noqa: E402
 
 TOKEN = os.environ.get("JAVA_M0_TRIAL_TOKEN", "")
@@ -42,6 +46,22 @@ class StartRequest(BaseModel):
     seconds: int = 0  # 0 = until Stop is pressed
 
 
+class CsvRequest(BaseModel):
+    name: str
+    content: str
+    convert_seconds: bool = False
+
+
+class PcapRequest(BaseModel):
+    filename: str
+
+
+def model_name(value: str) -> str:
+    if value not in ("M0", "M1"):
+        raise HTTPException(422, "model must be M0 or M1")
+    return value
+
+
 class TrialManager:
     def __init__(self):
         self.lock = threading.RLock()
@@ -56,14 +76,31 @@ class TrialManager:
         self.records = []
         self.error = None
         self.packet_summary = None
-        self.model = joblib.load(ROOT / "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl")
-        self.encoder = joblib.load(ROOT / "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl")
-        self.names = list(self.model.feature_names_in_)
-        self.classes = list(self.encoder.classes_)
-        self.shap = ShapExplainer(self.model, self.classes)
-        cfg = yaml.safe_load((ROOT / "RQ3_IDS_System/config.yaml").read_text(encoding="utf-8"))
-        background = np.load(ROOT / "RQ3_IDS_System/data/lime_background.npy")
-        self.lime = LimeExplainer(self.model, self.names, self.classes, background, cfg["lime"], cfg["seed"])
+        self.models = {}
+        for name, base, model_path, encoder_path in (
+            ("M0", "RQ3_IDS_System", "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl",
+             "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl"),
+            ("M1", "IDS_M1_Lab", "IDS_M1_Lab/models/m1_xgboost_model.pkl",
+             "IDS_M1_Lab/models/m1_label_encoder.pkl"),
+        ):
+            model = joblib.load(ROOT / model_path)
+            encoder = joblib.load(ROOT / encoder_path)
+            names = list(model.feature_names_in_)
+            classes = list(encoder.classes_)
+            if model.n_classes_ != len(classes) or len(names) != 78:
+                raise RuntimeError(f"{name} model/encoder/features do not match")
+            cfg = yaml.safe_load((ROOT / base / "config.yaml").read_text(encoding="utf-8"))
+            background = np.load(ROOT / base / "data/lime_background.npy")
+            stats = json.loads((ROOT / base / "data/train_stats.json").read_text(encoding="utf-8"))
+            if background.ndim != 2 or background.shape[1] != len(names):
+                raise RuntimeError(f"{name} LIME background does not match features")
+            self.models[name] = {"model": model, "classes": classes, "names": names,
+                                 "shap": ShapExplainer(model, classes),
+                                 "lime": LimeExplainer(model, names, classes, background, cfg["lime"], cfg["seed"]),
+                                 "cfg": cfg, "stats": stats}
+        self.model = self.models["M0"]["model"]  # legacy offline smoke compatibility
+        self.names = self.models["M0"]["names"]
+        self.classes = self.models["M0"]["classes"]
 
     def start(self, interface: str, seconds: int):
         if not 0 <= seconds <= 3600:
@@ -73,8 +110,8 @@ class TrialManager:
         if not matches:
             raise HTTPException(422, "Interface is not in Java/Npcap device list")
         with self.lock:
-            if self.phase in ("capturing", "stopping"):
-                raise HTTPException(409, "A capture is already running")
+            if self.phase in ("capturing", "stopping", "importing"):
+                raise HTTPException(409, "A capture or import is already running")
             self.run_id = uuid.uuid4().hex[:12]
             self.interface = matches[0]
             output = TRIAL / "output"
@@ -149,69 +186,206 @@ class TrialManager:
                 self.error = self.error or f"Java exit={code}; see {self.log_path.name}"
             self.phase = "finished" if code == 0 and not self.error else "error"
 
-    def _accept_row(self, row):
-        values = pd.to_numeric(pd.Series({n: row.get(FEATURE_MAP[n]) for n in self.names}), errors="coerce")
-        x = pd.DataFrame([values], columns=self.names)
+    def _accept_row(self, row, convert_seconds: bool = False):
+        values = pd.to_numeric(pd.Series({n: row.get(FEATURE_MAP[n], row.get(n)) for n in self.names}),
+                               errors="coerce")
+        if convert_seconds:
+            values.loc[[n for n in TIME_COLUMNS if n in values.index]] *= 1_000_000
         record = {"id": len(self.records) + 1, "time": row.get("Timestamp"),
                   "src_ip": row.get("Src IP"), "src_port": row.get("Src Port"),
                   "dst_ip": row.get("Dst IP"), "dst_port": row.get("Dst Port"),
                   "protocol": row.get("Protocol"), "features": values.to_dict(),
-                  "prediction": None, "confidence": None, "shap": None, "lime": None,
-                  "error": None}
-        if not np.isfinite(x.to_numpy(dtype=float)).all():
+                  "models": {}, "error": None}
+        valid = np.isfinite(values.to_numpy(dtype=float)).all()
+        if not valid:
             record["error"] = "NaN/Inf or missing feature; no prediction"
-        else:
-            proba = self.model.predict_proba(x)[0]
-            record["prediction"] = self.classes[int(proba.argmax())]
-            record["confidence"] = float(proba.max())
+        for name, bundle in self.models.items():
+            result = {"prediction": None, "confidence": None, "probabilities": {},
+                      "shap": None, "lime": None, "error": record["error"],
+                      "branch": None, "env_fingerprint_count": 0, "rare_class_flag": False}
+            if valid:
+                x = pd.DataFrame([{n: values[n] for n in bundle["names"]}], columns=bundle["names"])
+                proba = bundle["model"].predict_proba(x)[0]
+                result["prediction"] = bundle["classes"][int(proba.argmax())]
+                result["confidence"] = float(proba.max())
+                result["probabilities"] = dict(zip(bundle["classes"], map(float, proba)))
+                if result["prediction"] != "Benign":
+                    try:
+                        result["shap"] = bundle["shap"].explain(x, result["prediction"], top_k=5)
+                    except Exception as exc:
+                        result["error"] = f"SHAP: {exc}"
+                    if result["shap"]:
+                        env = set(bundle["cfg"].get("environment_fingerprint_features", []))
+                        result["env_fingerprint_count"] = sum(
+                            item["feature"] in env for item in result["shap"]["top_k"])
+                    samples = bundle["stats"]["train_samples_per_class"].get(result["prediction"])
+                    result["rare_class_flag"] = samples is not None and samples < bundle["cfg"].get(
+                        "rare_class_min_train_samples", 100)
+                    threshold = bundle["cfg"].get("environment_fingerprint_flag_threshold", 2)
+                    result["branch"] = ("B" if result["env_fingerprint_count"] >= threshold
+                                        or result["rare_class_flag"] else "A")
+            record["models"][name] = result
+        record.update(record["models"]["M0"])  # keep previous M0 read contract
         with self.lock:
             self.records.append(record)
-        if record["prediction"] not in (None, "Benign"):
-            try:
-                result = self.shap.explain(x, record["prediction"], top_k=5)
-                with self.lock:
-                    record["shap"] = result
-            except Exception as exc:
-                with self.lock:
-                    record["error"] = f"SHAP: {exc}"
 
-    def explain_lime(self, flow_id: int):
+    def explain_lime(self, flow_id: int, name: str = "M0"):
+        name = model_name(name)
         with self.lock:
             record = next((r for r in self.records if r["id"] == flow_id), None)
             if record is None:
                 raise HTTPException(404, "Flow not found")
-            if record["prediction"] is None:
+            result = record["models"][name]
+            if result["prediction"] is None:
                 raise HTTPException(422, "Flow has no valid prediction")
-            if record["lime"] is not None:
-                return record["lime"]
-            x = pd.DataFrame([record["features"]], columns=self.names)
-            label = record["prediction"]
-        result = self.lime.explain(x, label, flow_id, top_k=5)
+            if result["lime"] is not None:
+                return result["lime"]
+            bundle = self.models[name]
+            x = pd.DataFrame([record["features"]], columns=bundle["names"])
+            label = result["prediction"]
+        explanation = bundle["lime"].explain(x, label, flow_id, top_k=5)
         with self.lock:
-            record["lime"] = result
-        return result
+            result["lime"] = explanation
+            if name == "M0":
+                record["lime"] = explanation
+        return explanation
 
-    def status(self):
+    def explain_shap(self, flow_id: int, name: str = "M0"):
+        name = model_name(name)
         with self.lock:
-            labels = pd.Series([r["prediction"] for r in self.records if r["prediction"]]).value_counts().to_dict()
+            record = next((r for r in self.records if r["id"] == flow_id), None)
+            if record is None:
+                raise HTTPException(404, "Flow not found")
+            result = record["models"][name]
+            if result["prediction"] is None:
+                raise HTTPException(422, "Flow has no valid prediction")
+            if result["shap"] is not None:
+                return result["shap"]
+            bundle = self.models[name]
+            x = pd.DataFrame([record["features"]], columns=bundle["names"])
+            label = result["prediction"]
+        explanation = bundle["shap"].explain(x, label, top_k=5)
+        with self.lock:
+            result["shap"] = explanation
+            if name == "M0":
+                record["shap"] = explanation
+        return explanation
+
+    def status(self, name: str = "M0"):
+        name = model_name(name)
+        with self.lock:
+            labels = pd.Series([r["models"][name]["prediction"] for r in self.records
+                                if r["models"][name]["prediction"]]).value_counts().to_dict()
             return {"phase": self.phase, "run_id": self.run_id,
                     "interface": self.interface, "rows": len(self.records),
-                    "labels": labels, "error": self.error, "packet_summary": self.packet_summary}
+                    "labels": labels, "error": self.error, "packet_summary": self.packet_summary,
+                    "model": name, "n_classes": len(self.models[name]["classes"])}
 
-    def flows(self):
+    def model_info(self, name: str):
+        name = model_name(name)
+        bundle = self.models[name]
+        return {"classes": bundle["classes"],
+                "global_median": bundle["stats"]["global_median"],
+                "train_samples_per_class": bundle["stats"]["train_samples_per_class"],
+                "environment_features": bundle["cfg"].get("environment_fingerprint_features", []),
+                "environment_threshold": bundle["cfg"].get("environment_fingerprint_flag_threshold", 2)}
+
+    def flows(self, name: str = "M0"):
+        name = model_name(name)
         with self.lock:
-            return [{k: v for k, v in r.items() if k != "features"} for r in self.records]
+            return [self._view(r, name, False) for r in self.records]
 
-    def flow(self, flow_id: int):
+    @staticmethod
+    def _view(record, name, detail):
+        shared = {k: record[k] for k in ("id", "time", "src_ip", "src_port", "dst_ip", "dst_port", "protocol")}
+        if detail:
+            shared["features"] = record["features"].copy()
+        shared.update(record["models"][name].copy())
+        return shared
+
+    def flow(self, flow_id: int, name: str = "M0"):
+        name = model_name(name)
         with self.lock:
             record = next((r for r in self.records if r["id"] == flow_id), None)
             if record is None:
                 raise HTTPException(404, "Flow not found")
-            return record.copy()
+            return self._view(record, name, True)
+
+    def import_csv(self, name: str, content: str, convert_seconds: bool = False, internal: bool = False):
+        with self.lock:
+            if self.phase in ("capturing", "stopping") or (self.phase == "importing" and not internal):
+                raise HTTPException(409, "Stop capture/import before importing CSV")
+        if len(content.encode("utf-8")) > 20_000_000:
+            raise HTTPException(413, "CSV is larger than 20 MB")
+        reader = csv.DictReader(io.StringIO(content))
+        if not reader.fieldnames or any(n not in reader.fieldnames and FEATURE_MAP[n] not in reader.fieldnames
+                                        for n in self.names):
+            raise HTTPException(422, "CSV needs all 78 feature columns (Java or model names)")
+        rows = list(reader)
+        if len(rows) > 10_000:
+            raise HTTPException(413, "CSV is limited to 10,000 flows per import")
+        with self.lock:
+            if self.phase in ("capturing", "stopping") or (self.phase == "importing" and not internal):
+                raise HTTPException(409, "Stop capture/import before importing CSV")
+            self.phase = "importing"
+            self.records = []
+            self.run_id = "csv:" + name[:80]
+            self.error = None
+            self.packet_summary = None
+        for row in rows:
+            self._accept_row(row, convert_seconds=convert_seconds)
+        with self.lock:
+            self.phase = "finished"
+        return {"rows": len(rows), "status": self.status()}
+
+    def import_pcap(self, filename: str):
+        with self.lock:
+            if self.phase in ("capturing", "stopping", "importing"):
+                raise HTTPException(409, "Stop capture/import before importing PCAP")
+        imports = (TRIAL / "output" / "imports").resolve()
+        path = (imports / filename).resolve()
+        if path.parent != imports or path.suffix.lower() not in (".pcap", ".pcapng") or not path.is_file():
+            raise HTTPException(422, "Select an uploaded PCAP/PCAPNG in trial imports")
+        if path.stat().st_size > 100_000_000:
+            raise HTTPException(413, "PCAP is larger than 100 MB")
+        with self.lock:
+            self.phase = "importing"
+        try:
+            return self._import_pcap_file(path)
+        except Exception as exc:
+            with self.lock:
+                self.phase = "error"
+                self.error = str(exc)
+            raise
+
+    def _import_pcap_file(self, path: Path):
+        if path.suffix.lower() == ".pcapng":
+            editcap = shutil.which("editcap") or r"C:\Program Files\Wireshark\editcap.exe"
+            if not Path(editcap).is_file():
+                raise HTTPException(422, "Wireshark editcap is needed for PCAPNG")
+            converted = path.with_suffix(".pcap")
+            conversion = subprocess.run([editcap, "-F", "pcap", str(path), str(converted)],
+                                        capture_output=True, text=True, timeout=180)
+            if conversion.returncode:
+                raise HTTPException(422, "editcap failed: " + conversion.stderr[-300:])
+            path = converted
+        out = (TRIAL / "output" / "imports" / (path.stem + "_java"))
+        out.mkdir(exist_ok=True)
+        proc = subprocess.run([str(TRIAL / "upstream/gradlew.bat"), "exeCMD",
+                               f"-PtrialInput={path}", f"-PtrialOutput={out}",
+                               "--offline", "--no-daemon", "--console=plain"],
+                              cwd=TRIAL / "upstream", env=java_environment(),
+                              capture_output=True, text=True, timeout=300)
+        if proc.returncode:
+            raise HTTPException(422, "Java PCAP extraction failed: " + (proc.stdout + proc.stderr)[-500:])
+        csv_path = out / f"{path.name}_Flow.csv"
+        if not csv_path.is_file():
+            raise HTTPException(422, "Java finished without a flow CSV")
+        return self.import_csv(path.name, csv_path.read_text(encoding="utf-8-sig"), internal=True)
 
 
 manager = TrialManager()
-app = FastAPI(title="Isolated Java CICFlowMeter + M0 trial")
+app = FastAPI(title="Isolated Java CICFlowMeter + M0/M1 trial")
 
 
 @app.get("/interfaces", dependencies=[Depends(authorized)])
@@ -220,8 +394,13 @@ def interfaces():
 
 
 @app.get("/status", dependencies=[Depends(authorized)])
-def status():
-    return manager.status()
+def status(model: str = "M0"):
+    return manager.status(model)
+
+
+@app.get("/model-info", dependencies=[Depends(authorized)])
+def model_info(model: str = "M0"):
+    return manager.model_info(model)
 
 
 @app.post("/start", dependencies=[Depends(authorized)])
@@ -235,15 +414,30 @@ def stop():
 
 
 @app.get("/flows", dependencies=[Depends(authorized)])
-def flows():
-    return manager.flows()
+def flows(model: str = "M0"):
+    return manager.flows(model)
 
 
 @app.get("/flows/{flow_id}", dependencies=[Depends(authorized)])
-def flow(flow_id: int):
-    return manager.flow(flow_id)
+def flow(flow_id: int, model: str = "M0"):
+    return manager.flow(flow_id, model)
 
 
 @app.post("/flows/{flow_id}/lime", dependencies=[Depends(authorized)])
-def lime(flow_id: int):
-    return manager.explain_lime(flow_id)
+def lime(flow_id: int, model: str = "M0"):
+    return manager.explain_lime(flow_id, model)
+
+
+@app.post("/flows/{flow_id}/shap", dependencies=[Depends(authorized)])
+def shap(flow_id: int, model: str = "M0"):
+    return manager.explain_shap(flow_id, model)
+
+
+@app.post("/import/csv", dependencies=[Depends(authorized)])
+def import_csv(req: CsvRequest):
+    return manager.import_csv(req.name, req.content, req.convert_seconds)
+
+
+@app.post("/import/pcap", dependencies=[Depends(authorized)])
+def import_pcap(req: PcapRequest):
+    return manager.import_pcap(req.filename)

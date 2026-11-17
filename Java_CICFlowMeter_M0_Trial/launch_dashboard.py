@@ -22,7 +22,7 @@ def main():
     ui = subprocess.Popen([sys.executable, "-m", "streamlit", "run", str(TRIAL / "dashboard.py"),
                            "--server.address", "127.0.0.1", "--server.port", "8502"],
                           cwd=TRIAL, env=env)
-    print("Java–M0 dashboard: http://127.0.0.1:8502", flush=True)
+    print("Java–M0/M1 dashboard: http://127.0.0.1:8502", flush=True)
     try:
         ui.wait()
     except KeyboardInterrupt:
