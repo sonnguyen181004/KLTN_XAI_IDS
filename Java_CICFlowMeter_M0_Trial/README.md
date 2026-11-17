@@ -114,3 +114,7 @@ python Java_CICFlowMeter_M0_Trial/run_java_live_m0.py --interface 'Realtek RTL88
 ```
 
 Chạy PowerShell có quyền bắt gói trên card đã chọn. Để có các phép đo về traffic thật, cần chạy phiên có ghi ground truth/hoạt động rõ ràng, lưu PCAP cùng phiên để đối chiếu packet, và đánh giá tương thích đặc trưng Java với train M0. Không gọi 6 Hulk là báo nhầm chỉ vì người dùng không chủ động tạo tấn công trong 20 giây.
+
+## Đọc hai CSV phiên lab 04/11/2026 bằng M0
+
+Theo yêu cầu, đã đọc trực tiếp `IDS_M1_Lab/data/capture_sessions/ff8f0fa5051b45389a9393023effc083/flows.csv` và `.../a10c3bc274594a00be959997bf552236/flows.csv`, áp ánh xạ/đơn vị như feeder rồi chạy M0 trong khu thử riêng. Cả 101 flow của phiên mang tên Hulk được M0 dự đoán Hulk. Trong phiên SSH, M0 dự đoán 173 Benign, 135 Hulk, 60 SSH-Bruteforce, 5 Infilteration. Riêng 323 flow đích cổng 22: 135 Hulk, 128 Benign, 60 SSH-Bruteforce. Đây là **nhãn do M0 trả về**, chưa phải phép đo đúng/sai từng flow vì cần nhãn thực và mốc thời gian của kịch bản. Không có PCAP trong hai thư mục phiên, nên không thể dùng Java CICFlowMeter trích xuất lại chính traffic đó từ các CSV.

@@ -1,0 +1,20 @@
+{
+  "input_type": "saved flow CSV from Python capture; Java extraction not run on these sessions",
+  "model": "RQ1 M0, 15 classes",
+  "sessions": {
+    "ff8f0fa5051b45389a9393023effc083": {
+      "rows": 101,
+      "predicted_labels": {"DoS attacks-Hulk": 101}
+    },
+    "a10c3bc274594a00be959997bf552236": {
+      "rows": 373,
+      "predicted_labels": {"Benign": 173, "DoS attacks-Hulk": 135, "SSH-Bruteforce": 60, "Infilteration": 5},
+      "destination_port_22": {
+        "rows": 323,
+        "predicted_labels": {"DoS attacks-Hulk": 135, "Benign": 128, "SSH-Bruteforce": 60}
+      }
+    }
+  },
+  "ground_truth_per_flow_available": false,
+  "same_session_pcap_found": false
+}
