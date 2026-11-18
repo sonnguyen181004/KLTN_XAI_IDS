@@ -425,3 +425,95 @@ Xem `java_live_invalid_audit_20261118.json` để biết đường dẫn CSV th�
 Lượt dashboard_2049dd9c9059: 14.255 dòng CSV, 12.803 dòng hữu hạn. UI cũ coi prediction=None là không hợp lệ kể cả khi lượt thuộc model khác. Đã chặn hiển thị thống kê trong trường hợp này và giải thích chưa chạy model đang chọn; kiểm thử nhánh này PASS.
 
 Chạy lại cùng CSV, lọc Kali 192.168.11.133 → Ubuntu 192.168.11.134:80 có 12.540 dòng hữu hạn. M0: 9.022 GoldenEye, 1.635 Benign, 1.623 Hulk, 148 HOIC, 111 Slowloris, 1 Infilteration. M1: 9 GoldenEye, 9.592 Benign, 1.519 Hulk, 1.288 Infilteration, 85 Slowloris, 47 LOIC-HTTP. Bằng chứng `goldeneye_live_audit_20261118.json`. Đây là inference trên cùng CSV, không phải đối chiếu profile Java riêng; chưa có nhãn theo thời gian/log cho toàn bộ lượt nên không gọi tỷ lệ trên là recall. Chưa xác định nguyên nhân cụ thể của M1; cần PCAP và phân tích đặc trưng/SHAP, không tăng tải để ép nhãn.
+
+## Runbook GoldenEye: Kali → Ubuntu Apache, M0 realtime (30 giây)
+
+Mục đích: kiểm thử IDS trong lab do người dùng quản lý; lưu gói và log để đối chiếu. Kali dự kiến 192.168.11.133, Ubuntu 192.168.11.134 trên VMnet1. Xác minh IP thực tế trước khi chạy. Hai VM cùng mạng host-only VMnet1; có thể dùng card NAT riêng để cài gói. Windows phải nhìn thấy traffic giữa hai VM trên VMnet1, không suy ra từ ping thành công.
+
+### Ubuntu: chuẩn bị web server
+
+```bash
+ip -br addr
+sudo apt update
+sudo apt install -y apache2
+# Chỉ dừng nginx nếu đang dùng nó trên máy nạn nhân lab này.
+# Lệnh này tạm ngừng website đang phục vụ qua nginx.
+sudo systemctl stop nginx
+sudo apache2ctl configtest
+sudo systemctl start apache2
+systemctl is-active apache2
+curl -I http://192.168.11.134/
+```
+
+Nếu nginx không được cài, bỏ qua thông báo không tìm thấy dịch vụ. Cần Syntax OK, active và HTTP 200 từ Apache. AH00558 về ServerName không chặn thử nghiệm. Nếu Apache failed, kiểm tra trước khi chạy tải:
+
+```bash
+sudo ss -ltnp 'sport = :80'
+sudo journalctl -u apache2 -n 30 --no-pager
+```
+
+Mở terminal Ubuntu khác để xem request:
+
+```bash
+sudo tail -f /var/log/apache2/access.log
+```
+
+### Kali: chuẩn bị công cụ
+
+```bash
+ip -br addr
+ping -c 3 192.168.11.134
+curl -I --max-time 5 http://192.168.11.134/
+sudo apt update
+sudo apt install -y git python3 curl
+mkdir -p ~/ids-demo
+cd ~/ids-demo
+# Chỉ clone khi chưa có thư mục GoldenEye.
+git clone https://github.com/jseidl/GoldenEye.git
+cd GoldenEye
+git rev-parse HEAD
+python3 goldeneye.py -h
+```
+
+Nếu đã cài: chỉ chạy `cd ~/ids-demo/GoldenEye`, không clone lại. Nguồn và tham số: https://github.com/jseidl/GoldenEye . Lưu commit công cụ cùng log; không giả định bản hiện tại giống binary của dataset.
+
+### Windows: bắt trước khi tạo tải
+
+1. Wireshark chọn VMware Network Adapter VMnet1 và Start. Display filter: `ip.addr == 192.168.11.133 && ip.addr == 192.168.11.134 && tcp.port == 80`.
+2. Chạy curl trên Kali và xác nhận Windows thấy gói hai chiều. Nếu không thấy thì kiểm tra đường capture, chưa chạy tải.
+3. Dashboard Java: dừng lượt cũ, chờ finished; chọn M0 → Realtime → VMnet1, thời gian 0 → Bắt đầu Java. Chờ capturing. Chuyển radio M0/M1 không đổi model của capture đang chạy.
+
+### Kali: lượt GoldenEye 30 giây
+
+```bash
+cd ~/ids-demo/GoldenEye
+set -o pipefail
+{
+  date -Is
+  timeout --signal=INT --kill-after=5s 30s \
+    python3 -u goldeneye.py http://192.168.11.134/ \
+    -w 1 -s 2 -m get
+  echo "exit_code=$?"
+  date -Is
+} 2>&1 | tee ~/ids-demo/goldeneye-m0-30s.log
+```
+
+Chỉ nhắm Ubuntu lab. Một worker, hai socket; timeout yêu cầu dừng sau 30 giây, kill-after thêm tối đa 5 giây nếu chưa thoát. Ctrl+C để dừng sớm. Exit 124 thường biểu thị timeout đã hết. Mỗi lượt đổi tên log để không ghi đè. Không tăng tải chỉ để ép nhãn GoldenEye.
+
+### Kết thúc và lưu
+
+1. Dashboard Dừng và ghi nốt flow → chờ finished.
+2. Wireshark Stop → Save As `goldeneye-m0-30s.pcapng` trong Downloads. CSV dashboard không thay thế PCAP.
+3. Ubuntu lưu snapshot log (có thể gồm request trước lượt, phải lọc theo giờ/IP):
+
+```bash
+sudo tail -n 5000 /var/log/apache2/access.log > ~/goldeneye-m0-30s-apache.log
+curl -I --max-time 5 http://192.168.11.134/
+```
+
+4. Giữ giờ bắt đầu/kết thúc có múi giờ từ Kali, log Apache, PCAP và mã lượt dashboard. Hai máy có thể hiển thị múi giờ khác nhau; quy về cùng UTC khi gán nhãn.
+5. Nạp cùng PCAP riêng cho M0 và M1 để mỗi nhánh trích đúng profile; so số flow hữu hạn, không hợp lệ, nhãn và SHAP/LIME. Không gọi tỷ lệ nhãn là accuracy khi chưa gán ground truth.
+
+### Việc tiếp theo
+
+Chốt lượt GoldenEye 30 giây trước: kiểm tra PCAP, đối chiếu log và các flow đúng/sai. Ghi thêm baseline HTTP bình thường riêng. Sau đó mới thử Hulk trong lab với một runbook riêng; tiếp theo Slowloris, HOIC để sau khi có thiết kế nguồn traffic phân tán. Không tuyên bố M0/M1 ổn từ một lượt.
