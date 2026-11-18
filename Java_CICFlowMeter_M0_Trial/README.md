@@ -535,3 +535,11 @@ Train M0 có 155.042 mẫu Hulk: window 225 ở 149.577 mẫu, 26.883 ở 5.020,
 Nguồn CNS2022 mục DoS Hulk xác nhận CSECICIDS2018 có cùng lỗi Hulk Python/urllib2 Connection: close mô tả trong WTMC2021. PCAP lab ở đây dùng keep-alive và tái sử dụng kết nối thực tế, nên khác hành vi đó. Đây là bằng chứng lệch dữ liệu và yếu tố model sử dụng trong các ca sai, không chứng minh duy nhất một nguyên nhân. Không có PCAP gốc ngày 16/02/2018 tại chỗ để tái trích độc lập. Không ép cờ/window hoặc tăng tải để đạt nhãn; báo cáo đúng Hulk-Go, không tái hiện chính xác Hulk dataset.
 
 Nguồn: https://intrusion-detection.distrinet-research.be/CNS2022/CSECICIDS2018.html và https://intrusion-detection.distrinet-research.be/WTMC2021/extended_doc.html .
+
+### Slowloris lab — 18/11/2026
+
+Đối soát lượt 37713326f1de: Java finished, 163 packet accepted, 16 flow, không có NaN/Inf; chạy lại M0 khớp 12 Benign, 4 Hulk, 0 Slowloris. TShark trên slowloris1.pcapng thấy 5 HTTP 408 và 5 HTTP 400. Log người dùng: 5 socket, gửi header cách 10 giây, kết thúc timeout 60 giây exit 124; đây không phải lỗi khởi chạy. Chưa chứng minh server bị từ chối dịch vụ.
+
+Flow chính CSV khoảng 19,5–21 giây; có nhóm khoảng 9 giây và một flow phụ 624 microsecond. Train M0 lớp Slowloris 3.620 dòng: trung vị thời lượng 106,304464 giây, p10 3,027675 giây, p90 108,349554 giây. Không suy diễn mọi mẫu train dài hơn lab hoặc chỉ đổi thời gian chạy là sửa được dự đoán. Cần đọc cấu hình Apache để xác minh nguyên nhân timeout, không tự tắt bảo vệ.
+
+SHAP ví dụ flow 11/16: FIN Flag Cnt=1 tăng điểm Hulk +5,865 raw margin; Fwd Pkt Len Max=135 tăng +2,989. Trong giải thích riêng lớp Slowloris, thời lượng khoảng 19,5 giây kéo điểm xuống -1,619. Dữ liệu và SHAP lưu slowloris_audit_20261118.json. Kết luận: pipeline tạo và phân loại được flow nhưng M0 không nhận đúng loại ở lượt này; môi trường đóng kết nối và đặc trưng khác train, không khẳng định duy nhất một nguyên nhân. Chưa kiểm tra M1 cho lượt này.

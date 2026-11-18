@@ -1,0 +1,326 @@
+{
+  "rows": 16,
+  "labels": {
+    "Benign": 12,
+    "DoS attacks-Hulk": 4
+  },
+  "flows": [
+    {
+      "id": 1,
+      "label": "Benign",
+      "slowloris_probability": 3.733153789653443e-05,
+      "duration_seconds": 21.055429,
+      "fwd_packets": 7.0,
+      "predicted_shap": {
+        "class_explained": "Benign",
+        "base_value": 5.02502965927124,
+        "top_k": [
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 64240.0,
+            "phi": 0.6373593807220459
+          },
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": -0.6288991570472717
+          },
+          {
+            "feature": "Flow IAT Min",
+            "value": 369.0,
+            "phi": 0.5689019560813904
+          },
+          {
+            "feature": "Fwd Pkts/s",
+            "value": 0.332455824101233,
+            "phi": 0.565823495388031
+          },
+          {
+            "feature": "Fwd IAT Std",
+            "value": 5164993.696248522,
+            "phi": 0.4561689496040344
+          }
+        ],
+        "additivity_error": 9.5367431640625e-07
+      },
+      "slowloris_shap": {
+        "class_explained": "DoS attacks-Slowloris",
+        "base_value": -4.387168884277344,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": 3.2097649574279785
+          },
+          {
+            "feature": "Dst Port",
+            "value": 80.0,
+            "phi": 1.1517747640609741
+          },
+          {
+            "feature": "Flow Duration",
+            "value": 21055429.0,
+            "phi": -0.8455491065979004
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 128.0,
+            "phi": -0.5314004421234131
+          },
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 64240.0,
+            "phi": -0.4846045970916748
+          }
+        ],
+        "additivity_error": 7.152557373046875e-07
+      }
+    },
+    {
+      "id": 2,
+      "label": "Benign",
+      "slowloris_probability": 1.7702121112961322e-05,
+      "duration_seconds": 21.048514,
+      "fwd_packets": 7.0
+    },
+    {
+      "id": 3,
+      "label": "Benign",
+      "slowloris_probability": 1.8897075278800912e-05,
+      "duration_seconds": 21.04157,
+      "fwd_packets": 8.0
+    },
+    {
+      "id": 4,
+      "label": "Benign",
+      "slowloris_probability": 2.406315616099164e-05,
+      "duration_seconds": 21.038093,
+      "fwd_packets": 8.0
+    },
+    {
+      "id": 5,
+      "label": "Benign",
+      "slowloris_probability": 1.7960459445021115e-05,
+      "duration_seconds": 21.032587,
+      "fwd_packets": 7.0
+    },
+    {
+      "id": 6,
+      "label": "Benign",
+      "slowloris_probability": 3.0740306101506576e-05,
+      "duration_seconds": 9.006448,
+      "fwd_packets": 3.0
+    },
+    {
+      "id": 7,
+      "label": "Benign",
+      "slowloris_probability": 2.6042218451038934e-05,
+      "duration_seconds": 9.007003,
+      "fwd_packets": 3.0
+    },
+    {
+      "id": 8,
+      "label": "Benign",
+      "slowloris_probability": 0.00019433155830483884,
+      "duration_seconds": 8.961926,
+      "fwd_packets": 2.0
+    },
+    {
+      "id": 9,
+      "label": "Benign",
+      "slowloris_probability": 0.00015960058954078704,
+      "duration_seconds": 8.96287,
+      "fwd_packets": 2.0
+    },
+    {
+      "id": 10,
+      "label": "Benign",
+      "slowloris_probability": 2.60444576269947e-05,
+      "duration_seconds": 9.004933,
+      "fwd_packets": 3.0
+    },
+    {
+      "id": 11,
+      "label": "DoS attacks-Hulk",
+      "slowloris_probability": 0.00012260873336344957,
+      "duration_seconds": 19.548553,
+      "fwd_packets": 8.0,
+      "predicted_shap": {
+        "class_explained": "DoS attacks-Hulk",
+        "base_value": 1.2430287599563599,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": 5.8652215003967285
+          },
+          {
+            "feature": "Fwd Pkt Len Max",
+            "value": 135.0,
+            "phi": 2.9887514114379883
+          },
+          {
+            "feature": "Fwd Seg Size Min",
+            "value": 20.0,
+            "phi": -0.7255818247795105
+          },
+          {
+            "feature": "Bwd IAT Min",
+            "value": 1597.0,
+            "phi": -0.3917091488838196
+          },
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 64240.0,
+            "phi": -0.23721903562545776
+          }
+        ],
+        "additivity_error": 1.9073486328125e-06
+      },
+      "slowloris_shap": {
+        "class_explained": "DoS attacks-Slowloris",
+        "base_value": -4.387168884277344,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": 5.08897066116333
+          },
+          {
+            "feature": "Flow Duration",
+            "value": 19548553.0,
+            "phi": -1.6189155578613281
+          },
+          {
+            "feature": "Dst Port",
+            "value": 80.0,
+            "phi": 1.3030304908752441
+          },
+          {
+            "feature": "Fwd Pkts/s",
+            "value": 0.4092374509765505,
+            "phi": -0.431595116853714
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 128.0,
+            "phi": -0.13835909962654114
+          }
+        ],
+        "additivity_error": 1.2516975402832031e-06
+      }
+    },
+    {
+      "id": 12,
+      "label": "DoS attacks-Hulk",
+      "slowloris_probability": 0.00010089807619806379,
+      "duration_seconds": 19.539327,
+      "fwd_packets": 7.0
+    },
+    {
+      "id": 13,
+      "label": "DoS attacks-Hulk",
+      "slowloris_probability": 0.00010089810530189425,
+      "duration_seconds": 19.532317,
+      "fwd_packets": 7.0
+    },
+    {
+      "id": 14,
+      "label": "Benign",
+      "slowloris_probability": 3.863908932544291e-05,
+      "duration_seconds": 19.533534,
+      "fwd_packets": 7.0
+    },
+    {
+      "id": 15,
+      "label": "Benign",
+      "slowloris_probability": 0.0002014367637457326,
+      "duration_seconds": 0.000624,
+      "fwd_packets": 2.0
+    },
+    {
+      "id": 16,
+      "label": "DoS attacks-Hulk",
+      "slowloris_probability": 0.00012260924268048257,
+      "duration_seconds": 19.533657,
+      "fwd_packets": 8.0,
+      "predicted_shap": {
+        "class_explained": "DoS attacks-Hulk",
+        "base_value": 1.2430287599563599,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": 5.8652215003967285
+          },
+          {
+            "feature": "Fwd Pkt Len Max",
+            "value": 135.0,
+            "phi": 2.9887514114379883
+          },
+          {
+            "feature": "Fwd Seg Size Min",
+            "value": 20.0,
+            "phi": -0.7255818247795105
+          },
+          {
+            "feature": "Bwd IAT Min",
+            "value": 1520.0,
+            "phi": -0.3917091488838196
+          },
+          {
+            "feature": "Init Fwd Win Byts",
+            "value": 64240.0,
+            "phi": -0.23721903562545776
+          }
+        ],
+        "additivity_error": 1.9073486328125e-06
+      },
+      "slowloris_shap": {
+        "class_explained": "DoS attacks-Slowloris",
+        "base_value": -4.387168884277344,
+        "top_k": [
+          {
+            "feature": "FIN Flag Cnt",
+            "value": 1.0,
+            "phi": 5.08897066116333
+          },
+          {
+            "feature": "Flow Duration",
+            "value": 19533657.0,
+            "phi": -1.6189155578613281
+          },
+          {
+            "feature": "Dst Port",
+            "value": 80.0,
+            "phi": 1.3030304908752441
+          },
+          {
+            "feature": "Fwd Pkts/s",
+            "value": 0.4095495277714766,
+            "phi": -0.431595116853714
+          },
+          {
+            "feature": "Init Bwd Win Byts",
+            "value": 128.0,
+            "phi": -0.13835909962654114
+          }
+        ],
+        "additivity_error": 1.2516975402832031e-06
+      }
+    }
+  ],
+  "train_slowloris": {
+    "rows": 3620,
+    "duration_seconds_quantiles": {
+      "0.1": 3.0276747999999998,
+      "0.5": 106.304464,
+      "0.9": 108.3495536
+    }
+  },
+  "pcap_http_status": {
+    "408": 5,
+    "400": 5
+  },
+  "limits": "No proof of service denial; server timeout configuration not inspected. CSV flows and TCP streams need not map one-to-one."
+}
