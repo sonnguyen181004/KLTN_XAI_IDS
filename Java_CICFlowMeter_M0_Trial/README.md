@@ -556,7 +556,7 @@ Kết quả có checksum model: dataset_ddos_test_20261118.json. Không suy ra t
 
 ## SỔ TAY CHẠY LẠI CÁC LƯỢT LAB — 18/11/2026
 
-Đây là nơi tra cứu tập trung câu lệnh đã dùng/đề xuất trong phiên làm việc. Không cần tạo thêm file MD. Các cấu hình mức 2 là cấu hình đã hướng dẫn; kết quả PCAP mức 2 chưa được xác minh trong mục này. Không coi bản công cụ hiện tại là phiên bản chính xác của dataset. Chỉ chạy trên hai VM lab của mình; không chạy đồng thời nhiều công cụ.
+Đây là nơi tra cứu tập trung câu lệnh đã dùng/đề xuất trong phiên làm việc. Không cần tạo thêm file MD. Các PCAP mức 2 đã được kiểm tra offline ngày 18/11/2026; xem mục báo cáo M0 cuối tài liệu. Thông số worker/socket dựa trên lịch sử hướng dẫn và xác nhận của người chạy, không suy được chỉ từ PCAP. Không coi bản công cụ hiện tại là phiên bản chính xác của dataset. Chỉ chạy trên hai VM lab của mình; không chạy đồng thời nhiều công cụ.
 
 ### 1. Máy và chuẩn bị chung
 
@@ -781,3 +781,15 @@ curl -o /dev/null -sS --max-time 5 -w 'HTTP=%{http_code} time=%{time_total}s\n' 
 ```
 
 Nếu VM mất phản hồi thì dừng, chờ phục hồi, không tăng tiếp. Không tự đổi model, cờ TCP hoặc timeout để ép nhãn. Nạp cùng PCAP riêng cho M0/M1 để so profile; không gọi tỷ lệ nhãn trên traffic chưa gán nhãn là accuracy/FPR. Lưu cả kết quả sai/Benign. Số liệu tăng tải cần audit PCAP riêng, không suy từ cấu hình công cụ.
+
+## Báo cáo tấn công M0 và đối chiếu tăng tải (18/11/2026)
+
+Mục đích: lưu bằng chứng các lượt thử và giải thích nhầm nhãn, không điều chỉnh model để ép khớp tên công cụ. Theo yêu cầu cuối, `bcao_tancon.docx` chỉ trình bày M0, giữ đủ 19 ảnh gốc và có lời giải thích dưới từng ảnh. Có thêm bảng tải thực đo, bảng đối soát packet và biểu đồ đen trắng. Ảnh SSH cũ dùng subnet 192.168.64.x, được ghi rõ là khác lượt SSH PCAP hôm nay.
+
+Đã trích lại 9 PCAP bằng Java. Với M0, GoldenEye mức đầu có 5013/5112 flow trùng tên lớp; mức tăng có 7173/7606. Hulk-Go tăng tải có 5 Hulk, 1301 HOIC, 719 GoldenEye và 450 Benign. Slowloris tăng tải có 33 Benign, 3 Hulk, không có Slowloris. LOIC có 22323 Hulk, 21302 Benign, 9016 HOIC, không có LOIC-HTTP. Đây là phân bố nhãn trên flow lab hai chiều, không phải accuracy/FPR đã xác nhận từng flow.
+
+Tải HTTP đo từ PCAP: GoldenEye khoảng 180,31 lên 250,54 request/s; Hulk-Go 229,32 lên 295,48 request/s. Slowloris từ 10 lên 20 TCP stream trong cả lượt. PCAP LOIC dài khoảng 142,12 giây, không được báo thành lượt 30 giây. M0 hạch toán thiếu packet vào flow ở 8/9 PCAP, nên chưa thể tuyên bố extractor tương đương hoàn toàn với pipeline dataset. Đây không phải phép đo mất gói của Wireshark.
+
+Kết quả có checksum: `attack_load_audit_20261118.json`. Raw CSV, features/predictions và packet CSV nằm trong `output/attack_load_report_20261118/`. Audit ban đầu đã chạy hai profile trước khi phạm vi báo cáo được thu hẹp; DOCX chỉ dùng phần M0. Các script `audit_attack_loads.py`, `enrich_attack_load_audit.py` thực hiện kiểm tra offline, không mở capture hoặc phát traffic. `plot_attack_loads.py` tạo biểu đồ; `build_attack_report.py` dựng DOCX bằng runtime tài liệu, dùng ảnh gốc đã sao lưu tại `output/report_assets/original.docx`.
+
+Bản gốc DOCX được sao lưu trước khi sửa. Kiểm tra cấu trúc xác nhận giữ 19 ảnh bằng hash nội dung. Lint tiếng Việt không có lỗi; các cảnh báo còn lại là tên trường kỹ thuật, đường dẫn, đơn vị và cấu hình trong bảng. Kiểm tra dàn trang dùng PDF xuất bằng Word vì runtime Windows không có LibreOffice. Không thay model, DB hoặc mã runtime IDS trong hạng mục báo cáo này.

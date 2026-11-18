@@ -1,0 +1,1411 @@
+{
+  "scope": "Offline re-extraction of saved PCAP; label shares are not ground-truth accuracy. No live capture.",
+  "pcaps": {
+    "ssbrute": {
+      "file": "ssbrute.pcapng",
+      "sha256": "662490fc3b740735e09e87a88d2b0527ccbaed3ac6ba1f50301c393243c55da6",
+      "lab_tcp_packets": 201,
+      "tcp_streams": 5,
+      "first_epoch": 1794984792.1866076,
+      "last_epoch": 1794984885.2146032,
+      "span_seconds": 93.02799558639526,
+      "http_requests": 0,
+      "http_requests_per_capture_second": 0.0,
+      "http_responses": {},
+      "request_connection": {},
+      "syn_windows": {
+        "64240": 5,
+        "65160": 5
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 8,
+          "lab_flows": 5,
+          "lab_invalid": 0,
+          "lab_valid": 5,
+          "labels": {
+            "Benign": 5
+          },
+          "lab_flow_packet_sum": 195,
+          "medians": {
+            "Flow Duration": 21420347.0,
+            "Tot Fwd Pkts": 22.0,
+            "Tot Bwd Pkts": 22.0,
+            "TotLen Bwd Pkts": 2006.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 23.0
+          }
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 8,
+          "lab_flows": 5,
+          "lab_invalid": 0,
+          "lab_valid": 5,
+          "labels": {
+            "Benign": 5
+          },
+          "lab_flow_packet_sum": 201,
+          "medians": {
+            "Flow Duration": 21420578.0,
+            "Tot Fwd Pkts": 23.0,
+            "Tot Bwd Pkts": 22.0,
+            "TotLen Bwd Pkts": 2006.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 23.0
+          }
+        }
+      },
+      "http_request_occurrences_verified": 0
+    },
+    "ss2": {
+      "file": "ss2.pcapng",
+      "sha256": "e9bb12a024099e4e59281f3c5ce56feffbbcddf0a7fd4835d2445afac4a78a6e",
+      "lab_tcp_packets": 160,
+      "tcp_streams": 3,
+      "first_epoch": 1794985998.9341643,
+      "last_epoch": 1794986055.5803385,
+      "span_seconds": 56.64617419242859,
+      "http_requests": 0,
+      "http_requests_per_capture_second": 0.0,
+      "http_responses": {},
+      "request_connection": {},
+      "syn_windows": {
+        "64240": 3,
+        "65160": 3
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 6,
+          "lab_flows": 4,
+          "lab_invalid": 0,
+          "lab_valid": 4,
+          "labels": {
+            "Benign": 3,
+            "SSH-Bruteforce": 1
+          },
+          "lab_flow_packet_sum": 158,
+          "medians": {
+            "Flow Duration": 18214984.0,
+            "Tot Fwd Pkts": 20.0,
+            "Tot Bwd Pkts": 31.5,
+            "TotLen Bwd Pkts": 2474.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.5,
+            "PSH Flag Cnt": 31.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1256.0,
+                    "phi": 0.9451999664306641
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 1.0,
+                    "phi": -0.6310331225395203
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 1.0957816133543343,
+                    "phi": 0.5849672555923462
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.5029435753822327
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 18251812.0,
+                    "phi": 0.2819661796092987
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            },
+            {
+              "csv_row_zero_based": 3,
+              "label": "SSH-Bruteforce",
+              "shap": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.5974252223968506
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 131.0,
+                    "phi": -3.445794105529785
+                  },
+                  {
+                    "feature": "ACK Flag Cnt",
+                    "value": 2.0,
+                    "phi": 0.7129629254341125
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 0.46865397691726685
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 245.0,
+                    "phi": 0.3771582245826721
+                  }
+                ],
+                "additivity_error": 8.344650268554688e-07
+              }
+            }
+          ]
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 6,
+          "lab_flows": 3,
+          "lab_invalid": 0,
+          "lab_valid": 3,
+          "labels": {
+            "Benign": 3
+          },
+          "lab_flow_packet_sum": 160,
+          "medians": {
+            "Flow Duration": 18254103.0,
+            "Tot Fwd Pkts": 21.0,
+            "Tot Bwd Pkts": 32.0,
+            "TotLen Bwd Pkts": 2474.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 31.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Down/Up Ratio",
+                    "value": 1.619047619047619,
+                    "phi": 1.783545970916748
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 31.0,
+                    "phi": 1.685628056526184
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 680.0,
+                    "phi": -1.3958486318588257
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3670463562011719
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1256.0,
+                    "phi": 1.3474634885787964
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              }
+            }
+          ]
+        }
+      },
+      "http_request_occurrences_verified": 0
+    },
+    "dos_oldeney": {
+      "file": "dos_oldeney.pcapng",
+      "sha256": "eb0c8eba780f27466af6e6de318cda07a52555b9ba91f9aa594b5acde121218f",
+      "lab_tcp_packets": 76049,
+      "tcp_streams": 5112,
+      "first_epoch": 1794989860.8695877,
+      "last_epoch": 1794989889.2209165,
+      "span_seconds": 28.35132884979248,
+      "http_requests": 5112,
+      "http_requests_per_capture_second": 180.30900869175372,
+      "http_responses": {
+        "200": 5112
+      },
+      "request_connection": {
+        "keep-alive": 5112
+      },
+      "syn_windows": {
+        "64240": 5112,
+        "65160": 5112
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 5113,
+          "lab_flows": 5112,
+          "lab_invalid": 0,
+          "lab_valid": 5112,
+          "labels": {
+            "DoS attacks-GoldenEye": 5013,
+            "DDOS attack-HOIC": 65,
+            "Benign": 34
+          },
+          "lab_flow_packet_sum": 74502,
+          "medians": {
+            "Flow Duration": 322736.0,
+            "Tot Fwd Pkts": 6.0,
+            "Tot Bwd Pkts": 10.0,
+            "TotLen Bwd Pkts": 10983.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 0.0,
+            "PSH Flag Cnt": 3.0
+          }
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 5113,
+          "lab_flows": 5112,
+          "lab_invalid": 0,
+          "lab_valid": 5112,
+          "labels": {
+            "Benign": 3915,
+            "DoS attacks-Hulk": 1197
+          },
+          "lab_flow_packet_sum": 76049,
+          "medians": {
+            "Flow Duration": 323053.0,
+            "Tot Fwd Pkts": 6.0,
+            "Tot Bwd Pkts": 10.0,
+            "TotLen Bwd Pkts": 10983.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 0.0,
+            "PSH Flag Cnt": 3.0
+          }
+        }
+      },
+      "http_request_occurrences_verified": 5112
+    },
+    "oldeneye2": {
+      "file": "oldeneye2.pcapng",
+      "sha256": "abf730574eb33fc0a8b7d79da9c7b834c9b4d6861578a29efc6145b408b6eeb7",
+      "lab_tcp_packets": 108000,
+      "tcp_streams": 7176,
+      "first_epoch": 1794993023.990045,
+      "last_epoch": 1794993052.6318252,
+      "span_seconds": 28.641780138015747,
+      "http_requests": 7176,
+      "http_requests_per_capture_second": 250.54308654773232,
+      "http_responses": {
+        "200": 7176
+      },
+      "request_connection": {
+        "keep-alive": 7176
+      },
+      "syn_windows": {
+        "64240": 7176,
+        "65160": 7176
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 7606,
+          "lab_flows": 7606,
+          "lab_invalid": 0,
+          "lab_valid": 7606,
+          "labels": {
+            "DoS attacks-GoldenEye": 7173,
+            "Benign": 285,
+            "DDOS attack-HOIC": 81,
+            "DoS attacks-Hulk": 67
+          },
+          "lab_flow_packet_sum": 105975,
+          "medians": {
+            "Flow Duration": 596250.0,
+            "Tot Fwd Pkts": 6.0,
+            "Tot Bwd Pkts": 10.0,
+            "TotLen Bwd Pkts": 10983.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 0.0,
+            "PSH Flag Cnt": 3.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "DoS attacks-GoldenEye",
+              "shap": {
+                "class_explained": "DoS attacks-GoldenEye",
+                "base_value": -3.345712661743164,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 7.070466995239258
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Std",
+                    "value": 608.432238535146,
+                    "phi": 4.4908318519592285
+                  },
+                  {
+                    "feature": "Pkt Len Mean",
+                    "value": 668.1764705882351,
+                    "phi": 0.5089582800865173
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 4250.266666666666,
+                    "phi": -0.503845751285553
+                  },
+                  {
+                    "feature": "Tot Bwd Pkts",
+                    "value": 10.0,
+                    "phi": -0.38640567660331726
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 128,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 13.0,
+                    "phi": 0.682388961315155
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6227946877479553
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.42728865146636963
+                  },
+                  {
+                    "feature": "Fwd IAT Std",
+                    "value": 132323.0378304045,
+                    "phi": 0.40991824865341187
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -0.4079591631889343
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 1,
+              "label": "DDOS attack-HOIC",
+              "shap": {
+                "class_explained": "DDOS attack-HOIC",
+                "base_value": 1.660548448562622,
+                "top_k": [
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 6.174546718597412
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": 0.5769719481468201
+                  },
+                  {
+                    "feature": "Tot Bwd Pkts",
+                    "value": 10.0,
+                    "phi": 0.08553703129291534
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 55283.0,
+                    "phi": 0.024083374068140984
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 55283.0,
+                    "phi": 0.003508953610435128
+                  }
+                ],
+                "additivity_error": 5.7220458984375e-06
+              }
+            }
+          ]
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 7176,
+          "lab_flows": 7176,
+          "lab_invalid": 0,
+          "lab_valid": 7176,
+          "labels": {
+            "Benign": 5528,
+            "DoS attacks-Hulk": 1648
+          },
+          "lab_flow_packet_sum": 108000,
+          "medians": {
+            "Flow Duration": 624406.0,
+            "Tot Fwd Pkts": 6.0,
+            "Tot Bwd Pkts": 10.0,
+            "TotLen Bwd Pkts": 10983.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 0.0,
+            "PSH Flag Cnt": 3.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Bwd Blk Rate Avg",
+                    "value": 28233933.0,
+                    "phi": 3.055485963821411
+                  },
+                  {
+                    "feature": "Down/Up Ratio",
+                    "value": 1.6666666666666667,
+                    "phi": 1.6990655660629272
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.4425393342971802
+                  },
+                  {
+                    "feature": "Bwd Byts/b Avg",
+                    "value": 10983.0,
+                    "phi": 1.398219108581543
+                  },
+                  {
+                    "feature": "TotLen Bwd Pkts",
+                    "value": 10983.0,
+                    "phi": 1.334590196609497
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 210,
+              "label": "DoS attacks-Hulk",
+              "shap": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": -0.6012477874755859,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 2.6407546997070312
+                  },
+                  {
+                    "feature": "TotLen Bwd Pkts",
+                    "value": 3454.0,
+                    "phi": -1.719496250152588
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Max",
+                    "value": 1448.0,
+                    "phi": -0.7950940728187561
+                  },
+                  {
+                    "feature": "Bwd Header Len",
+                    "value": 232.0,
+                    "phi": 0.7441456317901611
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 200.0,
+                    "phi": 0.5714945197105408
+                  }
+                ],
+                "additivity_error": 1.1920928955078125e-06
+              }
+            }
+          ]
+        }
+      },
+      "http_request_occurrences_verified": 7176
+    },
+    "hulk-go": {
+      "file": "hulk-go.pcapng",
+      "sha256": "794c944757a852e4165fc42a1ab12f96af8d998d568dd2db60a7381098e29c8b",
+      "lab_tcp_packets": 36973,
+      "tcp_streams": 341,
+      "first_epoch": 1794991027.1087472,
+      "last_epoch": 1794991057.0013762,
+      "span_seconds": 29.89262890815735,
+      "http_requests": 6855,
+      "http_requests_per_capture_second": 229.32074730066148,
+      "http_responses": {
+        "200": 6855
+      },
+      "request_connection": {
+        "keep-alive": 6855
+      },
+      "syn_windows": {
+        "64240": 341,
+        "65160": 341
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 348,
+          "lab_flows": 343,
+          "lab_invalid": 0,
+          "lab_valid": 343,
+          "labels": {
+            "DDOS attack-HOIC": 275,
+            "DoS attacks-GoldenEye": 36,
+            "Benign": 30,
+            "DoS attacks-Hulk": 2
+          },
+          "lab_flow_packet_sum": 36635,
+          "medians": {
+            "Flow Duration": 132656.0,
+            "Tot Fwd Pkts": 30.0,
+            "Tot Bwd Pkts": 42.0,
+            "TotLen Bwd Pkts": 44890.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 27.0
+          }
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 347,
+          "lab_flows": 341,
+          "lab_invalid": 0,
+          "lab_valid": 341,
+          "labels": {
+            "Benign": 290,
+            "SSH-Bruteforce": 34,
+            "DoS attacks-Hulk": 16,
+            "Infilteration": 1
+          },
+          "lab_flow_packet_sum": 36973,
+          "medians": {
+            "Flow Duration": 133714.0,
+            "Tot Fwd Pkts": 31.0,
+            "Tot Bwd Pkts": 42.0,
+            "TotLen Bwd Pkts": 44890.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 27.0
+          }
+        }
+      },
+      "http_request_occurrences_verified": 6855
+    },
+    "hulk2": {
+      "file": "hulk2.pcapng",
+      "sha256": "7d474e8960c9ca25bdd67e11c140241b92215c04b650a2a4acd05b684fa0daa6",
+      "lab_tcp_packets": 62594,
+      "tcp_streams": 2475,
+      "first_epoch": 1794993199.1125944,
+      "last_epoch": 1794993228.813284,
+      "span_seconds": 29.700689554214478,
+      "http_requests": 8776,
+      "http_requests_per_capture_second": 295.4813552049232,
+      "http_responses": {
+        "200": 8776
+      },
+      "request_connection": {
+        "keep-alive": 8776
+      },
+      "syn_windows": {
+        "64240": 2475,
+        "65160": 2475
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 2476,
+          "lab_flows": 2475,
+          "lab_invalid": 0,
+          "lab_valid": 2475,
+          "labels": {
+            "DDOS attack-HOIC": 1301,
+            "DoS attacks-GoldenEye": 719,
+            "Benign": 450,
+            "DoS attacks-Hulk": 5
+          },
+          "lab_flow_packet_sum": 60123,
+          "medians": {
+            "Flow Duration": 58730.0,
+            "Tot Fwd Pkts": 8.0,
+            "Tot Bwd Pkts": 9.0,
+            "TotLen Bwd Pkts": 6907.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 5.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "DDOS attack-HOIC",
+              "shap": {
+                "class_explained": "DDOS attack-HOIC",
+                "base_value": 1.660548448562622,
+                "top_k": [
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 6.050021648406982
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": 0.5644900798797607
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 64870.0,
+                    "phi": -0.15302281081676483
+                  },
+                  {
+                    "feature": "Tot Bwd Pkts",
+                    "value": 12.0,
+                    "phi": 0.07414370775222778
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 66043.0,
+                    "phi": 0.003508953610435128
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 1,
+              "label": "DoS attacks-GoldenEye",
+              "shap": {
+                "class_explained": "DoS attacks-GoldenEye",
+                "base_value": -3.345712661743164,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 6.73421049118042
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Std",
+                    "value": 615.0384269837672,
+                    "phi": 4.464628219604492
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 3178.1153846153848,
+                    "phi": -0.5380040407180786
+                  },
+                  {
+                    "feature": "Pkt Len Mean",
+                    "value": 541.9285714285714,
+                    "phi": 0.5105038285255432
+                  },
+                  {
+                    "feature": "Tot Bwd Pkts",
+                    "value": 15.0,
+                    "phi": -0.28777796030044556
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 5,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 1.069520354270935
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -0.6178287863731384
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Mean",
+                    "value": 0.0,
+                    "phi": 0.37227553129196167
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": -0.35250693559646606
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 0.0,
+                    "phi": -0.24971888959407806
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            }
+          ]
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 2476,
+          "lab_flows": 2475,
+          "lab_invalid": 0,
+          "lab_valid": 2475,
+          "labels": {
+            "Benign": 2243,
+            "DoS attacks-Hulk": 169,
+            "SSH-Bruteforce": 32,
+            "Infilteration": 31
+          },
+          "lab_flow_packet_sum": 62594,
+          "medians": {
+            "Flow Duration": 59333.0,
+            "Tot Fwd Pkts": 9.0,
+            "Tot Bwd Pkts": 9.0,
+            "TotLen Bwd Pkts": 6907.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 2.0,
+            "PSH Flag Cnt": 5.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 31.0,
+                    "phi": 1.7746808528900146
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 1128.0,
+                    "phi": -1.4744285345077515
+                  },
+                  {
+                    "feature": "TotLen Bwd Pkts",
+                    "value": 51796.0,
+                    "phi": 1.440170407295227
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 5227.0,
+                    "phi": -1.3445875644683838
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3173370361328125
+                  }
+                ],
+                "additivity_error": 7.152557373046875e-07
+              }
+            },
+            {
+              "csv_row_zero_based": 30,
+              "label": "DoS attacks-Hulk",
+              "shap": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": -0.6012477874755859,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 2.6238901615142822
+                  },
+                  {
+                    "feature": "TotLen Bwd Pkts",
+                    "value": 3454.0,
+                    "phi": -1.719496250152588
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Max",
+                    "value": 1448.0,
+                    "phi": -0.7950940728187561
+                  },
+                  {
+                    "feature": "Bwd Header Len",
+                    "value": 200.0,
+                    "phi": 0.7569785118103027
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 200.0,
+                    "phi": 0.613734781742096
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-07
+              }
+            },
+            {
+              "csv_row_zero_based": 14,
+              "label": "SSH-Bruteforce",
+              "shap": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 34.0,
+                    "phi": 3.2559914588928223
+                  },
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 17.0,
+                    "phi": 3.1833696365356445
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": -1.2871229648590088
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 1224.0,
+                    "phi": 0.3301815986633301
+                  },
+                  {
+                    "feature": "Bwd PSH Flags",
+                    "value": 17.0,
+                    "phi": 0.1700548678636551
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            }
+          ]
+        }
+      },
+      "http_request_occurrences_verified": 8776
+    },
+    "slowloris1": {
+      "file": "slowloris1.pcapng",
+      "sha256": "3a5fdb3c4b2f1d09fc4568e89650c4f267b16b55677b98a43e9dea408fac1745",
+      "lab_tcp_packets": 163,
+      "tcp_streams": 10,
+      "first_epoch": 1794991766.9763873,
+      "last_epoch": 1794991826.621412,
+      "span_seconds": 59.64502477645874,
+      "http_requests": 0,
+      "http_requests_per_capture_second": 0.0,
+      "http_responses": {
+        "408": 5,
+        "400": 5
+      },
+      "request_connection": {},
+      "syn_windows": {
+        "64240": 10,
+        "65160": 10
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 16,
+          "lab_flows": 16,
+          "lab_invalid": 0,
+          "lab_valid": 16,
+          "labels": {
+            "Benign": 12,
+            "DoS attacks-Hulk": 4
+          },
+          "lab_flow_packet_sum": 163,
+          "medians": {
+            "Flow Duration": 19533595.5,
+            "Tot Fwd Pkts": 7.0,
+            "Tot Bwd Pkts": 5.5,
+            "TotLen Bwd Pkts": 522.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 4.5
+          }
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 10,
+          "lab_flows": 10,
+          "lab_invalid": 0,
+          "lab_valid": 10,
+          "labels": {
+            "Benign": 10
+          },
+          "lab_flow_packet_sum": 163,
+          "medians": {
+            "Flow Duration": 24793201.0,
+            "Tot Fwd Pkts": 9.5,
+            "Tot Bwd Pkts": 8.0,
+            "TotLen Bwd Pkts": 522.5,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 6.0
+          }
+        }
+      },
+      "http_request_occurrences_verified": 0
+    },
+    "slowloris2": {
+      "file": "slowloris2 .pcapng",
+      "sha256": "74c9216619e6679111a8f020d97b236d9a66f30099d7cedd0b0fbb0907f5d132",
+      "lab_tcp_packets": 337,
+      "tcp_streams": 20,
+      "first_epoch": 1794993345.8406858,
+      "last_epoch": 1794993405.455859,
+      "span_seconds": 59.61517310142517,
+      "http_requests": 0,
+      "http_requests_per_capture_second": 0.0,
+      "http_responses": {
+        "408": 10,
+        "400": 10
+      },
+      "request_connection": {},
+      "syn_windows": {
+        "64240": 20,
+        "65160": 20
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 36,
+          "lab_flows": 36,
+          "lab_invalid": 0,
+          "lab_valid": 36,
+          "labels": {
+            "Benign": 33,
+            "DoS attacks-Hulk": 3
+          },
+          "lab_flow_packet_sum": 336,
+          "medians": {
+            "Flow Duration": 19373390.5,
+            "Tot Fwd Pkts": 6.0,
+            "Tot Bwd Pkts": 5.5,
+            "TotLen Bwd Pkts": 522.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 4.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.8145876526832581
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 1.0,
+                    "phi": -0.6289010643959045
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 324.0,
+                    "phi": 0.5559737086296082
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.3782584602232859,
+                    "phi": 0.540764570236206
+                  },
+                  {
+                    "feature": "Fwd IAT Std",
+                    "value": 4879990.098526138,
+                    "phi": 0.47320282459259033
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 20,
+              "label": "DoS attacks-Hulk",
+              "shap": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 1.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 168.0,
+                    "phi": 2.9888458251953125
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.7384437322616577
+                  },
+                  {
+                    "feature": "Bwd IAT Min",
+                    "value": 1915.0,
+                    "phi": -0.3951074481010437
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.23721903562545776
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              }
+            }
+          ]
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 20,
+          "lab_flows": 20,
+          "lab_invalid": 0,
+          "lab_valid": 20,
+          "labels": {
+            "Benign": 20
+          },
+          "lab_flow_packet_sum": 337,
+          "medians": {
+            "Flow Duration": 24739774.0,
+            "Tot Fwd Pkts": 9.5,
+            "Tot Bwd Pkts": 8.0,
+            "TotLen Bwd Pkts": 522.5,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 6.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.233850121498108
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 360.0,
+                    "phi": -0.9378053545951843
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": -0.9306018352508545
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.9257323741912842
+                  },
+                  {
+                    "feature": "Bwd IAT Tot",
+                    "value": 30144828.0,
+                    "phi": 0.6892436146736145
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-06
+              }
+            }
+          ]
+        }
+      },
+      "http_request_occurrences_verified": 0
+    },
+    "LOIC": {
+      "file": "LOIC.pcapng",
+      "sha256": "ebe94965d80300b6b758ed903d2db7553ee17dc9777c395d4f420d65383f6510",
+      "lab_tcp_packets": 327944,
+      "tcp_streams": 36995,
+      "first_epoch": 1794993794.8653889,
+      "last_epoch": 1794993936.9849732,
+      "span_seconds": 142.1195843219757,
+      "http_requests": 36995,
+      "http_requests_per_capture_second": 260.3089516233515,
+      "http_responses": {
+        "200": 36995
+      },
+      "request_connection": {
+        "(absent)": 36995
+      },
+      "syn_windows": {
+        "64240": 36995,
+        "65160": 36995
+      },
+      "profiles": {
+        "M0": {
+          "profile": "m0-current-unverified",
+          "all_flows": 52642,
+          "lab_flows": 52641,
+          "lab_invalid": 0,
+          "lab_valid": 52641,
+          "labels": {
+            "DoS attacks-Hulk": 22323,
+            "Benign": 21302,
+            "DDOS attack-HOIC": 9016
+          },
+          "lab_flow_packet_sum": 327663,
+          "medians": {
+            "Flow Duration": 4134.0,
+            "Tot Fwd Pkts": 5.0,
+            "Tot Bwd Pkts": 3.0,
+            "TotLen Bwd Pkts": 255.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 2.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 2,
+              "label": "DoS attacks-Hulk",
+              "shap": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 1.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 133.0,
+                    "phi": 2.988882064819336
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.7602832913398743
+                  },
+                  {
+                    "feature": "Bwd IAT Min",
+                    "value": 1699.0,
+                    "phi": -0.3951074481010437
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.23463429510593414
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -0.7913179397583008
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.7716317176818848
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 892.0,
+                    "phi": 0.6569595336914062
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": -0.544794499874115
+                  },
+                  {
+                    "feature": "Flow Pkts/s",
+                    "value": 90.09009009009009,
+                    "phi": -0.5003532767295837
+                  }
+                ],
+                "additivity_error": 7.152557373046875e-07
+              }
+            },
+            {
+              "csv_row_zero_based": 4,
+              "label": "DDOS attack-HOIC",
+              "shap": {
+                "class_explained": "DDOS attack-HOIC",
+                "base_value": 1.660548448562622,
+                "top_k": [
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 6.174546718597412
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 80.0,
+                    "phi": 0.5769719481468201
+                  },
+                  {
+                    "feature": "Tot Bwd Pkts",
+                    "value": 4.0,
+                    "phi": 0.08553703129291534
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 3705.0,
+                    "phi": 0.024083374068140984
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 5913.0,
+                    "phi": 0.003508953610435128
+                  }
+                ],
+                "additivity_error": 5.7220458984375e-06
+              }
+            }
+          ]
+        },
+        "M1": {
+          "profile": "m1-improved-2022",
+          "all_flows": 36996,
+          "lab_flows": 36995,
+          "lab_invalid": 0,
+          "lab_valid": 36995,
+          "labels": {
+            "Benign": 36995
+          },
+          "lab_flow_packet_sum": 327944,
+          "medians": {
+            "Flow Duration": 6597.0,
+            "Tot Fwd Pkts": 5.0,
+            "Tot Bwd Pkts": 3.0,
+            "TotLen Bwd Pkts": 255.0,
+            "Init Fwd Win Byts": 64240.0,
+            "FIN Flag Cnt": 1.0,
+            "PSH Flag Cnt": 2.0
+          },
+          "representative_shap": [
+            {
+              "csv_row_zero_based": 0,
+              "label": "Benign",
+              "shap": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": 2.5942656993865967
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 351.06196243637004,
+                    "phi": 1.1237343549728394
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.9085671901702881
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 176.0,
+                    "phi": -0.8691915273666382
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Max",
+                    "value": 255.0,
+                    "phi": 0.8060444593429565
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            }
+          ]
+        }
+      },
+      "http_request_occurrences_verified": 36995
+    }
+  },
+  "models": {
+    "M0": {
+      "sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+      "classes": [
+        "Benign",
+        "Bot",
+        "Brute Force -Web",
+        "Brute Force -XSS",
+        "DDOS attack-HOIC",
+        "DDOS attack-LOIC-UDP",
+        "DDoS attacks-LOIC-HTTP",
+        "DoS attacks-GoldenEye",
+        "DoS attacks-Hulk",
+        "DoS attacks-SlowHTTPTest",
+        "DoS attacks-Slowloris",
+        "FTP-BruteForce",
+        "Infilteration",
+        "SQL Injection",
+        "SSH-Bruteforce"
+      ]
+    },
+    "M1": {
+      "sha256": "3b858ed12c374f28418654daba9976a00852d0cddf538a2c2849ea8fb946d6f6",
+      "classes": [
+        "Benign",
+        "Bot",
+        "Brute Force -Web",
+        "Brute Force -XSS",
+        "DDOS attack-HOIC",
+        "DDOS attack-LOIC-UDP",
+        "DDoS attacks-LOIC-HTTP",
+        "DoS attacks-GoldenEye",
+        "DoS attacks-Hulk",
+        "DoS attacks-Slowloris",
+        "Infilteration",
+        "SQL Injection",
+        "SSH-Bruteforce"
+      ]
+    }
+  }
+}
