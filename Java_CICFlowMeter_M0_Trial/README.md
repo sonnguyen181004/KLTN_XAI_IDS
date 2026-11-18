@@ -314,3 +314,21 @@ Tái lập (cần PCAP gốc và CSV live còn ở máy):
 ```powershell
 python Java_CICFlowMeter_M0_Trial/audit_ssh_pcap.py
 ```
+
+## Đối chiếu Patator ss2 ngày 18/11/2026
+
+Mục đích: kiểm tra cùng công cụ Patator có giải quyết bỏ sót SSH của Hydra không. Đã chạy offline Java và Python trên cùng `ss2.pcapng`, giữ nguyên artifact M0/M1; bằng chứng `ssh_patator_audit_20261118.json`. Script audit nhận `--pcap`, `--output` và `--live-csv` tùy chọn; không còn tự ghép CSV live của lượt Hydra khi kiểm tra PCAP khác. Lượt này không đối chiếu trực tiếp trạng thái dashboard live.
+
+PCAP có 160 packet SSH thuộc 3 TCP stream. Java xuất 4 flow tới cổng 22 chứa 158 packet: 3 flow chính dài 18,25 / 19,82 / 18,18 giây và một flow phụ 2 packet dài 749 micro giây. M0 trả Benign cho 3 flow chính (99,31–99,45%), SSH-Bruteforce cho flow phụ (49,72%); M1 trả Benign cho 3 flow chính và Infilteration cho flow phụ. Không coi một flow phụ được gọi SSH là bằng chứng nhận diện tốt cả kịch bản. Python xuất 3 flow SSH chứa 160 packet; M0 trả Hulk cả 3, M1 trả Benign cả 3. Hai flow nền Java không tính là SSH. Chênh packet xuất ra cần đối soát lifecycle, không suy ra NIC mất gói.
+
+Ảnh Patator 1.1.0 do người dùng cung cấp: 20 ứng viên, 18 kết quả và 2 lỗi No existing session; không diễn giải Hits=18 là tìm được 18 mật khẩu. Ubuntu ghi Failed password và đóng phiên vì quá số lần xác thực. Lượt này có traffic thử mật khẩu thật, nhưng không tái tạo chính xác cấu hình dataset.
+
+Đọc lại toàn bộ 41.828 dòng SSH trong train M0: Flow Duration trung vị 367.033,5 micro giây (max 565.508); Fwd Pkts/s trung vị 62,470; Init Bwd Win Byts trung vị 230; Fwd Pkt Len Max trung vị 640. Trong train improved tham chiếu M1, PSH Flag Cnt toàn bộ mẫu SSH bằng 31; ss2 Java cũng có 31 ở ba flow chính, góp +3,300 SHAP vào lớp SSH của M1. Tuy nhiên Fwd PSH Flags=0 góp -1,877; các đóng góp còn lại và điểm các lớp khiến Benign vẫn thắng. SHAP là raw margin, không chứng minh nguyên nhân duy nhất. Cùng công cụ không xóa khác biệt cấu hình SSH, tốc độ và extractor. Dataset gốc công bố dùng Patator: https://www.unb.ca/cic/datasets/ids-2018.html . Chưa xác minh phiên bản/tham số lịch sử; chưa chứng nhận provenance bản M1 rebuilt với train tham chiếu.
+
+Tái lập:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/audit_ssh_pcap.py --pcap Java_CICFlowMeter_M0_Trial/ss2.pcapng --output Java_CICFlowMeter_M0_Trial/ssh_patator_audit_20261118.json
+```
+
+Bước tiếp: đối soát directional PSH/window/flow với PCAP và extractor improved, xác minh provenance M1; chưa tăng tải hoặc sửa nhãn để buộc kết quả đúng. Không thay đổi model/runtime trong bước audit.

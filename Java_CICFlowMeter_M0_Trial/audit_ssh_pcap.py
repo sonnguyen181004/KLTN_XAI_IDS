@@ -1,4 +1,5 @@
 """Offline replay of the user's SSH demo through both extractors and frozen models."""
+import argparse
 import hashlib
 import io
 import json
@@ -26,7 +27,12 @@ def run(args, **kwargs):
         raise RuntimeError(p.stdout[-1000:]+p.stderr[-1000:])
     return p.stdout
 
-source = HERE/'ssbrute.pcapng'
+parser = argparse.ArgumentParser()
+parser.add_argument('--pcap', type=Path, default=HERE/'ssbrute.pcapng')
+parser.add_argument('--output', type=Path, default=HERE/'ssh_pcap_audit_20261118.json')
+parser.add_argument('--live-csv', type=Path)
+args = parser.parse_args()
+source = args.pcap.resolve()
 out = HERE/'output'/('ssh_replay_'+uuid.uuid4().hex[:8])
 out.mkdir(parents=True)
 pcap = out/'ssbrute.pcap'
@@ -98,16 +104,20 @@ report['comparison']['unique_tuple_pairs']=len(pairs)
 report['comparison']['differences']={n:{'pairs_different':sum(not np.isclose(frames['java'].at[a,n],frames['python'].at[b,n],rtol=1e-5,atol=1e-5) for a,b in pairs),
     'java_values':[float(frames['java'].at[a,n]) for a,b in pairs],
     'python_values':[float(frames['python'].at[b,n]) for a,b in pairs]} for n in names}
-live=pd.read_csv(HERE/'output/dashboard_d75fec2af76d.csv')
-j=raws['java']; feats=[FEATURE_MAP[n] for n in names]
-identity=['Src IP','Dst IP','Src Port','Dst Port','Protocol']
-merged=j.merge(live,on=identity,suffixes=('_offline','_live'),validate='one_to_one')
-report['java_live_replay']={'matched_rows':len(merged),'all_78_features_equal':all(np.allclose(merged[n+'_offline'],merged[n+'_live'],rtol=1e-9,atol=1e-6,equal_nan=True) if n not in identity else True for n in feats)}
-report['java_live_replay']['different_features_max_abs_delta'] = {
-    name: float(np.max(np.abs(merged[col+'_offline']-merged[col+'_live'])))
-    for name,col in FEATURE_MAP.items() if col not in identity
-    and not np.allclose(merged[col+'_offline'],merged[col+'_live'],rtol=1e-9,atol=1e-6,equal_nan=True)
-}
-target=HERE/'ssh_pcap_audit_20261118.json'
+if args.live_csv:
+    live=pd.read_csv(args.live_csv)
+    j=raws['java']; feats=[FEATURE_MAP[n] for n in names]
+    identity=['Src IP','Dst IP','Src Port','Dst Port','Protocol']
+    merged=j.merge(live,on=identity,suffixes=('_offline','_live'),validate='one_to_one')
+    report['java_live_replay']={'matched_rows':len(merged),'all_78_features_equal':all(np.allclose(merged[n+'_offline'],merged[n+'_live'],rtol=1e-9,atol=1e-6,equal_nan=True) if n not in identity else True for n in feats)}
+    report['java_live_replay']['different_features_max_abs_delta'] = {
+        name: float(np.max(np.abs(merged[col+'_offline']-merged[col+'_live'])))
+        for name,col in FEATURE_MAP.items() if col not in identity
+        and not np.allclose(merged[col+'_offline'],merged[col+'_live'],rtol=1e-9,atol=1e-6,equal_nan=True)
+    }
+else:
+    report['java_live_replay'] = {'status': 'not_checked_no_live_csv_supplied'}
+
+target=args.output
 target.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({**{k:v for k,v in report.items() if k not in ('extractors','comparison')},'extractors':{k:{**{n:v for n,v in r.items() if n!='models'},'models':{n:m['labels'] for n,m in r['models'].items()}} for k,r in report['extractors'].items()}},indent=2))
