@@ -1,0 +1,25 @@
+{
+  "m0": {
+    "raw_csv": "Java_CICFlowMeter_M0_Trial\\output\\dashboard_f4a53c4bb3e7.csv",
+    "inspection_dir": "Java_CICFlowMeter_M0_Trial\\output\\inspect_f4a53c4bb3e7",
+    "rows": 61,
+    "invalid_rows": 0,
+    "invalid_columns": {},
+    "explanation": "M1 rejected rows have one packet, duration zero: rates divide by zero and IAT has no interval; no imputation."
+  },
+  "m1": {
+    "raw_csv": "Java_CICFlowMeter_M0_Trial\\output\\dashboard_959cc18e15c2.csv",
+    "inspection_dir": "Java_CICFlowMeter_M0_Trial\\output\\inspect_959cc18e15c2",
+    "rows": 54,
+    "invalid_rows": 12,
+    "invalid_columns": {
+      "Flow Byts/s": 12,
+      "Flow Pkts/s": 12,
+      "Flow IAT Mean": 12,
+      "Flow IAT Std": 12,
+      "Flow IAT Max": 12,
+      "Flow IAT Min": 12
+    },
+    "explanation": "M1 rejected rows have one packet, duration zero: rates divide by zero and IAT has no interval; no imputation."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "scope": "Real Java Wi-Fi capture + HTTP API + Streamlit AppTest; no browser visual QA",
+  "traffic": [
+    {
+      "http_status": 200,
+      "bytes": 577
+    },
+    {
+      "http_status": 200,
+      "bytes": 577
+    },
+    {
+      "http_status": 200,
+      "bytes": 577
+    },
+    {
+      "http_status": 200,
+      "bytes": 577
+    },
+    {
+      "http_status": 200,
+      "bytes": 577
+    },
+    {
+      "http_status": 200,
+      "bytes": 577
+    }
+  ],
+  "models": {
+    "M0": {
+      "labels": {
+        "Benign": 47,
+        "DoS attacks-Hulk": 14
+      },
+      "invalid_rows": 0,
+      "detail_http_200": 61,
+      "selected_flow": 61,
+      "selected_label": "Benign",
+      "shap_error": 9.5367431640625e-07,
+      "lime_status": "insufficient_neighborhood",
+      "lime_diagnostics": {
+        "samples": 1000,
+        "nonzero_weights": 1000,
+        "effective_sample_size": 1.0000002171308167,
+        "max_other_weight": 8.917792025813282e-09,
+        "min_other_distance": 20.165275913950218,
+        "raw_local_r2": 3.296137449082526e-05,
+        "raw_top_k": [
+          {
+            "feature_desc": "FIN Flag Cnt",
+            "weight": 2.812283100779798e-07
+          },
+          {
+            "feature_desc": "Fwd PSH Flags",
+            "weight": 8.000762711812301e-08
+          },
+          {
+            "feature_desc": "ACK Flag Cnt",
+            "weight": 7.713322787706372e-08
+          },
+          {
+            "feature_desc": "Dst Port",
+            "weight": 2.276749187639021e-08
+          },
+          {
+            "feature_desc": "PSH Flag Cnt",
+            "weight": 1.6595409218766318e-08
+          }
+        ],
+        "status": "insufficient_neighborhood"
+      },
+      "ui_row_click_and_xai": "PASS",
+      "model_sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2"
+    }
+  },
+  "interface": "\\Device\\NPF_{B3ED4BCD-100F-431A-BA73-183AD1644467}",
+  "run_id": "f4a53c4bb3e7",
+  "rows_before_stop": 21,
+  "seconds_until_stop_requested": 31.06,
+  "packet_summary": "accepted_packets=1138 closed_flows=21 flushed_flows=40",
+  "csv_rows": 61,
+  "process_exit": 0,
+  "seconds_through_drain": 32.17,
+  "cleanup_process_stopped": true
+}

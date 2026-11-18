@@ -1,0 +1,7445 @@
+{
+  "scope": "offline; no exact historical PCAP/CSV pairs found under dataset/",
+  "artifacts": "Java_CICFlowMeter_M0_Trial\\output\\contract_0925ab3b",
+  "improved_reference": {
+    "repository": "https://github.com/GintsEngelen/CICFlowMeter.git",
+    "commit": "13a061520b862d605eea746c79ca4033b30d98fc",
+    "status": "published 2022 candidate, not certified exact dataset commit",
+    "build_provenance": {
+      "repository": "https://github.com/GintsEngelen/CICFlowMeter.git",
+      "commit": "13a061520b862d605eea746c79ca4033b30d98fc",
+      "java_sha256": {
+        "src/main/java/swing/common/CsvFileWrapper.java": "49be21f1107a0c3b1b78c6ae153666d3775f9885d0a7cbc8fded39c59aba43cd",
+        "src/main/java/swing/common/CsvPickerPane.java": "ff645f8c094f9183491c5577a1eada71f010a85982fe5a9bd66ae76181f47a57",
+        "src/main/java/swing/common/InsertCsvRow.java": "e72f32a1b855acf46a374ba25fe044f1b52149c580739316887649971eb49a47",
+        "src/main/java/swing/common/InsertTableRow.java": "57e895cabf6838e994a58cebb64ebd4192e3300fa788806e8d1e72d06b814d7c",
+        "src/main/java/swing/common/JTable2CSVWorker.java": "347d69a998653344c25e06b97d33f1f733494d98d98e6705bcfae1de25c7fd13",
+        "src/main/java/swing/common/PcapFileFilter.java": "254cf0d87167acbeefc3522ba2ca0bed3d293add76f4525be35bb8a49dfe465d",
+        "src/main/java/swing/common/StatusBar.java": "0e43788ebb76a1ea6dd95ff3a6e3fe76680bdabaeb200418ee43ec182e39956b",
+        "src/main/java/swing/common/SwingUtils.java": "5b9f9fc91fe7e89d82d593ecb2c274a17718bfeaa53cebca5daf91138080b5ae",
+        "src/main/java/swing/common/TextFileFilter.java": "3cb6398bab8743b00154a0ee010c2715487d452a904748cfc711e01c889cde34",
+        "src/main/java/cic/cs/unb/ca/LRUCache.java": "db9f0777bec62264e7c2745076ab379842bb313d7fd952efc820c2c03d3e7832",
+        "src/main/java/cic/cs/unb/ca/Sys.java": "c0758ce837072f354386b97306d616883297154c79b92bd40272cd2967f36d36",
+        "src/main/java/cic/cs/unb/ca/flow/FlowMgr.java": "73168b4ed80e023454ed7aa1517c0fb9ef646d652994322848efc09b00ff5af1",
+        "src/main/java/cic/cs/unb/ca/guava/GuavaMgr.java": "1e456e5ff05a4eeb6bdec63967a8b7f6296b0f72b3375859b3526cc03f8c5010",
+        "src/main/java/cic/cs/unb/ca/ifm/App.java": "ef09f34609fd0244487572cb74307f40b224b2e126bc59a660d52f68920c03d0",
+        "src/main/java/cic/cs/unb/ca/ifm/CICFlowMeter.java": "064cb4836990b8a1897dc977fd835da7a4038df250d7008a76f1e9b32fe3e79b",
+        "src/main/java/cic/cs/unb/ca/ifm/Cmd.java": "7414647d8b892a4de1f5fae091fd95e5aa6abb959bd6127aa6c58b1a16a7caaa",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/BasicFlow.java": "4a4784e4ac6cdd72251675f63180178e6c2a74af360399aac5f027bb7e489ec3",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/BasicPacketInfo.java": "e05d226bc8e5665741bfd0df3966c297b2c89fca75e8618c984f101cf4bb6c38",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/DateFormatter.java": "c1260bc5d2ff46c2a0f7ce6629dac0707050f927468af28163d6853657815534",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/FlowFeature.java": "7af5fe850a2492fc2d37e155bcb471704cf5784a579304ee5f66418a386a4a65",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/FlowGenerator.java": "3ac8fec76c601df10f3d9658fce083ad1fd51a010d8cf3a5244eeb6936ff7ef0",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/IdGenerator.java": "986799a5894efd7c5710351c50c47e801fa74f3397350edcb81163c1d5a086d5",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/PacketReader.java": "fee811cde73c536f87fc3de0ad11805558b502a66322af1b2fc38637713462ea",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/PcapIfWrapper.java": "b01f8dd8ae1db6d61fcff4334aad145325f3cfc407e0327261d37f3884f36eb8",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/Protocol.java": "eb82e0004d92cc3acf0c94545ff2b9dd014b1ea57cdea62a797fa15a3e2f9cdf",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/ProtocolEnum.java": "1a3d2dc3d134a946a1fa1b354aa7a41b775585b87367a04c33d35a4772f11b45",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/TcpFlowState.java": "8d2754f465c172a7a03994678b3a5ab688d2c8c6b61820e838f9c9e2640bb62c",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/Utils.java": "c20c1b336407d6223c78a3c555324468d8eac90e0f85aa6d5457e974a4c49e4a",
+        "src/main/java/cic/cs/unb/ca/weka/ClusterWorker.java": "a9afabfa50b6b7c1423999477c3bb845a155cc71358fda7d98b9b4f752dea52d",
+        "src/main/java/cic/cs/unb/ca/weka/DimenReduce.java": "c596e52d1c593de73a7effdc3aa6651b41359929db0c930807e9bf19941257da",
+        "src/main/java/cic/cs/unb/ca/weka/WekaFactory.java": "d6c3f97d425cab0196ac9801b211100b5907a1da0f4efe504cf21d42cf0e54e3",
+        "src/main/java/cic/cs/unb/ca/weka/WekaXMeans.java": "b8f60dbafef6545a1cab16708969612ac79f9f1182227e00ead9378fa4603dd8",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/FlowGenListener.java": "1ae3f29aa2e3a705debb72b09988cdfe92ca5eff8023f53bd39840062978dc80",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/InsertCsvRow.java": "1f4c16cb87f2ab37776addcf7fda9fcaf5d4c11a28e16f0bf376e16616322740",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/LoadPcapInterfaceWorker.java": "4d82d6c32169d4f9af1f56dddaac56c33e0b165cf29baf3fa39ec77eb9687b65",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/PcapReader.java": "10718bdfb8802f21d8cc3885e71d5c6d63149c4d918189fc127d3b4df9e8b6fc",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/ReadPcapFileWorker.java": "55ea600cc221806881f17f39bbf9420a58f26e83fcb6715e927f1a412c01c8fe",
+        "src/main/java/cic/cs/unb/ca/jnetpcap/worker/TrafficFlowWorker.java": "4c173f30ff1476a365b2184cf2457934716ac90bf6d8c7031906c10be4d30a28",
+        "src/main/java/cic/cs/unb/ca/ifm/ui/AboutDialog.java": "b9601d7e3d497e902abc714767809565d766ed1d9eddfa186414c808448c328e",
+        "src/main/java/cic/cs/unb/ca/ifm/ui/MainFrame.java": "c7dcd5c00f58a30b6ad01352201f6962067748f5561a0c99b948ba0a56880b9e",
+        "src/main/java/cic/cs/unb/ca/guava/Event/FlowVisualEvent.java": "306478e9471a5322453be9a259e196b580d10e08856b307095c31068596787e3",
+        "src/main/java/cic/cs/unb/ca/flow/ui/ChartContainer.java": "1c334245d5cfc07ec5b2f5bbaf20fc92ce70fffeb8ff02f5982749f514774fb4",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowChartInfo.java": "5bb79606869372ee7898497d08c71afdb972961bff88d31478ca8ed54125ea92",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowChartPane.java": "b33e8baf67ecfd55c53a24192abb505e64ae6afdc2a8d1755203463dfc665652",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowChartWorkerFactory.java": "a78dd0c054e09e84e09c2f273af602cf9dc32f1b11ff9064f608ac4366fdf9d7",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowFileInfo.java": "669e3518f894f2df18f0982fbce90a1fc08b8423f0b39e3d323f0244e831f099",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowMonitorPane.java": "54450d24762e392233c3651684b6a1ba51345d2f1b5bc14bb62e10792b71d2cc",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowOfflinePane.java": "51f39f406a607144a7976ceb50abe486e8a245c16af625e6e58335e2e1b85555",
+        "src/main/java/cic/cs/unb/ca/flow/ui/FlowVisualPane.java": "bbf6449d0b0458a04814b11e3dc8fe1471c4171ff91c7667c18dbe29fa9305c2"
+      },
+      "build_sha256": "20ad8c52d719bdb962e8797ac37c3118f8c2844008f109125222d337a757e083",
+      "native_jar_sha256": "eb01353d0d2b01fc531789eb7310b03392ec1eda119940d82de82302d8f5f9aa",
+      "native_dll_sha256": "3d8e8a34e8d34ab1d6bd7f3932c88aa07a1bfd4c427e5a4c85f792dda804f186"
+    }
+  },
+  "models": {
+    "M0": {
+      "path": "RQ1_Model_Training_xboost\\saved_models\\best_xgboost_model.pkl",
+      "sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+      "encoder_sha256": "909df601aaf46699ce243171274ff39af5ccd09c93b0930d9d78d71b8ac79397",
+      "classes": [
+        "Benign",
+        "Bot",
+        "Brute Force -Web",
+        "Brute Force -XSS",
+        "DDOS attack-HOIC",
+        "DDOS attack-LOIC-UDP",
+        "DDoS attacks-LOIC-HTTP",
+        "DoS attacks-GoldenEye",
+        "DoS attacks-Hulk",
+        "DoS attacks-SlowHTTPTest",
+        "DoS attacks-Slowloris",
+        "FTP-BruteForce",
+        "Infilteration",
+        "SQL Injection",
+        "SSH-Bruteforce"
+      ],
+      "feature_order_ok": true
+    },
+    "M1": {
+      "path": "IDS_M1_Lab\\models\\m1_xgboost_model.pkl",
+      "sha256": "3b858ed12c374f28418654daba9976a00852d0cddf538a2c2849ea8fb946d6f6",
+      "encoder_sha256": "f066be6612a2bcbb1845a8fd07d52e6f8a32f4f93f2baa57346ae9ec24fc7302",
+      "classes": [
+        "Benign",
+        "Bot",
+        "Brute Force -Web",
+        "Brute Force -XSS",
+        "DDOS attack-HOIC",
+        "DDOS attack-LOIC-UDP",
+        "DDoS attacks-LOIC-HTTP",
+        "DoS attacks-GoldenEye",
+        "DoS attacks-Hulk",
+        "DoS attacks-Slowloris",
+        "Infilteration",
+        "SQL Injection",
+        "SSH-Bruteforce"
+      ],
+      "feature_order_ok": true,
+      "research_artifact_sha256": "6ed405c11b53e412a377b254afc8f0d6671d78d07040b0a470778be83c3bcb3b",
+      "current_matches_research_artifact": false
+    }
+  },
+  "datasets": {
+    "M0_original": {
+      "train_path": "dataset/CICID-2018_processed/train_set.parquet",
+      "train_sha256": "baa16f4546f39cf7fdf6383453c053c3d9ae8fd33622cdbe2ff817292fc34b32",
+      "train_rows": 2800000,
+      "label_counts": {
+        "Benign": 1960000,
+        "DDOS attack-HOIC": 238320,
+        "DDoS attacks-LOIC-HTTP": 205417,
+        "DoS attacks-Hulk": 155042,
+        "Bot": 100650,
+        "Infilteration": 57258,
+        "SSH-Bruteforce": 41828,
+        "DoS attacks-GoldenEye": 14774,
+        "FTP-BruteForce": 14028,
+        "DoS attacks-SlowHTTPTest": 6938,
+        "DoS attacks-Slowloris": 3620,
+        "DDOS attack-LOIC-UDP": 1384,
+        "Brute Force -Web": 487,
+        "Brute Force -XSS": 184,
+        "SQL Injection": 70
+      },
+      "all_78_statistics": {
+        "Dst Port": {
+          "min": 0.0,
+          "max": 65535.0,
+          "nonfinite": 0
+        },
+        "Protocol": {
+          "min": 0.0,
+          "max": 17.0,
+          "nonfinite": 0
+        },
+        "Flow Duration": {
+          "min": -681401974784.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Tot Fwd Pkts": {
+          "min": 1.0,
+          "max": 272337.0,
+          "nonfinite": 0
+        },
+        "Tot Bwd Pkts": {
+          "min": 0.0,
+          "max": 123118.0,
+          "nonfinite": 0
+        },
+        "TotLen Fwd Pkts": {
+          "min": 0.0,
+          "max": 144391840.0,
+          "nonfinite": 0
+        },
+        "TotLen Bwd Pkts": {
+          "min": 0.0,
+          "max": 156360432.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Max": {
+          "min": 0.0,
+          "max": 64440.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Min": {
+          "min": 0.0,
+          "max": 1460.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Mean": {
+          "min": 0.0,
+          "max": 11217.025390625,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Std": {
+          "min": 0.0,
+          "max": 15760.837890625,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Max": {
+          "min": 0.0,
+          "max": 31469.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Min": {
+          "min": 0.0,
+          "max": 1460.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Mean": {
+          "min": 0.0,
+          "max": 1844.058837890625,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Std": {
+          "min": 0.0,
+          "max": 2316.329345703125,
+          "nonfinite": 0
+        },
+        "Flow Byts/s": {
+          "min": 0.0,
+          "max": 1806642816.0,
+          "nonfinite": 0
+        },
+        "Flow Pkts/s": {
+          "min": -4.402687409310602e-06,
+          "max": 5000000.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Mean": {
+          "min": -340700987392.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Std": {
+          "min": 0.0,
+          "max": 256344588288.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Max": {
+          "min": -159437996032.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Min": {
+          "min": -521963995136.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Tot": {
+          "min": -681401974784.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Mean": {
+          "min": -340700987392.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Std": {
+          "min": 0.0,
+          "max": 256344588288.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Max": {
+          "min": -159437996032.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Min": {
+          "min": -521963995136.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Tot": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Mean": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Std": {
+          "min": 0.0,
+          "max": 84805456.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Max": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Min": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd PSH Flags": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "Bwd PSH Flags": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Fwd URG Flags": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "Bwd URG Flags": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Fwd Header Len": {
+          "min": 0.0,
+          "max": 2178696.0,
+          "nonfinite": 0
+        },
+        "Bwd Header Len": {
+          "min": 0.0,
+          "max": 2462372.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkts/s": {
+          "min": 0.0,
+          "max": 5000000.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkts/s": {
+          "min": 0.0,
+          "max": 2000000.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Min": {
+          "min": 0.0,
+          "max": 1460.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Max": {
+          "min": 0.0,
+          "max": 64440.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Mean": {
+          "min": 0.0,
+          "max": 2521.11572265625,
+          "nonfinite": 0
+        },
+        "Pkt Len Std": {
+          "min": 0.0,
+          "max": 8810.7685546875,
+          "nonfinite": 0
+        },
+        "Pkt Len Var": {
+          "min": 0.0,
+          "max": 77629640.0,
+          "nonfinite": 0
+        },
+        "FIN Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "SYN Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "RST Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "PSH Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "ACK Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "URG Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "CWE Flag Count": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "ECE Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "Down/Up Ratio": {
+          "min": 0.0,
+          "max": 311.0,
+          "nonfinite": 0
+        },
+        "Pkt Size Avg": {
+          "min": 0.0,
+          "max": 2522.136474609375,
+          "nonfinite": 0
+        },
+        "Fwd Seg Size Avg": {
+          "min": 0.0,
+          "max": 11217.025390625,
+          "nonfinite": 0
+        },
+        "Bwd Seg Size Avg": {
+          "min": 0.0,
+          "max": 1844.058837890625,
+          "nonfinite": 0
+        },
+        "Fwd Byts/b Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkts/b Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Fwd Blk Rate Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Bwd Byts/b Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkts/b Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Bwd Blk Rate Avg": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Subflow Fwd Pkts": {
+          "min": 1.0,
+          "max": 272337.0,
+          "nonfinite": 0
+        },
+        "Subflow Fwd Byts": {
+          "min": 0.0,
+          "max": 144391840.0,
+          "nonfinite": 0
+        },
+        "Subflow Bwd Pkts": {
+          "min": 0.0,
+          "max": 123118.0,
+          "nonfinite": 0
+        },
+        "Subflow Bwd Byts": {
+          "min": 0.0,
+          "max": 156360432.0,
+          "nonfinite": 0
+        },
+        "Init Fwd Win Byts": {
+          "min": -1.0,
+          "max": 65535.0,
+          "nonfinite": 0
+        },
+        "Init Bwd Win Byts": {
+          "min": -1.0,
+          "max": 65535.0,
+          "nonfinite": 0
+        },
+        "Fwd Act Data Pkts": {
+          "min": 0.0,
+          "max": 272336.0,
+          "nonfinite": 0
+        },
+        "Fwd Seg Size Min": {
+          "min": 0.0,
+          "max": 56.0,
+          "nonfinite": 0
+        },
+        "Active Mean": {
+          "min": 0.0,
+          "max": 113130280.0,
+          "nonfinite": 0
+        },
+        "Active Std": {
+          "min": 0.0,
+          "max": 74874288.0,
+          "nonfinite": 0
+        },
+        "Active Max": {
+          "min": 0.0,
+          "max": 113130280.0,
+          "nonfinite": 0
+        },
+        "Active Min": {
+          "min": 0.0,
+          "max": 113130280.0,
+          "nonfinite": 0
+        },
+        "Idle Mean": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Idle Std": {
+          "min": 0.0,
+          "max": 74935992.0,
+          "nonfinite": 0
+        },
+        "Idle Max": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Idle Min": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        }
+      },
+      "test_path": "dataset/CICID-2018_processed/test_set.parquet",
+      "test_sha256": "c8df6be5d6bb779b6edf0efcf765470130c5119d321c029f0cec490753cfd366",
+      "test_models": {
+        "M0": {
+          "evaluated_known_labels": 700000,
+          "excluded_unknown_labels": 0,
+          "accuracy": 0.9790757142857143,
+          "benign_fpr": 0.002324489795918367,
+          "per_class_recall": {
+            "Benign": 0.9976755102040816,
+            "Bot": 0.9998012876559892,
+            "Brute Force -Web": 0.7049180327868853,
+            "Brute Force -XSS": 0.9565217391304348,
+            "DDOS attack-HOIC": 1.0,
+            "DDOS attack-LOIC-UDP": 0.9624277456647399,
+            "DDoS attacks-LOIC-HTTP": 0.9994742376445847,
+            "DoS attacks-GoldenEye": 1.0,
+            "DoS attacks-Hulk": 0.9999742002063984,
+            "DoS attacks-SlowHTTPTest": 0.37636887608069164,
+            "DoS attacks-Slowloris": 1.0,
+            "FTP-BruteForce": 0.9130310806957513,
+            "Infilteration": 0.15983234369542437,
+            "SQL Injection": 0.5294117647058824,
+            "SSH-Bruteforce": 0.999808740556565
+          },
+          "confusion_matrix": [
+            [
+              488861,
+              2,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1133,
+              0,
+              0
+            ],
+            [
+              5,
+              25157,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              86,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              44,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              59580,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              333,
+              12,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              0,
+              0,
+              0,
+              0,
+              24,
+              51327,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3694,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              38759,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              653,
+              0,
+              1082,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              905,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              305,
+              0,
+              3202,
+              0,
+              0,
+              0
+            ],
+            [
+              12026,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              2288,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              9,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              10455
+            ]
+          ]
+        },
+        "M1": {
+          "evaluated_known_labels": 694758,
+          "excluded_unknown_labels": 5242,
+          "accuracy": 0.7776031366317481,
+          "benign_fpr": 0.021528571428571428,
+          "per_class_recall": {
+            "Benign": 0.9784714285714285,
+            "Bot": 0.48970670058024,
+            "Brute Force -Web": 0.0,
+            "Brute Force -XSS": 0.4782608695652174,
+            "DDOS attack-HOIC": 0.24686136287344745,
+            "DDOS attack-LOIC-UDP": 0.0,
+            "DDoS attacks-LOIC-HTTP": 0.5056081317910971,
+            "DoS attacks-GoldenEye": 0.6158635625338387,
+            "DoS attacks-Hulk": 0.045356037151702784,
+            "DoS attacks-Slowloris": 0.7403314917127072,
+            "Infilteration": 0.21439049947607405,
+            "SQL Injection": 0.35294117647058826,
+            "SSH-Bruteforce": 0.0
+          },
+          "confusion_matrix": [
+            [
+              479451,
+              0,
+              0,
+              3,
+              0,
+              0,
+              10,
+              1,
+              327,
+              0,
+              10208,
+              0,
+              0
+            ],
+            [
+              12840,
+              12322,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              91,
+              0,
+              0,
+              31,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              0,
+              22,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              44872,
+              0,
+              0,
+              0,
+              14708,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              346,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              25384,
+              0,
+              0,
+              5,
+              0,
+              0,
+              25965,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1258,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              2275,
+              142,
+              5,
+              13,
+              0,
+              0
+            ],
+            [
+              3985,
+              0,
+              0,
+              20,
+              0,
+              0,
+              0,
+              406,
+              1758,
+              0,
+              32591,
+              0,
+              0
+            ],
+            [
+              233,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              670,
+              0,
+              0,
+              0
+            ],
+            [
+              11245,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              3069,
+              0,
+              0
+            ],
+            [
+              11,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              3878,
+              0,
+              0,
+              0,
+              0,
+              4472,
+              0,
+              2107,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "test_rows": 700000,
+      "test_nonfinite_rows": 0
+    },
+    "M1_improved_reference": {
+      "train_path": "RQ4_Retrain_Compare/data/d2_train.parquet",
+      "train_sha256": "e34aef2ba5325a15c0720e09a6185644117e9e985573a3ffd48effd9da426b0e",
+      "train_rows": 2728397,
+      "label_counts": {
+        "Benign": 1909878,
+        "DDOS attack-HOIC": 238320,
+        "DDoS attacks-LOIC-HTTP": 205417,
+        "DoS attacks-Hulk": 155042,
+        "Bot": 100650,
+        "Infilteration": 57258,
+        "SSH-Bruteforce": 41828,
+        "DoS attacks-GoldenEye": 14774,
+        "DoS attacks-Slowloris": 3620,
+        "DDOS attack-LOIC-UDP": 1384,
+        "Brute Force -Web": 105,
+        "Brute Force -XSS": 90,
+        "SQL Injection": 31
+      },
+      "all_78_statistics": {
+        "Dst Port": {
+          "min": 0.0,
+          "max": 65389.0,
+          "nonfinite": 0
+        },
+        "Protocol": {
+          "min": 0.0,
+          "max": 17.0,
+          "nonfinite": 0
+        },
+        "Flow Duration": {
+          "min": 1.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Tot Fwd Pkts": {
+          "min": 0.0,
+          "max": 280043.0,
+          "nonfinite": 0
+        },
+        "Tot Bwd Pkts": {
+          "min": 0.0,
+          "max": 120267.0,
+          "nonfinite": 0
+        },
+        "TotLen Fwd Pkts": {
+          "min": 0.0,
+          "max": 8961376.0,
+          "nonfinite": 0
+        },
+        "TotLen Bwd Pkts": {
+          "min": 0.0,
+          "max": 156027008.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Max": {
+          "min": 0.0,
+          "max": 64972.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Min": {
+          "min": 0.0,
+          "max": 1135.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Mean": {
+          "min": 0.0,
+          "max": 31305.23828125,
+          "nonfinite": 0
+        },
+        "Fwd Pkt Len Std": {
+          "min": 0.0,
+          "max": 25412.39453125,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Max": {
+          "min": 0.0,
+          "max": 30660.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Min": {
+          "min": 0.0,
+          "max": 971.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Mean": {
+          "min": 0.0,
+          "max": 6256.23828125,
+          "nonfinite": 0
+        },
+        "Bwd Pkt Len Std": {
+          "min": 0.0,
+          "max": 7959.01953125,
+          "nonfinite": 0
+        },
+        "Flow Byts/s": {
+          "min": 0.0,
+          "max": 716000000.0,
+          "nonfinite": 0
+        },
+        "Flow Pkts/s": {
+          "min": 0.016668306663632393,
+          "max": 3000000.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Mean": {
+          "min": 0.5,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Std": {
+          "min": 0.0,
+          "max": 84811128.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Max": {
+          "min": 1.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Flow IAT Min": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Tot": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Mean": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Std": {
+          "min": 0.0,
+          "max": 84744888.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Max": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Fwd IAT Min": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Tot": {
+          "min": 0.0,
+          "max": 120000000.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Mean": {
+          "min": 0.0,
+          "max": 119991648.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Std": {
+          "min": 0.0,
+          "max": 84822080.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Max": {
+          "min": 0.0,
+          "max": 119991648.0,
+          "nonfinite": 0
+        },
+        "Bwd IAT Min": {
+          "min": 0.0,
+          "max": 119991648.0,
+          "nonfinite": 0
+        },
+        "Fwd PSH Flags": {
+          "min": 0.0,
+          "max": 2384.0,
+          "nonfinite": 0
+        },
+        "Bwd PSH Flags": {
+          "min": 0.0,
+          "max": 15451.0,
+          "nonfinite": 0
+        },
+        "Fwd URG Flags": {
+          "min": 0.0,
+          "max": 20.0,
+          "nonfinite": 0
+        },
+        "Bwd URG Flags": {
+          "min": 0.0,
+          "max": 0.0,
+          "nonfinite": 0
+        },
+        "Fwd Header Len": {
+          "min": -32752.0,
+          "max": 32752.0,
+          "nonfinite": 0
+        },
+        "Bwd Header Len": {
+          "min": -32736.0,
+          "max": 32752.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkts/s": {
+          "min": 0.0,
+          "max": 3000000.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkts/s": {
+          "min": 0.0,
+          "max": 2000000.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Min": {
+          "min": 0.0,
+          "max": 624.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Max": {
+          "min": 0.0,
+          "max": 64972.0,
+          "nonfinite": 0
+        },
+        "Pkt Len Mean": {
+          "min": 0.0,
+          "max": 16439.07421875,
+          "nonfinite": 0
+        },
+        "Pkt Len Std": {
+          "min": 0.0,
+          "max": 23620.15234375,
+          "nonfinite": 0
+        },
+        "Pkt Len Var": {
+          "min": 0.0,
+          "max": 557911616.0,
+          "nonfinite": 0
+        },
+        "FIN Flag Cnt": {
+          "min": 0.0,
+          "max": 20.0,
+          "nonfinite": 0
+        },
+        "SYN Flag Cnt": {
+          "min": 0.0,
+          "max": 2033.0,
+          "nonfinite": 0
+        },
+        "RST Flag Cnt": {
+          "min": 0.0,
+          "max": 24.0,
+          "nonfinite": 0
+        },
+        "PSH Flag Cnt": {
+          "min": 0.0,
+          "max": 15582.0,
+          "nonfinite": 0
+        },
+        "ACK Flag Cnt": {
+          "min": 0.0,
+          "max": 178869.0,
+          "nonfinite": 0
+        },
+        "URG Flag Cnt": {
+          "min": 0.0,
+          "max": 20.0,
+          "nonfinite": 0
+        },
+        "CWE Flag Count": {
+          "min": 0.0,
+          "max": 11.0,
+          "nonfinite": 0
+        },
+        "ECE Flag Cnt": {
+          "min": 0.0,
+          "max": 13.0,
+          "nonfinite": 0
+        },
+        "Down/Up Ratio": {
+          "min": 0.0,
+          "max": 24.730770111083984,
+          "nonfinite": 0
+        },
+        "Pkt Size Avg": {
+          "min": 0.0,
+          "max": 16439.07421875,
+          "nonfinite": 0
+        },
+        "Fwd Seg Size Avg": {
+          "min": 0.0,
+          "max": 31305.23828125,
+          "nonfinite": 0
+        },
+        "Bwd Seg Size Avg": {
+          "min": 0.0,
+          "max": 6256.23828125,
+          "nonfinite": 0
+        },
+        "Fwd Byts/b Avg": {
+          "min": 0.0,
+          "max": 8961376.0,
+          "nonfinite": 0
+        },
+        "Fwd Pkts/b Avg": {
+          "min": 0.0,
+          "max": 280043.0,
+          "nonfinite": 0
+        },
+        "Fwd Blk Rate Avg": {
+          "min": 0.0,
+          "max": 2744999936.0,
+          "nonfinite": 0
+        },
+        "Bwd Byts/b Avg": {
+          "min": 0.0,
+          "max": 38032156.0,
+          "nonfinite": 0
+        },
+        "Bwd Pkts/b Avg": {
+          "min": 0.0,
+          "max": 26470.0,
+          "nonfinite": 0
+        },
+        "Bwd Blk Rate Avg": {
+          "min": 0.0,
+          "max": 5496000000.0,
+          "nonfinite": 0
+        },
+        "Subflow Fwd Pkts": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "Subflow Fwd Byts": {
+          "min": 0.0,
+          "max": 16435.0,
+          "nonfinite": 0
+        },
+        "Subflow Bwd Pkts": {
+          "min": 0.0,
+          "max": 1.0,
+          "nonfinite": 0
+        },
+        "Subflow Bwd Byts": {
+          "min": 0.0,
+          "max": 2864.0,
+          "nonfinite": 0
+        },
+        "Init Fwd Win Byts": {
+          "min": 0.0,
+          "max": 65535.0,
+          "nonfinite": 0
+        },
+        "Init Bwd Win Byts": {
+          "min": 0.0,
+          "max": 65535.0,
+          "nonfinite": 0
+        },
+        "Fwd Act Data Pkts": {
+          "min": 0.0,
+          "max": 280042.0,
+          "nonfinite": 0
+        },
+        "Fwd Seg Size Min": {
+          "min": 0.0,
+          "max": 48.0,
+          "nonfinite": 0
+        },
+        "Active Mean": {
+          "min": 0.0,
+          "max": 113515232.0,
+          "nonfinite": 0
+        },
+        "Active Std": {
+          "min": 0.0,
+          "max": 75508240.0,
+          "nonfinite": 0
+        },
+        "Active Max": {
+          "min": 0.0,
+          "max": 113515232.0,
+          "nonfinite": 0
+        },
+        "Active Min": {
+          "min": 0.0,
+          "max": 113515232.0,
+          "nonfinite": 0
+        },
+        "Idle Mean": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Idle Std": {
+          "min": 0.0,
+          "max": 75219808.0,
+          "nonfinite": 0
+        },
+        "Idle Max": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        },
+        "Idle Min": {
+          "min": 0.0,
+          "max": 119988192.0,
+          "nonfinite": 0
+        }
+      },
+      "test_path": "RQ4_Retrain_Compare/data/d2_test.parquet",
+      "test_sha256": "a171d93522448f3228d7329b9a3287cfdeb7960e8d8bcea1ab3f1dc95ec152d4",
+      "test_models": {
+        "M0": {
+          "evaluated_known_labels": 682100,
+          "excluded_unknown_labels": 0,
+          "accuracy": 0.7413590382641841,
+          "benign_fpr": 0.21121536431608268,
+          "per_class_recall": {
+            "Benign": 0.7887846356839173,
+            "Bot": 0.9999205150623957,
+            "Brute Force -Web": 0.6538461538461539,
+            "Brute Force -XSS": 0.7391304347826086,
+            "DDOS attack-HOIC": 0.8269553541456864,
+            "DDOS attack-LOIC-UDP": 0.7514450867052023,
+            "DDoS attacks-LOIC-HTTP": 0.0007010164738871364,
+            "DoS attacks-GoldenEye": 0.9585814834867352,
+            "DoS attacks-Hulk": 0.99984520123839,
+            "DoS attacks-SlowHTTPTest": null,
+            "DoS attacks-Slowloris": 0.9679558011049724,
+            "FTP-BruteForce": null,
+            "Infilteration": 0.0469437652811736,
+            "SQL Injection": 0.0,
+            "SSH-Bruteforce": 1.0
+          },
+          "confusion_matrix": [
+            [
+              376621,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1,
+              100774,
+              0,
+              68,
+              0,
+              2,
+              0,
+              3
+            ],
+            [
+              0,
+              25160,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              9,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              49270,
+              0,
+              0,
+              0,
+              10310,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              260,
+              85,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              51318,
+              0,
+              0,
+              0,
+              0,
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3541,
+              0,
+              0,
+              152,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              38754,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              12,
+              0,
+              876,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              13259,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              382,
+              0,
+              1,
+              1,
+              672,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10457
+            ]
+          ]
+        },
+        "M1": {
+          "evaluated_known_labels": 682100,
+          "excluded_unknown_labels": 0,
+          "accuracy": 0.9999340272687289,
+          "benign_fpr": 8.586926927346221e-05,
+          "per_class_recall": {
+            "Benign": 0.9999141307307265,
+            "Bot": 1.0,
+            "Brute Force -Web": 0.9615384615384616,
+            "Brute Force -XSS": 1.0,
+            "DDOS attack-HOIC": 1.0,
+            "DDOS attack-LOIC-UDP": 0.9942196531791907,
+            "DDoS attacks-LOIC-HTTP": 1.0,
+            "DoS attacks-GoldenEye": 1.0,
+            "DoS attacks-Hulk": 1.0,
+            "DoS attacks-Slowloris": 1.0,
+            "Infilteration": 0.9999301432064268,
+            "SQL Injection": 1.0,
+            "SSH-Bruteforce": 1.0
+          },
+          "confusion_matrix": [
+            [
+              477429,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              1,
+              0,
+              38,
+              0,
+              0
+            ],
+            [
+              0,
+              25162,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              25,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              23,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              59580,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              344,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              51354,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3694,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              38760,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              905,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              14314,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10457
+            ]
+          ]
+        }
+      },
+      "test_rows": 682100,
+      "test_nonfinite_rows": 0
+    }
+  },
+  "pcaps": {
+    "HTTP-CPU025-02.pcap_Flow.csv": {
+      "current": {
+        "rows": 378,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 378
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 377,
+              "Infilteration": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 3063,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 3000.0,
+            "max": 46460.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 2990626.0,
+            "max": 74206151.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 4.0,
+            "max": 21.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 3.0,
+            "max": 23.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 13.0,
+            "max": 6249.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 4015.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 4.0,
+            "max": 610.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 1.4444444444444444,
+            "max": 297.57142857142856
+          },
+          "Fwd Pkt Len Std": {
+            "min": 1.740051084818425,
+            "max": 289.9968169586588
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 2004.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 668.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 1034.8611501066218
+          },
+          "Flow Byts/s": {
+            "min": 0.5659908165833853,
+            "max": 1087.2458666066689
+          },
+          "Flow Pkts/s": {
+            "min": 0.1886636055277951,
+            "max": 4.660835749288137
+          },
+          "Flow IAT Mean": {
+            "min": 219543.4186046512,
+            "max": 5708165.461538462
+          },
+          "Flow IAT Std": {
+            "min": 934977.9189235847,
+            "max": 10845723.773118766
+          },
+          "Flow IAT Max": {
+            "min": 2616764.0,
+            "max": 25002765.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 655.0
+          },
+          "Fwd IAT Tot": {
+            "min": 2984684.0,
+            "max": 74206081.0
+          },
+          "Fwd IAT Mean": {
+            "min": 471969.95,
+            "max": 9275760.125
+          },
+          "Fwd IAT Std": {
+            "min": 1172204.092958844,
+            "max": 12799803.772897184
+          },
+          "Fwd IAT Max": {
+            "min": 2617243.0,
+            "max": 25002765.0
+          },
+          "Fwd IAT Min": {
+            "min": 27.0,
+            "max": 4271.0
+          },
+          "Bwd IAT Tot": {
+            "min": 2989101.0,
+            "max": 74205420.0
+          },
+          "Bwd IAT Mean": {
+            "min": 429095.9545454546,
+            "max": 18551355.0
+          },
+          "Bwd IAT Std": {
+            "min": 1107417.185347058,
+            "max": 12366263.43898056
+          },
+          "Bwd IAT Max": {
+            "min": 2616764.0,
+            "max": 25004095.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 14052.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 136.0,
+            "max": 680.0
+          },
+          "Bwd Header Len": {
+            "min": 104.0,
+            "max": 744.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.1212837464107254,
+            "max": 2.2244897894329743
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0673798591170696,
+            "max": 2.4363459598551622
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Pkt Len Max": {
+            "min": 8.0,
+            "max": 2004.0
+          },
+          "Pkt Len Mean": {
+            "min": 3.0,
+            "max": 301.00000000000006
+          },
+          "Pkt Len Std": {
+            "min": 3.0237157840738176,
+            "max": 722.4337073659158
+          },
+          "Pkt Len Var": {
+            "min": 9.142857142857142,
+            "max": 521910.4615384616
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 1.0,
+            "max": 24.0
+          },
+          "ACK Flag Cnt": {
+            "min": 6.0,
+            "max": 43.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 3.2142857142857144,
+            "max": 324.15384615384613
+          },
+          "Fwd Seg Size Avg": {
+            "min": 1.4444444444444444,
+            "max": 297.57142857142856
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 668.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 5132.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 7447.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 1.0,
+            "max": 10.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 4.0,
+            "max": 3124.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 1.0,
+            "max": 11.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 2007.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 253.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 63.0,
+            "max": 255.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 1.0,
+            "max": 12.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 32.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 380231.1152338798
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 24729834.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 492533.8142219273
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 25002765.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24303539.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 378,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 378
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 377,
+              "Infilteration": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 3440,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 3000.0,
+            "max": 46460.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 2990645.0,
+            "max": 74208033.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 5.0,
+            "max": 22.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 3.0,
+            "max": 23.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 13.0,
+            "max": 6249.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 4015.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 4.0,
+            "max": 610.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 1.3,
+            "max": 284.0454545454545
+          },
+          "Fwd Pkt Len Std": {
+            "min": 1.70293863659264,
+            "max": 286.2921751005597
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 2004.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 668.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 1034.8611501066218
+          },
+          "Flow Byts/s": {
+            "min": 0.5659764624134425,
+            "max": 1087.2455210971605
+          },
+          "Flow Pkts/s": {
+            "min": 0.2021344508619437,
+            "max": 4.766762319697215
+          },
+          "Flow IAT Mean": {
+            "min": 214553.86363636365,
+            "max": 5300573.785714286
+          },
+          "Flow IAT Std": {
+            "min": 924634.6652415248,
+            "max": 10531244.821073858
+          },
+          "Flow IAT Max": {
+            "min": 2616764.0,
+            "max": 25002765.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 114.0
+          },
+          "Fwd IAT Tot": {
+            "min": 2990645.0,
+            "max": 74208033.0
+          },
+          "Fwd IAT Mean": {
+            "min": 449541.4285714286,
+            "max": 8245337.0
+          },
+          "Fwd IAT Std": {
+            "min": 1173811.3090273798,
+            "max": 12365741.016833637
+          },
+          "Fwd IAT Max": {
+            "min": 2617243.0,
+            "max": 25002765.0
+          },
+          "Fwd IAT Min": {
+            "min": 27.0,
+            "max": 3041.0
+          },
+          "Bwd IAT Tot": {
+            "min": 2989101.0,
+            "max": 74205420.0
+          },
+          "Bwd IAT Mean": {
+            "min": 429095.9545454546,
+            "max": 18551355.0
+          },
+          "Bwd IAT Std": {
+            "min": 1107417.185347058,
+            "max": 12366263.43898056
+          },
+          "Bwd IAT Max": {
+            "min": 2616764.0,
+            "max": 25004095.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 14052.0
+          },
+          "Fwd PSH Flags": {
+            "min": 1.0,
+            "max": 12.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 168.0,
+            "max": 712.0
+          },
+          "Bwd Header Len": {
+            "min": 104.0,
+            "max": 744.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.1347563005746291,
+            "max": 2.330417134074194
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0673781502873145,
+            "max": 2.436345185623021
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Pkt Len Max": {
+            "min": 8.0,
+            "max": 2004.0
+          },
+          "Pkt Len Mean": {
+            "min": 2.8000000000000003,
+            "max": 301.0
+          },
+          "Pkt Len Std": {
+            "min": 3.1213550171131037,
+            "max": 722.4337073659158
+          },
+          "Pkt Len Var": {
+            "min": 9.742857142857142,
+            "max": 521910.4615384616
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 1.0,
+            "max": 24.0
+          },
+          "ACK Flag Cnt": {
+            "min": 7.0,
+            "max": 44.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.5,
+            "max": 1.0454545454545454
+          },
+          "Pkt Size Avg": {
+            "min": 2.8,
+            "max": 301.0
+          },
+          "Fwd Seg Size Avg": {
+            "min": 1.3,
+            "max": 284.04545454545456
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 668.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 138.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 286.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 253.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 63.0,
+            "max": 255.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 1.0,
+            "max": 12.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 32.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 380231.1152338798
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 4021744.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 24729834.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 492533.8142219273
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 25002765.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24303539.0
+          }
+        }
+      }
+    },
+    "numeric_fixture.pcap_Flow.csv": {
+      "current": {
+        "rows": 6,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 6
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 6
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 20,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 443.0,
+            "max": 443.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 100000.0,
+            "max": 400000.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 3.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 90.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 60.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 50.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 35.0
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 40.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 14.142135623730953
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 700.0
+          },
+          "Flow Pkts/s": {
+            "min": 12.5,
+            "max": 20.0
+          },
+          "Flow IAT Mean": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Flow IAT Max": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Flow IAT Min": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 400000.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 300000.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 70710.67811865476
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 20.0,
+            "max": 60.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 60.0
+          },
+          "Fwd Pkts/s": {
+            "min": 5.0,
+            "max": 20.0
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 10.0
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 50.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 33.333333333333336
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 16.32993161855452
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 266.6666666666667
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "ACK Flag Cnt": {
+            "min": 2.0,
+            "max": 5.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 50.0
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 35.0
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 150.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 375.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 1000.0,
+            "max": 2000.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 3000.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 20.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 0.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 5,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 5
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 5
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 21,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 443.0,
+            "max": 443.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 100000.0,
+            "max": 500000.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 3.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 1.0,
+            "max": 3.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 90.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 60.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 50.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 40.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 40.0
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 40.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 14.142135623730953
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 700.0
+          },
+          "Flow Pkts/s": {
+            "min": 12.0,
+            "max": 20.0
+          },
+          "Flow IAT Mean": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Flow IAT Max": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Flow IAT Min": {
+            "min": 100000.0,
+            "max": 100000.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 500000.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 250000.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 141421.35623730952
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 300000.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 400000.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 141421.35623730952
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 300000.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 200000.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 20.0,
+            "max": 60.0
+          },
+          "Bwd Header Len": {
+            "min": 20.0,
+            "max": 60.0
+          },
+          "Fwd Pkts/s": {
+            "min": 6.0,
+            "max": 10.0
+          },
+          "Bwd Pkts/s": {
+            "min": 5.0,
+            "max": 10.0
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 50.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 35.0
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 15.811388300841896
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 250.0
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "ACK Flag Cnt": {
+            "min": 2.0,
+            "max": 6.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.6666666666666666,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 35.0
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 40.0
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 30.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 15.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 1000.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 1000.0,
+            "max": 3000.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 0.0
+          }
+        }
+      }
+    },
+    "restore.pcap_Flow.csv": {
+      "current": {
+        "rows": 3,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 3
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 3
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 31,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 3000.0,
+            "max": 48382.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 25294.0,
+            "max": 75015370.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 5.0,
+            "max": 8.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 4.0,
+            "max": 5.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 12.0,
+            "max": 111.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 28.0,
+            "max": 2004.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 3.0,
+            "max": 111.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 1.5,
+            "max": 22.2
+          },
+          "Fwd Pkt Len Std": {
+            "min": 1.6035674514745464,
+            "max": 49.64070910049533
+          },
+          "Bwd Pkt Len Max": {
+            "min": 7.0,
+            "max": 2004.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 7.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 7.0,
+            "max": 501.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 1002.0
+          },
+          "Flow Byts/s": {
+            "min": 0.5332240579497242,
+            "max": 83616.66798450226
+          },
+          "Flow Pkts/s": {
+            "min": 0.1599672173849172,
+            "max": 355.81560844469044
+          },
+          "Flow IAT Mean": {
+            "min": 3161.75,
+            "max": 6819579.090909092
+          },
+          "Flow IAT Std": {
+            "min": 6589.877621885597,
+            "max": 11677412.31426787
+          },
+          "Flow IAT Max": {
+            "min": 19240.0,
+            "max": 25002406.0
+          },
+          "Flow IAT Min": {
+            "min": 38.0,
+            "max": 464.0
+          },
+          "Fwd IAT Tot": {
+            "min": 24620.0,
+            "max": 75015370.0
+          },
+          "Fwd IAT Mean": {
+            "min": 6155.0,
+            "max": 10716481.428571427
+          },
+          "Fwd IAT Std": {
+            "min": 9871.722004459674,
+            "max": 13362210.558160275
+          },
+          "Fwd IAT Max": {
+            "min": 20797.0,
+            "max": 25002406.0
+          },
+          "Fwd IAT Min": {
+            "min": 150.0,
+            "max": 7638.0
+          },
+          "Bwd IAT Tot": {
+            "min": 21988.0,
+            "max": 75012002.0
+          },
+          "Bwd IAT Mean": {
+            "min": 7329.333333333334,
+            "max": 25004000.666666668
+          },
+          "Bwd IAT Std": {
+            "min": 186.43318731742295,
+            "max": 190291.14808717015
+          },
+          "Bwd IAT Max": {
+            "min": 19240.0,
+            "max": 25004202.0
+          },
+          "Bwd IAT Min": {
+            "min": 1044.0,
+            "max": 25003834.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 168.0,
+            "max": 256.0
+          },
+          "Bwd Header Len": {
+            "min": 128.0,
+            "max": 168.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.1066448115899448,
+            "max": 197.675338024828
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0533224057949724,
+            "max": 158.14027041986242
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Pkt Len Max": {
+            "min": 7.0,
+            "max": 2004.0
+          },
+          "Pkt Len Mean": {
+            "min": 3.3076923076923075,
+            "max": 211.5
+          },
+          "Pkt Len Std": {
+            "min": 2.8689317229186946,
+            "max": 630.7856212692233
+          },
+          "Pkt Len Var": {
+            "min": 8.23076923076923,
+            "max": 397890.5
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 2.0,
+            "max": 8.0
+          },
+          "ACK Flag Cnt": {
+            "min": 8.0,
+            "max": 12.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 3.583333333333333,
+            "max": 235.0
+          },
+          "Fwd Seg Size Avg": {
+            "min": 1.5,
+            "max": 22.2
+          },
+          "Bwd Seg Size Avg": {
+            "min": 7.0,
+            "max": 501.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 4.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 9.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 253.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 63.0,
+            "max": 255.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 1.0,
+            "max": 3.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 32.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 3090.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 1069.4236765660278
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 3824.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 1863.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 25001285.33333333
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 1507.0930075258573
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 25002406.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24999572.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 3,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 3
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 3
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 33,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 3000.0,
+            "max": 48382.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 6.0
+          },
+          "Flow Duration": {
+            "min": 25307.0,
+            "max": 75015370.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 6.0,
+            "max": 8.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 4.0,
+            "max": 5.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 12.0,
+            "max": 111.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 28.0,
+            "max": 2004.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 3.0,
+            "max": 111.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 1.5,
+            "max": 18.5
+          },
+          "Fwd Pkt Len Std": {
+            "min": 1.6035674514745464,
+            "max": 45.3155602414888
+          },
+          "Bwd Pkt Len Max": {
+            "min": 7.0,
+            "max": 2004.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 7.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 7.0,
+            "max": 501.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 1002.0
+          },
+          "Flow Byts/s": {
+            "min": 0.5332240579497242,
+            "max": 83573.71478247126
+          },
+          "Flow Pkts/s": {
+            "min": 0.1599672173849172,
+            "max": 395.1475876239776
+          },
+          "Flow IAT Mean": {
+            "min": 2811.8888888888887,
+            "max": 6819579.090909092
+          },
+          "Flow IAT Std": {
+            "min": 6252.983396836355,
+            "max": 11677412.31426787
+          },
+          "Flow IAT Max": {
+            "min": 19240.0,
+            "max": 25002406.0
+          },
+          "Flow IAT Min": {
+            "min": 13.0,
+            "max": 464.0
+          },
+          "Fwd IAT Tot": {
+            "min": 25307.0,
+            "max": 75015370.0
+          },
+          "Fwd IAT Mean": {
+            "min": 5061.4,
+            "max": 10716481.428571427
+          },
+          "Fwd IAT Std": {
+            "min": 8892.017560711405,
+            "max": 13362210.558160275
+          },
+          "Fwd IAT Max": {
+            "min": 20797.0,
+            "max": 25002406.0
+          },
+          "Fwd IAT Min": {
+            "min": 150.0,
+            "max": 7638.0
+          },
+          "Bwd IAT Tot": {
+            "min": 21988.0,
+            "max": 75012002.0
+          },
+          "Bwd IAT Mean": {
+            "min": 7329.333333333334,
+            "max": 25004000.666666668
+          },
+          "Bwd IAT Std": {
+            "min": 186.43318731742295,
+            "max": 190291.14808717015
+          },
+          "Bwd IAT Max": {
+            "min": 19240.0,
+            "max": 25004202.0
+          },
+          "Bwd IAT Min": {
+            "min": 1044.0,
+            "max": 25003834.0
+          },
+          "Fwd PSH Flags": {
+            "min": 1.0,
+            "max": 4.0
+          },
+          "Bwd PSH Flags": {
+            "min": 1.0,
+            "max": 4.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 200.0,
+            "max": 256.0
+          },
+          "Bwd Header Len": {
+            "min": 128.0,
+            "max": 168.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.1066448115899448,
+            "max": 237.0885525743865
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0533224057949724,
+            "max": 158.05903504959102
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Pkt Len Max": {
+            "min": 7.0,
+            "max": 2004.0
+          },
+          "Pkt Len Mean": {
+            "min": 3.333333333333334,
+            "max": 211.5
+          },
+          "Pkt Len Std": {
+            "min": 2.994945236510506,
+            "max": 630.7856212692233
+          },
+          "Pkt Len Var": {
+            "min": 8.969696969696969,
+            "max": 397890.5
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 2.0,
+            "max": 8.0
+          },
+          "ACK Flag Cnt": {
+            "min": 9.0,
+            "max": 12.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.5,
+            "max": 0.8333333333333334
+          },
+          "Pkt Size Avg": {
+            "min": 3.333333333333333,
+            "max": 211.5
+          },
+          "Fwd Seg Size Avg": {
+            "min": 1.5,
+            "max": 18.5
+          },
+          "Bwd Seg Size Avg": {
+            "min": 7.0,
+            "max": 501.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 1.0,
+            "max": 11.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 2.0,
+            "max": 200.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 253.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 63.0,
+            "max": 255.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 1.0,
+            "max": 3.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 32.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 3090.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 1069.4236765660278
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 3824.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 1863.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 25001285.33333333
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 1507.0930075258573
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 25002406.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24999572.0
+          }
+        }
+      }
+    },
+    "ss2.pcap_Flow.csv": {
+      "current": {
+        "rows": 6,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 5,
+              "SSH-Bruteforce": 1
+            },
+            "port22_labels": {
+              "Benign": 3,
+              "SSH-Bruteforce": 1
+            },
+            "port22_ssh_probabilities": [
+              0.0019787997007369995,
+              0.0016278137918561697,
+              0.0016278158873319626,
+              0.49723127484321594
+            ]
+          },
+          "M1": {
+            "labels": {
+              "Benign": 5,
+              "Infilteration": 1
+            },
+            "port22_labels": {
+              "Benign": 3,
+              "Infilteration": 1
+            },
+            "port22_ssh_probabilities": [
+              0.00038578081876039505,
+              0.00022604616242460907,
+              0.0001938705681823194,
+              1.3908601431467105e-05
+            ]
+          }
+        },
+        "packet_sum": 165,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 5355.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 749.0,
+            "max": 19821502.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 20.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 33.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 2400.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 2474.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1256.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 33.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 120.00000000000004
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 270.7214532746858
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 79.80645161290322
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 201.15158783942667
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 268.1240055371953
+          },
+          "Flow Pkts/s": {
+            "min": 2.6234137049755364,
+            "max": 2670.22696929239
+          },
+          "Flow IAT Mean": {
+            "min": 749.0,
+            "max": 421423.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 1041550.28792452
+          },
+          "Flow IAT Max": {
+            "min": 749.0,
+            "max": 3215142.0
+          },
+          "Flow IAT Min": {
+            "min": 13.0,
+            "max": 421423.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 19819508.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 1043132.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 1556509.16541132
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 3282759.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 421423.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 19820634.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 639375.2903225805
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 1281602.375216775
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 3215142.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 260.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 648.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1064.0
+          },
+          "Fwd Pkts/s": {
+            "min": 1.009005271144437,
+            "max": 1335.113484646195
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 1335.113484646195
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 33.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1256.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 93.73076923076924
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 227.30165802425
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 51666.0437405731
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 31.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 52.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 95.5686274509804
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 120.0
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 79.80645161290323
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 796.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 18820.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 400.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 412.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 131.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 16.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 0.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 6,
+        "invalid_rows": 1,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 5
+            },
+            "port22_labels": {
+              "Benign": 3
+            },
+            "port22_ssh_probabilities": [
+              0.0019781836308538914,
+              0.0016273811925202608,
+              0.0016273835208266973
+            ]
+          },
+          "M1": {
+            "labels": {
+              "Benign": 5
+            },
+            "port22_labels": {
+              "Benign": 3
+            },
+            "port22_ssh_probabilities": [
+              0.005231884308159351,
+              0.0035625468008220196,
+              0.01008669938892126
+            ]
+          }
+        },
+        "packet_sum": 168,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 5355.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 0.0,
+            "max": 19823256.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 21.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 34.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 2400.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 2474.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1256.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 45.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 114.2857142857143
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 265.16280713123075
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 79.80645161290322
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 201.15158783942667
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 268.1099792195513
+          },
+          "Flow Pkts/s": {
+            "min": 2.6736273798814887,
+            "max": 17.244828276000028
+          },
+          "Flow IAT Mean": {
+            "min": 72485.5,
+            "max": 421423.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 1032683.2101739788
+          },
+          "Flow IAT Max": {
+            "min": 181470.0,
+            "max": 3215142.0
+          },
+          "Flow IAT Min": {
+            "min": 13.0,
+            "max": 421423.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 19823256.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 991162.8
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 1532718.2118303692
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 3282759.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 421423.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 19820634.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 639375.2903225805
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 1281602.375216775
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 3215142.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 260.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 16.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 15.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 680.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1096.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0,
+            "max": 17.244828276000028
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 1.8625949464621732
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 45.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1256.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 93.73076923076924
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 227.30165802425012
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 51666.04374057316
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 31.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 54.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.619047619047619
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 93.73076923076924
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 114.28571428571428
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 79.80645161290323
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 46.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 47.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 131.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 16.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 0.0
+          }
+        }
+      }
+    },
+    "ssbrute.pcap_Flow.csv": {
+      "current": {
+        "rows": 8,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 8
+            },
+            "port22_labels": {
+              "Benign": 5
+            },
+            "port22_ssh_probabilities": [
+              0.0064669325947761536,
+              6.867923366371542e-05,
+              6.709650187985972e-05,
+              6.70956724206917e-05,
+              0.00010117731289938092
+            ]
+          },
+          "M1": {
+            "labels": {
+              "Benign": 8
+            },
+            "port22_labels": {
+              "Benign": 5
+            },
+            "port22_ssh_probabilities": [
+              1.3033203686063644e-05,
+              9.362430319015402e-06,
+              4.2269343794032466e-06,
+              7.88180659583304e-06,
+              8.005064955796115e-06
+            ]
+          }
+        },
+        "packet_sum": 201,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 67.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 126.0,
+            "max": 24679245.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 22.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 23.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 1727.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 2006.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 976.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 287.7607908094373
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 328.10541543285086
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 4626984.126984127
+          },
+          "Flow Pkts/s": {
+            "min": 0.0910603628673505,
+            "max": 15873.015873015873
+          },
+          "Flow IAT Mean": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 1134365.3526920092
+          },
+          "Flow IAT Max": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Flow IAT Min": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 24674058.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 1411397.648313199
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 24678626.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 1175172.666666667
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 1401984.3914866643
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 3254127.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 417.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 712.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 744.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0910603628673505,
+            "max": 7936.507936507936
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 7936.507936507936
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 304.6666666666667
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 296.1956476048881
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 87731.86166007906
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 23.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 44.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 457.0
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 2937.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 29439.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 204.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 241.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 127.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 21963453.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 8,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 8
+            },
+            "port22_labels": {
+              "Benign": 5
+            },
+            "port22_ssh_probabilities": [
+              6.709343870170414e-05,
+              6.71075249556452e-05,
+              6.867592310300097e-05,
+              6.926601781742647e-05,
+              0.00518420897424221
+            ]
+          },
+          "M1": {
+            "labels": {
+              "Benign": 8
+            },
+            "port22_labels": {
+              "Benign": 5
+            },
+            "port22_ssh_probabilities": [
+              6.718254007864743e-05,
+              3.792822826653719e-05,
+              7.979493966558948e-05,
+              4.631301635527052e-05,
+              6.560540350619704e-05
+            ]
+          }
+        },
+        "packet_sum": 207,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 67.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 126.0,
+            "max": 24679680.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 23.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 23.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 1727.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 2006.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 976.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 266.00737410252947
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 328.10541543285086
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 4626984.126984127
+          },
+          "Flow Pkts/s": {
+            "min": 0.0910603628673505,
+            "max": 15873.015873015873
+          },
+          "Flow IAT Mean": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 1124426.3434974044
+          },
+          "Flow IAT Max": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Flow IAT Min": {
+            "min": 126.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 24679680.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 1399762.8134816794
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 24678626.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 1175172.666666667
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 1401984.3914866643
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 3254127.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 417.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 11.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 744.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 744.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0910603628673505,
+            "max": 7936.507936507936
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 7936.507936507936
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1040.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 303.5
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 290.8237893454993
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 84578.47644927535
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 23.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 45.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 303.5
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 153.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 150.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 64240.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 127.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 12.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 21963453.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 21963453.0
+          }
+        }
+      }
+    },
+    "tesst2.pcap_Flow.csv": {
+      "current": {
+        "rows": 60,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 59,
+              "DoS attacks-Hulk": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 60
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 635,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 53.0,
+            "max": 64093.0
+          },
+          "Protocol": {
+            "min": 6.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 1.0,
+            "max": 34908692.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 32.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 7483.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 23824.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 37.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 614.3
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 684.0524752450566
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1452.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 183.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 1082.9090909090908
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 640.8523159894883
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 210000.00000000003
+          },
+          "Flow Pkts/s": {
+            "min": 0.1981608100734651,
+            "max": 2000000.0
+          },
+          "Flow IAT Mean": {
+            "min": 1.0,
+            "max": 6055687.8
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 9029965.105779462
+          },
+          "Flow IAT Max": {
+            "min": 1.0,
+            "max": 24011678.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 372493.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 34843260.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 15112003.5
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 13653056.839467356
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 15076532.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 34797292.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 20127113.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 13833915.781810695
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 24165900.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 20127113.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 8.0,
+            "max": 640.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1024.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0990804050367325,
+            "max": 2000000.0
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 3333.333333333333
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 37.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1452.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 854.2142857142856
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 681.1654151168588
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 463986.3227513225
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 15.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 64.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 4.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 885.8518518518518
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 614.3
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 1082.909090909091
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 23835.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 33.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 517465.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 10.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 6143.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 22.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 23824.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 65535.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 49152.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 31.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 8.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 426943.2963058443
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 3042507.945391105
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24011678.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 60,
+        "invalid_rows": 2,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 57,
+              "DoS attacks-Hulk": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 58
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 638,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 64093.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 0.0,
+            "max": 34908692.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 32.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 7483.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 23824.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 37.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 614.3
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 684.0524752450566
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1452.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 183.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 1082.9090909090908
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 640.8523159894883
+          },
+          "Flow Byts/s": {
+            "min": 0.0990804050367325,
+            "max": 210000.00000000003
+          },
+          "Flow Pkts/s": {
+            "min": 0.1981608100734651,
+            "max": 13333.333333333334
+          },
+          "Flow IAT Mean": {
+            "min": 100.0,
+            "max": 6055687.8
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 9029965.105779462
+          },
+          "Flow IAT Max": {
+            "min": 298.0,
+            "max": 24011678.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 372493.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 34843260.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 15112003.5
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 13653056.839467356
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 15076532.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 34797292.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 20127113.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 13833915.781810695
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 24165900.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 20127113.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 7.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 11.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 640.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1024.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0,
+            "max": 10000.0
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 3333.333333333333
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 37.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1452.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 884.7777777777776
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 674.2925257307916
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 454670.4102564103
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 15.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 64.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 4.4
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 884.7777777777778
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 614.3
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 1082.909090909091
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 6049.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 5.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 13967136.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 23799.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 19.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 1296000000.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 307.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 882.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 65535.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 49152.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 31.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 426943.2963058443
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 8802898.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 3042507.945391105
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 24011678.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 24011678.0
+          }
+        }
+      }
+    },
+    "test.pcap_Flow.csv": {
+      "current": {
+        "rows": 38,
+        "invalid_rows": 1,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 36,
+              "DoS attacks-Hulk": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 37
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 510,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 63422.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 0.0,
+            "max": 16004302.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 59.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 85.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 45722.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 17020.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 48.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 952.5416666666669
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 652.203595621677
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 273.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 895.7894736842104
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 678.973121706596
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 32125.20593080725
+          },
+          "Flow Pkts/s": {
+            "min": 0.593188769275669,
+            "max": 1000000.0
+          },
+          "Flow IAT Mean": {
+            "min": 0.0,
+            "max": 2022964.8
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 4375130.550592142
+          },
+          "Flow IAT Max": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 343648.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 16004302.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 3371608.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 5609923.14759935
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 1081088.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 15634209.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 3120379.707307429
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 1180.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1700.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.0,
+            "max": 1000000.0
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 1647.4464579901153
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 48.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 558.6470588235296
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 682.3357242708655
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 465582.0406162466
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 79.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 144.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 565.297619047619
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 952.5416666666666
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 895.7894736842105
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 44671.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 33.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 96557.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 19.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 6260.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 28.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 17020.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 65535.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 2042.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 46.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 158319.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 111630.94754592024
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 231729.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 158319.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 832585.7079352251
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 9849322.0
+          }
+        }
+      },
+      "improved_2022": {
+        "rows": 34,
+        "invalid_rows": 0,
+        "models": {
+          "M0": {
+            "labels": {
+              "Benign": 33,
+              "DoS attacks-Hulk": 1
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          },
+          "M1": {
+            "labels": {
+              "Benign": 34
+            },
+            "port22_labels": {},
+            "port22_ssh_probabilities": []
+          }
+        },
+        "packet_sum": 513,
+        "schema_all_78": true,
+        "feature_ranges": {
+          "Dst Port": {
+            "min": 0.0,
+            "max": 63421.0
+          },
+          "Protocol": {
+            "min": 0.0,
+            "max": 17.0
+          },
+          "Flow Duration": {
+            "min": 39.0,
+            "max": 16004302.0
+          },
+          "Tot Fwd Pkts": {
+            "min": 1.0,
+            "max": 59.0
+          },
+          "Tot Bwd Pkts": {
+            "min": 0.0,
+            "max": 85.0
+          },
+          "TotLen Fwd Pkts": {
+            "min": 0.0,
+            "max": 45722.0
+          },
+          "TotLen Bwd Pkts": {
+            "min": 0.0,
+            "max": 17020.0
+          },
+          "Fwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Fwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 48.0
+          },
+          "Fwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 952.5416666666669
+          },
+          "Fwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 652.203595621677
+          },
+          "Bwd Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Bwd Pkt Len Min": {
+            "min": 0.0,
+            "max": 273.0
+          },
+          "Bwd Pkt Len Mean": {
+            "min": 0.0,
+            "max": 895.7894736842104
+          },
+          "Bwd Pkt Len Std": {
+            "min": 0.0,
+            "max": 678.973121706596
+          },
+          "Flow Byts/s": {
+            "min": 0.0,
+            "max": 13753.556869600789
+          },
+          "Flow Pkts/s": {
+            "min": 0.593188769275669,
+            "max": 51282.05128205128
+          },
+          "Flow IAT Mean": {
+            "min": 39.0,
+            "max": 2022964.8
+          },
+          "Flow IAT Std": {
+            "min": 0.0,
+            "max": 4375130.550592142
+          },
+          "Flow IAT Max": {
+            "min": 39.0,
+            "max": 9849322.0
+          },
+          "Flow IAT Min": {
+            "min": 0.0,
+            "max": 343648.0
+          },
+          "Fwd IAT Tot": {
+            "min": 0.0,
+            "max": 16004302.0
+          },
+          "Fwd IAT Mean": {
+            "min": 0.0,
+            "max": 3371608.0
+          },
+          "Fwd IAT Std": {
+            "min": 0.0,
+            "max": 5609923.14759935
+          },
+          "Fwd IAT Max": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Fwd IAT Min": {
+            "min": 0.0,
+            "max": 1053154.0
+          },
+          "Bwd IAT Tot": {
+            "min": 0.0,
+            "max": 15634209.0
+          },
+          "Bwd IAT Mean": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Bwd IAT Std": {
+            "min": 0.0,
+            "max": 3120379.707307429
+          },
+          "Bwd IAT Max": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Bwd IAT Min": {
+            "min": 0.0,
+            "max": 9956480.0
+          },
+          "Fwd PSH Flags": {
+            "min": 0.0,
+            "max": 7.0
+          },
+          "Bwd PSH Flags": {
+            "min": 0.0,
+            "max": 76.0
+          },
+          "Fwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Bwd URG Flags": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Fwd Header Len": {
+            "min": 0.0,
+            "max": 1180.0
+          },
+          "Bwd Header Len": {
+            "min": 0.0,
+            "max": 1700.0
+          },
+          "Fwd Pkts/s": {
+            "min": 0.3954591795171127,
+            "max": 51282.05128205128
+          },
+          "Bwd Pkts/s": {
+            "min": 0.0,
+            "max": 47.54433509247373
+          },
+          "Pkt Len Min": {
+            "min": 0.0,
+            "max": 48.0
+          },
+          "Pkt Len Max": {
+            "min": 0.0,
+            "max": 1400.0
+          },
+          "Pkt Len Mean": {
+            "min": 0.0,
+            "max": 548.6309523809523
+          },
+          "Pkt Len Std": {
+            "min": 0.0,
+            "max": 680.1186072989495
+          },
+          "Pkt Len Var": {
+            "min": 0.0,
+            "max": 462561.3199942627
+          },
+          "FIN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "SYN Flag Cnt": {
+            "min": 0.0,
+            "max": 2.0
+          },
+          "RST Flag Cnt": {
+            "min": 0.0,
+            "max": 3.0
+          },
+          "PSH Flag Cnt": {
+            "min": 0.0,
+            "max": 79.0
+          },
+          "ACK Flag Cnt": {
+            "min": 0.0,
+            "max": 144.0
+          },
+          "URG Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "CWE Flag Count": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "ECE Flag Cnt": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Down/Up Ratio": {
+            "min": 0.0,
+            "max": 1.5
+          },
+          "Pkt Size Avg": {
+            "min": 0.0,
+            "max": 548.6309523809524
+          },
+          "Fwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 952.5416666666666
+          },
+          "Bwd Seg Size Avg": {
+            "min": 0.0,
+            "max": 895.7894736842105
+          },
+          "Fwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 44308.0
+          },
+          "Fwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 32.0
+          },
+          "Fwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 3301790.0
+          },
+          "Bwd Byts/b Avg": {
+            "min": 0.0,
+            "max": 16950.0
+          },
+          "Bwd Pkts/b Avg": {
+            "min": 0.0,
+            "max": 39.0
+          },
+          "Bwd Blk Rate Avg": {
+            "min": 0.0,
+            "max": 18265086.0
+          },
+          "Subflow Fwd Pkts": {
+            "min": 0.0,
+            "max": 1.0
+          },
+          "Subflow Fwd Byts": {
+            "min": 0.0,
+            "max": 544.0
+          },
+          "Subflow Bwd Pkts": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "Subflow Bwd Byts": {
+            "min": 0.0,
+            "max": 472.0
+          },
+          "Init Fwd Win Byts": {
+            "min": 0.0,
+            "max": 65535.0
+          },
+          "Init Bwd Win Byts": {
+            "min": 0.0,
+            "max": 2042.0
+          },
+          "Fwd Act Data Pkts": {
+            "min": 0.0,
+            "max": 46.0
+          },
+          "Fwd Seg Size Min": {
+            "min": 0.0,
+            "max": 20.0
+          },
+          "Active Mean": {
+            "min": 0.0,
+            "max": 158319.0
+          },
+          "Active Std": {
+            "min": 0.0,
+            "max": 111630.94754592024
+          },
+          "Active Max": {
+            "min": 0.0,
+            "max": 231729.0
+          },
+          "Active Min": {
+            "min": 0.0,
+            "max": 158319.0
+          },
+          "Idle Mean": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Idle Std": {
+            "min": 0.0,
+            "max": 832585.7079352251
+          },
+          "Idle Max": {
+            "min": 0.0,
+            "max": 9849322.0
+          },
+          "Idle Min": {
+            "min": 0.0,
+            "max": 9849322.0
+          }
+        }
+      }
+    }
+  },
+  "lab_csv": {
+    "hulk": {
+      "source": "IDS_M1_Lab\\data\\capture_sessions\\ff8f0fa5051b45389a9393023effc083\\flows.csv",
+      "sha256": "41fd8323ab08f4124dd8704226c9626d4e8c6570c861b562d672c91e8cd2d02d",
+      "scope": "Python CSV inference, not Java re-extraction",
+      "rows": 101,
+      "invalid_rows": 0,
+      "models": {
+        "M0": {
+          "labels": {
+            "DoS attacks-Hulk": 101
+          },
+          "port22_labels": {},
+          "port22_ssh_probabilities": []
+        },
+        "M1": {
+          "labels": {
+            "Benign": 101
+          },
+          "port22_labels": {},
+          "port22_ssh_probabilities": []
+        }
+      }
+    },
+    "ssh": {
+      "source": "IDS_M1_Lab\\data\\capture_sessions\\a10c3bc274594a00be959997bf552236\\flows.csv",
+      "sha256": "e80d5af73bab19cadfdde2a6a9b4acd476bc56b3b3beea9f92f704d0db4792f6",
+      "scope": "Python CSV inference, not Java re-extraction",
+      "rows": 373,
+      "invalid_rows": 0,
+      "models": {
+        "M0": {
+          "labels": {
+            "Benign": 173,
+            "DoS attacks-Hulk": 135,
+            "SSH-Bruteforce": 60,
+            "Infilteration": 5
+          },
+          "port22_labels": {
+            "DoS attacks-Hulk": 135,
+            "Benign": 128,
+            "SSH-Bruteforce": 60
+          },
+          "port22_ssh_probabilities": [
+            0.00016448344103991985,
+            0.00024543964536860585,
+            0.00016500716446898878,
+            0.00024580719764344394,
+            0.0015850883210077882,
+            0.00023586499446537346,
+            0.00028406764613464475,
+            0.00024543856852687895,
+            0.00018916140834335238,
+            0.0002460182295180857,
+            0.00018916140834335238,
+            0.00024584034690633416,
+            0.00018205997184850276,
+            0.00027211406268179417,
+            0.0002242489135824144,
+            0.00024601820041425526,
+            0.00022319634445011616,
+            0.00022319634445011616,
+            0.00024584034690633416,
+            0.00024584034690633416,
+            0.00022099222405813634,
+            0.0002460182295180857,
+            0.00018336257198825479,
+            0.0002460182295180857,
+            0.00018336046196054667,
+            0.00018049904610961676,
+            0.0001254835951840505,
+            0.00024584034690633416,
+            0.00019194760534446687,
+            0.0002447929873596877,
+            0.00022662410628981888,
+            0.0002460182295180857,
+            0.00022662410628981888,
+            0.00022662410628981888,
+            0.0002270315308123827,
+            0.00023737327137496322,
+            0.0001759632577886805,
+            0.0002447929873596877,
+            0.00024584034690633416,
+            0.00024543964536860585,
+            0.00021872090292163193,
+            0.00016260298434644938,
+            0.00023586499446537346,
+            0.00019194770720787346,
+            0.00026735305436886847,
+            0.0002358650672249496,
+            0.0004208489554002881,
+            0.00024351320462301373,
+            0.00024543964536860585,
+            0.0002435132919345051,
+            0.00024584034690633416,
+            0.00024351317551918328,
+            0.0002447929873596877,
+            0.00016469473484903574,
+            0.0002460182295180857,
+            0.0002495718945283443,
+            0.00024584034690633416,
+            0.00016469467664137483,
+            0.0002447929873596877,
+            0.00016477842291351408,
+            0.00016486387175973505,
+            0.00024584034690633416,
+            0.00024584034690633416,
+            0.0009472157689742744,
+            0.3543601930141449,
+            0.00023586499446537346,
+            0.4356686770915985,
+            0.00023586499446537346,
+            0.00023737327137496322,
+            0.3690851032733917,
+            0.00024584034690633416,
+            0.3692500591278076,
+            0.0002378103818045929,
+            9.41044490900822e-05,
+            9.2043868789915e-05,
+            0.3449645936489105,
+            0.00023960928956512362,
+            0.3802115321159363,
+            0.0002378103818045929,
+            9.423131996300071e-05,
+            0.3683246076107025,
+            0.00019194770720787346,
+            9.400967974215746e-05,
+            9.48459273786284e-05,
+            0.3452044427394867,
+            0.00024584034690633416,
+            0.3634185194969177,
+            0.00023586499446537346,
+            0.3447059988975525,
+            0.0002378103818045929,
+            0.009534308686852455,
+            0.00019194770720787346,
+            0.33408769965171814,
+            0.00023737327137496322,
+            0.3634180724620819,
+            0.00023586499446537346,
+            0.6910653114318848,
+            0.00019194760534446687,
+            0.3683234751224518,
+            0.00019194760534446687,
+            0.3634180724620819,
+            0.0002447929873596877,
+            0.3634180724620819,
+            0.0002358650235692039,
+            0.009547173976898193,
+            2.0480132661759853e-05,
+            0.009533089585602283,
+            0.0002460182295180857,
+            2.0551808120217174e-05,
+            0.36600562930107117,
+            0.00023586499446537346,
+            0.3634180724620819,
+            0.00017259703599847853,
+            0.00955343246459961,
+            2.055378536169883e-05,
+            0.36908799409866333,
+            0.00019194770720787346,
+            0.36225593090057373,
+            0.00024584034690633416,
+            0.0347956158220768,
+            0.36341768503189087,
+            0.00023586499446537346,
+            0.3683258593082428,
+            0.04670996963977814,
+            2.0669256628025323e-05,
+            0.36908474564552307,
+            0.00023737327137496322,
+            0.3815320134162903,
+            0.0002460182295180857,
+            0.36488986015319824,
+            0.00023737327137496322,
+            0.36325809359550476,
+            0.00023737327137496322,
+            0.04673057794570923,
+            0.00024584034690633416,
+            0.36669468879699707,
+            0.00019194760534446687,
+            0.36341795325279236,
+            0.00023586499446537346,
+            0.36473438143730164,
+            0.00024584034690633416,
+            0.3703594207763672,
+            0.00023960928956512362,
+            0.39291059970855713,
+            0.36312708258628845,
+            0.00024580719764344394,
+            0.009504584595561028,
+            0.3690853416919708,
+            0.0002358650672249496,
+            0.35857468843460083,
+            0.0002358650235692039,
+            0.3634123206138611,
+            0.0001220566700794734,
+            0.3665309250354767,
+            0.00023586499446537346,
+            0.03458273410797119,
+            0.0002358650672249496,
+            9.290886373491958e-05,
+            0.3677847385406494,
+            0.00019194770720787346,
+            0.04306748881936073,
+            2.037864578596782e-05,
+            0.3903290033340454,
+            0.460220068693161,
+            0.3645435571670532,
+            0.7804538011550903,
+            0.00024382550327572972,
+            0.009561276994645596,
+            0.03459959477186203,
+            0.7089176177978516,
+            0.7189769148826599,
+            0.00024584034690633416,
+            0.00023737319861538708,
+            0.68379807472229,
+            0.6949025988578796,
+            0.0002460182295180857,
+            0.00023586499446537346,
+            0.02097870595753193,
+            0.68379807472229,
+            2.066689557977952e-05,
+            0.00024601820041425526,
+            0.034565798938274384,
+            2.0555598894134164e-05,
+            0.009505689144134521,
+            0.7083555459976196,
+            0.6807116270065308,
+            0.00024601820041425526,
+            0.03470730036497116,
+            2.0551808120217174e-05,
+            0.03469936549663544,
+            0.6728867292404175,
+            0.0002460182295180857,
+            0.0346977524459362,
+            0.68379807472229,
+            0.379677951335907,
+            9.200255590258166e-05,
+            0.00024584034690633416,
+            0.00024584034690633416,
+            0.034724991768598557,
+            2.3092716219252907e-05,
+            0.009546570479869843,
+            0.03460315614938736,
+            2.054973811027594e-05,
+            0.034746646881103516,
+            2.0552542991936207e-05,
+            0.03469936177134514,
+            0.009555802680552006,
+            2.055378536169883e-05,
+            0.03466063737869263,
+            0.034714773297309875,
+            0.009548253379762173,
+            0.03469657152891159,
+            0.0346149317920208,
+            9.410571510670707e-05,
+            0.034583788365125656,
+            0.034651950001716614,
+            0.034681495279073715,
+            0.7083548903465271,
+            0.03472360596060753,
+            0.034684039652347565,
+            0.03463005647063255,
+            0.034717805683612823,
+            0.04658258706331253,
+            0.03455676883459091,
+            0.7370520830154419,
+            0.00024543958716094494,
+            0.009578753262758255,
+            0.03463878482580185,
+            0.03442659601569176,
+            0.034565798938274384,
+            0.046672675758600235,
+            0.00024580719764344394,
+            0.009553667157888412,
+            2.036700061580632e-05,
+            0.03474060073494911,
+            0.009573828428983688,
+            2.054973811027594e-05,
+            0.034565798938274384,
+            2.061834129563067e-05,
+            0.7514244914054871,
+            0.0057448334991931915,
+            0.00024543958716094494,
+            0.03466906026005745,
+            0.0344243124127388,
+            9.330170723842457e-05,
+            0.034776490181684494,
+            0.034637805074453354,
+            0.005698563065379858,
+            0.7439066171646118,
+            0.00024584034690633416,
+            0.021021991968154907,
+            0.00023737319861538708,
+            0.03421129286289215,
+            0.021069837734103203,
+            2.054973811027594e-05,
+            0.009532080963253975,
+            0.685437023639679,
+            0.0002460182295180857,
+            0.0002460182295180857,
+            2.3092716219252907e-05,
+            9.31908653001301e-05,
+            9.323614358436316e-05,
+            9.331522596767172e-05,
+            9.376798698212951e-05,
+            8.950194751378149e-05,
+            9.30983223952353e-05,
+            9.344137652078643e-05,
+            9.178278560284525e-05,
+            9.163918730337173e-05,
+            9.15149284992367e-05,
+            9.172593854600564e-05,
+            9.267542918678373e-05,
+            9.172289719572291e-05,
+            9.172280260827392e-05,
+            9.350205073133111e-05,
+            9.257312922272831e-05,
+            9.406614844920114e-05,
+            8.826803241390735e-05,
+            9.192308061756194e-05,
+            9.336834773421288e-05,
+            9.339101961813867e-05,
+            9.404359298059717e-05,
+            9.203906665788963e-05,
+            9.406614117324352e-05,
+            9.326283179689199e-05,
+            8.834899927023798e-05,
+            9.255857003154233e-05,
+            9.120601316681132e-05,
+            9.126924123847857e-05,
+            9.303846309194341e-05,
+            9.288291039410979e-05,
+            9.39460369409062e-05,
+            9.351934568258002e-05,
+            9.351934568258002e-05,
+            0.00011845263361465186,
+            9.331267210654914e-05,
+            9.406140452483669e-05,
+            0.00011752040882129222,
+            9.331652108812705e-05,
+            9.327425505034626e-05,
+            9.333642810815945e-05,
+            7.603213452966884e-05,
+            9.324215352535248e-05,
+            8.823681127978489e-05,
+            9.285554551752284e-05,
+            0.37836945056915283,
+            0.0002447929873596877,
+            0.009549349546432495,
+            1.6878810129128397e-05,
+            0.36510470509529114,
+            0.03473159670829773,
+            0.0002460182295180857,
+            2.0541358026093803e-05,
+            0.00953552033752203,
+            0.0346270427107811,
+            2.037864578596782e-05,
+            0.2359437495470047,
+            0.00027211406268179417,
+            0.35857468843460083,
+            0.0002460182295180857,
+            0.3631366193294525,
+            0.0002460182295180857,
+            0.3913039565086365
+          ]
+        },
+        "M1": {
+          "labels": {
+            "Benign": 373
+          },
+          "port22_labels": {
+            "Benign": 323
+          },
+          "port22_ssh_probabilities": [
+            8.232526624851744e-07,
+            4.2202859731332865e-06,
+            1.1553316880963393e-06,
+            4.386443379189586e-06,
+            4.611642452800879e-06,
+            4.775572961079888e-06,
+            1.188059513879125e-06,
+            4.2202859731332865e-06,
+            1.8305220237380126e-06,
+            5.007356776332017e-06,
+            2.1051321255072253e-06,
+            5.157262876309687e-06,
+            2.466756086505484e-06,
+            4.50108836957952e-06,
+            1.8102288095178665e-06,
+            4.2202859731332865e-06,
+            1.8102288095178665e-06,
+            1.8102393823937746e-06,
+            5.157262876309687e-06,
+            5.157262876309687e-06,
+            3.5540140288503608e-06,
+            5.157262876309687e-06,
+            1.9766830519074574e-06,
+            4.2202859731332865e-06,
+            1.42281794524024e-06,
+            1.988915073525277e-06,
+            2.6467037059774157e-06,
+            5.157262876309687e-06,
+            1.6336537100869464e-06,
+            5.157262876309687e-06,
+            1.5319751582865138e-06,
+            5.007356776332017e-06,
+            1.5319715203077067e-06,
+            1.5319715203077067e-06,
+            3.447441031312337e-06,
+            3.7409597553050844e-06,
+            1.8490431102691218e-05,
+            5.157262876309687e-06,
+            5.157262876309687e-06,
+            4.2202859731332865e-06,
+            7.405746600852581e-06,
+            5.476307251228718e-06,
+            3.1683750876254635e-06,
+            2.0613188098650426e-06,
+            6.855289484519744e-06,
+            2.0612653770513134e-06,
+            1.5475936834263848e-06,
+            7.375792392849689e-06,
+            4.220763912599068e-06,
+            3.1566728466714267e-06,
+            5.157262876309687e-06,
+            3.943444426113274e-06,
+            5.157262876309687e-06,
+            3.866166480293032e-06,
+            5.007356776332017e-06,
+            2.27320288104238e-06,
+            5.157262876309687e-06,
+            5.3565909183816984e-06,
+            5.157262876309687e-06,
+            4.759690455102827e-06,
+            6.744342499587219e-06,
+            5.157262876309687e-06,
+            5.157262876309687e-06,
+            8.692190931469668e-06,
+            9.584699000697583e-06,
+            3.1683750876254635e-06,
+            1.597395385033451e-05,
+            4.775572961079888e-06,
+            4.242332124704262e-06,
+            1.6096904801088385e-05,
+            5.157262876309687e-06,
+            1.6148711438290775e-05,
+            4.241308033670066e-06,
+            3.120704548109643e-07,
+            5.297056304698344e-07,
+            1.6755948308855295e-05,
+            4.241308033670066e-06,
+            2.434036650811322e-05,
+            4.241308033670066e-06,
+            4.6965317324065836e-07,
+            2.434041198284831e-05,
+            1.6336537100869464e-06,
+            3.4673985283006914e-07,
+            2.904378391122009e-07,
+            1.6766945918789133e-05,
+            5.157262876309687e-06,
+            2.144142308679875e-05,
+            4.775572961079888e-06,
+            2.2330585125018843e-05,
+            4.241308033670066e-06,
+            2.812784441630356e-05,
+            2.0613188098650426e-06,
+            3.072597974096425e-05,
+            3.7409597553050844e-06,
+            2.043546919594519e-05,
+            4.773840373673011e-06,
+            5.6340857554459944e-05,
+            1.020204990709317e-06,
+            2.154238973162137e-05,
+            1.020204990709317e-06,
+            2.157807284675073e-05,
+            5.157262876309687e-06,
+            2.030290306720417e-05,
+            3.5122118333674734e-06,
+            9.622727520763874e-05,
+            3.2811781238706317e-06,
+            2.9780256227240898e-05,
+            5.007356776332017e-06,
+            4.369221642264165e-06,
+            2.430000495223794e-05,
+            4.773840373673011e-06,
+            2.8291065973462537e-05,
+            9.17141335321503e-07,
+            8.158670243574306e-05,
+            4.369221642264165e-06,
+            2.51303608820308e-05,
+            2.0613188098650426e-06,
+            1.531855741632171e-05,
+            5.157262876309687e-06,
+            0.000374079478206113,
+            1.6182235412998125e-05,
+            4.773840373673011e-06,
+            2.1545947674894705e-05,
+            4.787056241184473e-05,
+            7.260308848344721e-06,
+            1.6618210793239996e-05,
+            4.241308033670066e-06,
+            2.434036650811322e-05,
+            5.007356776332017e-06,
+            2.1581639884971082e-05,
+            4.242332124704262e-06,
+            1.4549561456078663e-05,
+            4.242332124704262e-06,
+            0.0003445358597673476,
+            5.157262876309687e-06,
+            1.9145199985359795e-05,
+            1.020204990709317e-06,
+            2.030290306720417e-05,
+            4.773840373673011e-06,
+            2.5087800167966634e-05,
+            5.157262876309687e-06,
+            2.14733063330641e-05,
+            4.241308033670066e-06,
+            5.888504165341146e-05,
+            2.0325071091065183e-05,
+            4.386119599075755e-06,
+            0.0001641288836253807,
+            1.6152185708051547e-05,
+            2.197709818574367e-06,
+            1.6346413758583367e-05,
+            3.1683750876254635e-06,
+            2.1576106519205496e-05,
+            1.1009420859409147e-06,
+            1.6154650438693352e-05,
+            4.775572961079888e-06,
+            5.241062899585813e-05,
+            2.0612653770513134e-06,
+            2.5914656021086557e-07,
+            1.6679543477948755e-05,
+            2.0613188098650426e-06,
+            0.001007881946861744,
+            1.1222740567973233e-06,
+            7.418129098368809e-05,
+            0.0002189162332797423,
+            1.7318156096735038e-05,
+            0.00022900162730365992,
+            5.157262876309687e-06,
+            0.0003053938562516123,
+            0.000654639326967299,
+            9.97345196083188e-05,
+            7.48574166209437e-05,
+            5.157262876309687e-06,
+            3.5115710943500744e-06,
+            5.091344428365119e-05,
+            5.4621217714156955e-05,
+            5.007356776332017e-06,
+            4.775572961079888e-06,
+            2.872421100619249e-05,
+            4.142321995459497e-05,
+            7.27077349438332e-06,
+            4.2202859731332865e-06,
+            6.249999569263309e-05,
+            1.1774240192607976e-05,
+            0.0001482961670262739,
+            5.558025077334605e-05,
+            2.3458749637939036e-05,
+            4.2202859731332865e-06,
+            0.0001438152976334095,
+            4.369221642264165e-06,
+            0.0004031410499010235,
+            7.070551509968936e-05,
+            5.007356776332017e-06,
+            0.00030690012499690056,
+            4.1376380977453664e-05,
+            2.3656652047066018e-05,
+            4.518957155141834e-07,
+            5.157262876309687e-06,
+            5.157262876309687e-06,
+            0.00025666027795523405,
+            4.740789336210582e-06,
+            0.00013037575990892947,
+            9.285545820603147e-05,
+            4.369221642264165e-06,
+            0.0001645649754209444,
+            5.337822585715912e-06,
+            0.00047833105782046914,
+            5.984427480143495e-05,
+            4.369221642264165e-06,
+            0.00019089336274191737,
+            0.0001438152976334095,
+            4.7126883146120235e-05,
+            0.0003122994094155729,
+            0.0005103499861434102,
+            7.020814791758312e-07,
+            0.0007663699798285961,
+            0.0003034119145013392,
+            0.00024233529984485358,
+            5.563146623899229e-05,
+            0.000233915910939686,
+            0.00029137133969925344,
+            0.0006030889926478267,
+            0.0011200178414583206,
+            0.0009258298669010401,
+            6.455749098677188e-05,
+            0.00029098286177031696,
+            4.2202859731332865e-06,
+            0.00014260210446082056,
+            0.00020494789350777864,
+            0.0001441492058802396,
+            6.356351514114067e-05,
+            0.0003727345319930464,
+            4.386443379189586e-06,
+            7.963471580296755e-05,
+            7.008513875916833e-07,
+            0.00010549320722930133,
+            6.332329212455079e-05,
+            4.369489943201188e-06,
+            6.924582703504711e-05,
+            1.2588245226652361e-05,
+            0.0002453684573993087,
+            8.59546253195731e-06,
+            4.2202859731332865e-06,
+            0.0002176546404371038,
+            0.0001070706857717596,
+            6.069371920602862e-07,
+            0.00030313266324810684,
+            0.0005270267138257623,
+            0.00010727791232056916,
+            3.2157666282728314e-05,
+            5.157262876309687e-06,
+            0.00010478355397935957,
+            3.5122118333674734e-06,
+            0.0004026188107673079,
+            0.00019200315000489354,
+            4.369221642264165e-06,
+            3.707663563545793e-05,
+            4.430983608472161e-05,
+            5.007356776332017e-06,
+            5.02346119901631e-06,
+            4.740789336210582e-06,
+            6.069370783734485e-07,
+            2.230870848052291e-07,
+            5.536469984690484e-07,
+            3.82238454221806e-07,
+            4.995167159904668e-07,
+            3.82238454221806e-07,
+            5.94302775880351e-07,
+            3.7123885476830765e-07,
+            6.424210710065381e-07,
+            6.262952751967532e-07,
+            4.042248633595591e-07,
+            5.89469550504873e-07,
+            2.1187921106502472e-07,
+            2.1187941001699073e-07,
+            1.8334833384869853e-07,
+            6.925953925929207e-07,
+            7.404200346172729e-07,
+            6.411912636394845e-07,
+            4.181429176242091e-07,
+            3.365384202425048e-07,
+            3.2410196126875235e-07,
+            5.548193371396337e-07,
+            2.336880129405472e-07,
+            6.712145363962918e-07,
+            3.287811409791175e-07,
+            6.329506163638143e-07,
+            1.0668602499208646e-06,
+            1.1069392940044054e-06,
+            1.2075953463863698e-06,
+            4.487100113692577e-07,
+            1.5178278545135981e-06,
+            1.6507865439052694e-06,
+            1.6034672398745897e-06,
+            1.51788913171913e-06,
+            1.2535880387076759e-06,
+            7.36734364181757e-07,
+            3.7576674571937474e-07,
+            3.3423070817661937e-06,
+            9.434098728888785e-07,
+            7.780936925882997e-07,
+            1.436365209883661e-06,
+            1.0103562999574933e-06,
+            8.579722248214239e-07,
+            1.3130855904819327e-06,
+            6.416283326871053e-07,
+            2.8148208002676256e-05,
+            5.157262876309687e-06,
+            0.00010819566523423418,
+            7.849287726457987e-07,
+            1.965848423424177e-05,
+            0.00031233474146574736,
+            5.007356776332017e-06,
+            5.337822585715912e-06,
+            8.206070197047666e-05,
+            0.0002273034624522552,
+            7.008467832747556e-07,
+            9.465936273045372e-06,
+            4.50108836957952e-06,
+            2.1436628230731003e-05,
+            5.007356776332017e-06,
+            1.908382364490535e-05,
+            5.007356776332017e-06,
+            5.874744601896964e-05
+          ]
+        }
+      }
+    }
+  },
+  "status": "complete"
+}

@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 
 os.environ['JAVA_M0_TRIAL_TOKEN'] = 'offline-ui-test'
-os.environ['JAVA_TRIAL_API_URL'] = 'http://127.0.0.1:18766'
+os.environ['JAVA_TRIAL_API_URL'] = 'http://127.0.0.1:' + os.environ.get('PROFILE_UI_PORT', '18766')
 import uvicorn
 from streamlit.testing.v1 import AppTest
 from streamlit.proto.WidgetStates_pb2 import WidgetStates, WidgetState
@@ -21,7 +21,7 @@ with (Path(__file__).parent / 'output/test.pcap_Flow.csv').open(encoding='utf-8-
 manager.run_id = 'ui-regression'
 bad = next(r['id'] for r in manager.records if r['prediction'] is None)
 alert = next(r['id'] for r in manager.records if r['prediction'] not in (None, 'Benign'))
-server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=18766, log_level='error'))
+server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=int(os.environ.get('PROFILE_UI_PORT', '18766')), log_level='error'))
 thread = threading.Thread(target=server.run, daemon=True)
 thread.start()
 for _ in range(100):

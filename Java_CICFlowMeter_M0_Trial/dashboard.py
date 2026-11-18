@@ -177,7 +177,7 @@ def show_detail(flow_id, model):
 @st.fragment(run_every="3s")
 def capture_controls(model):
     state = call("GET", "/status", model)
-    st.caption("Một phiên Java/Npcap cấp flow cho hai model. Chuyển M0 ↔ M1 không bắt lại traffic.")
+    st.caption("Mỗi lượt dùng extractor riêng theo model đã chọn. Đổi model cần nạp hoặc bắt một lượt mới.")
     st.caption("Lab VMware 192.168.11.x: chọn VMnet1; duyệt web trên Windows: chọn Wi-Fi. Card được chọn phải nhìn thấy traffic của hai máy lab.")
     options = interfaces()
     if not options:
@@ -191,7 +191,7 @@ def capture_controls(model):
                               disabled=state["phase"] in ("starting", "capturing", "stopping"))
     a, b = st.columns(2)
     if a.button("Bắt đầu Java", type="primary", disabled=state["phase"] in ("starting", "capturing", "stopping")):
-        call("POST", "/start", json={"interface": options[choice]["name"], "seconds": int(seconds)})
+        call("POST", "/start", json={"model": model, "interface": options[choice]["name"], "seconds": int(seconds)})
         st.rerun()
     if b.button("Dừng và ghi nốt flow", disabled=state["phase"] not in ("starting", "capturing")):
         call("POST", "/stop")
@@ -207,23 +207,24 @@ def capture_controls(model):
         st.caption(state["packet_summary"])
         if state["packet_summary"].startswith("accepted_packets=0 "):
             st.warning("Phiên đã kết thúc nhưng Java không nhận được gói TCP/UDP hợp lệ. Kiểm tra đúng card và tạo traffic trên mạng đó; chưa có dữ liệu để đánh giá model.")
-    st.info("Flow còn mở chưa có dự đoán; khi dừng, Java ghi nốt flow rồi hai model xử lý.")
+    st.info("Flow còn mở chưa có dự đoán; khi dừng, Java ghi nốt flow rồi model đã chọn xử lý.")
 
 
-def import_files():
+def import_files(model):
     st.caption("Nạp dữ liệu riêng trong khu thử Java. Lượt mới thay danh sách flow đang xem.")
     csv_tab, pcap_tab = st.tabs(["CSV 78 đặc trưng", "PCAP / PCAPNG qua Java"])
     with csv_tab:
         uploaded = st.file_uploader("Chọn CSV 78 đặc trưng", type="csv", key="java_csv")
+        st.caption("CSV dùng nguyên đặc trưng có sẵn; hệ thống chưa xác minh nguồn extractor. Chỉ nạp dữ liệu phù hợp model đã chọn, không tự sửa cờ PSH/FIN.")
         convert = st.checkbox("Đổi đơn vị thời gian giây → micro giây (chỉ CSV Python CICFlowMeter xuất giây)")
         if uploaded and st.button("Nạp CSV và dự đoán", key="import_csv"):
             data = uploaded.getvalue()
             if len(data) > 20_000_000:
                 st.error("CSV vượt 20 MB.")
             else:
-                result = call("POST", "/import/csv", json={"name": uploaded.name,
+                result = call("POST", "/import/csv", json={"model": model, "name": uploaded.name,
                               "content": data.decode("utf-8-sig"), "convert_seconds": convert}, timeout=300)
-                st.success(f"Đã nạp {result['rows']} flow cho M0 và M1.")
+                st.success(f"Đã nạp {result['rows']} flow cho {model}.")
     with pcap_tab:
         uploaded = st.file_uploader("Chọn PCAP/PCAPNG (tối đa 100 MB)",
                                     type=["pcap", "pcapng"], key="java_pcap")
@@ -237,8 +238,8 @@ def import_files():
                 filename = uuid.uuid4().hex[:12] + Path(uploaded.name).suffix.lower()
                 (folder / filename).write_bytes(data)
                 with st.spinner("Java đang trích flow..."):
-                    result = call("POST", "/import/pcap", json={"filename": filename}, timeout=330)
-                st.success(f"Java xuất {result['rows']} flow; M0 và M1 đã dự đoán riêng.")
+                    result = call("POST", "/import/pcap", json={"model": model, "filename": filename}, timeout=330)
+                st.success(f"Java xuất {result['rows']} flow cho {model}.")
     st.caption("CSV đã có đặc trưng không thể trích lại bằng Java. PCAPNG cần Wireshark editcap.")
 
 
@@ -261,6 +262,14 @@ try:
         paused = st.checkbox("Tạm dừng tự làm mới")
         st.button("Làm mới ngay")
         st.caption(f"Model: {model} · {len(info['classes'])} lớp")
+    state = call("GET", "/status", model)
+    st.caption(f"Nguồn đặc trưng: {state.get('extractor_profile', 'chưa có')} · Model của lượt: {state.get('active_model') or 'chưa chọn'}")
+    if state.get("active_model") and state["active_model"] != model:
+        st.warning("Lượt hiện tại thuộc model khác. Chọn lại model hoặc nạp/bắt lượt mới; không dùng lẫn quy ước đặc trưng.")
+    if model == "M0":
+        st.warning("M0: chưa xác minh đầy đủ extractor với phiên bản tạo dataset gốc. Nhãn dự đoán cần được kiểm chứng bằng nhật ký lab.")
+    else:
+        st.caption("M1: PCAP/realtime dùng Java cải tiến ghim phiên bản 2022. Chưa chứng minh trùng tuyệt đối pipeline tạo dataset.")
     scope = dict(label=label, src_ip=src, dst_ip=dst, alerts=alerts, window=window)
     from monitor_ui import render_monitor
     monitor_tab, realtime_tab, upload_tab = st.tabs(["Giám sát flow", "Realtime", "Nạp CSV / PCAP"])
@@ -269,6 +278,6 @@ try:
     with realtime_tab:
         capture_controls(model)
     with upload_tab:
-        import_files()
+        import_files(model)
 except (RuntimeError, requests.RequestException) as exc:
     st.error(f"Dịch vụ Java chưa sẵn sàng: {exc}")

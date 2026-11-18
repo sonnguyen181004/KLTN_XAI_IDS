@@ -1,0 +1,189 @@
+{
+  "source_commit": "13a061520b862d605eea746c79ca4033b30d98fc",
+  "artifacts": "Java_CICFlowMeter_M0_Trial\\output\\profile_positive_c96595fe",
+  "checks": [
+    {
+      "port": 41001,
+      "feature": "Fwd Bytes/Bulk Avg",
+      "expected": 40,
+      "actual": 40.0,
+      "pass": true
+    },
+    {
+      "port": 41001,
+      "feature": "Fwd Packet/Bulk Avg",
+      "expected": 4,
+      "actual": 4.0,
+      "pass": true
+    },
+    {
+      "port": 41001,
+      "feature": "Fwd Bulk Rate Avg",
+      "expected": 133,
+      "actual": 133.0,
+      "pass": true
+    },
+    {
+      "port": 41001,
+      "feature": "Bwd Bytes/Bulk Avg",
+      "expected": 80,
+      "actual": 80.0,
+      "pass": true
+    },
+    {
+      "port": 41001,
+      "feature": "Bwd Packet/Bulk Avg",
+      "expected": 4,
+      "actual": 4.0,
+      "pass": true
+    },
+    {
+      "port": 41001,
+      "feature": "Bwd Bulk Rate Avg",
+      "expected": 266,
+      "actual": 266.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "Fwd URG Flags",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "Bwd URG Flags",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "URG Flag Count",
+      "expected": 2,
+      "actual": 2.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "Fwd PSH Flags",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "Bwd PSH Flags",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "PSH Flag Count",
+      "expected": 2,
+      "actual": 2.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "CWR Flag Count",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "ECE Flag Count",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "SYN Flag Count",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41002,
+      "feature": "RST Flag Count",
+      "expected": 1,
+      "actual": 1.0,
+      "pass": true
+    },
+    {
+      "port": 41003,
+      "feature": "Active Mean",
+      "expected": 100000,
+      "actual": 100000.0,
+      "pass": true
+    },
+    {
+      "port": 41003,
+      "feature": "Active Max",
+      "expected": 100000,
+      "actual": 100000.0,
+      "pass": true
+    },
+    {
+      "port": 41003,
+      "feature": "Idle Mean",
+      "expected": 6000000,
+      "actual": 6000000.0,
+      "pass": true
+    },
+    {
+      "port": 41003,
+      "feature": "Idle Max",
+      "expected": 6000000,
+      "actual": 6000000.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "Protocol",
+      "expected": 17,
+      "actual": 17.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "Total Length of Fwd Packet",
+      "expected": 10,
+      "actual": 10.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "Total Length of Bwd Packet",
+      "expected": 20,
+      "actual": 20.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "Fwd Header Length",
+      "expected": 8,
+      "actual": 8.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "Bwd Header Length",
+      "expected": 8,
+      "actual": 8.0,
+      "pass": true
+    },
+    {
+      "port": 41004,
+      "feature": "PSH Flag Count",
+      "expected": 0,
+      "actual": 0.0,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

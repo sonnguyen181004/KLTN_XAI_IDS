@@ -1,0 +1,79 @@
+﻿feature,java_column,M0_train_min,M0_train_max,M1_reference_train_min,M1_reference_train_max,fixture_current,fixture_improved2022,fixture_expected_published2022,fixture_matches_published2022,scope
+Dst Port,Dst Port,0.0,65535.0,0.0,65389.0,443.0,443.0,443.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Protocol,Protocol,0.0,17.0,0.0,17.0,6.0,6.0,6.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow Duration,Flow Duration,-681401974784.0,120000000.0,1.0,120000000.0,400000.0,400000.0,400000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Tot Fwd Pkts,Total Fwd Packet,1.0,272337.0,0.0,280043.0,3.0,3.0,3.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Tot Bwd Pkts,Total Bwd packets,0.0,123118.0,0.0,120267.0,2.0,2.0,2.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+TotLen Fwd Pkts,Total Length of Fwd Packet,0.0,144391840.0,0.0,8961376.0,90.0,90.0,90.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+TotLen Bwd Pkts,Total Length of Bwd Packet,0.0,156360432.0,0.0,156027008.0,60.0,60.0,60.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkt Len Max,Fwd Packet Length Max,0.0,64440.0,0.0,64972.0,50.0,50.0,50.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkt Len Min,Fwd Packet Length Min,0.0,1460.0,0.0,1135.0,10.0,10.0,10.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkt Len Mean,Fwd Packet Length Mean,0.0,11217.025390625,0.0,31305.23828125,30.0,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkt Len Std,Fwd Packet Length Std,0.0,15760.837890625,0.0,25412.39453125,20.0,20.0,20.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkt Len Max,Bwd Packet Length Max,0.0,31469.0,0.0,30660.0,40.0,40.0,40.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkt Len Min,Bwd Packet Length Min,0.0,1460.0,0.0,971.0,20.0,20.0,20.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkt Len Mean,Bwd Packet Length Mean,0.0,1844.058837890625,0.0,6256.23828125,30.0,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkt Len Std,Bwd Packet Length Std,0.0,2316.329345703125,0.0,7959.01953125,14.142135623730953,14.142135623730953,14.142135623730951,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow Byts/s,Flow Bytes/s,0.0,1806642816.0,0.0,716000000.0,375.0,375.0,375.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow Pkts/s,Flow Packets/s,-4.402687409310602e-06,5000000.0,0.016668306663632393,3000000.0,12.5,12.5,12.5,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow IAT Mean,Flow IAT Mean,-340700987392.0,120000000.0,0.5,119988192.0,100000.0,100000.0,100000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow IAT Std,Flow IAT Std,0.0,256344588288.0,0.0,84811128.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow IAT Max,Flow IAT Max,-159437996032.0,120000000.0,1.0,119988192.0,100000.0,100000.0,100000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Flow IAT Min,Flow IAT Min,-521963995136.0,120000000.0,0.0,119988192.0,100000.0,100000.0,100000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd IAT Tot,Fwd IAT Total,-681401974784.0,120000000.0,0.0,120000000.0,400000.0,400000.0,400000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd IAT Mean,Fwd IAT Mean,-340700987392.0,120000000.0,0.0,119988192.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd IAT Std,Fwd IAT Std,0.0,256344588288.0,0.0,84744888.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd IAT Max,Fwd IAT Max,-159437996032.0,120000000.0,0.0,119988192.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd IAT Min,Fwd IAT Min,-521963995136.0,120000000.0,0.0,119988192.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd IAT Tot,Bwd IAT Total,0.0,120000000.0,0.0,120000000.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd IAT Mean,Bwd IAT Mean,0.0,120000000.0,0.0,119991648.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd IAT Std,Bwd IAT Std,0.0,84805456.0,0.0,84822080.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd IAT Max,Bwd IAT Max,0.0,120000000.0,0.0,119991648.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd IAT Min,Bwd IAT Min,0.0,120000000.0,0.0,119991648.0,200000.0,200000.0,200000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd PSH Flags,Fwd PSH Flags,0.0,1.0,0.0,2384.0,1.0,3.0,3.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd PSH Flags,Bwd PSH Flags,0.0,0.0,0.0,15451.0,0.0,2.0,2.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd URG Flags,Fwd URG Flags,0.0,1.0,0.0,20.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd URG Flags,Bwd URG Flags,0.0,0.0,0.0,0.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Header Len,Fwd Header Length,0.0,2178696.0,-32752.0,32752.0,60.0,60.0,60.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Header Len,Bwd Header Length,0.0,2462372.0,-32736.0,32752.0,40.0,40.0,40.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkts/s,Fwd Packets/s,0.0,5000000.0,0.0,3000000.0,7.5,7.5,7.5,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkts/s,Bwd Packets/s,0.0,2000000.0,0.0,2000000.0,5.0,5.0,5.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Len Min,Packet Length Min,0.0,1460.0,0.0,624.0,10.0,10.0,10.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Len Max,Packet Length Max,0.0,64440.0,0.0,64972.0,50.0,50.0,50.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Len Mean,Packet Length Mean,0.0,2521.11572265625,0.0,16439.07421875,26.666666666666668,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Len Std,Packet Length Std,0.0,8810.7685546875,0.0,23620.15234375,16.32993161855452,15.811388300841896,15.811388300841896,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Len Var,Packet Length Variance,0.0,77629640.0,0.0,557911616.0,266.6666666666667,250.0,250.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+FIN Flag Cnt,FIN Flag Count,0.0,1.0,0.0,20.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+SYN Flag Cnt,SYN Flag Count,0.0,1.0,0.0,2033.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+RST Flag Cnt,RST Flag Count,0.0,1.0,0.0,24.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+PSH Flag Cnt,PSH Flag Count,0.0,1.0,0.0,15582.0,5.0,5.0,5.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+ACK Flag Cnt,ACK Flag Count,0.0,1.0,0.0,178869.0,5.0,5.0,5.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+URG Flag Cnt,URG Flag Count,0.0,1.0,0.0,20.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+CWE Flag Count,CWR Flag Count,0.0,1.0,0.0,11.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+ECE Flag Cnt,ECE Flag Count,0.0,1.0,0.0,13.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Down/Up Ratio,Down/Up Ratio,0.0,311.0,0.0,24.730770111083984,0.0,0.6666666666666666,0.6666666666666666,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Pkt Size Avg,Average Packet Size,0.0,2522.136474609375,0.0,16439.07421875,32.0,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Seg Size Avg,Fwd Segment Size Avg,0.0,11217.025390625,0.0,31305.23828125,30.0,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Seg Size Avg,Bwd Segment Size Avg,0.0,1844.058837890625,0.0,6256.23828125,30.0,30.0,30.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Byts/b Avg,Fwd Bytes/Bulk Avg,0.0,0.0,0.0,8961376.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Pkts/b Avg,Fwd Packet/Bulk Avg,0.0,0.0,0.0,280043.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Blk Rate Avg,Fwd Bulk Rate Avg,0.0,0.0,0.0,2744999936.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Byts/b Avg,Bwd Bytes/Bulk Avg,0.0,0.0,0.0,38032156.0,150.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Pkts/b Avg,Bwd Packet/Bulk Avg,0.0,0.0,0.0,26470.0,5.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Bwd Blk Rate Avg,Bwd Bulk Rate Avg,0.0,0.0,0.0,5496000000.0,375.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Subflow Fwd Pkts,Subflow Fwd Packets,1.0,272337.0,0.0,1.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Subflow Fwd Byts,Subflow Fwd Bytes,0.0,144391840.0,0.0,16435.0,0.0,18.0,18.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Subflow Bwd Pkts,Subflow Bwd Packets,0.0,123118.0,0.0,1.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Subflow Bwd Byts,Subflow Bwd Bytes,0.0,156360432.0,0.0,2864.0,0.0,12.0,12.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Init Fwd Win Byts,FWD Init Win Bytes,-1.0,65535.0,0.0,65535.0,1000.0,1000.0,1000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Init Bwd Win Byts,Bwd Init Win Bytes,-1.0,65535.0,0.0,65535.0,3000.0,3000.0,3000.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Act Data Pkts,Fwd Act Data Pkts,0.0,272336.0,0.0,280042.0,2.0,2.0,2.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Fwd Seg Size Min,Fwd Seg Size Min,0.0,56.0,0.0,48.0,20.0,20.0,20.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Active Mean,Active Mean,0.0,113130280.0,0.0,113515232.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Active Std,Active Std,0.0,74874288.0,0.0,75508240.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Active Max,Active Max,0.0,113130280.0,0.0,113515232.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Active Min,Active Min,0.0,113130280.0,0.0,113515232.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Idle Mean,Idle Mean,0.0,120000000.0,0.0,119988192.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Idle Std,Idle Std,0.0,74935992.0,0.0,75219808.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Idle Max,Idle Max,0.0,120000000.0,0.0,119988192.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence
+Idle Min,Idle Min,0.0,120000000.0,0.0,119988192.0,0.0,0.0,0.0,True,numeric fixture + full train ranges; not historical PCAP/CSV equivalence

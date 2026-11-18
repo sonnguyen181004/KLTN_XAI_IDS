@@ -21,6 +21,8 @@ from streamlit.proto.WidgetStates_pb2 import WidgetStates, WidgetState
 from service import app, manager
 
 HERE = Path(__file__).resolve().parent
+test_model = os.environ.get('JAVA_TEST_MODEL', 'M0')
+assert test_model in ('M0', 'M1')
 evidence = {'passed': False, 'scope': 'Real Java Wi-Fi capture + HTTP API + Streamlit AppTest; no browser visual QA',
             'traffic': [], 'models': {}}
 
@@ -65,6 +67,7 @@ try:
     assert server.started
     state = AppTest.from_file(str(HERE / 'dashboard.py'), default_timeout=90).run()
     check(state)
+    state = state.radio[0].set_value(test_model).run()
     # Actual Java/Npcap enumeration through the UI; no fake device or capture.
     state = button(state, 'Bắt đầu Java')
     check(state)
@@ -102,7 +105,7 @@ try:
     evidence['process_exit'] = manager.process.returncode
     evidence['seconds_through_drain'] = round(time.monotonic() - start, 2)
     headers = {'X-Trial-Token': os.environ['JAVA_M0_TRIAL_TOKEN']}
-    for model in ('M0', 'M1'):
+    for model in (test_model,):
         flows = manager.flows(model)
         assert any(r['prediction'] for r in flows)
         for r in flows:
@@ -136,6 +139,8 @@ try:
         print(model, evidence['models'][model], flush=True)
     for name, path in [('M0', HERE.parent / 'RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl'),
                        ('M1', HERE.parent / 'IDS_M1_Lab/models/m1_xgboost_model.pkl')]:
+        if name not in evidence['models']:
+            continue
         evidence['models'][name]['model_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
     evidence['passed'] = True
 finally:
@@ -146,5 +151,5 @@ finally:
     server.should_exit = True
     server_thread.join(timeout=8)
     evidence['cleanup_process_stopped'] = manager.process is None or manager.process.poll() is not None
-    (HERE / 'output/realtime_ui_latest.json').write_text(json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
+    (HERE / f'java_realtime_{test_model.lower()}_20261118.json').write_text(json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
     print('RESULT', json.dumps(evidence, ensure_ascii=True), flush=True)

@@ -360,3 +360,62 @@ python Java_CICFlowMeter_M0_Trial/test_psh_fix.py
 ```
 
 Bước tiếp chưa thực hiện: xác minh provenance M1 rebuilt và tương thích các đặc trưng còn lại, đặc biệt window và lifecycle; đánh giá nhiều lượt SSH hợp lệ/không hợp lệ trước khi chọn profile extractor cho runtime. Không đổi model hoặc train lại trong thử nghiệm PSH.
+
+## Tích hợp profile Java theo model — 18/11/2026
+
+Mục đích: dùng cùng quy ước trích xuất cho PCAP và realtime của từng model, không sửa số cờ để ép nhãn. Mục này thay thế mô tả cũ “một lượt cho cả hai model”; các mục audit trước đó là lịch sử thử nghiệm.
+
+- M1 dùng mã nguồn Java cải tiến của GintsEngelen, ghim commit `13a061520b862d605eea746c79ca4033b30d98fc` (2022). `runtime_profile.py` tạo bản build riêng, kiểm checksum mã Java; chỉ bổ sung wrapper capture và cấu hình build Windows. Không thay mã nguồn tính đặc trưng đã kiểm chứng.
+- M0 giữ upstream hiện có, profile `m0-current-unverified`. Chưa có bằng chứng đủ để xác nhận trùng extractor tạo dataset M0 gốc. Không ép cờ count thành 0/1 và không tự áp profile M1 cho M0.
+- Chọn M0/M1 trước khi bắt hoặc nạp PCAP. Chỉ model được chọn dự đoán; chuyển model không tự suy luận trên đặc trưng của lượt khác. Một instance API chặn chạy capture/import trùng. UI hiển thị profile và model của lượt.
+- CSV dùng nguyên 78 đặc trưng có sẵn, không được gọi là “trích lại bằng Java”. Nguồn CSV hiện ghi `csv-unknown`; người dùng phải chọn đúng dữ liệu theo model. Java đã dùng microsecond nên không bật đổi giây lần nữa. NaN/Infinity giữ trạng thái không hợp lệ, không tự điền số; xem chi tiết vẫn được, yêu cầu XAI trả 422 thay vì lỗi 500.
+- PCAP mỗi lượt có thư mục output riêng, tránh đọc nhầm CSV cũ. Mỗi model giữ riêng nền LIME và SHAP; LIME suy biến được báo đúng trạng thái.
+
+### Chạy để tự kiểm tra
+
+Dừng API/dashboard Java cũ bằng Ctrl+C tại terminal đã mở, sau đó:
+
+```powershell
+cd C:\Users\LOQ\Downloads\SELF_KLTN
+python Java_CICFlowMeter_M0_Trial/launch_dashboard.py
+```
+
+1. Chọn M0 hoặc M1 ở thanh bên.
+2. CSV: tab Nạp CSV / PCAP, chọn CSV đủ 78 cột, chỉ bật chuyển giây nếu file thật sự dùng giây.
+3. PCAP: chọn file PCAP/PCAPNG, bấm Java trích flow và dự đoán. M1 tự chọn profile cải tiến.
+4. Realtime: chọn Realtek WiFi 6 cho mạng Wi-Fi của Windows, hoặc VMware VMnet1 cho lab nếu card này thấy traffic hai VM. Không chọn Microsoft Wi-Fi Direct Virtual Adapter. Giữ thời gian 0 để chạy đến khi bấm Dừng.
+5. Bấm Dừng và ghi nốt flow; chờ finished. Chọn một dòng trong bảng để xem chi tiết; SHAP chạy tự động với cảnh báo, LIME theo yêu cầu.
+6. Muốn thử model còn lại, đổi model và nạp/bắt một lượt riêng. Giữ PCAP để so hai model trên cùng gói tin nếu cần.
+
+Profile M1 lần đầu cần git clone nguồn nếu cache chưa tồn tại, JDK8/Gradle và Npcap như hướng dẫn cài đặt hiện có. Không sửa model hoặc reset DB của hệ thống chính.
+
+### Bằng chứng và giới hạn
+
+- `java_78_feature_contract_20261118.csv`, `java_contract_verification_20261118.json`: kiểm đủ 78 đầu ra trên fixture tính trước; bản hiện tại lệch 12 cột so với quy ước published-2022 trên fixture, bản ghim không lệch. Không suy rộng một fixture thành chứng nhận mọi gói tin.
+- `java_profile_positive_tests_20261118.json`: 26 kiểm tra bổ sung có giá trị khác 0 cho bulk, cờ, active/idle và UDP.
+- `java_contract_audit_20261118.json`: đối chiếu train/test, 6 PCAP và CSV lab. Bản M1 giữ đủ 160 gói SSH trong ss2; ba flow SSH chính vẫn Benign. Đây vẫn là bỏ sót kịch bản, không phải sửa xong độ chính xác model.
+- M0 raw ngày 14/02 có cờ 0/1; chưa xác minh được pipeline/binary gốc tạo quy ước đó. M1 hiện tại đã rebuild, chưa có provenance đầy đủ để chứng minh test độc lập; không dùng accuracy trên tập có sẵn như bằng chứng tổng quát hóa lab.
+- Các quy ước legacy về subflow/window được giữ khi phù hợp dữ liệu improved; không tự lấy bản upstream mới nhất vì có thể đổi nghĩa đặc trưng.
+- Chưa có cặp PCAP/CSV gốc của dataset để chứng nhận tương đương tuyệt đối. Còn cảnh báo phiên bản thư viện khi load pickle. Không coi nhãn trên traffic không có ground truth là FPR, không coi capture ngắn là PASS dài hạn.
+
+Tái lập kiểm thử:
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/test_runtime_profiles.py
+python Java_CICFlowMeter_M0_Trial/smoke_ui.py
+python Java_CICFlowMeter_M0_Trial/test_invalid_flow.py
+# Tùy chọn, có bắt Wi-Fi thật:
+$env:JAVA_TEST_MODEL='M1'
+python Java_CICFlowMeter_M0_Trial/test_realtime_ui.py
+```
+
+### Kết quả tích hợp đã chạy lại
+
+PCAP ss2 + CSV roundtrip, SHAP/LIME cả hai model: PASS (`java_runtime_integration_20261118.json`). AppTest chọn dòng, chi tiết, SHAP/LIME và hồi quy NaN/Inf: PASS. Hai lượt Wi-Fi riêng chạy nút Bắt đầu/Dừng qua AppTest, không phải kiểm tra trình duyệt bằng mắt:
+
+- M0: 31.06 giây trước yêu cầu Dừng; accepted_packets=1138 closed_flows=21 flushed_flows=40; nhãn {'Benign': 47, 'DoS attacks-Hulk': 14}; 0 dòng không hợp lệ; LIME ca được chọn: insufficient_neighborhood. Process exit=0, cleanup đã xác nhận. Bằng chứng: `java_realtime_m0_20261118.json`.
+- M1: 30.7 giây trước yêu cầu Dừng; accepted_packets=1354 closed_flows=0 flushed_flows=54; nhãn {'Benign': 41, 'DDOS attack-LOIC-UDP': 1}; 12 dòng không hợp lệ; LIME ca được chọn: ok. Process exit=0, cleanup đã xác nhận. Bằng chứng: `java_realtime_m1_20261118.json`.
+
+M1 có 12 dòng một gói, thời lượng 0: Flow Bytes/s, Flow Pkts/s và bốn thống kê Flow IAT không hữu hạn. Lưu nguyên CSV để kiểm tra; không điền 0. M0 lượt riêng không có dòng lỗi. Đây là hai lượt khác nhau, không dùng số lượng nhãn để kết luận M1 tốt hơn M0. Không tạo tấn công trong thử nghiệm này; M0 vẫn gán Hulk và M1 có LOIC-UDP, cần đối soát ground truth. Chưa có soak test dài hạn cho profile mới.
+
+Xem `java_live_invalid_audit_20261118.json` để biết đường dẫn CSV thô, `features_78.csv` theo thứ tự model và `rejected.csv` có source_row/invalid_columns. Số dòng source_row bắt đầu từ 1, không tính header. Capture này không lưu PCAP: CSV không khôi phục được gói tin. Muốn kiểm đếm từ từng gói, cần lưu PCAP bằng Wireshark trên cùng interface rồi nạp lại; không coi CSV là bằng chứng packet thô.

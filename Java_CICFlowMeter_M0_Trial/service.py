@@ -22,6 +22,8 @@ import yaml
 from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from typing import Literal
+from runtime_profile import resolve
 
 TRIAL = Path(__file__).resolve().parent
 ROOT = TRIAL.parent
@@ -62,17 +64,20 @@ def authorized(x_trial_token: str | None = Header(None)):
 
 
 class StartRequest(BaseModel):
+    model: Literal["M0", "M1"] = "M0"
     interface: str
     seconds: int = 0  # 0 = until Stop is pressed
 
 
 class CsvRequest(BaseModel):
+    model: Literal["M0", "M1"] = "M0"
     name: str
     content: str
     convert_seconds: bool = False
 
 
 class PcapRequest(BaseModel):
+    model: Literal["M0", "M1"] = "M0"
     filename: str
 
 
@@ -96,6 +101,8 @@ class TrialManager:
         self.records = []
         self.error = None
         self.packet_summary = None
+        self.active_model = None
+        self.profile = "csv-unknown"
         self.models = {}
         for name, base, model_path, encoder_path in (
             ("M0", "RQ3_IDS_System", "RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl",
@@ -122,7 +129,8 @@ class TrialManager:
         self.names = self.models["M0"]["names"]
         self.classes = self.models["M0"]["classes"]
 
-    def start(self, interface: str, seconds: int):
+    def start(self, interface: str, seconds: int, model: str = "M0"):
+        model_name(model)
         if not 0 <= seconds <= 3600:
             raise HTTPException(422, "seconds must be 0..3600")
         devices = list_interfaces()
@@ -132,6 +140,8 @@ class TrialManager:
         with self.lock:
             if self.phase in ("starting", "capturing", "stopping", "importing"):
                 raise HTTPException(409, "A capture or import is already running")
+            project, profile = resolve(model)
+            self.active_model, self.profile = model, profile
             self.run_id = uuid.uuid4().hex[:12]
             self.interface = matches[0]
             output = TRIAL / "output"
@@ -142,11 +152,11 @@ class TrialManager:
             self.records = []
             self.error = None
             self.packet_summary = None
-            cmd = [str(TRIAL / "upstream/gradlew.bat"), "liveTrial",
+            cmd = [str(project / "gradlew.bat"), "liveTrial",
                    f"-PtrialArgs={self.interface}~{seconds}~{self.csv_path}~{self.stop_path}",
                    "--offline", "--no-daemon", "--console=plain"]
             with self.log_path.open("w", encoding="utf-8") as log:
-                self.process = subprocess.Popen(cmd, cwd=TRIAL / "upstream",
+                self.process = subprocess.Popen(cmd, cwd=project,
                                                 env=java_environment(), stdout=log, stderr=subprocess.STDOUT)
             self.phase = "starting"
             self.thread = threading.Thread(target=self._monitor, daemon=True)
@@ -221,6 +231,7 @@ class TrialManager:
                   "dst_ip": row.get("Dst IP"), "dst_port": row.get("Dst Port"),
                   "protocol": row.get("Protocol"), "features": values.to_dict(),
                   "models": {}, "error": None,
+                  "extractor_profile": self.profile, "active_model": self.active_model,
                   "invalid_features": {n: str(row.get(FEATURE_MAP[n], row.get(n)))
                                        for n in self.names if not np.isfinite(values[n])}}
         valid = np.isfinite(values.to_numpy(dtype=float)).all()
@@ -230,7 +241,10 @@ class TrialManager:
             result = {"prediction": None, "confidence": None, "probabilities": {},
                       "shap": None, "lime": None, "error": record["error"],
                       "branch": None, "env_fingerprint_count": 0, "rare_class_flag": False}
-            if valid:
+            eligible = self.active_model is None or name == self.active_model
+            if not eligible:
+                result["error"] = "Lượt này thuộc " + self.active_model + "; nạp hoặc bắt lượt riêng cho model đang chọn"
+            if valid and eligible:
                 x = pd.DataFrame([{n: values[n] for n in bundle["names"]}], columns=bundle["names"])
                 proba = bundle["model"].predict_proba(x)[0]
                 result["prediction"] = bundle["classes"][int(proba.argmax())]
@@ -306,6 +320,7 @@ class TrialManager:
             return {"phase": self.phase, "run_id": self.run_id,
                     "interface": self.interface, "rows": len(self.records),
                     "labels": labels, "error": self.error, "packet_summary": self.packet_summary,
+                    "active_model": self.active_model, "extractor_profile": self.profile,
                     "model": name, "n_classes": len(self.models[name]["classes"])}
 
     def model_info(self, name: str):
@@ -325,6 +340,8 @@ class TrialManager:
     @staticmethod
     def _view(record, name, detail):
         shared = {k: record[k] for k in ("id", "time", "src_ip", "src_port", "dst_ip", "dst_port", "protocol")}
+        shared["extractor_profile"] = record.get("extractor_profile", "csv-unknown")
+        shared["active_model"] = record.get("active_model")
         if detail:
             shared["features"] = record["features"].copy()
             shared["invalid_features"] = record.get("invalid_features", {}).copy()
@@ -339,7 +356,9 @@ class TrialManager:
                 raise HTTPException(404, "Flow not found")
             return self._view(record, name, True)
 
-    def import_csv(self, name: str, content: str, convert_seconds: bool = False, internal: bool = False):
+    def import_csv(self, name: str, content: str, convert_seconds: bool = False, internal: bool = False, model: str | None = None):
+        if model is not None:
+            model_name(model)
         with self.lock:
             if self.phase in ("starting", "capturing", "stopping") or (self.phase == "importing" and not internal):
                 raise HTTPException(409, "Stop capture/import before importing CSV")
@@ -355,6 +374,8 @@ class TrialManager:
         with self.lock:
             if self.phase in ("starting", "capturing", "stopping") or (self.phase == "importing" and not internal):
                 raise HTTPException(409, "Stop capture/import before importing CSV")
+            if not internal:
+                self.active_model, self.profile = model, "csv-unknown"
             self.phase = "importing"
             self.records = []
             self.run_id = "csv:" + uuid.uuid4().hex[:8] + ":" + name[:80]
@@ -366,7 +387,8 @@ class TrialManager:
             self.phase = "finished"
         return {"rows": len(rows), "status": self.status()}
 
-    def import_pcap(self, filename: str):
+    def import_pcap(self, filename: str, model: str = "M0"):
+        model_name(model)
         with self.lock:
             if self.phase in ("starting", "capturing", "stopping", "importing"):
                 raise HTTPException(409, "Stop capture/import before importing PCAP")
@@ -381,14 +403,16 @@ class TrialManager:
                 raise HTTPException(409, "Stop capture/import before importing PCAP")
             self.phase = "importing"
         try:
-            return self._import_pcap_file(path)
+            project, profile = resolve(model)
+            self.active_model, self.profile = model, profile
+            return self._import_pcap_file(path, project)
         except Exception as exc:
             with self.lock:
                 self.phase = "error"
                 self.error = str(exc)
             raise
 
-    def _import_pcap_file(self, path: Path):
+    def _import_pcap_file(self, path: Path, project: Path):
         if path.suffix.lower() == ".pcapng":
             editcap = shutil.which("editcap") or r"C:\Program Files\Wireshark\editcap.exe"
             if not Path(editcap).is_file():
@@ -399,12 +423,12 @@ class TrialManager:
             if conversion.returncode:
                 raise HTTPException(422, "editcap failed: " + conversion.stderr[-300:])
             path = converted
-        out = (TRIAL / "output" / "imports" / (path.stem + "_java"))
+        out = (TRIAL / "output" / "imports" / (path.stem + "_java_" + uuid.uuid4().hex[:8]))
         out.mkdir(exist_ok=True)
-        proc = subprocess.run([str(TRIAL / "upstream/gradlew.bat"), "exeCMD",
+        proc = subprocess.run([str(project / "gradlew.bat"), "exeCMD",
                                f"-PtrialInput={path}", f"-PtrialOutput={out}",
                                "--offline", "--no-daemon", "--console=plain"],
-                              cwd=TRIAL / "upstream", env=java_environment(),
+                              cwd=project, env=java_environment(),
                               capture_output=True, text=True, timeout=300)
         if proc.returncode:
             raise HTTPException(422, "Java PCAP extraction failed: " + (proc.stdout + proc.stderr)[-500:])
@@ -435,7 +459,7 @@ def model_info(model: str = "M0"):
 
 @app.post("/start", dependencies=[Depends(authorized)])
 def start(req: StartRequest):
-    return manager.start(req.interface, req.seconds)
+    return manager.start(req.interface, req.seconds, req.model)
 
 
 @app.post("/stop", dependencies=[Depends(authorized)])
@@ -465,9 +489,9 @@ def shap(flow_id: int, model: str = "M0"):
 
 @app.post("/import/csv", dependencies=[Depends(authorized)])
 def import_csv(req: CsvRequest):
-    return manager.import_csv(req.name, req.content, req.convert_seconds)
+    return manager.import_csv(req.name, req.content, req.convert_seconds, model=req.model)
 
 
 @app.post("/import/pcap", dependencies=[Depends(authorized)])
 def import_pcap(req: PcapRequest):
-    return manager.import_pcap(req.filename)
+    return manager.import_pcap(req.filename, req.model)

@@ -1,0 +1,1372 @@
+{
+  "fixture_scope": "all 78 outputs on one numeric fixture; zeros do not validate positive bulk/idle/URG cases",
+  "fixture_checks": {
+    "current": {
+      "Dst Port": {
+        "expected_network_baseline": 443.0,
+        "expected_published_2022": 443.0,
+        "actual": 443.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Protocol": {
+        "expected_network_baseline": 6.0,
+        "expected_published_2022": 6.0,
+        "actual": 6.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Duration": {
+        "expected_network_baseline": 400000.0,
+        "expected_published_2022": 400000.0,
+        "actual": 400000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Tot Fwd Pkts": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 3.0,
+        "actual": 3.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Tot Bwd Pkts": {
+        "expected_network_baseline": 2.0,
+        "expected_published_2022": 2.0,
+        "actual": 2.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "TotLen Fwd Pkts": {
+        "expected_network_baseline": 90.0,
+        "expected_published_2022": 90.0,
+        "actual": 90.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "TotLen Bwd Pkts": {
+        "expected_network_baseline": 60.0,
+        "expected_published_2022": 60.0,
+        "actual": 60.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Max": {
+        "expected_network_baseline": 50.0,
+        "expected_published_2022": 50.0,
+        "actual": 50.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Min": {
+        "expected_network_baseline": 10.0,
+        "expected_published_2022": 10.0,
+        "actual": 10.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Std": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Max": {
+        "expected_network_baseline": 40.0,
+        "expected_published_2022": 40.0,
+        "actual": 40.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Min": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Std": {
+        "expected_network_baseline": 14.142135623730951,
+        "expected_published_2022": 14.142135623730951,
+        "actual": 14.142135623730953,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Byts/s": {
+        "expected_network_baseline": 375.0,
+        "expected_published_2022": 375.0,
+        "actual": 375.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Pkts/s": {
+        "expected_network_baseline": 12.5,
+        "expected_published_2022": 12.5,
+        "actual": 12.5,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Mean": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Max": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Min": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Tot": {
+        "expected_network_baseline": 400000.0,
+        "expected_published_2022": 400000.0,
+        "actual": 400000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Mean": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Max": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Min": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Tot": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Mean": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Max": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Min": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd PSH Flags": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 3.0,
+        "actual": 1.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Bwd PSH Flags": {
+        "expected_network_baseline": 2.0,
+        "expected_published_2022": 2.0,
+        "actual": 0.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Fwd URG Flags": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd URG Flags": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Header Len": {
+        "expected_network_baseline": 60.0,
+        "expected_published_2022": 60.0,
+        "actual": 60.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Header Len": {
+        "expected_network_baseline": 40.0,
+        "expected_published_2022": 40.0,
+        "actual": 40.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkts/s": {
+        "expected_network_baseline": 7.5,
+        "expected_published_2022": 7.5,
+        "actual": 7.5,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkts/s": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Min": {
+        "expected_network_baseline": 10.0,
+        "expected_published_2022": 10.0,
+        "actual": 10.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Max": {
+        "expected_network_baseline": 50.0,
+        "expected_published_2022": 50.0,
+        "actual": 50.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 26.666666666666668,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Pkt Len Std": {
+        "expected_network_baseline": 15.811388300841896,
+        "expected_published_2022": 15.811388300841896,
+        "actual": 16.32993161855452,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Pkt Len Var": {
+        "expected_network_baseline": 250.0,
+        "expected_published_2022": 250.0,
+        "actual": 266.6666666666667,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "FIN Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "SYN Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "RST Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "PSH Flag Cnt": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "ACK Flag Cnt": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "URG Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "CWE Flag Count": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "ECE Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Down/Up Ratio": {
+        "expected_network_baseline": 0.6666666666666666,
+        "expected_published_2022": 0.6666666666666666,
+        "actual": 0.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Pkt Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 32.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Fwd Seg Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Seg Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Byts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Blk Rate Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Byts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 150.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Bwd Pkts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 5.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Bwd Blk Rate Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 375.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": false
+      },
+      "Subflow Fwd Pkts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Subflow Fwd Byts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 18.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": false
+      },
+      "Subflow Bwd Pkts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Subflow Bwd Byts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 12.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": false
+      },
+      "Init Fwd Win Byts": {
+        "expected_network_baseline": 1000.0,
+        "expected_published_2022": 1000.0,
+        "actual": 1000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Init Bwd Win Byts": {
+        "expected_network_baseline": 2000.0,
+        "expected_published_2022": 3000.0,
+        "actual": 3000.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Fwd Act Data Pkts": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 2.0,
+        "actual": 2.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Fwd Seg Size Min": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Mean": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Max": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Min": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Mean": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Max": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Min": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      }
+    },
+    "improved_2022": {
+      "Dst Port": {
+        "expected_network_baseline": 443.0,
+        "expected_published_2022": 443.0,
+        "actual": 443.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Protocol": {
+        "expected_network_baseline": 6.0,
+        "expected_published_2022": 6.0,
+        "actual": 6.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Duration": {
+        "expected_network_baseline": 400000.0,
+        "expected_published_2022": 400000.0,
+        "actual": 400000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Tot Fwd Pkts": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 3.0,
+        "actual": 3.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Tot Bwd Pkts": {
+        "expected_network_baseline": 2.0,
+        "expected_published_2022": 2.0,
+        "actual": 2.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "TotLen Fwd Pkts": {
+        "expected_network_baseline": 90.0,
+        "expected_published_2022": 90.0,
+        "actual": 90.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "TotLen Bwd Pkts": {
+        "expected_network_baseline": 60.0,
+        "expected_published_2022": 60.0,
+        "actual": 60.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Max": {
+        "expected_network_baseline": 50.0,
+        "expected_published_2022": 50.0,
+        "actual": 50.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Min": {
+        "expected_network_baseline": 10.0,
+        "expected_published_2022": 10.0,
+        "actual": 10.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkt Len Std": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Max": {
+        "expected_network_baseline": 40.0,
+        "expected_published_2022": 40.0,
+        "actual": 40.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Min": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkt Len Std": {
+        "expected_network_baseline": 14.142135623730951,
+        "expected_published_2022": 14.142135623730951,
+        "actual": 14.142135623730953,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Byts/s": {
+        "expected_network_baseline": 375.0,
+        "expected_published_2022": 375.0,
+        "actual": 375.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow Pkts/s": {
+        "expected_network_baseline": 12.5,
+        "expected_published_2022": 12.5,
+        "actual": 12.5,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Mean": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Max": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Flow IAT Min": {
+        "expected_network_baseline": 100000.0,
+        "expected_published_2022": 100000.0,
+        "actual": 100000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Tot": {
+        "expected_network_baseline": 400000.0,
+        "expected_published_2022": 400000.0,
+        "actual": 400000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Mean": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Max": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd IAT Min": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Tot": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Mean": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Max": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd IAT Min": {
+        "expected_network_baseline": 200000.0,
+        "expected_published_2022": 200000.0,
+        "actual": 200000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd PSH Flags": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 3.0,
+        "actual": 3.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd PSH Flags": {
+        "expected_network_baseline": 2.0,
+        "expected_published_2022": 2.0,
+        "actual": 2.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd URG Flags": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd URG Flags": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Header Len": {
+        "expected_network_baseline": 60.0,
+        "expected_published_2022": 60.0,
+        "actual": 60.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Header Len": {
+        "expected_network_baseline": 40.0,
+        "expected_published_2022": 40.0,
+        "actual": 40.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkts/s": {
+        "expected_network_baseline": 7.5,
+        "expected_published_2022": 7.5,
+        "actual": 7.5,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkts/s": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Min": {
+        "expected_network_baseline": 10.0,
+        "expected_published_2022": 10.0,
+        "actual": 10.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Max": {
+        "expected_network_baseline": 50.0,
+        "expected_published_2022": 50.0,
+        "actual": 50.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Mean": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Std": {
+        "expected_network_baseline": 15.811388300841896,
+        "expected_published_2022": 15.811388300841896,
+        "actual": 15.811388300841896,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Len Var": {
+        "expected_network_baseline": 250.0,
+        "expected_published_2022": 250.0,
+        "actual": 250.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "FIN Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "SYN Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "RST Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "PSH Flag Cnt": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "ACK Flag Cnt": {
+        "expected_network_baseline": 5.0,
+        "expected_published_2022": 5.0,
+        "actual": 5.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "URG Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "CWE Flag Count": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "ECE Flag Cnt": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Down/Up Ratio": {
+        "expected_network_baseline": 0.6666666666666666,
+        "expected_published_2022": 0.6666666666666666,
+        "actual": 0.6666666666666666,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Pkt Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Seg Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Seg Size Avg": {
+        "expected_network_baseline": 30.0,
+        "expected_published_2022": 30.0,
+        "actual": 30.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Byts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Pkts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Fwd Blk Rate Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Byts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Pkts/b Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Bwd Blk Rate Avg": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Subflow Fwd Pkts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Subflow Fwd Byts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 18.0,
+        "actual": 18.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Subflow Bwd Pkts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Subflow Bwd Byts": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 12.0,
+        "actual": 12.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Init Fwd Win Byts": {
+        "expected_network_baseline": 1000.0,
+        "expected_published_2022": 1000.0,
+        "actual": 1000.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Init Bwd Win Byts": {
+        "expected_network_baseline": 2000.0,
+        "expected_published_2022": 3000.0,
+        "actual": 3000.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Fwd Act Data Pkts": {
+        "expected_network_baseline": 3.0,
+        "expected_published_2022": 2.0,
+        "actual": 2.0,
+        "matches_network_baseline": false,
+        "matches_published_2022": true
+      },
+      "Fwd Seg Size Min": {
+        "expected_network_baseline": 20.0,
+        "expected_published_2022": 20.0,
+        "actual": 20.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Mean": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Max": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Active Min": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Mean": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Std": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Max": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      },
+      "Idle Min": {
+        "expected_network_baseline": 0.0,
+        "expected_published_2022": 0.0,
+        "actual": 0.0,
+        "matches_network_baseline": true,
+        "matches_published_2022": true
+      }
+    }
+  },
+  "raw_day14_checks": {
+    "M0_raw_day14": {
+      "rows": 1048575,
+      "ssh_rows": 187589,
+      "source": "dataset\\CICID-2018_original_csv\\Wednesday-14-02-2018_TrafficForML_CICFlowMeter.csv",
+      "statistics": {
+        "FIN Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "SYN Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "RST Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "PSH Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "ACK Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "URG Flag Cnt": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "Fwd PSH Flags": {
+          "min": 0.0,
+          "max": 1.0,
+          "above_one": 0
+        },
+        "Bwd PSH Flags": {
+          "min": 0.0,
+          "max": 0.0,
+          "above_one": 0
+        },
+        "Init Bwd Win Byts": {
+          "min": -1.0,
+          "max": 65535.0,
+          "above_one": 477582
+        },
+        "Pkt Len Mean": {
+          "min": 0.0,
+          "max": 2521.1157426143,
+          "above_one": 587300
+        },
+        "Pkt Size Avg": {
+          "min": 0.0,
+          "max": 2522.136437247,
+          "above_one": 587300
+        },
+        "Down/Up Ratio": {
+          "min": 0.0,
+          "max": 80.0,
+          "above_one": 7584
+        }
+      }
+    },
+    "M1_improved_raw_day14": {
+      "rows": 5898350,
+      "ssh_rows": 94197,
+      "source": "dataset\\CSECICIDS2018_improved\\Wednesday-14-02-2018.csv",
+      "statistics": {
+        "FIN Flag Cnt": {
+          "min": 0.0,
+          "max": 15.0,
+          "above_one": 1250276
+        },
+        "SYN Flag Cnt": {
+          "min": 0.0,
+          "max": 178.0,
+          "above_one": 2656271
+        },
+        "RST Flag Cnt": {
+          "min": 0.0,
+          "max": 16.0,
+          "above_one": 90340
+        },
+        "PSH Flag Cnt": {
+          "min": 0.0,
+          "max": 12617.0,
+          "above_one": 2731462
+        },
+        "ACK Flag Cnt": {
+          "min": 0.0,
+          "max": 74404.0,
+          "above_one": 2969842
+        },
+        "URG Flag Cnt": {
+          "min": 0.0,
+          "max": 0.0,
+          "above_one": 0
+        },
+        "Fwd PSH Flags": {
+          "min": 0.0,
+          "max": 12439.0,
+          "above_one": 2267472
+        },
+        "Bwd PSH Flags": {
+          "min": 0.0,
+          "max": 2300.0,
+          "above_one": 2084426
+        },
+        "Init Bwd Win Byts": {
+          "min": 0.0,
+          "max": 65535.0,
+          "above_one": 2464066
+        },
+        "Pkt Len Mean": {
+          "min": 0.0,
+          "max": 15139.070967741936,
+          "above_one": 5344646
+        },
+        "Pkt Size Avg": {
+          "min": 0.0,
+          "max": 15139.070967741936,
+          "above_one": 5344646
+        },
+        "Down/Up Ratio": {
+          "min": 0.0,
+          "max": 24.25,
+          "above_one": 491233
+        }
+      }
+    }
+  },
+  "full_train_relations": {
+    "M0": {
+      "subflow_Fwd_Pkts_floor_total_div_packets": {
+        "eligible": 2800000,
+        "matches": 0
+      },
+      "subflow_Fwd_Pkts_equals_total": {
+        "eligible": 2800000,
+        "matches": 2800000
+      },
+      "subflow_Fwd_Byts_floor_total_div_packets": {
+        "eligible": 2800000,
+        "matches": 984638
+      },
+      "subflow_Fwd_Byts_equals_total": {
+        "eligible": 2800000,
+        "matches": 2800000
+      },
+      "udp_Fwd_window_minus_one": {
+        "eligible": 622298,
+        "matches": 622298
+      },
+      "udp_Fwd_window_zero": {
+        "eligible": 622298,
+        "matches": 0
+      },
+      "subflow_Bwd_Pkts_floor_total_div_packets": {
+        "eligible": 2800000,
+        "matches": 875682
+      },
+      "subflow_Bwd_Pkts_equals_total": {
+        "eligible": 2800000,
+        "matches": 2800000
+      },
+      "subflow_Bwd_Byts_floor_total_div_packets": {
+        "eligible": 2800000,
+        "matches": 1126770
+      },
+      "subflow_Bwd_Byts_equals_total": {
+        "eligible": 2800000,
+        "matches": 2799990
+      },
+      "udp_Bwd_window_minus_one": {
+        "eligible": 622298,
+        "matches": 622298
+      },
+      "udp_Bwd_window_zero": {
+        "eligible": 622298,
+        "matches": 0
+      },
+      "ratio_floor": {
+        "eligible": 1057559,
+        "matches": 1057559
+      },
+      "ratio_real": {
+        "eligible": 1057559,
+        "matches": 0
+      },
+      "mean_equals_size": {
+        "eligible": 2800000,
+        "matches": 985321
+      },
+      "size_n_equals_mean_n_plus_1": {
+        "eligible": 2800000,
+        "matches": 2800000
+      }
+    },
+    "M1_reference": {
+      "subflow_Fwd_Pkts_floor_total_div_packets": {
+        "eligible": 2728397,
+        "matches": 2728397
+      },
+      "subflow_Fwd_Pkts_equals_total": {
+        "eligible": 2728397,
+        "matches": 1730
+      },
+      "subflow_Fwd_Byts_floor_total_div_packets": {
+        "eligible": 2728397,
+        "matches": 2728397
+      },
+      "subflow_Fwd_Byts_equals_total": {
+        "eligible": 2728397,
+        "matches": 173995
+      },
+      "udp_Fwd_window_minus_one": {
+        "eligible": 804946,
+        "matches": 0
+      },
+      "udp_Fwd_window_zero": {
+        "eligible": 804946,
+        "matches": 804946
+      },
+      "subflow_Bwd_Pkts_floor_total_div_packets": {
+        "eligible": 2728397,
+        "matches": 2728397
+      },
+      "subflow_Bwd_Pkts_equals_total": {
+        "eligible": 2728397,
+        "matches": 28410
+      },
+      "subflow_Bwd_Byts_floor_total_div_packets": {
+        "eligible": 2728397,
+        "matches": 2728397
+      },
+      "subflow_Bwd_Byts_equals_total": {
+        "eligible": 2728397,
+        "matches": 237598
+      },
+      "udp_Bwd_window_minus_one": {
+        "eligible": 804946,
+        "matches": 0
+      },
+      "udp_Bwd_window_zero": {
+        "eligible": 804946,
+        "matches": 804946
+      },
+      "ratio_floor": {
+        "eligible": 1104362,
+        "matches": 1
+      },
+      "ratio_real": {
+        "eligible": 1104362,
+        "matches": 1104362
+      },
+      "mean_equals_size": {
+        "eligible": 2728397,
+        "matches": 2728397
+      },
+      "size_n_equals_mean_n_plus_1": {
+        "eligible": 2728397,
+        "matches": 171105
+      }
+    }
+  },
+  "historical_pair_limit": "No original dataset PCAP paired with CSV found locally; exact historical equivalence remains unverified."
+}
