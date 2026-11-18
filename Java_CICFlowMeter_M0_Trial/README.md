@@ -517,3 +517,11 @@ curl -I --max-time 5 http://192.168.11.134/
 ### Việc tiếp theo
 
 Chốt lượt GoldenEye 30 giây trước: kiểm tra PCAP, đối chiếu log và các flow đúng/sai. Ghi thêm baseline HTTP bình thường riêng. Sau đó mới thử Hulk trong lab với một runbook riêng; tiếp theo Slowloris, HOIC để sau khi có thiết kế nguồn traffic phân tán. Không tuyên bố M0/M1 ổn từ một lượt.
+
+### Hulk-Go: kiểm tra snapshot lượt 577f5569fe20 — 18/11/2026
+
+Đã chạy lại CSV và SHAP M0, không tạo traffic mới. Snapshot 346 flow hữu hạn; 341 flow Kali → Ubuntu:80 gồm 275 HOIC, 36 GoldenEye, 30 Benign. Năm flow còn lại Windows → Ubuntu:443 là Benign, không gộp vào kịch bản Hulk. Log chưa có dấu kết thúc capture tại thời điểm đọc nên đây không phải tổng kết phiên cuối.
+
+Ví dụ CSV dòng 45: HOIC 97,382%, Hulk 0,148%. SHAP lớp HOIC: Init Fwd Win Byts=64240 đóng góp +5,682 raw margin, Dst Port=80 +0,515; Flow Duration=389813 microsecond -0,276. SHAP riêng lớp Hulk: TotLen Bwd Pkts=82873 đóng góp -1,806, Tot Fwd Pkts=52 -1,412, Init Fwd Win Byts=64240 -0,969. Đây là bằng chứng cho quyết định trên flow được kiểm tra, không phải chứng minh nguyên nhân toàn dataset. Không diễn giải phi thành phần trăm xác suất. Không sửa TCP window hay cờ để ép đúng nhãn.
+
+Kết quả và các ví dụ tại `hulk_go_audit_20261118.json`; tái lập `python Java_CICFlowMeter_M0_Trial/audit_hulk_go.py` (đọc CSV cùng mã lượt; nếu capture tiếp tục, snapshot có thể đổi). Chưa đối chiếu PCAP hoặc phân bố train, chưa chứng nhận extractor M0. Bản Hulk-Go chưa được xác minh trùng công cụ của dataset. Bước tiếp: lưu PCAP và log lượt thử, kiểm đếm TCP window từ gói thật và so phân bố train HOIC/Hulk.
