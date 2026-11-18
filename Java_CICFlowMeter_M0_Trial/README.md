@@ -525,3 +525,13 @@ Chốt lượt GoldenEye 30 giây trước: kiểm tra PCAP, đối chiếu log 
 Ví dụ CSV dòng 45: HOIC 97,382%, Hulk 0,148%. SHAP lớp HOIC: Init Fwd Win Byts=64240 đóng góp +5,682 raw margin, Dst Port=80 +0,515; Flow Duration=389813 microsecond -0,276. SHAP riêng lớp Hulk: TotLen Bwd Pkts=82873 đóng góp -1,806, Tot Fwd Pkts=52 -1,412, Init Fwd Win Byts=64240 -0,969. Đây là bằng chứng cho quyết định trên flow được kiểm tra, không phải chứng minh nguyên nhân toàn dataset. Không diễn giải phi thành phần trăm xác suất. Không sửa TCP window hay cờ để ép đúng nhãn.
 
 Kết quả và các ví dụ tại `hulk_go_audit_20261118.json`; tái lập `python Java_CICFlowMeter_M0_Trial/audit_hulk_go.py` (đọc CSV cùng mã lượt; nếu capture tiếp tục, snapshot có thể đổi). Chưa đối chiếu PCAP hoặc phân bố train, chưa chứng nhận extractor M0. Bản Hulk-Go chưa được xác minh trùng công cụ của dataset. Bước tiếp: lưu PCAP và log lượt thử, kiểm đếm TCP window từ gói thật và so phân bố train HOIC/Hulk.
+
+### Kết luận đối chiếu PCAP Hulk-Go với train M0 — 18/11/2026
+
+`audit_hulk_packets.py` đọc `hulk-go.pcapng` bằng TShark và tập train M0 thật; kết quả tại `hulk_packet_train_audit_20261118.json`. Lọc đúng Kali → Ubuntu:80 (hai chiều): 36.973 packet, 341 TCP stream, khoảng 29,893 giây. Có 6.855 request và 6.855 response HTTP 200; toàn bộ request được giải mã có Connection: keep-alive. 285/323 stream có HTTP request chứa nhiều hơn một request (trung vị 14 request/stream có request). 341 SYN ban đầu đều có TCP window raw 64.240, khớp CSV. Cột window này không phải giá trị Java tự tạo sai trong lượt này; không suy rộng thành chứng nhận đủ 78 cột.
+
+Train M0 có 155.042 mẫu Hulk: window 225 ở 149.577 mẫu, 26.883 ở 5.020, 0 ở 445; không có 64.240. Trung vị Hulk train: 2 gói đi, 0 byte payload chiều về, 15.495 microsecond. Lượt live CSV: trung vị 30 gói đi, 44.890 byte chiều về, 133.248 microsecond. HOIC train cũng không có chính xác 64.240; không được nói giá trị này chỉ thuộc HOIC. SHAP đã xác nhận nó đẩy điểm HOIC ở các ví dụ, tức cách model sử dụng đặc trưng khác với định danh công cụ.
+
+Nguồn CNS2022 mục DoS Hulk xác nhận CSECICIDS2018 có cùng lỗi Hulk Python/urllib2 Connection: close mô tả trong WTMC2021. PCAP lab ở đây dùng keep-alive và tái sử dụng kết nối thực tế, nên khác hành vi đó. Đây là bằng chứng lệch dữ liệu và yếu tố model sử dụng trong các ca sai, không chứng minh duy nhất một nguyên nhân. Không có PCAP gốc ngày 16/02/2018 tại chỗ để tái trích độc lập. Không ép cờ/window hoặc tăng tải để đạt nhãn; báo cáo đúng Hulk-Go, không tái hiện chính xác Hulk dataset.
+
+Nguồn: https://intrusion-detection.distrinet-research.be/CNS2022/CSECICIDS2018.html và https://intrusion-detection.distrinet-research.be/WTMC2021/extended_doc.html .
