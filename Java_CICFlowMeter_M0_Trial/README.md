@@ -784,7 +784,7 @@ Nếu VM mất phản hồi thì dừng, chờ phục hồi, không tăng tiếp
 
 ## Báo cáo tấn công M0 và đối chiếu tăng tải (18/11/2026)
 
-Mục đích: lưu bằng chứng các lượt thử và giải thích nhầm nhãn, không điều chỉnh model để ép khớp tên công cụ. Theo yêu cầu cuối, `bcao_tancon.docx` chỉ trình bày M0, giữ đủ 19 ảnh gốc và có lời giải thích dưới từng ảnh. Có thêm bảng tải thực đo, bảng đối soát packet và biểu đồ đen trắng. Ảnh SSH cũ dùng subnet 192.168.64.x, được ghi rõ là khác lượt SSH PCAP hôm nay.
+Mục đích: lưu bằng chứng các lượt thử và giải thích nhầm nhãn, không điều chỉnh model để ép khớp tên công cụ. Theo yêu cầu rút gọn, `bcao_tancon.docx` chỉ trình bày M0 trong 11 trang: giữ đủ 19 ảnh gốc, giải thích ngay dưới mỗi ảnh và một kết luận chung ở cuối. Đã bỏ phần phân tích dài, bảng và biểu đồ khỏi DOCX; số liệu đầy đủ vẫn còn trong JSON. Nội dung tập trung vào nhầm loại, bỏ sót thành Benign, khác biệt với train và giới hạn dataset/extractor. Ảnh SSH cũ dùng subnet 192.168.64.x được ghi rõ là khác lượt SSH PCAP hôm nay. Bản 26 trang được sao lưu tại `output/report_assets/report_full_before_shortening.docx`.
 
 Đã trích lại 9 PCAP bằng Java. Với M0, GoldenEye mức đầu có 5013/5112 flow trùng tên lớp; mức tăng có 7173/7606. Hulk-Go tăng tải có 5 Hulk, 1301 HOIC, 719 GoldenEye và 450 Benign. Slowloris tăng tải có 33 Benign, 3 Hulk, không có Slowloris. LOIC có 22323 Hulk, 21302 Benign, 9016 HOIC, không có LOIC-HTTP. Đây là phân bố nhãn trên flow lab hai chiều, không phải accuracy/FPR đã xác nhận từng flow.
 
