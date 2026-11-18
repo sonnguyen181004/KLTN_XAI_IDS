@@ -14,6 +14,9 @@ def render_monitor(model, scope, call, show_detail):
     except (RuntimeError, requests.RequestException) as exc:
         st.error(f'Không đọc được dữ liệu: {exc}')
         return
+    if state.get('active_model') and state['active_model'] != model:
+        st.info(f"Lượt này được chạy cho {state['active_model']}, chưa dự đoán bằng {model}. Chọn lại model của lượt hoặc nạp PCAP cho {model}. Đây không phải lỗi đặc trưng.")
+        return
     run = state['run_id'] or 'empty'
     now = pd.Timestamp.now()
     def matches(row):

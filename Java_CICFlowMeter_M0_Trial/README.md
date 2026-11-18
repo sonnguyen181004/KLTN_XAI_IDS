@@ -419,3 +419,9 @@ PCAP ss2 + CSV roundtrip, SHAP/LIME cả hai model: PASS (`java_runtime_integrat
 M1 có 12 dòng một gói, thời lượng 0: Flow Bytes/s, Flow Pkts/s và bốn thống kê Flow IAT không hữu hạn. Lưu nguyên CSV để kiểm tra; không điền 0. M0 lượt riêng không có dòng lỗi. Đây là hai lượt khác nhau, không dùng số lượng nhãn để kết luận M1 tốt hơn M0. Không tạo tấn công trong thử nghiệm này; M0 vẫn gán Hulk và M1 có LOIC-UDP, cần đối soát ground truth. Chưa có soak test dài hạn cho profile mới.
 
 Xem `java_live_invalid_audit_20261118.json` để biết đường dẫn CSV thô, `features_78.csv` theo thứ tự model và `rejected.csv` có source_row/invalid_columns. Số dòng source_row bắt đầu từ 1, không tính header. Capture này không lưu PCAP: CSV không khôi phục được gói tin. Muốn kiểm đếm từ từng gói, cần lưu PCAP bằng Wireshark trên cùng interface rồi nạp lại; không coi CSV là bằng chứng packet thô.
+
+### GoldenEye lab và sửa nhãn UI — 18/11/2026
+
+Lượt dashboard_2049dd9c9059: 14.255 dòng CSV, 12.803 dòng hữu hạn. UI cũ coi prediction=None là không hợp lệ kể cả khi lượt thuộc model khác. Đã chặn hiển thị thống kê trong trường hợp này và giải thích chưa chạy model đang chọn; kiểm thử nhánh này PASS.
+
+Chạy lại cùng CSV, lọc Kali 192.168.11.133 → Ubuntu 192.168.11.134:80 có 12.540 dòng hữu hạn. M0: 9.022 GoldenEye, 1.635 Benign, 1.623 Hulk, 148 HOIC, 111 Slowloris, 1 Infilteration. M1: 9 GoldenEye, 9.592 Benign, 1.519 Hulk, 1.288 Infilteration, 85 Slowloris, 47 LOIC-HTTP. Bằng chứng `goldeneye_live_audit_20261118.json`. Đây là inference trên cùng CSV, không phải đối chiếu profile Java riêng; chưa có nhãn theo thời gian/log cho toàn bộ lượt nên không gọi tỷ lệ trên là recall. Chưa xác định nguyên nhân cụ thể của M1; cần PCAP và phân tích đặc trưng/SHAP, không tăng tải để ép nhãn.

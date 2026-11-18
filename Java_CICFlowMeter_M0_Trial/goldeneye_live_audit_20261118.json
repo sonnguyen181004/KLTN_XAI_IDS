@@ -1,0 +1,27 @@
+{
+  "source": "Java_CICFlowMeter_M0_Trial\\output\\dashboard_2049dd9c9059.csv",
+  "rows": 14255,
+  "scope": "Existing live CSV; same feature vectors, not separate M0 extraction; capture not ground-truth-labelled",
+  "M0": {
+    "target_finite_rows": 12540,
+    "labels": {
+      "DoS attacks-GoldenEye": 9022,
+      "Benign": 1635,
+      "DoS attacks-Hulk": 1623,
+      "DDOS attack-HOIC": 148,
+      "DoS attacks-Slowloris": 111,
+      "Infilteration": 1
+    }
+  },
+  "M1": {
+    "target_finite_rows": 12540,
+    "labels": {
+      "Benign": 9592,
+      "DoS attacks-Hulk": 1519,
+      "Infilteration": 1288,
+      "DoS attacks-Slowloris": 85,
+      "DDoS attacks-LOIC-HTTP": 47,
+      "DoS attacks-GoldenEye": 9
+    }
+  }
+}
