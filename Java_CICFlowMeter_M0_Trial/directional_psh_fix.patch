@@ -1,0 +1,19 @@
+--- a/src/main/java/cic/cs/unb/ca/jnetpcap/BasicFlow.java
++++ b/src/main/java/cic/cs/unb/ca/jnetpcap/BasicFlow.java
+@@ -171,6 +171,16 @@
+ 	}
+     
+     public void addPacket(BasicPacketInfo packet){
++        // Count subsequent packets; firstPacket already counts the first one.
++        // Use the same direction rule as packet statistics in addPacket.
++        if (packet.hasFlagPSH()) {
++            if (!isBidirectional || Arrays.equals(this.src, packet.getSrc())) {
++                this.fPSH_cnt++;
++            } else {
++                this.bPSH_cnt++;
++            }
++        }
++
+ 		updateFlowBulk(packet);
+ 		detectUpdateSubflows(packet);
+ 		checkFlags(packet);

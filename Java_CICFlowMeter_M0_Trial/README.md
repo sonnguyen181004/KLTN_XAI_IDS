@@ -332,3 +332,31 @@ python Java_CICFlowMeter_M0_Trial/audit_ssh_pcap.py --pcap Java_CICFlowMeter_M0_
 ```
 
 Bước tiếp: đối soát directional PSH/window/flow với PCAP và extractor improved, xác minh provenance M1; chưa tăng tải hoặc sửa nhãn để buộc kết quả đúng. Không thay đổi model/runtime trong bước audit.
+
+## Sửa thử nghiệm PSH theo chiều — 18/11/2026
+
+Mục đích: sửa lỗi đếm cờ có bằng chứng từ PCAP, đo riêng ảnh hưởng lên M0/M1, không chỉnh đặc trưng để ép nhãn. `test_psh_fix.py` sao chép Java vào thư mục output riêng, thêm cập nhật fPSH_cnt/bPSH_cnt cho các packet sau packet đầu trong BasicFlow.addPacket. firstPacket giữ nguyên để không đếm hai lần. Quy tắc chiều theo đúng nhánh thống kê packet hiện có; không sửa window, FIN, timeout hoặc tổng PSH. Patch lưu trong `directional_psh_fix.patch`; kết quả và checksum trong `directional_psh_fix_20261118.json`. Dashboard vẫn dùng upstream gốc; bản thử nghiệm không thay runtime đang chạy.
+
+Kiểm chứng đã PASS:
+- PCAP tổng hợp có PSH ngay gói đầu: kết quả forward=3, backward=2, tổng=5, không đếm trùng gói đầu.
+- ss2: ba flow chính đều forward=16, backward=15, tổng=31, khớp kiểm đếm TShark trước đó. Flow phụ 2 gói không có PSH vẫn 0/0/0.
+- Giữ nguyên số dòng và định danh/thứ tự flow. Đối chiếu 78 cột giữa bản gốc và sửa: chỉ Fwd PSH Flags và Bwd PSH Flags khác; 76 cột còn lại khớp trong sai số số học kiểm thử. Checksum source upstream gốc không thay đổi.
+
+| Model / xác suất SSH từng flow chính | Trước sửa | Sau sửa |
+| --- | --- | --- |
+| M0, cổng 44578 | 0,197880% | 0,197818% |
+| M0, cổng 33750 | 0,162781% | 0,162738% |
+| M0, cổng 40548 | 0,162782% | 0,162738% |
+| M1, cổng 44578 | 0,038578% | 1,031234% |
+| M1, cổng 33750 | 0,022605% | 0,733990% |
+| M1, cổng 40548 | 0,019387% | 0,630154% |
+
+Ba flow chính vẫn Benign ở cả hai model. Flow phụ giữ nguyên: M0 SSH-Bruteforce 49,72%, M1 Infilteration 99,68%. Sửa PSH cải thiện phép đếm, chưa giải quyết bỏ sót. Kết quả này bác bỏ giả thiết chỉ sửa PSH là đủ để nhận đúng kịch bản. M0 train có quy ước cờ khác nên không mặc định đưa patch đếm thật vào M0 runtime. Model pickle vẫn phát cảnh báo chênh phiên bản thư viện lúc nạp; hai nhánh dùng cùng môi trường và cùng artifact, chưa chứng nhận tương thích toàn bộ môi trường train.
+
+Tái lập (không capture mới):
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/test_psh_fix.py
+```
+
+Bước tiếp chưa thực hiện: xác minh provenance M1 rebuilt và tương thích các đặc trưng còn lại, đặc biệt window và lifecycle; đánh giá nhiều lượt SSH hợp lệ/không hợp lệ trước khi chọn profile extractor cho runtime. Không đổi model hoặc train lại trong thử nghiệm PSH.

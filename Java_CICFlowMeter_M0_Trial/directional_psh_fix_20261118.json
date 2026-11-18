@@ -1,0 +1,184 @@
+{
+  "scope": "isolated experiment; runtime and model artifacts unchanged",
+  "source_java_sha256": "0d611bd5f07c2ad41cfc6dc8759504dd4ac7ebc2bdec996cc87f186ebaf60c11",
+  "fixed_java_sha256": "fb3598f72583092a503cb9cf2a449a402c2f8558335e32269e0916fd094c22e0",
+  "pcap_sha256": "e9bb12a024099e4e59281f3c5ce56feffbbcddf0a7fd4835d2445afac4a78a6e",
+  "artifacts": "Java_CICFlowMeter_M0_Trial\\output\\psh_fix_62db2bf3",
+  "cases": {
+    "fixture": {
+      "rows": 6,
+      "changed_features": [
+        "Fwd PSH Flags",
+        "Bwd PSH Flags"
+      ],
+      "models": {},
+      "first_packet_psh_not_double_counted": true
+    },
+    "ss2": {
+      "rows": 6,
+      "changed_features": [
+        "Fwd PSH Flags",
+        "Bwd PSH Flags"
+      ],
+      "models": {
+        "M0": {
+          "original": [
+            {
+              "src_port": 44578,
+              "duration_us": 18251812.0,
+              "label": "Benign",
+              "confidence": 0.9930672645568848,
+              "ssh_probability": 0.0019787997007369995
+            },
+            {
+              "src_port": 33750,
+              "duration_us": 19821502.0,
+              "label": "Benign",
+              "confidence": 0.994454562664032,
+              "ssh_probability": 0.0016278137918561697
+            },
+            {
+              "src_port": 40548,
+              "duration_us": 18178156.0,
+              "label": "Benign",
+              "confidence": 0.994455873966217,
+              "ssh_probability": 0.0016278158873319626
+            },
+            {
+              "src_port": 44578,
+              "duration_us": 749.0,
+              "label": "SSH-Bruteforce",
+              "confidence": 0.49723127484321594,
+              "ssh_probability": 0.49723127484321594
+            }
+          ],
+          "fixed": [
+            {
+              "src_port": 44578,
+              "duration_us": 18251812.0,
+              "label": "Benign",
+              "confidence": 0.99275803565979,
+              "ssh_probability": 0.0019781836308538914
+            },
+            {
+              "src_port": 33750,
+              "duration_us": 19821502.0,
+              "label": "Benign",
+              "confidence": 0.9941903352737427,
+              "ssh_probability": 0.0016273811925202608
+            },
+            {
+              "src_port": 40548,
+              "duration_us": 18178156.0,
+              "label": "Benign",
+              "confidence": 0.9941917061805725,
+              "ssh_probability": 0.0016273835208266973
+            },
+            {
+              "src_port": 44578,
+              "duration_us": 749.0,
+              "label": "SSH-Bruteforce",
+              "confidence": 0.49723127484321594,
+              "ssh_probability": 0.49723127484321594
+            }
+          ]
+        },
+        "M1": {
+          "original": [
+            {
+              "src_port": 44578,
+              "duration_us": 18251812.0,
+              "label": "Benign",
+              "confidence": 0.9995139837265015,
+              "ssh_probability": 0.00038578081876039505
+            },
+            {
+              "src_port": 33750,
+              "duration_us": 19821502.0,
+              "label": "Benign",
+              "confidence": 0.9997151494026184,
+              "ssh_probability": 0.00022604616242460907
+            },
+            {
+              "src_port": 40548,
+              "duration_us": 18178156.0,
+              "label": "Benign",
+              "confidence": 0.9997559189796448,
+              "ssh_probability": 0.0001938705681823194
+            },
+            {
+              "src_port": 44578,
+              "duration_us": 749.0,
+              "label": "Infilteration",
+              "confidence": 0.996826708316803,
+              "ssh_probability": 1.3908601431467105e-05
+            }
+          ],
+          "fixed": [
+            {
+              "src_port": 44578,
+              "duration_us": 18251812.0,
+              "label": "Benign",
+              "confidence": 0.9895923137664795,
+              "ssh_probability": 0.010312343947589397
+            },
+            {
+              "src_port": 33750,
+              "duration_us": 19821502.0,
+              "label": "Benign",
+              "confidence": 0.9925917387008667,
+              "ssh_probability": 0.007339902687817812
+            },
+            {
+              "src_port": 40548,
+              "duration_us": 18178156.0,
+              "label": "Benign",
+              "confidence": 0.9936400055885315,
+              "ssh_probability": 0.006301538087427616
+            },
+            {
+              "src_port": 44578,
+              "duration_us": 749.0,
+              "label": "Infilteration",
+              "confidence": 0.996826708316803,
+              "ssh_probability": 1.3908601431467105e-05
+            }
+          ]
+        }
+      },
+      "psh_rows": [
+        {
+          "Src Port": 44578,
+          "Flow Duration": 18251812,
+          "Fwd PSH Flags": 16,
+          "Bwd PSH Flags": 15,
+          "PSH Flag Count": 31
+        },
+        {
+          "Src Port": 33750,
+          "Flow Duration": 19821502,
+          "Fwd PSH Flags": 16,
+          "Bwd PSH Flags": 15,
+          "PSH Flag Count": 31
+        },
+        {
+          "Src Port": 40548,
+          "Flow Duration": 18178156,
+          "Fwd PSH Flags": 16,
+          "Bwd PSH Flags": 15,
+          "PSH Flag Count": 31
+        },
+        {
+          "Src Port": 44578,
+          "Flow Duration": 749,
+          "Fwd PSH Flags": 0,
+          "Bwd PSH Flags": 0,
+          "PSH Flag Count": 0
+        }
+      ]
+    }
+  },
+  "M0_sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+  "M1_sha256": "3b858ed12c374f28418654daba9976a00852d0cddf538a2c2849ea8fb946d6f6",
+  "checks_passed": true
+}
