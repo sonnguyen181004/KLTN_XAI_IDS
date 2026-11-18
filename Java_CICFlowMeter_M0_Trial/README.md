@@ -543,3 +543,11 @@ Nguồn: https://intrusion-detection.distrinet-research.be/CNS2022/CSECICIDS2018
 Flow chính CSV khoảng 19,5–21 giây; có nhóm khoảng 9 giây và một flow phụ 624 microsecond. Train M0 lớp Slowloris 3.620 dòng: trung vị thời lượng 106,304464 giây, p10 3,027675 giây, p90 108,349554 giây. Không suy diễn mọi mẫu train dài hơn lab hoặc chỉ đổi thời gian chạy là sửa được dự đoán. Cần đọc cấu hình Apache để xác minh nguyên nhân timeout, không tự tắt bảo vệ.
 
 SHAP ví dụ flow 11/16: FIN Flag Cnt=1 tăng điểm Hulk +5,865 raw margin; Fwd Pkt Len Max=135 tăng +2,989. Trong giải thích riêng lớp Slowloris, thời lượng khoảng 19,5 giây kéo điểm xuống -1,619. Dữ liệu và SHAP lưu slowloris_audit_20261118.json. Kết luận: pipeline tạo và phân loại được flow nhưng M0 không nhận đúng loại ở lượt này; môi trường đóng kết nối và đặc trưng khác train, không khẳng định duy nhất một nguyên nhân. Chưa kiểm tra M1 cho lượt này.
+
+### Test M0 trên HOIC và LOIC-HTTP trong dataset — 18/11/2026
+
+Chạy `python Java_CICFlowMeter_M0_Trial/test_dataset_ddos.py` trên toàn bộ hai lớp trong test_set.parquet, không dùng train và không tạo traffic. HOIC: 59.580/59.580 đúng lớp (100%). LOIC-HTTP: 51.327/51.354 đúng lớp (99,9474%); 24 thành LOIC-UDP, 3 Benign. Không có dòng không hữu hạn. Đây là recall từng lớp trên tập test lưu sẵn, không phải FPR hoặc khả năng realtime.
+
+Xuất 100 mẫu ngẫu nhiên cố định seed 42 mỗi lớp tại output/dataset_ddos_test/hoic_test_100.csv và loic_http_test_100.csv; đều nhận đúng 100/100. File có Label để đối chiếu, model chỉ nhận đúng 78 cột feature. Các file *_with_predictions.csv bổ sung nhãn dự đoán để kiểm tra. Nạp dashboard: chọn M0, Nạp CSV / PCAP → CSV, không bật chuyển giây. Mỗi lần nạp thay lượt hiện tại nên dừng capture trước.
+
+Kết quả có checksum model: dataset_ddos_test_20261118.json. Không suy ra traffic live HOIC/LOIC-HTTP cũng đạt tỷ lệ này, không kiểm chứng tính độc lập train/test bằng thử nghiệm này.

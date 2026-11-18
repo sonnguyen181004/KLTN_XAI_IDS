@@ -1,0 +1,39 @@
+{
+  "model_sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+  "source": "C:\\Users\\LOQ\\Downloads\\SELF_KLTN\\dataset\\CICID-2018_processed\\test_set.parquet",
+  "scope": "Held-out dataset rows only; no PCAP extraction, no live attack, no FPR estimate",
+  "classes": {
+    "DDOS attack-HOIC": {
+      "rows": 59580,
+      "invalid_rows": 0,
+      "correct_class": 59580,
+      "wrong_class": 0,
+      "class_recall": 1.0,
+      "predictions": {
+        "DDOS attack-HOIC": 59580
+      },
+      "sample_path": "C:\\Users\\LOQ\\Downloads\\SELF_KLTN\\Java_CICFlowMeter_M0_Trial\\output\\dataset_ddos_test\\hoic_test_100.csv",
+      "sample_predictions": {
+        "DDOS attack-HOIC": 100
+      },
+      "service_csv_import_and_auto_shap": "PASS 100 rows"
+    },
+    "DDoS attacks-LOIC-HTTP": {
+      "rows": 51354,
+      "invalid_rows": 0,
+      "correct_class": 51327,
+      "wrong_class": 27,
+      "class_recall": 0.9994742376445847,
+      "predictions": {
+        "DDoS attacks-LOIC-HTTP": 51327,
+        "DDOS attack-LOIC-UDP": 24,
+        "Benign": 3
+      },
+      "sample_path": "C:\\Users\\LOQ\\Downloads\\SELF_KLTN\\Java_CICFlowMeter_M0_Trial\\output\\dataset_ddos_test\\loic_http_test_100.csv",
+      "sample_predictions": {
+        "DDoS attacks-LOIC-HTTP": 100
+      },
+      "service_csv_import_and_auto_shap": "PASS 100 rows"
+    }
+  }
+}
