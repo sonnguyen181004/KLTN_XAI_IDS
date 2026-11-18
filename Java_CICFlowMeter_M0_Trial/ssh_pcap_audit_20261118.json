@@ -1,0 +1,3890 @@
+{
+  "model_sha256": {
+    "M0": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+    "M1": "3b858ed12c374f28418654daba9976a00852d0cddf538a2c2849ea8fb946d6f6"
+  },
+  "source_sha256": "662490fc3b740735e09e87a88d2b0527ccbaed3ac6ba1f50301c393243c55da6",
+  "all_tcp_packets": 201,
+  "ssh_packets": 201,
+  "tcp_streams": [
+    {
+      "stream": 0,
+      "packets": 24,
+      "start_epoch": 1794984792.1866076,
+      "duration_seconds": 0.20319700241088867,
+      "client_ports": [
+        43510
+      ],
+      "fin_packets": 3,
+      "syn_packets": 2,
+      "rst_packets": 0
+    },
+    {
+      "stream": 1,
+      "packets": 45,
+      "start_epoch": 1794984792.5653236,
+      "duration_seconds": 24.679680109024048,
+      "client_ports": [
+        43516
+      ],
+      "fin_packets": 2,
+      "syn_packets": 2,
+      "rst_packets": 0
+    },
+    {
+      "stream": 2,
+      "packets": 45,
+      "start_epoch": 1794984818.24832,
+      "duration_seconds": 21.420578241348267,
+      "client_ports": [
+        32884
+      ],
+      "fin_packets": 2,
+      "syn_packets": 2,
+      "rst_packets": 0
+    },
+    {
+      "stream": 3,
+      "packets": 46,
+      "start_epoch": 1794984840.6663544,
+      "duration_seconds": 23.091921091079712,
+      "client_ports": [
+        41894
+      ],
+      "fin_packets": 2,
+      "syn_packets": 2,
+      "rst_packets": 0
+    },
+    {
+      "stream": 4,
+      "packets": 41,
+      "start_epoch": 1794984864.7619772,
+      "duration_seconds": 20.45262598991394,
+      "client_ports": [
+        38766
+      ],
+      "fin_packets": 2,
+      "syn_packets": 2,
+      "rst_packets": 0
+    }
+  ],
+  "extractors": {
+    "java": {
+      "rows": 8,
+      "invalid": 0,
+      "packet_sum": 201,
+      "models": {
+        "M0": {
+          "labels": {
+            "Benign": 8
+          },
+          "examples": [
+            {
+              "row": 1,
+              "label": "Benign",
+              "confidence": 0.8684501051902771,
+              "ssh_probability": 0.0064669325947761536,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -0.7961751222610474
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6318559646606445
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 0.6113945245742798
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 54.9554860562944,
+                    "phi": -0.500373899936676
+                  },
+                  {
+                    "feature": "Flow Pkts/s",
+                    "value": 109.9109721125888,
+                    "phi": -0.4205847978591919
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": -3.412273406982422
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.0279035568237305
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 287.7607908094373,
+                    "phi": -0.3241143226623535
+                  },
+                  {
+                    "feature": "ACK Flag Cnt",
+                    "value": 21.0,
+                    "phi": 0.3194267451763153
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": 0.2877928912639618
+                  }
+                ],
+                "additivity_error": 5.960464477539062e-07
+              }
+            },
+            {
+              "row": 2,
+              "label": "Benign",
+              "confidence": 0.9974595904350281,
+              "ssh_probability": 6.867923366371542e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.0104358196258545
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.6373767852783203
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6288991570472717
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.8914373190914066,
+                    "phi": 0.6075711250305176
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 388.0,
+                    "phi": 0.30672112107276917
+                  }
+                ],
+                "additivity_error": 0.0
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 2.468754768371582
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": -1.8335939645767212
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 573935.930232558,
+                    "phi": -0.5835447907447815
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.8914373190914066,
+                    "phi": -0.5549756288528442
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.8914373190914066,
+                    "phi": -0.3472593128681183
+                  }
+                ],
+                "additivity_error": 5.960464477539062e-07
+              }
+            },
+            {
+              "row": 3,
+              "label": "Benign",
+              "confidence": 0.9971555471420288,
+              "ssh_probability": 6.709650187985972e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 0.9506417512893677
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6288991570472717
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.6199136972427368
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 1.0270608594716042,
+                    "phi": 0.6088801622390747
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 168.0,
+                    "phi": 0.3672010600566864
+                  }
+                ],
+                "additivity_error": 0.0
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 2.4582035541534424
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": -1.8523579835891724
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 498147.6046511628,
+                    "phi": -0.5835447907447815
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 1.0270608594716042,
+                    "phi": -0.5549756288528442
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 1.0270608594716042,
+                    "phi": -0.3472593128681183
+                  }
+                ],
+                "additivity_error": 3.5762786865234375e-07
+              }
+            },
+            {
+              "row": 4,
+              "label": "Benign",
+              "confidence": 0.9971432089805603,
+              "ssh_probability": 6.70956724206917e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.0441173315048218
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6288991570472717
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.9527769116169492,
+                    "phi": 0.6135730147361755
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.6118386387825012
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 23090400.0,
+                    "phi": 0.2816828191280365
+                  }
+                ],
+                "additivity_error": 0.0
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 2.4582035541534424
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": -1.8523579835891724
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 524781.8181818182,
+                    "phi": -0.5835447907447815
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.9527769116169492,
+                    "phi": -0.5549756288528442
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.9960849530540832,
+                    "phi": -0.3472593128681183
+                  }
+                ],
+                "additivity_error": 3.5762786865234375e-07
+              }
+            },
+            {
+              "row": 5,
+              "label": "Benign",
+              "confidence": 0.9940781593322754,
+              "ssh_probability": 0.00010117731289938092,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.0023672580718994
+                  },
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": -0.6288991570472717
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.9779024364341414,
+                    "phi": 0.6162480711936951
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": 0.5271297693252563
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 20451938.0,
+                    "phi": 0.2730318009853363
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 2.394416332244873
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": -1.5805647373199463
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 524408.6666666666,
+                    "phi": -0.5835447907447815
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.9779024364341414,
+                    "phi": -0.5549756288528442
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.9779024364341414,
+                    "phi": -0.44979608058929443
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            },
+            {
+              "row": 6,
+              "label": "Benign",
+              "confidence": 0.9456459879875183,
+              "ssh_probability": 7.447566895280033e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 307.0,
+                    "phi": 0.49730566143989563
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 0.0,
+                    "phi": 0.3877381384372711
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.22968675196170807
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 135.0,
+                    "phi": 0.18934975564479828
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 8.0,
+                    "phi": 0.09590408205986023
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -1.2224133014678955
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": -1.102871060371399
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 135.0,
+                    "phi": -0.10513077676296234
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 8.0,
+                    "phi": -0.05224795639514923
+                  },
+                  {
+                    "feature": "Fwd Act Data Pkts",
+                    "value": 0.0,
+                    "phi": -0.016208665445446968
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-07
+              }
+            },
+            {
+              "row": 7,
+              "label": "Benign",
+              "confidence": 0.9456461668014526,
+              "ssh_probability": 7.447569078067318e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 283.0,
+                    "phi": 0.5048795938491821
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 0.0,
+                    "phi": 0.38767409324645996
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.23235034942626953
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 126.0,
+                    "phi": 0.1892845183610916
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -0.11875850707292557
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -1.2224133014678955
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": -1.102871060371399
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 126.0,
+                    "phi": -0.10513077676296234
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 8.0,
+                    "phi": -0.05224795639514923
+                  },
+                  {
+                    "feature": "Fwd Act Data Pkts",
+                    "value": 0.0,
+                    "phi": -0.016208665445446968
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-07
+              }
+            },
+            {
+              "row": 8,
+              "label": "Benign",
+              "confidence": 0.9889565110206604,
+              "ssh_probability": 9.640482312534004e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 0.0,
+                    "phi": 1.2303683757781982
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 0.0,
+                    "phi": -1.1279906034469604
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Mean",
+                    "value": 0.0,
+                    "phi": 0.5785049200057983
+                  },
+                  {
+                    "feature": "ACK Flag Cnt",
+                    "value": 0.0,
+                    "phi": 0.33446204662323
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.28613048791885376
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": -2.1973843574523926
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 0.0,
+                    "phi": 2.0388455390930176
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 21963453.0,
+                    "phi": -0.6179015636444092
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.0910603628673505,
+                    "phi": -0.5923291444778442
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.0,
+                    "phi": -0.4165750741958618
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            }
+          ],
+          "ssh_labels": {
+            "Benign": 5
+          }
+        },
+        "M1": {
+          "labels": {
+            "Benign": 8
+          },
+          "examples": [
+            {
+              "row": 1,
+              "label": "Benign",
+              "confidence": 0.9935552477836609,
+              "ssh_probability": 1.3033203686063644e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 127.0,
+                    "phi": 1.3758978843688965
+                  },
+                  {
+                    "feature": "Bwd Byts/b Avg",
+                    "value": 2897.0,
+                    "phi": 1.2640094757080078
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.211893916130066
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.2085094451904297
+                  },
+                  {
+                    "feature": "Pkt Len Max",
+                    "value": 1040.0,
+                    "phi": 1.0955754518508911
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -2.466632604598999
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 12.0,
+                    "phi": -1.298966407775879
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.853304386138916
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 360.0,
+                    "phi": -0.22672435641288757
+                  },
+                  {
+                    "feature": "Bwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -0.12718595564365387
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "row": 2,
+              "label": "Benign",
+              "confidence": 0.9999048709869385,
+              "ssh_probability": 9.362430319015402e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 1727.0,
+                    "phi": -1.4868367910385132
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": -1.466361165046692
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.4109939336776733
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.361226201057434
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3313039541244507
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.2706987857818604
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.9071428775787354
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": 0.2804099917411804
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3297916.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 0.0
+              }
+            },
+            {
+              "row": 3,
+              "label": "Benign",
+              "confidence": 0.9999631643295288,
+              "ssh_probability": 4.2269343794032466e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 1727.0,
+                    "phi": -1.493005394935608
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": -1.4855011701583862
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.382892370223999
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.3761228322982788
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3313039541244507
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.2706987857818604
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.9071428775787354
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": 0.2804099917411804
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3298501.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 0.0
+              }
+            },
+            {
+              "row": 4,
+              "label": "Benign",
+              "confidence": 0.9999277591705322,
+              "ssh_probability": 7.88180659583304e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 1727.0,
+                    "phi": -1.4868367910385132
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": -1.466361165046692
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.4109939336776733
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.361226201057434
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3313039541244507
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.2706987857818604
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.9071428775787354
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 712.0,
+                    "phi": 0.2804099917411804
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3255751.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 0.0
+              }
+            },
+            {
+              "row": 5,
+              "label": "Benign",
+              "confidence": 0.9998049139976501,
+              "ssh_probability": 8.005064955796115e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 1635.0,
+                    "phi": -1.494519829750061
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 648.0,
+                    "phi": -1.4800843000411987
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 32.0,
+                    "phi": -1.3760038614273071
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 976.0,
+                    "phi": 1.3022676706314087
+                  },
+                  {
+                    "feature": "Bwd Byts/b Avg",
+                    "value": 2937.0,
+                    "phi": 1.1813480854034424
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 21.0,
+                    "phi": -1.2706987857818604
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.8708113431930542
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3294694.0,
+                    "phi": -0.21378706395626068
+                  },
+                  {
+                    "feature": "Flow Duration",
+                    "value": 20451938.0,
+                    "phi": -0.19632025063037872
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "row": 6,
+              "label": "Benign",
+              "confidence": 0.9999902248382568,
+              "ssh_probability": 3.157649643981131e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 1.436707854270935
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 8.0,
+                    "phi": 1.4183576107025146
+                  },
+                  {
+                    "feature": "Flow Byts/s",
+                    "value": 4496296.296296297,
+                    "phi": 1.1596347093582153
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 307.0,
+                    "phi": -0.9324947595596313
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 7407.407407407407,
+                    "phi": 0.8811919689178467
+                  }
+                ],
+                "additivity_error": 5.7220458984375e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -2.1198058128356934
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 0.0,
+                    "phi": -0.9272713661193848
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -0.8049520254135132
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.28326112031936646
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 8.0,
+                    "phi": -0.22672435641288757
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              }
+            },
+            {
+              "row": 7,
+              "label": "Benign",
+              "confidence": 0.9999948740005493,
+              "ssh_probability": 1.95649917600349e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 1.4457849264144897
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 8.0,
+                    "phi": 1.4201083183288574
+                  },
+                  {
+                    "feature": "Flow Byts/s",
+                    "value": 4626984.126984127,
+                    "phi": 1.0874205827713013
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 7936.507936507936,
+                    "phi": 0.8421400785446167
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 8.0,
+                    "phi": 0.8130235075950623
+                  }
+                ],
+                "additivity_error": 5.7220458984375e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -2.1198058128356934
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 0.0,
+                    "phi": -0.9272713661193848
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -0.8049520254135132
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.28326112031936646
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 8.0,
+                    "phi": -0.22672435641288757
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              }
+            },
+            {
+              "row": 8,
+              "label": "Benign",
+              "confidence": 0.9995361566543579,
+              "ssh_probability": 4.932055617246078e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 0.0,
+                    "phi": 1.2944505214691162
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 1.2455230951309204
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.802656888961792
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 0.0,
+                    "phi": -0.7923399806022644
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 21963453.0,
+                    "phi": 0.7921518087387085
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -1.7257672548294067
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 0.0,
+                    "phi": -0.9850313663482666
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 0.0,
+                    "phi": 0.853304386138916
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.28326112031936646
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 0.0,
+                    "phi": -0.22470906376838684
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            }
+          ],
+          "ssh_labels": {
+            "Benign": 5
+          }
+        }
+      },
+      "ssh_rows": 5,
+      "ssh_packet_sum": 195
+    },
+    "python": {
+      "rows": 7,
+      "invalid": 0,
+      "packet_sum": 205,
+      "models": {
+        "M0": {
+          "labels": {
+            "DoS attacks-Hulk": 5,
+            "Benign": 2
+          },
+          "examples": [
+            {
+              "row": 1,
+              "label": "DoS attacks-Hulk",
+              "confidence": 0.948215126991272,
+              "ssh_probability": 0.00504894508048892,
+              "shap_for_prediction": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 3.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 2.268251419067383
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -0.40960893034935
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.24572043120861053
+                  },
+                  {
+                    "feature": "TotLen Bwd Pkts",
+                    "value": 2416.0,
+                    "phi": -0.23852917551994324
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 4.786613464355469
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 279.0,
+                    "phi": -0.5873588919639587
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 255.35314912730323,
+                    "phi": -0.4960799515247345
+                  },
+                  {
+                    "feature": "Fwd IAT Min",
+                    "value": 1113.0,
+                    "phi": -0.14952513575553894
+                  },
+                  {
+                    "feature": "Flow IAT Max",
+                    "value": 41237.0,
+                    "phi": 0.10435783118009567
+                  }
+                ],
+                "additivity_error": 7.152557373046875e-07
+              }
+            },
+            {
+              "row": 2,
+              "label": "DoS attacks-Hulk",
+              "confidence": 0.7654884457588196,
+              "ssh_probability": 8.048003655858338e-05,
+              "shap_for_prediction": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 2.357733964920044
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -0.391559898853302
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.31558915972709656
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.2420339435338974
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.2803430557250977
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 560901.8181818181,
+                    "phi": -1.428889274597168
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.9319407707069136,
+                    "phi": -1.3926057815551758
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.8914216067631346,
+                    "phi": -0.537563145160675
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 195.8475063581149,
+                    "phi": -0.35222458839416504
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-07
+              }
+            },
+            {
+              "row": 3,
+              "label": "DoS attacks-Hulk",
+              "confidence": 0.775428056716919,
+              "ssh_probability": 8.152504597092047e-05,
+              "shap_for_prediction": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 2.3276636600494385
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -0.46524327993392944
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.28551894426345825
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.24203355610370636
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.2802679538726807
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 486831.3181818182,
+                    "phi": -1.428889274597168
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 1.0737338646977688,
+                    "phi": -1.3926057815551758
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 1.0270497836239527,
+                    "phi": -0.537563145160675
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 195.8475063581149,
+                    "phi": -0.35222458839416504
+                  }
+                ],
+                "additivity_error": 5.960464477539062e-07
+              }
+            },
+            {
+              "row": 4,
+              "label": "DoS attacks-Hulk",
+              "confidence": 0.7755367755889893,
+              "ssh_probability": 8.153646922437474e-05,
+              "shap_for_prediction": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 2.357733964920044
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -0.391559898853302
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.31558915972709656
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.2420339435338974
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.2802679538726807
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 513153.8,
+                    "phi": -1.428889274597168
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 0.99601934373498,
+                    "phi": -1.3926057815551758
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.99601934373498,
+                    "phi": -0.537563145160675
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 195.8475063581149,
+                    "phi": -0.35222458839416504
+                  }
+                ],
+                "additivity_error": 5.960464477539062e-07
+              }
+            },
+            {
+              "row": 5,
+              "label": "DoS attacks-Hulk",
+              "confidence": 0.8074178695678711,
+              "ssh_probability": 8.488830644637346e-05,
+              "shap_for_prediction": {
+                "class_explained": "DoS attacks-Hulk",
+                "base_value": 1.2430287599563599,
+                "top_k": [
+                  {
+                    "feature": "FIN Flag Cnt",
+                    "value": 2.0,
+                    "phi": 5.8652215003967285
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 2.3574557304382324
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -0.39155974984169006
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.3153109550476074
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 64240.0,
+                    "phi": -0.2420339435338974
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 3.2802679538726807
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 511315.65,
+                    "phi": -1.428889274597168
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 1.026763018108286,
+                    "phi": -1.3926057815551758
+                  },
+                  {
+                    "feature": "Bwd Pkts/s",
+                    "value": 0.9778695410555104,
+                    "phi": -0.537563145160675
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Std",
+                    "value": 204.24819280238088,
+                    "phi": -0.35222458839416504
+                  }
+                ],
+                "additivity_error": 5.960464477539062e-07
+              }
+            },
+            {
+              "row": 6,
+              "label": "Benign",
+              "confidence": 0.8201103806495667,
+              "ssh_probability": 6.762397242709994e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 325.0,
+                    "phi": 0.4965735971927643
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 0.0,
+                    "phi": 0.38810092210769653
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.23055709898471832
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 126.0,
+                    "phi": 0.1892845183610916
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.09569112956523895
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -1.2224133014678955
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": -1.102871060371399
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 126.0,
+                    "phi": -0.10513077676296234
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.05224795639514923
+                  },
+                  {
+                    "feature": "Fwd Act Data Pkts",
+                    "value": 1.0,
+                    "phi": -0.016208665445446968
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-07
+              }
+            },
+            {
+              "row": 7,
+              "label": "Benign",
+              "confidence": 0.8244777321815491,
+              "ssh_probability": 6.597871106350794e-05,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 5.02502965927124,
+                "top_k": [
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 349.0,
+                    "phi": 0.5003246665000916
+                  },
+                  {
+                    "feature": "Fwd IAT Tot",
+                    "value": 0.0,
+                    "phi": 0.3881649672985077
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": 0.22953736782073975
+                  },
+                  {
+                    "feature": "Flow IAT Mean",
+                    "value": 135.0,
+                    "phi": 0.18934975564479828
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.095744289457798
+                  }
+                ],
+                "additivity_error": 3.337860107421875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -0.4102102518081665,
+                "top_k": [
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -1.2224133014678955
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": -1.102871060371399
+                  },
+                  {
+                    "feature": "Flow IAT Min",
+                    "value": 135.0,
+                    "phi": -0.10513077676296234
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.05224795639514923
+                  },
+                  {
+                    "feature": "Fwd Act Data Pkts",
+                    "value": 1.0,
+                    "phi": -0.016208665445446968
+                  }
+                ],
+                "additivity_error": 2.384185791015625e-07
+              }
+            }
+          ],
+          "ssh_labels": {
+            "DoS attacks-Hulk": 5
+          }
+        },
+        "M1": {
+          "labels": {
+            "Benign": 7
+          },
+          "examples": [
+            {
+              "row": 1,
+              "label": "Benign",
+              "confidence": 0.9991326928138733,
+              "ssh_probability": 4.362113031675108e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 65160.0,
+                    "phi": 2.7337486743927
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -1.7219960689544678
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 2093.0,
+                    "phi": -1.6304943561553955
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 1.4958934783935547
+                  },
+                  {
+                    "feature": "Bwd Pkt Len Max",
+                    "value": 1106.0,
+                    "phi": 0.9440222382545471
+                  }
+                ],
+                "additivity_error": 0.0
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 7.0,
+                    "phi": -2.466632604598999
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 12.0,
+                    "phi": -1.0719013214111328
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.853304386138916
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 260.0,
+                    "phi": -0.22672435641288757
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.22470906376838684
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "row": 2,
+              "label": "Benign",
+              "confidence": 0.9999829530715942,
+              "ssh_probability": 1.0921550028797355e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 65160.0,
+                    "phi": 1.9349002838134766
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 1.5853217840194702
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -1.5630381107330322
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 3253.0,
+                    "phi": -1.4946130514144897
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.4680968523025513
+                  }
+                ],
+                "additivity_error": 3.814697265625e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 12.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.012973666191101
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.8876588344573975
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.22470906376838684
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3297916.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 1.430511474609375e-06
+              }
+            },
+            {
+              "row": 3,
+              "label": "Benign",
+              "confidence": 0.9999914169311523,
+              "ssh_probability": 9.218318268722214e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 65160.0,
+                    "phi": 1.909674882888794
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 1.5836974382400513
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -1.5554823875427246
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 3253.0,
+                    "phi": -1.4962373971939087
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.4279543161392212
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 12.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.012973666191101
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.8876588344573975
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.22470906376838684
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3298501.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 1.430511474609375e-06
+              }
+            },
+            {
+              "row": 4,
+              "label": "Benign",
+              "confidence": 0.9999833106994629,
+              "ssh_probability": 1.0146684417122742e-06,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 65160.0,
+                    "phi": 1.9161523580551147
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 1.5853217840194702
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -1.5554823875427246
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 3253.0,
+                    "phi": -1.4946130514144897
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": 1.4680968523025513
+                  }
+                ],
+                "additivity_error": 3.814697265625e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 12.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 23.0,
+                    "phi": -1.012973666191101
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.8876588344573975
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.22470906376838684
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3255751.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 1.430511474609375e-06
+              }
+            },
+            {
+              "row": 5,
+              "label": "Benign",
+              "confidence": 0.9999902248382568,
+              "ssh_probability": 7.699246680203942e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 65160.0,
+                    "phi": 1.9102306365966797
+                  },
+                  {
+                    "feature": "Fwd Pkt Len Max",
+                    "value": 1042.0,
+                    "phi": 1.5701502561569214
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": -1.5579737424850464
+                  },
+                  {
+                    "feature": "TotLen Fwd Pkts",
+                    "value": 3029.0,
+                    "phi": -1.5043418407440186
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 21.0,
+                    "phi": 1.274056315422058
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 11.0,
+                    "phi": -1.8765149116516113
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 21.0,
+                    "phi": -1.012973666191101
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 22.0,
+                    "phi": 0.8708113431930542
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": -0.22470906376838684
+                  },
+                  {
+                    "feature": "Fwd IAT Max",
+                    "value": 3294694.0,
+                    "phi": -0.21378706395626068
+                  }
+                ],
+                "additivity_error": 1.9073486328125e-06
+              }
+            },
+            {
+              "row": 6,
+              "label": "Benign",
+              "confidence": 0.999991774559021,
+              "ssh_probability": 2.1853857390397025e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Flow Byts/s",
+                    "value": 5293650.793650794,
+                    "phi": 1.3029531240463257
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 20.0,
+                    "phi": 1.2748990058898926
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 1.2532860040664673
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.8812296986579895
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 7936.507936507936,
+                    "phi": 0.8797829151153564
+                  }
+                ],
+                "additivity_error": 2.86102294921875e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -2.1198058128356934
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 0.0,
+                    "phi": -0.9272713661193848
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -0.8049520254135132
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.28326112031936646
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 20.0,
+                    "phi": -0.22672435641288757
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              }
+            },
+            {
+              "row": 7,
+              "label": "Benign",
+              "confidence": 0.9999939203262329,
+              "ssh_probability": 1.719100737318513e-07,
+              "shap_for_prediction": {
+                "class_explained": "Benign",
+                "base_value": 3.589337110519409,
+                "top_k": [
+                  {
+                    "feature": "Flow Byts/s",
+                    "value": 5118518.518518519,
+                    "phi": 1.3029531240463257
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 20.0,
+                    "phi": 1.2728859186172485
+                  },
+                  {
+                    "feature": "Init Bwd Win Byts",
+                    "value": 0.0,
+                    "phi": 1.2532860040664673
+                  },
+                  {
+                    "feature": "Fwd Seg Size Min",
+                    "value": 20.0,
+                    "phi": 0.8812296986579895
+                  },
+                  {
+                    "feature": "Fwd Pkts/s",
+                    "value": 7407.407407407407,
+                    "phi": 0.8797829151153564
+                  }
+                ],
+                "additivity_error": 4.76837158203125e-06
+              },
+              "shap_for_ssh": {
+                "class_explained": "SSH-Bruteforce",
+                "base_value": -1.345104455947876,
+                "top_k": [
+                  {
+                    "feature": "Fwd PSH Flags",
+                    "value": 0.0,
+                    "phi": -2.1198058128356934
+                  },
+                  {
+                    "feature": "PSH Flag Cnt",
+                    "value": 0.0,
+                    "phi": -0.9272713661193848
+                  },
+                  {
+                    "feature": "Dst Port",
+                    "value": 67.0,
+                    "phi": -0.8049520254135132
+                  },
+                  {
+                    "feature": "Init Fwd Win Byts",
+                    "value": 0.0,
+                    "phi": -0.28326112031936646
+                  },
+                  {
+                    "feature": "Fwd Header Len",
+                    "value": 20.0,
+                    "phi": -0.22672435641288757
+                  }
+                ],
+                "additivity_error": 9.5367431640625e-07
+              }
+            }
+          ],
+          "ssh_labels": {
+            "Benign": 5
+          }
+        }
+      },
+      "ssh_rows": 5,
+      "ssh_packet_sum": 201
+    }
+  },
+  "comparison": {
+    "unique_tuple_pairs": 7,
+    "differences": {
+      "Dst Port": {
+        "pairs_different": 0,
+        "java_values": [
+          22.0,
+          67.0,
+          67.0,
+          22.0,
+          22.0,
+          22.0,
+          22.0
+        ],
+        "python_values": [
+          22.0,
+          67.0,
+          67.0,
+          22.0,
+          22.0,
+          22.0,
+          22.0
+        ]
+      },
+      "Protocol": {
+        "pairs_different": 0,
+        "java_values": [
+          6.0,
+          17.0,
+          17.0,
+          6.0,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "python_values": [
+          6.0,
+          17.0,
+          17.0,
+          6.0,
+          6.0,
+          6.0,
+          6.0
+        ]
+      },
+      "Flow Duration": {
+        "pairs_different": 5,
+        "java_values": [
+          23090400.0,
+          135.0,
+          126.0,
+          200162.0,
+          20451938.0,
+          24679245.0,
+          21420347.0
+        ],
+        "python_values": [
+          23091921.0,
+          135.0,
+          126.0,
+          203197.0,
+          20452626.0,
+          24679680.0,
+          21420578.0
+        ]
+      },
+      "Tot Fwd Pkts": {
+        "pairs_different": 5,
+        "java_values": [
+          22.0,
+          1.0,
+          1.0,
+          11.0,
+          20.0,
+          22.0,
+          22.0
+        ],
+        "python_values": [
+          23.0,
+          1.0,
+          1.0,
+          13.0,
+          21.0,
+          23.0,
+          23.0
+        ]
+      },
+      "Tot Bwd Pkts": {
+        "pairs_different": 0,
+        "java_values": [
+          23.0,
+          1.0,
+          1.0,
+          11.0,
+          20.0,
+          22.0,
+          22.0
+        ],
+        "python_values": [
+          23.0,
+          1.0,
+          1.0,
+          11.0,
+          20.0,
+          22.0,
+          22.0
+        ]
+      },
+      "TotLen Fwd Pkts": {
+        "pairs_different": 7,
+        "java_values": [
+          1727.0,
+          307.0,
+          283.0,
+          1227.0,
+          1635.0,
+          1727.0,
+          1727.0
+        ],
+        "python_values": [
+          3253.0,
+          349.0,
+          325.0,
+          2093.0,
+          3029.0,
+          3253.0,
+          3253.0
+        ]
+      },
+      "TotLen Bwd Pkts": {
+        "pairs_different": 7,
+        "java_values": [
+          2006.0,
+          300.0,
+          300.0,
+          1670.0,
+          1930.0,
+          2006.0,
+          2006.0
+        ],
+        "python_values": [
+          3532.0,
+          342.0,
+          342.0,
+          2416.0,
+          3258.0,
+          3466.0,
+          3466.0
+        ]
+      },
+      "Fwd Pkt Len Max": {
+        "pairs_different": 7,
+        "java_values": [
+          976.0,
+          307.0,
+          283.0,
+          976.0,
+          976.0,
+          976.0,
+          976.0
+        ],
+        "python_values": [
+          1042.0,
+          349.0,
+          325.0,
+          1042.0,
+          1042.0,
+          1042.0,
+          1042.0
+        ]
+      },
+      "Fwd Pkt Len Min": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          307.0,
+          283.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          66.0,
+          349.0,
+          325.0,
+          66.0,
+          66.0,
+          66.0,
+          66.0
+        ]
+      },
+      "Fwd Pkt Len Mean": {
+        "pairs_different": 7,
+        "java_values": [
+          78.49999999999999,
+          307.0,
+          283.0,
+          111.54545454545452,
+          81.74999999999999,
+          78.49999999999999,
+          78.49999999999999
+        ],
+        "python_values": [
+          141.43478260869566,
+          349.0,
+          325.0,
+          161.0,
+          144.23809523809524,
+          141.43478260869566,
+          141.43478260869566
+        ]
+      },
+      "Fwd Pkt Len Std": {
+        "pairs_different": 5,
+        "java_values": [
+          204.4084962356833,
+          0.0,
+          0.0,
+          287.7607908094373,
+          214.093406816056,
+          204.4084962356833,
+          204.4084962356833
+        ],
+        "python_values": [
+          195.8475063581149,
+          0.0,
+          0.0,
+          255.35314912730323,
+          204.24819280238088,
+          195.8475063581149,
+          195.8475063581149
+        ]
+      },
+      "Bwd Pkt Len Max": {
+        "pairs_different": 7,
+        "java_values": [
+          1040.0,
+          300.0,
+          300.0,
+          1040.0,
+          1040.0,
+          1040.0,
+          1040.0
+        ],
+        "python_values": [
+          1106.0,
+          342.0,
+          342.0,
+          1106.0,
+          1106.0,
+          1106.0,
+          1106.0
+        ]
+      },
+      "Bwd Pkt Len Min": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          300.0,
+          300.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          66.0,
+          342.0,
+          342.0,
+          66.0,
+          66.0,
+          66.0,
+          66.0
+        ]
+      },
+      "Bwd Pkt Len Mean": {
+        "pairs_different": 7,
+        "java_values": [
+          87.21739130434783,
+          300.0,
+          300.0,
+          151.8181818181818,
+          96.5,
+          91.18181818181816,
+          91.18181818181816
+        ],
+        "python_values": [
+          153.56521739130434,
+          342.0,
+          342.0,
+          219.63636363636363,
+          162.9,
+          157.54545454545453,
+          157.54545454545453
+        ]
+      },
+      "Bwd Pkt Len Std": {
+        "pairs_different": 5,
+        "java_values": [
+          231.0456382547001,
+          0.0,
+          0.0,
+          328.10541543285086,
+          246.80516500609176,
+          235.68070336663956,
+          235.68070336663956
+        ],
+        "python_values": [
+          225.838693123896,
+          0.0,
+          0.0,
+          311.97764276751764,
+          240.4017262833194,
+          230.12402333459775,
+          230.12402333459775
+        ]
+      },
+      "Flow Byts/s": {
+        "pairs_different": 7,
+        "java_values": [
+          161.6689186848214,
+          4496296.296296297,
+          4626984.126984127,
+          14473.276645916809,
+          174.31110929438572,
+          151.2607050985555,
+          174.27355401852267
+        ],
+        "python_values": [
+          293.82570640181905,
+          5118518.518518519,
+          5293650.793650794,
+          22190.288242444527,
+          307.3932902307997,
+          272.24826253825006,
+          313.6703407349699
+        ]
+      },
+      "Flow Pkts/s": {
+        "pairs_different": 5,
+        "java_values": [
+          1.9488618646710325,
+          14814.814814814814,
+          15873.015873015873,
+          109.9109721125888,
+          1.9558048728682829,
+          1.782874638182813,
+          2.0541217189432084
+        ],
+        "python_values": [
+          1.99203868746996,
+          14814.814814814814,
+          15873.015873015873,
+          118.11197999970472,
+          2.004632559163797,
+          1.8233623774700485,
+          2.100783648321721
+        ]
+      },
+      "Flow IAT Mean": {
+        "pairs_different": 5,
+        "java_values": [
+          524781.8181818182,
+          135.0,
+          126.0,
+          9531.523809523813,
+          524408.6666666666,
+          573935.930232558,
+          498147.6046511628
+        ],
+        "python_values": [
+          513153.8,
+          135.0,
+          126.0,
+          8834.652173913,
+          511315.65,
+          560901.8181818181,
+          486831.3181818182
+        ]
+      },
+      "Flow IAT Std": {
+        "pairs_different": 5,
+        "java_values": [
+          1059811.778862781,
+          0.0,
+          0.0,
+          12132.398767840792,
+          1099245.6271775025,
+          1134365.3526920092,
+          996178.4321160052
+        ],
+        "python_values": [
+          1038860.0663123999,
+          0.0,
+          0.0,
+          11381.7024500566,
+          1074527.5974852052,
+          1111575.3346642216,
+          976099.4740198632
+        ]
+      },
+      "Flow IAT Max": {
+        "pairs_different": 0,
+        "java_values": [
+          3254079.0,
+          135.0,
+          126.0,
+          41237.0,
+          3254127.0,
+          3253544.0,
+          3253903.0
+        ],
+        "python_values": [
+          3254079.0,
+          135.0,
+          126.0,
+          41237.0,
+          3254127.0,
+          3253544.0,
+          3253903.0
+        ]
+      },
+      "Flow IAT Min": {
+        "pairs_different": 0,
+        "java_values": [
+          271.0,
+          135.0,
+          126.0,
+          279.0,
+          216.0,
+          388.0,
+          168.0
+        ],
+        "python_values": [
+          271.0,
+          135.0,
+          126.0,
+          279.0,
+          216.0,
+          388.0,
+          168.0
+        ]
+      },
+      "Fwd IAT Tot": {
+        "pairs_different": 5,
+        "java_values": [
+          23084414.0,
+          0.0,
+          0.0,
+          154575.0,
+          20444531.0,
+          24674058.0,
+          21409487.0
+        ],
+        "python_values": [
+          23091921.0,
+          0.0,
+          0.0,
+          203197.0,
+          20452626.0,
+          24679680.0,
+          21420578.000000004
+        ]
+      },
+      "Fwd IAT Mean": {
+        "pairs_different": 5,
+        "java_values": [
+          1099257.8095238097,
+          0.0,
+          0.0,
+          15457.499999999998,
+          1076027.9473684211,
+          1174955.1428571427,
+          1019499.3809523808
+        ],
+        "python_values": [
+          1049632.7727272722,
+          0.0,
+          0.0,
+          16933.0833333333,
+          1022631.3,
+          1121803.6363636362,
+          973662.6363636364
+        ]
+      },
+      "Fwd IAT Std": {
+        "pairs_different": 5,
+        "java_values": [
+          1330091.3068393697,
+          0.0,
+          0.0,
+          14898.351551243664,
+          1398777.0325058352,
+          1411397.648313199,
+          1247786.8553985285
+        ],
+        "python_values": [
+          1288420.4449739975,
+          0.0,
+          0.0,
+          13404.1036344492,
+          1347253.6157133929,
+          1367580.0560600248,
+          1208118.4852240866
+        ]
+      },
+      "Fwd IAT Max": {
+        "pairs_different": 0,
+        "java_values": [
+          3255751.0,
+          0.0,
+          0.0,
+          42964.0,
+          3294694.0,
+          3297916.0,
+          3298501.0
+        ],
+        "python_values": [
+          3255751.0,
+          0.0,
+          0.0,
+          42964.0,
+          3294694.0,
+          3297916.0,
+          3298501.0
+        ]
+      },
+      "Fwd IAT Min": {
+        "pairs_different": 0,
+        "java_values": [
+          271.0,
+          0.0,
+          0.0,
+          1113.0,
+          746.0,
+          388.0,
+          290.0
+        ],
+        "python_values": [
+          271.0,
+          0.0,
+          0.0,
+          1113.0,
+          746.0,
+          388.0,
+          290.0
+        ]
+      },
+      "Bwd IAT Tot": {
+        "pairs_different": 0,
+        "java_values": [
+          23089616.0,
+          0.0,
+          0.0,
+          199062.0,
+          20451126.0,
+          24678626.0,
+          21419743.0
+        ],
+        "python_values": [
+          23089616.0,
+          0.0,
+          0.0,
+          199062.0,
+          20451126.0,
+          24678626.0,
+          21419743.0
+        ]
+      },
+      "Bwd IAT Mean": {
+        "pairs_different": 0,
+        "java_values": [
+          1049528.0,
+          0.0,
+          0.0,
+          19906.2,
+          1076375.052631579,
+          1175172.666666667,
+          1019987.7619047618
+        ],
+        "python_values": [
+          1049528.0,
+          0.0,
+          0.0,
+          19906.199999999997,
+          1076375.0526315789,
+          1175172.6666666667,
+          1019987.7619047619
+        ]
+      },
+      "Bwd IAT Std": {
+        "pairs_different": 5,
+        "java_values": [
+          1314597.3806073533,
+          0.0,
+          0.0,
+          15583.46565220116,
+          1388843.578776261,
+          1401984.3914866643,
+          1237112.8316371918
+        ],
+        "python_values": [
+          1284372.7109706479,
+          0.0,
+          0.0,
+          14783.773589987,
+          1351801.0744645153,
+          1368196.6699245411,
+          1207298.5026403018
+        ]
+      },
+      "Bwd IAT Max": {
+        "pairs_different": 0,
+        "java_values": [
+          3254079.0,
+          0.0,
+          0.0,
+          44030.0,
+          3254127.0,
+          3253544.0,
+          3253903.0
+        ],
+        "python_values": [
+          3254079.0,
+          0.0,
+          0.0,
+          44030.0,
+          3254127.0,
+          3253544.0,
+          3253903.0
+        ]
+      },
+      "Bwd IAT Min": {
+        "pairs_different": 0,
+        "java_values": [
+          336.0,
+          0.0,
+          0.0,
+          279.0,
+          216.0,
+          417.0,
+          168.0
+        ],
+        "python_values": [
+          336.0,
+          0.0,
+          0.0,
+          279.0,
+          216.0,
+          417.0,
+          168.0
+        ]
+      },
+      "Fwd PSH Flags": {
+        "pairs_different": 5,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          12.0,
+          0.0,
+          0.0,
+          7.0,
+          11.0,
+          12.0,
+          12.0
+        ]
+      },
+      "Bwd PSH Flags": {
+        "pairs_different": 5,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          11.0,
+          0.0,
+          0.0,
+          5.0,
+          10.0,
+          11.0,
+          11.0
+        ]
+      },
+      "Fwd URG Flags": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Bwd URG Flags": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Fwd Header Len": {
+        "pairs_different": 7,
+        "java_values": [
+          712.0,
+          8.0,
+          8.0,
+          360.0,
+          648.0,
+          712.0,
+          712.0
+        ],
+        "python_values": [
+          460.0,
+          20.0,
+          20.0,
+          260.0,
+          420.0,
+          460.0,
+          460.0
+        ]
+      },
+      "Bwd Header Len": {
+        "pairs_different": 7,
+        "java_values": [
+          744.0,
+          8.0,
+          8.0,
+          372.0,
+          648.0,
+          712.0,
+          712.0
+        ],
+        "python_values": [
+          460.0,
+          20.0,
+          20.0,
+          220.0,
+          400.0,
+          440.0,
+          440.0
+        ]
+      },
+      "Fwd Pkts/s": {
+        "pairs_different": 5,
+        "java_values": [
+          0.9527769116169492,
+          7407.407407407407,
+          7936.507936507936,
+          54.9554860562944,
+          0.9779024364341414,
+          0.8914373190914066,
+          1.0270608594716042
+        ],
+        "python_values": [
+          0.99601934373498,
+          7407.407407407407,
+          7936.507936507936,
+          63.977322499840064,
+          1.026763018108286,
+          0.9319407707069136,
+          1.0737338646977688
+        ]
+      },
+      "Bwd Pkts/s": {
+        "pairs_different": 3,
+        "java_values": [
+          0.9960849530540832,
+          7407.407407407407,
+          7936.507936507936,
+          54.9554860562944,
+          0.9779024364341414,
+          0.8914373190914066,
+          1.0270608594716042
+        ],
+        "python_values": [
+          0.99601934373498,
+          7407.407407407407,
+          7936.507936507936,
+          54.134657499864666,
+          0.9778695410555104,
+          0.8914216067631346,
+          1.0270497836239527
+        ]
+      },
+      "Pkt Len Min": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          300.0,
+          283.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          66.0,
+          342.0,
+          325.0,
+          66.0,
+          66.0,
+          66.0,
+          66.0
+        ]
+      },
+      "Pkt Len Max": {
+        "pairs_different": 7,
+        "java_values": [
+          1040.0,
+          307.0,
+          300.0,
+          1040.0,
+          1040.0,
+          1040.0,
+          1040.0
+        ],
+        "python_values": [
+          1106.0,
+          349.0,
+          342.0,
+          1106.0,
+          1106.0,
+          1106.0,
+          1106.0
+        ]
+      },
+      "Pkt Len Mean": {
+        "pairs_different": 7,
+        "java_values": [
+          81.15217391304351,
+          304.6666666666667,
+          288.6666666666667,
+          125.95652173913044,
+          86.95121951219517,
+          82.9555555555556,
+          82.9555555555556
+        ],
+        "python_values": [
+          147.5,
+          345.5,
+          333.5,
+          187.875,
+          153.34146341463415,
+          149.3111111111111,
+          149.3111111111111
+        ]
+      },
+      "Pkt Len Std": {
+        "pairs_different": 7,
+        "java_values": [
+          213.9279180151113,
+          4.041451884327381,
+          9.814954576223638,
+          296.1956476048881,
+          225.7294787150664,
+          215.9913672049666,
+          215.9913672049666
+        ],
+        "python_values": [
+          211.46268557668597,
+          3.5,
+          8.5,
+          284.2229630208181,
+          222.81410930453995,
+          213.44620162386195,
+          213.44620162386195
+        ]
+      },
+      "Pkt Len Var": {
+        "pairs_different": 7,
+        "java_values": [
+          45765.15410628018,
+          16.333333333333336,
+          96.33333333333334,
+          87731.86166007906,
+          50953.79756097561,
+          46652.27070707072,
+          46652.27070707072
+        ],
+        "python_values": [
+          44716.46739130434,
+          12.25,
+          72.25,
+          80782.69270833333,
+          49646.12730517548,
+          45559.280987654325,
+          45559.280987654325
+        ]
+      },
+      "FIN Flag Cnt": {
+        "pairs_different": 1,
+        "java_values": [
+          2.0,
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "python_values": [
+          2.0,
+          0.0,
+          0.0,
+          3.0,
+          2.0,
+          2.0,
+          2.0
+        ]
+      },
+      "SYN Flag Cnt": {
+        "pairs_different": 0,
+        "java_values": [
+          2.0,
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "python_values": [
+          2.0,
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          2.0,
+          2.0
+        ]
+      },
+      "RST Flag Cnt": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "PSH Flag Cnt": {
+        "pairs_different": 0,
+        "java_values": [
+          23.0,
+          0.0,
+          0.0,
+          12.0,
+          21.0,
+          23.0,
+          23.0
+        ],
+        "python_values": [
+          23.0,
+          0.0,
+          0.0,
+          12.0,
+          21.0,
+          23.0,
+          23.0
+        ]
+      },
+      "ACK Flag Cnt": {
+        "pairs_different": 5,
+        "java_values": [
+          44.0,
+          0.0,
+          0.0,
+          21.0,
+          39.0,
+          43.0,
+          43.0
+        ],
+        "python_values": [
+          45.0,
+          0.0,
+          0.0,
+          23.0,
+          40.0,
+          44.0,
+          44.0
+        ]
+      },
+      "URG Flag Cnt": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "CWE Flag Count": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "ECE Flag Cnt": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Down/Up Ratio": {
+        "pairs_different": 4,
+        "java_values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "python_values": [
+          1.0,
+          1.0,
+          1.0,
+          0.8461538461538461,
+          0.9523809523809524,
+          0.9565217391304348,
+          0.9565217391304348
+        ]
+      },
+      "Pkt Size Avg": {
+        "pairs_different": 7,
+        "java_values": [
+          82.95555555555555,
+          457.0,
+          433.0,
+          131.6818181818182,
+          89.125,
+          84.8409090909091,
+          84.8409090909091
+        ],
+        "python_values": [
+          147.5,
+          345.5,
+          333.5,
+          187.875,
+          153.34146341463415,
+          149.3111111111111,
+          149.3111111111111
+        ]
+      },
+      "Fwd Seg Size Avg": {
+        "pairs_different": 7,
+        "java_values": [
+          78.5,
+          307.0,
+          283.0,
+          111.54545454545456,
+          81.75,
+          78.5,
+          78.5
+        ],
+        "python_values": [
+          141.43478260869566,
+          349.0,
+          325.0,
+          161.0,
+          144.23809523809524,
+          141.43478260869566,
+          141.43478260869566
+        ]
+      },
+      "Bwd Seg Size Avg": {
+        "pairs_different": 7,
+        "java_values": [
+          87.21739130434783,
+          300.0,
+          300.0,
+          151.8181818181818,
+          96.5,
+          91.1818181818182,
+          91.1818181818182
+        ],
+        "python_values": [
+          153.56521739130434,
+          342.0,
+          342.0,
+          219.63636363636363,
+          162.9,
+          157.54545454545453,
+          157.54545454545453
+        ]
+      },
+      "Fwd Byts/b Avg": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Fwd Pkts/b Avg": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Fwd Blk Rate Avg": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Bwd Byts/b Avg": {
+        "pairs_different": 5,
+        "java_values": [
+          2937.0,
+          0.0,
+          0.0,
+          2897.0,
+          2937.0,
+          2937.0,
+          2937.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Bwd Pkts/b Avg": {
+        "pairs_different": 5,
+        "java_values": [
+          12.0,
+          0.0,
+          0.0,
+          12.0,
+          12.0,
+          12.0,
+          12.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Bwd Blk Rate Avg": {
+        "pairs_different": 5,
+        "java_values": [
+          19891.0,
+          0.0,
+          0.0,
+          19470.0,
+          22295.0,
+          26347.0,
+          29439.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Subflow Fwd Pkts": {
+        "pairs_different": 7,
+        "java_values": [
+          2.0,
+          0.0,
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "python_values": [
+          23.0,
+          1.0,
+          1.0,
+          13.0,
+          21.0,
+          23.0,
+          23.0
+        ]
+      },
+      "Subflow Fwd Byts": {
+        "pairs_different": 7,
+        "java_values": [
+          172.0,
+          0.0,
+          0.0,
+          0.0,
+          204.0,
+          172.0,
+          172.0
+        ],
+        "python_values": [
+          3253.0,
+          349.0,
+          325.0,
+          2093.0,
+          3029.0,
+          3253.0,
+          3253.0
+        ]
+      },
+      "Subflow Bwd Pkts": {
+        "pairs_different": 7,
+        "java_values": [
+          2.0,
+          0.0,
+          0.0,
+          0.0,
+          2.0,
+          2.0,
+          2.0
+        ],
+        "python_values": [
+          23.0,
+          1.0,
+          1.0,
+          11.0,
+          20.0,
+          22.0,
+          22.0
+        ]
+      },
+      "Subflow Bwd Byts": {
+        "pairs_different": 7,
+        "java_values": [
+          200.0,
+          0.0,
+          0.0,
+          0.0,
+          241.0,
+          200.0,
+          200.0
+        ],
+        "python_values": [
+          3532.0,
+          342.0,
+          342.0,
+          2416.0,
+          3258.0,
+          3466.0,
+          3466.0
+        ]
+      },
+      "Init Fwd Win Byts": {
+        "pairs_different": 0,
+        "java_values": [
+          64240.0,
+          0.0,
+          0.0,
+          64240.0,
+          64240.0,
+          64240.0,
+          64240.0
+        ],
+        "python_values": [
+          64240.0,
+          0.0,
+          0.0,
+          64240.0,
+          64240.0,
+          64240.0,
+          64240.0
+        ]
+      },
+      "Init Bwd Win Byts": {
+        "pairs_different": 5,
+        "java_values": [
+          127.0,
+          0.0,
+          0.0,
+          127.0,
+          127.0,
+          127.0,
+          127.0
+        ],
+        "python_values": [
+          65160.0,
+          0.0,
+          0.0,
+          65160.0,
+          65160.0,
+          65160.0,
+          65160.0
+        ]
+      },
+      "Fwd Act Data Pkts": {
+        "pairs_different": 2,
+        "java_values": [
+          12.0,
+          0.0,
+          0.0,
+          7.0,
+          11.0,
+          12.0,
+          12.0
+        ],
+        "python_values": [
+          12.0,
+          1.0,
+          1.0,
+          7.0,
+          11.0,
+          12.0,
+          12.0
+        ]
+      },
+      "Fwd Seg Size Min": {
+        "pairs_different": 7,
+        "java_values": [
+          32.0,
+          8.0,
+          8.0,
+          32.0,
+          32.0,
+          32.0,
+          32.0
+        ],
+        "python_values": [
+          20.0,
+          20.0,
+          20.0,
+          20.0,
+          20.0,
+          20.0,
+          20.0
+        ]
+      },
+      "Active Mean": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          23091921.0,
+          135.0,
+          126.0,
+          203197.0,
+          20452626.0,
+          24679680.0,
+          21420578.0
+        ]
+      },
+      "Active Std": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Active Max": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          23091921.0,
+          135.0,
+          126.0,
+          203197.0,
+          20452626.0,
+          24679680.0,
+          21420578.0
+        ]
+      },
+      "Active Min": {
+        "pairs_different": 7,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          23091921.0,
+          135.0,
+          126.0,
+          203197.0,
+          20452626.0,
+          24679680.0,
+          21420578.0
+        ]
+      },
+      "Idle Mean": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Idle Std": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Idle Max": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "Idle Min": {
+        "pairs_different": 0,
+        "java_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "python_values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "artifacts": "Java_CICFlowMeter_M0_Trial\\output\\ssh_replay_5f6d7aa4",
+  "java_live_replay": {
+    "matched_rows": 5,
+    "all_78_features_equal": false,
+    "different_features_max_abs_delta": {
+      "Flow IAT Std": 0.17949616361875087,
+      "Flow IAT Max": 1.0,
+      "Flow IAT Min": 1.0,
+      "Fwd IAT Std": 0.15544492797926068,
+      "Fwd IAT Min": 1.0,
+      "Bwd IAT Std": 0.18199052731506526,
+      "Bwd IAT Max": 1.0,
+      "Bwd IAT Min": 1.0
+    }
+  }
+}

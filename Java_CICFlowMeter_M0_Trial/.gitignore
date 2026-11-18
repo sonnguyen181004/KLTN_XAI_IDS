@@ -1,3 +1,5 @@
 upstream/
 output/
 input/
+*.pcap
+*.pcapng

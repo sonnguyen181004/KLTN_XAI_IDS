@@ -290,3 +290,27 @@ Kết luận chẩn đoán: bộ trích xuất đúng là Java đang được th
 ```powershell
 python Java_CICFlowMeter_M0_Trial/audit_live_m0.py Java_CICFlowMeter_M0_Trial/output/dashboard_ff127eeb80c7.csv --output Java_CICFlowMeter_M0_Trial/output/live_m0_diagnosis.json
 ```
+
+## Đối chiếu PCAP SSH ngày 18/11/2026
+
+Mục đích: xác minh vì sao phiên Hydra thử 20 mật khẩu sai được M0/M1 trả Benign; không sửa model hay đầu vào để ép nhãn. Script `audit_ssh_pcap.py` chạy Java và Python trên cùng `ssbrute.pcapng`, lưu checksum model/PCAP, dự đoán và SHAP trong `ssh_pcap_audit_20261118.json`. PCAP và thư mục output giữ cục bộ, không đưa vào Git.
+
+Wireshark ghi 201 packet TCP/SSH thuộc 5 kết nối. Số lần thử mật khẩu không bằng số flow. Nhật ký Ubuntu do người dùng cung cấp xác nhận nhiều lần xác thực thất bại; chưa gán nhãn riêng cho mọi packet hoặc coi các flow nền trong PCAP là tấn công.
+
+| Phạm vi 5 flow TCP tới cổng 22 | Java | Python project |
+| --- | --- | --- |
+| Tổng packet trong flow xuất ra | 195 | 201 |
+| M0 | 5 Benign | 5 DoS attacks-Hulk |
+| M1 hiện tại | 5 Benign | 5 Benign |
+
+Toàn CSV Java có 8 dòng (gồm nền), Python có 7; tất cả đủ 78 giá trị hữu hạn. Không dùng tổng packet toàn CSV Java là 201 để tuyên bố bảo toàn 201 packet SSH: riêng SSH chỉ có 195. Cần tiếp tục đối soát 6 packet còn lại theo quy tắc đóng/flush flow; đây chưa phải bằng chứng NIC mất gói. Năm flow Java replay ghép được với CSV live `dashboard_d75fec2af76d.csv`, tái hiện nhãn Benign. Không khẳng định 78 giá trị bằng tuyệt đối: 8 đặc trưng IAT lệch nhỏ, các min/max lệch tối đa 1 micro giây, độ lệch chuẩn chênh dưới 1 micro giây.
+
+Ví dụ flow SSH thứ hai, M0 cho Benign 99,746%. SHAP cho lớp SSH-Bruteforce: Dst Port=22 góp +2,469, Init Bwd Win Byts=127 góp -1,834, Flow IAT Mean khoảng 573.936 micro giây góp -0,584 và Fwd Pkts/s khoảng 0,891 góp -0,555. Với M1, Fwd PSH Flags=0 góp -1,877, PSH Flag Cnt=23 góp -1,271, trong khi cổng 22 chỉ góp +0,907. Các số là đóng góp raw margin theo từng model, không phải phần trăm hay chứng cứ xác nhận hành vi tấn công.
+
+Kết quả cho thấy model ưu tiên các mẫu thống kê khác với kịch bản SSH này. Bản Java đã kiểm tra có bất thường ở directional PSH và Init Bwd Win Byts như audit ngữ nghĩa phía trên; do đó chưa thể quy toàn bộ lỗi cho domain shift, cũng chưa thể chứng nhận tương thích dataset chỉ vì đủ 78 tên cột. Python đổi M0 sang Hulk cũng không phải nhận đúng SSH. Model dùng thống kê flow, không nhận số lần Failed password trong nhật ký Ubuntu. Cần hoàn thiện hồ sơ tương thích theo từng artifact, đối soát packet/cờ/window, rồi đánh giá lại trên nhiều lượt có nhật ký chuẩn. Chưa đổi runtime hay train lại trong bước này.
+
+Tái lập (cần PCAP gốc và CSV live còn ở máy):
+
+```powershell
+python Java_CICFlowMeter_M0_Trial/audit_ssh_pcap.py
+```
