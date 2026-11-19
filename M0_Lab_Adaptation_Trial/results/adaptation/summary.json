@@ -29,6 +29,16 @@
    "attacks": 210000,
    "attacks_to_benign": 0,
    "changed_vs_M0": 687046
+  },
+  "v2": {
+   "rows": 700000,
+   "accuracy": 0.9790385714285714,
+   "macro_f1": 0.8580052122536579,
+   "benign": 490000,
+   "benign_alerts": 1225,
+   "attacks": 210000,
+   "attacks_to_benign": 12001,
+   "changed_vs_M0": 368
   }
  },
  "shortcut": {
@@ -44,6 +54,10 @@
    "v1_rawflags": {
     "benign": 490000,
     "alerts": 490000
+   },
+   "v2": {
+    "benign": 490000,
+    "alerts": 14476
    }
   },
   "S2_flags_1_to_2": {
@@ -58,6 +72,10 @@
    "v1_rawflags": {
     "benign": 490000,
     "alerts": 490000
+   },
+   "v2": {
+    "benign": 490000,
+    "alerts": 1225
    }
   },
   "benign_rows_with_init_fwd_win_64240_in_test": 3053

@@ -52,3 +52,32 @@ Nguyên nhân đo được: không có mẫu Benign nào trong lượt huấn lu
 Thử đường tắt trên Benign của test gốc cho kết quả bão hòa (490.000/490.000 ở cả hai phép thử), nên chưa đo được riêng ảnh hưởng của `Init Fwd Win Byts` hay số đếm cờ. M0 với `Init Fwd Win Byts` = 64.240 báo 14.401/490.000.
 
 Các số trên là phép đo trên các lượt đã ghi, không chứng minh khả năng nhận diện realtime. Chưa có Benign lab nên chưa đo được báo nhầm trong môi trường Kali và Ubuntu.
+
+## 6. Lần 2 (v2): thêm dữ liệu ôn lại từ train gốc và chặn bước cập nhật
+
+Cấu hình chốt trước khi chạy (`configs/continue_v2.yaml`): 20 vòng thêm; 200.001 dòng lấy từ train gốc theo đúng tỷ lệ 15 lớp (gồm Benign mà M0 đã học, không có Benign lab); flow tấn công lab thuộc lượt train với tổng trọng số mỗi lớp 5.000 và trọng số một dòng không quá 50; `max_delta_step` = 1. Không thử cấu hình khác theo kết quả test.
+
+Lượt lab giữ lại (số flow đúng lớp trên tổng):
+
+| Lượt test | M0 | v2 |
+|---|---:|---:|
+| GoldenEye mức 2 | 7.173/7.606 | 7.252/7.606 |
+| Hulk-Go mức 2 | 5/2.475 | 280/2.475 |
+| Slowloris mức 2 | 0/36 | 0/36 |
+| SSH Patator | 1/4 | 0/4 |
+| LOIC-HTTP (không có trong train) | 0/52.641 | 0/52.641 |
+
+Hulk-Go mức 2 với v2: 175 flow thành Benign, 2.020 thành lớp tấn công khác (1.175 HOIC, 845 GoldenEye). Slowloris và SSH không đổi so với M0, kể cả trên chính lượt train (Slowloris mức 1: 0/16; Hydra: 0/5).
+
+Tập test gốc (700.000 flow):
+
+| | M0 | v2 |
+|---|---:|---:|
+| Accuracy | 97,91% | 97,90% |
+| Benign bị báo tấn công | 1.139/490.000 | 1.225/490.000 |
+| Tấn công bị đoán Benign | 12.071/210.000 | 12.001/210.000 |
+| Dự đoán khác M0 | | 368 |
+
+Thử đường tắt trên Benign của test gốc: đặt `Init Fwd Win Byts` = 64.240 thì M0 báo 14.401/490.000, v2 báo 14.476/490.000; đổi cờ 1 thành 2 thì M0 1.139, v2 1.225. v2 không tạo thêm phụ thuộc đáng kể vào hai yếu tố này.
+
+Kết luận lần 2: v2 giữ được hành vi của M0 trên test gốc (thêm 86 Benign bị báo nhầm trên 490.000) nhưng học được ít từ lab. Cải thiện duy nhất trên lượt độc lập là Hulk-Go mức 2 (5 lên 280 trên 2.475). Slowloris (16 flow train) và SSH (5 flow train) quá ít mẫu để thay đổi quyết định khi trộn với 200.001 dòng ôn lại và bước cập nhật bị chặn. Đây là kết quả của một cấu hình; chưa đủ để nói huấn luyện tiếp không hiệu quả nói chung. Muốn kết luận cần thêm lượt lab cho mỗi loại (nhất là SSH và Slowloris) và một tập validation riêng để chọn mức trọng số, không chọn theo test.

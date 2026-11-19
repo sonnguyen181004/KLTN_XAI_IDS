@@ -14,3 +14,4 @@
 - Extractor: giữ nguyên upstream 98a5eba; chênh lệch packet đã giải thích bằng quy tắc vòng đời flow.
 - Chia lượt: mức tải thấp vào train, mức cao vào test; SSH: Hydra train, Patator test.
 - Huấn luyện tiếp: 20 vòng, tham số như M0, trọng số cân bằng theo lớp, không tuning.
+- Lần 2 (người dùng đồng ý 19/11): trộn 200.001 dòng ôn lại từ train gốc (gồm Benign M0 đã học), `max_delta_step` = 1, trọng số lab mỗi lớp 5.000, mỗi dòng tối đa 50.

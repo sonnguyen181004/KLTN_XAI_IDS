@@ -2,54 +2,72 @@ run_id,split,label,subset,model,flows,correct,to_benign,to_other_attack,top_wron
 ssh_hydra,train,SSH-Bruteforce,all,M0,5,0,5,0,{'Benign': 5}
 ssh_hydra,train,SSH-Bruteforce,all,v1,5,5,0,0,{}
 ssh_hydra,train,SSH-Bruteforce,all,v1_rawflags,5,5,0,0,{}
+ssh_hydra,train,SSH-Bruteforce,all,v2,5,0,5,0,{'Benign': 5}
 ssh_hydra,train,SSH-Bruteforce,main,M0,5,0,5,0,{'Benign': 5}
 ssh_hydra,train,SSH-Bruteforce,main,v1,5,5,0,0,{}
 ssh_hydra,train,SSH-Bruteforce,main,v1_rawflags,5,5,0,0,{}
+ssh_hydra,train,SSH-Bruteforce,main,v2,5,0,5,0,{'Benign': 5}
 ssh_patator,test,SSH-Bruteforce,all,M0,4,1,3,0,{'Benign': 3}
 ssh_patator,test,SSH-Bruteforce,all,v1,4,4,0,0,{}
 ssh_patator,test,SSH-Bruteforce,all,v1_rawflags,4,4,0,0,{}
+ssh_patator,test,SSH-Bruteforce,all,v2,4,0,4,0,{'Benign': 4}
 ssh_patator,test,SSH-Bruteforce,main,M0,3,0,3,0,{'Benign': 3}
 ssh_patator,test,SSH-Bruteforce,main,v1,3,3,0,0,{}
 ssh_patator,test,SSH-Bruteforce,main,v1_rawflags,3,3,0,0,{}
+ssh_patator,test,SSH-Bruteforce,main,v2,3,0,3,0,{'Benign': 3}
 goldeneye_l1,train,DoS attacks-GoldenEye,all,M0,5112,5013,34,65,"{'DDOS attack-HOIC': 65, 'Benign': 34}"
 goldeneye_l1,train,DoS attacks-GoldenEye,all,v1,5112,5091,0,21,"{'SSH-Bruteforce': 11, 'DoS attacks-Hulk': 9}"
 goldeneye_l1,train,DoS attacks-GoldenEye,all,v1_rawflags,5112,5092,0,20,"{'SSH-Bruteforce': 11, 'DoS attacks-Hulk': 8}"
+goldeneye_l1,train,DoS attacks-GoldenEye,all,v2,5112,5110,1,1,"{'DDOS attack-HOIC': 1, 'Benign': 1}"
 goldeneye_l1,train,DoS attacks-GoldenEye,main,M0,5111,5013,33,65,"{'DDOS attack-HOIC': 65, 'Benign': 33}"
 goldeneye_l1,train,DoS attacks-GoldenEye,main,v1,5111,5091,0,20,"{'SSH-Bruteforce': 11, 'DoS attacks-Hulk': 8}"
 goldeneye_l1,train,DoS attacks-GoldenEye,main,v1_rawflags,5111,5092,0,19,"{'SSH-Bruteforce': 11, 'DoS attacks-Hulk': 7}"
+goldeneye_l1,train,DoS attacks-GoldenEye,main,v2,5111,5110,0,1,{'DDOS attack-HOIC': 1}
 goldeneye_l2,test,DoS attacks-GoldenEye,all,M0,7606,7173,285,148,"{'Benign': 285, 'DDOS attack-HOIC': 81}"
 goldeneye_l2,test,DoS attacks-GoldenEye,all,v1,7606,6754,0,852,"{'DoS attacks-Slowloris': 591, 'DoS attacks-Hulk': 229}"
 goldeneye_l2,test,DoS attacks-GoldenEye,all,v1_rawflags,7606,6769,0,837,"{'DoS attacks-Slowloris': 575, 'DoS attacks-Hulk': 230}"
+goldeneye_l2,test,DoS attacks-GoldenEye,all,v2,7606,7252,273,81,"{'Benign': 273, 'DoS attacks-Hulk': 67}"
 goldeneye_l2,test,DoS attacks-GoldenEye,main,M0,7291,7083,112,96,"{'Benign': 112, 'DDOS attack-HOIC': 81}"
 goldeneye_l2,test,DoS attacks-GoldenEye,main,v1,7291,6754,0,537,"{'DoS attacks-Slowloris': 290, 'DoS attacks-Hulk': 229}"
 goldeneye_l2,test,DoS attacks-GoldenEye,main,v1_rawflags,7291,6769,0,522,"{'DoS attacks-Slowloris': 274, 'DoS attacks-Hulk': 230}"
+goldeneye_l2,test,DoS attacks-GoldenEye,main,v2,7291,7162,100,29,"{'Benign': 100, 'DoS attacks-Hulk': 15}"
 hulkgo_l1,train,DoS attacks-Hulk,all,M0,343,2,30,311,"{'DDOS attack-HOIC': 275, 'DoS attacks-GoldenEye': 36}"
 hulkgo_l1,train,DoS attacks-Hulk,all,v1,343,343,0,0,{}
 hulkgo_l1,train,DoS attacks-Hulk,all,v1_rawflags,343,343,0,0,{}
+hulkgo_l1,train,DoS attacks-Hulk,all,v2,343,16,15,312,"{'DDOS attack-HOIC': 261, 'DoS attacks-GoldenEye': 50}"
 hulkgo_l1,train,DoS attacks-Hulk,main,M0,343,2,30,311,"{'DDOS attack-HOIC': 275, 'DoS attacks-GoldenEye': 36}"
 hulkgo_l1,train,DoS attacks-Hulk,main,v1,343,343,0,0,{}
 hulkgo_l1,train,DoS attacks-Hulk,main,v1_rawflags,343,343,0,0,{}
+hulkgo_l1,train,DoS attacks-Hulk,main,v2,343,16,15,312,"{'DDOS attack-HOIC': 261, 'DoS attacks-GoldenEye': 50}"
 hulkgo_l2,test,DoS attacks-Hulk,all,M0,2475,5,450,2020,"{'DDOS attack-HOIC': 1301, 'DoS attacks-GoldenEye': 719}"
 hulkgo_l2,test,DoS attacks-Hulk,all,v1,2475,2416,0,59,"{'SSH-Bruteforce': 41, 'DoS attacks-GoldenEye': 18}"
 hulkgo_l2,test,DoS attacks-Hulk,all,v1_rawflags,2475,2418,0,57,"{'SSH-Bruteforce': 41, 'DoS attacks-GoldenEye': 16}"
+hulkgo_l2,test,DoS attacks-Hulk,all,v2,2475,280,175,2020,"{'DDOS attack-HOIC': 1175, 'DoS attacks-GoldenEye': 845}"
 hulkgo_l2,test,DoS attacks-Hulk,main,M0,2475,5,450,2020,"{'DDOS attack-HOIC': 1301, 'DoS attacks-GoldenEye': 719}"
 hulkgo_l2,test,DoS attacks-Hulk,main,v1,2475,2416,0,59,"{'SSH-Bruteforce': 41, 'DoS attacks-GoldenEye': 18}"
 hulkgo_l2,test,DoS attacks-Hulk,main,v1_rawflags,2475,2418,0,57,"{'SSH-Bruteforce': 41, 'DoS attacks-GoldenEye': 16}"
+hulkgo_l2,test,DoS attacks-Hulk,main,v2,2475,280,175,2020,"{'DDOS attack-HOIC': 1175, 'DoS attacks-GoldenEye': 845}"
 slowloris_l1,train,DoS attacks-Slowloris,all,M0,16,0,12,4,"{'Benign': 12, 'DoS attacks-Hulk': 4}"
 slowloris_l1,train,DoS attacks-Slowloris,all,v1,16,16,0,0,{}
 slowloris_l1,train,DoS attacks-Slowloris,all,v1_rawflags,16,16,0,0,{}
+slowloris_l1,train,DoS attacks-Slowloris,all,v2,16,0,12,4,"{'Benign': 12, 'DoS attacks-Hulk': 4}"
 slowloris_l1,train,DoS attacks-Slowloris,main,M0,15,0,11,4,"{'Benign': 11, 'DoS attacks-Hulk': 4}"
 slowloris_l1,train,DoS attacks-Slowloris,main,v1,15,15,0,0,{}
 slowloris_l1,train,DoS attacks-Slowloris,main,v1_rawflags,15,15,0,0,{}
+slowloris_l1,train,DoS attacks-Slowloris,main,v2,15,0,11,4,"{'Benign': 11, 'DoS attacks-Hulk': 4}"
 slowloris_l2,test,DoS attacks-Slowloris,all,M0,36,0,33,3,"{'Benign': 33, 'DoS attacks-Hulk': 3}"
 slowloris_l2,test,DoS attacks-Slowloris,all,v1,36,36,0,0,{}
 slowloris_l2,test,DoS attacks-Slowloris,all,v1_rawflags,36,36,0,0,{}
+slowloris_l2,test,DoS attacks-Slowloris,all,v2,36,0,33,3,"{'Benign': 33, 'DoS attacks-Hulk': 3}"
 slowloris_l2,test,DoS attacks-Slowloris,main,M0,30,0,27,3,"{'Benign': 27, 'DoS attacks-Hulk': 3}"
 slowloris_l2,test,DoS attacks-Slowloris,main,v1,30,30,0,0,{}
 slowloris_l2,test,DoS attacks-Slowloris,main,v1_rawflags,30,30,0,0,{}
+slowloris_l2,test,DoS attacks-Slowloris,main,v2,30,0,27,3,"{'Benign': 27, 'DoS attacks-Hulk': 3}"
 loic_http,test,DDoS attacks-LOIC-HTTP,all,M0,52641,0,21302,31339,"{'DoS attacks-Hulk': 22323, 'Benign': 21302}"
 loic_http,test,DDoS attacks-LOIC-HTTP,all,v1,52641,0,0,52641,"{'DoS attacks-Hulk': 26666, 'SSH-Bruteforce': 17147}"
 loic_http,test,DDoS attacks-LOIC-HTTP,all,v1_rawflags,52641,0,0,52641,"{'DoS attacks-Hulk': 26661, 'SSH-Bruteforce': 17152}"
+loic_http,test,DDoS attacks-LOIC-HTTP,all,v2,52641,0,16203,36438,"{'DoS attacks-Hulk': 27429, 'Benign': 16203}"
 loic_http,test,DDoS attacks-LOIC-HTTP,main,M0,37003,0,5664,31339,"{'DoS attacks-Hulk': 22323, 'DDOS attack-HOIC': 9016}"
 loic_http,test,DDoS attacks-LOIC-HTTP,main,v1,37003,0,0,37003,"{'DoS attacks-Hulk': 26666, 'SSH-Bruteforce': 9961}"
 loic_http,test,DDoS attacks-LOIC-HTTP,main,v1_rawflags,37003,0,0,37003,"{'DoS attacks-Hulk': 26661, 'SSH-Bruteforce': 9966}"
+loic_http,test,DDoS attacks-LOIC-HTTP,main,v2,37003,0,568,36435,"{'DoS attacks-Hulk': 27429, 'DDOS attack-HOIC': 9006}"

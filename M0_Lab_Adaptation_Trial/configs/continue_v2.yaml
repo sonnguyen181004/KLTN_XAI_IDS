@@ -1,0 +1,24 @@
+# v2: như v1 nhưng có dữ liệu ôn lại từ train gốc và chặn độ lớn bước cập nhật. Chốt trước khi chạy, không tuning theo test.
+# Lý do: v1 (chỉ flow tấn công lab) gán nhãn tấn công cho 490.000/490.000 Benign của test gốc (docs/findings.md mục 5).
+base_model: RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl
+base_encoder: RQ1_Model_Training_xboost/saved_models/label_encoder.pkl
+data:
+  lab: data/labeled/lab_flows_presence.parquet       # chỉ lượt split=train; cột cờ 0/1
+  replay: dataset/CICID-2018_processed/train_set.parquet
+  replay_rows: 200000          # lấy theo tỷ lệ lớp của train gốc, đủ 15 lớp, gồm Benign
+  replay_seed: 42
+  benign_source: chỉ Benign của train gốc (M0 đã học); không có Benign lab
+extra_rounds: 20
+params:
+  objective: multi:softprob
+  num_class: 15
+  eta: 0.08
+  max_depth: 8
+  tree_method: hist
+  seed: 42
+  max_delta_step: 1            # chặn độ lớn giá trị lá; v1 có lá tới +109
+weights:
+  replay: 1
+  lab_class_total: 5000        # mỗi lớp lab có tổng trọng số 5.000 (khoảng 2,5% khối ôn lại)
+  lab_row_cap: 50              # trọng số một dòng lab không quá 50 (SSH chỉ 5 flow, Slowloris 16)
+output: models/m0_continued_v2/

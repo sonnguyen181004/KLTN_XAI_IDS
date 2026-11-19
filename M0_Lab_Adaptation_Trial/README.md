@@ -10,6 +10,7 @@ python M0_Lab_Adaptation_Trial/scripts/02_extractor_packet_audit.py    # đối 
 python M0_Lab_Adaptation_Trial/scripts/03_flag_convention_audit.py     # quy ước cột cờ
 python M0_Lab_Adaptation_Trial/scripts/04_build_labeled_and_splits.py  # gán nhãn, chia lượt
 python M0_Lab_Adaptation_Trial/scripts/05_continue_train.py            # huấn luyện tiếp, cấu hình configs/continue_v1.yaml
+python M0_Lab_Adaptation_Trial/scripts/05b_continue_train_v2.py     # lần 2, cấu hình configs/continue_v2.yaml
 python M0_Lab_Adaptation_Trial/scripts/06_evaluate.py                  # lab, test gốc, thử đường tắt
 ```
 

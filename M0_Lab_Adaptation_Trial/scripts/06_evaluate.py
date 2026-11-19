@@ -29,9 +29,10 @@ feats = list(m0.feature_names_in_)
 classes = np.array(joblib.load(ROOT / "RQ1_Model_Training_xboost/saved_models/label_encoder.pkl").classes_)
 B = classes.tolist().index("Benign")
 MODELS = {"M0": m0.get_booster()}
-for name, folder in (("v1", "m0_continued_v1"), ("v1_rawflags", "m0_continued_v1_rawflags")):
-    b = xgb.Booster(); b.load_model(HERE / "models" / folder / "model.json"); MODELS[name] = b
-INPUT = {"M0": "presence", "v1": "presence", "v1_rawflags": "raw"}
+for name, folder in (("v1", "m0_continued_v1"), ("v1_rawflags", "m0_continued_v1_rawflags"), ("v2", "m0_continued_v2")):
+    if (HERE / "models" / folder / "model.json").exists():
+        b = xgb.Booster(); b.load_model(HERE / "models" / folder / "model.json"); MODELS[name] = b
+INPUT = {"M0": "presence", "v1": "presence", "v1_rawflags": "raw", "v2": "presence"}
 
 
 def predict(name, X):
