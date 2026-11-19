@@ -1,0 +1,157 @@
+{
+ "ssh_hydra": {
+  "pcap_lab_tcp_packets": 201,
+  "java_flows": 5,
+  "java_packets": 195,
+  "sim_flows": 5,
+  "sim_packets": 195,
+  "endpoint_pairs": 5,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 6,
+  "sim_dropped_by_rule": {
+   "repeat_fwd_fin": 1,
+   "single_packet_open_at_end": 5
+  },
+  "sim_close_reason": {
+   "fin": 5
+  }
+ },
+ "ssh_patator": {
+  "pcap_lab_tcp_packets": 160,
+  "java_flows": 4,
+  "java_packets": 158,
+  "sim_flows": 4,
+  "sim_packets": 158,
+  "endpoint_pairs": 3,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 2,
+  "sim_dropped_by_rule": {
+   "single_packet_open_at_end": 2
+  },
+  "sim_close_reason": {
+   "fin": 3,
+   "end_of_file": 1
+  }
+ },
+ "goldeneye_l1": {
+  "pcap_lab_tcp_packets": 76049,
+  "java_flows": 5112,
+  "java_packets": 74502,
+  "sim_flows": 5112,
+  "sim_packets": 74502,
+  "endpoint_pairs": 4807,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 1547,
+  "sim_dropped_by_rule": {
+   "single_packet_open_at_end": 1547
+  },
+  "sim_close_reason": {
+   "rst": 3565,
+   "fin": 1547
+  }
+ },
+ "goldeneye_l2": {
+  "pcap_lab_tcp_packets": 108000,
+  "java_flows": 7606,
+  "java_packets": 105975,
+  "sim_flows": 7606,
+  "sim_packets": 105975,
+  "endpoint_pairs": 6283,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 2025,
+  "sim_dropped_by_rule": {
+   "repeat_fwd_fin": 4,
+   "single_packet_open_at_end": 2021
+  },
+  "sim_close_reason": {
+   "rst": 5016,
+   "fin": 2465,
+   "end_of_file": 125
+  }
+ },
+ "hulkgo_l1": {
+  "pcap_lab_tcp_packets": 36973,
+  "java_flows": 343,
+  "java_packets": 36635,
+  "sim_flows": 343,
+  "sim_packets": 36635,
+  "endpoint_pairs": 341,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 338,
+  "sim_dropped_by_rule": {
+   "single_packet_open_at_end": 338
+  },
+  "sim_close_reason": {
+   "fin": 340,
+   "end_of_file": 2,
+   "rst": 1
+  }
+ },
+ "hulkgo_l2": {
+  "pcap_lab_tcp_packets": 62594,
+  "java_flows": 2475,
+  "java_packets": 60123,
+  "sim_flows": 2475,
+  "sim_packets": 60123,
+  "endpoint_pairs": 2475,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 2471,
+  "sim_dropped_by_rule": {
+   "single_packet_open_at_end": 2471
+  },
+  "sim_close_reason": {
+   "fin": 2471,
+   "rst": 4
+  }
+ },
+ "slowloris_l1": {
+  "pcap_lab_tcp_packets": 163,
+  "java_flows": 16,
+  "java_packets": 163,
+  "sim_flows": 16,
+  "sim_packets": 163,
+  "endpoint_pairs": 10,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 0,
+  "sim_dropped_by_rule": {},
+  "sim_close_reason": {
+   "rst": 10,
+   "fin": 6
+  }
+ },
+ "slowloris_l2": {
+  "pcap_lab_tcp_packets": 337,
+  "java_flows": 36,
+  "java_packets": 336,
+  "sim_flows": 36,
+  "sim_packets": 336,
+  "endpoint_pairs": 20,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 1,
+  "sim_dropped_by_rule": {
+   "single_packet_open_at_end": 1
+  },
+  "sim_close_reason": {
+   "rst": 19,
+   "fin": 17
+  }
+ },
+ "loic_http": {
+  "pcap_lab_tcp_packets": 327944,
+  "java_flows": 52641,
+  "java_packets": 327663,
+  "sim_flows": 52641,
+  "sim_packets": 327663,
+  "endpoint_pairs": 13354,
+  "pairs_mismatch_java_vs_sim": 0,
+  "packets_not_in_any_flow": 281,
+  "sim_dropped_by_rule": {
+   "repeat_fwd_fin": 38,
+   "single_packet_open_at_end": 243
+  },
+  "sim_close_reason": {
+   "rst": 43562,
+   "fin": 9079
+  }
+ }
+}

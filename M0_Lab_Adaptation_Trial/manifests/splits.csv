@@ -1,0 +1,10 @@
+run_id,scenario,expected_label,load_from_runbook,split,note,flows,short_flows,from_target_side,rows_outside_lab_pair
+ssh_hydra,SSH brute force,SSH-Bruteforce,20 mật khẩu sai,train,,5,0,0,3
+ssh_patator,SSH brute force,SSH-Bruteforce,20 ứng viên,test,khác công cụ với lượt train (Hydra),4,1,0,2
+goldeneye_l1,GoldenEye,DoS attacks-GoldenEye,"mức 1, 30 s",train,,5112,0,1,1
+goldeneye_l2,GoldenEye,DoS attacks-GoldenEye,"mức 2, 30 s",test,mức tải cao hơn lượt train,7606,315,1,0
+hulkgo_l1,Hulk-Go,DoS attacks-Hulk,"HULKMAXPROCS=3, 30 s",train,,343,0,0,5
+hulkgo_l2,Hulk-Go,DoS attacks-Hulk,"HULKMAXPROCS=6, 30 s",test,mức tải cao hơn lượt train,2475,0,0,1
+slowloris_l1,Slowloris,DoS attacks-Slowloris,"mức 1, 60 s",train,,16,1,0,0
+slowloris_l2,Slowloris,DoS attacks-Slowloris,"mức 2, 60 s",test,mức tải cao hơn lượt train,36,6,0,0
+loic_http,LOIC HTTP,DDoS attacks-LOIC-HTTP,"Threads=5, Sockets/Thread=25",test,chỉ một lượt; giữ làm test; LOIC-HTTP không có ví dụ lab trong train,52641,15638,7186,1

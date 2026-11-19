@@ -1,0 +1,65 @@
+{
+ "original_test": {
+  "M0": {
+   "rows": 700000,
+   "accuracy": 0.9790757142857143,
+   "macro_f1": 0.8580582189503567,
+   "benign": 490000,
+   "benign_alerts": 1139,
+   "attacks": 210000,
+   "attacks_to_benign": 12071,
+   "changed_vs_M0": 0
+  },
+  "v1": {
+   "rows": 700000,
+   "accuracy": 0.018504285714285713,
+   "macro_f1": 0.03873247781883022,
+   "benign": 490000,
+   "benign_alerts": 490000,
+   "attacks": 210000,
+   "attacks_to_benign": 0,
+   "changed_vs_M0": 687047
+  },
+  "v1_rawflags": {
+   "rows": 700000,
+   "accuracy": 0.018505714285714285,
+   "macro_f1": 0.03876660572322029,
+   "benign": 490000,
+   "benign_alerts": 490000,
+   "attacks": 210000,
+   "attacks_to_benign": 0,
+   "changed_vs_M0": 687046
+  }
+ },
+ "shortcut": {
+  "S1_init_fwd_win_64240": {
+   "M0": {
+    "benign": 490000,
+    "alerts": 14401
+   },
+   "v1": {
+    "benign": 490000,
+    "alerts": 490000
+   },
+   "v1_rawflags": {
+    "benign": 490000,
+    "alerts": 490000
+   }
+  },
+  "S2_flags_1_to_2": {
+   "M0": {
+    "benign": 490000,
+    "alerts": 1139
+   },
+   "v1": {
+    "benign": 490000,
+    "alerts": 490000
+   },
+   "v1_rawflags": {
+    "benign": 490000,
+    "alerts": 490000
+   }
+  },
+  "benign_rows_with_init_fwd_win_64240_in_test": 3053
+ }
+}

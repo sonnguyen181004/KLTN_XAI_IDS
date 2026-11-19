@@ -1,0 +1,20 @@
+# Cấu hình huấn luyện tiếp M0, chốt trước khi chạy. Không tuning theo kết quả test (không có tập validation độc lập).
+base_model: RQ1_Model_Training_xboost/saved_models/best_xgboost_model.pkl   # 100 vòng, không ghi đè
+base_encoder: RQ1_Model_Training_xboost/saved_models/label_encoder.pkl       # 15 lớp, dùng nguyên, không fit lại
+data:
+  primary: data/labeled/lab_flows_presence.parquet   # cột cờ = min(số đếm, 1), khớp quy ước train M0
+  control: data/labeled/lab_flows_raw.parquet        # đối chứng: giữ số đếm Java
+  use_split: train                                   # chỉ các lượt split=train trong manifests/splits.csv
+  benign_in_continued_training: false
+extra_rounds: 20             # thêm 20 vòng vào 100 vòng của M0
+params:                      # giữ như M0
+  objective: multi:softprob
+  num_class: 15
+  eta: 0.08
+  max_depth: 8
+  tree_method: hist
+  seed: 42
+weights: class_balanced      # mỗi lớp lab có tổng trọng số bằng nhau: w = N / (K * n_lớp), để GoldenEye (5.112 flow) không lấn át SSH (5) và Slowloris (16)
+outputs:
+  primary: models/m0_continued_v1/
+  control: models/m0_continued_v1_rawflags/

@@ -1,0 +1,53 @@
+{
+ "model": {
+  "path": "RQ1_Model_Training_xboost\\saved_models\\best_xgboost_model.pkl",
+  "sha256": "52eb5a671ee821094f51e51e01ec496e0cd378adf316067a7ec95a5dce1ecab2",
+  "encoder_sha256": "909df601aaf46699ce243171274ff39af5ccd09c93b0930d9d78d71b8ac79397",
+  "classes": [
+   "Benign",
+   "Bot",
+   "Brute Force -Web",
+   "Brute Force -XSS",
+   "DDOS attack-HOIC",
+   "DDOS attack-LOIC-UDP",
+   "DDoS attacks-LOIC-HTTP",
+   "DoS attacks-GoldenEye",
+   "DoS attacks-Hulk",
+   "DoS attacks-SlowHTTPTest",
+   "DoS attacks-Slowloris",
+   "FTP-BruteForce",
+   "Infilteration",
+   "SQL Injection",
+   "SSH-Bruteforce"
+  ],
+  "n_classes": 15,
+  "params": {
+   "objective": "multi:softprob",
+   "enable_categorical": false,
+   "learning_rate": 0.08,
+   "max_depth": 8,
+   "n_estimators": 100,
+   "n_jobs": -1,
+   "random_state": 42,
+   "tree_method": "hist"
+  },
+  "boosted_rounds": 100
+ },
+ "features": {
+  "n": 78,
+  "model_order_equals_rq4_list": true,
+  "train_parquet_order_equals_model": true
+ },
+ "libraries": {
+  "python": "3.14.7",
+  "xgboost": "3.4.1",
+  "sklearn": "1.9.1",
+  "pandas": "3.0.6"
+ },
+ "train_script": "RQ1_Model_Training_xboost/2_train_optimal_model.py (n_estimators=100, max_depth=8, lr=0.08, hist, seed 42; X = train_set.parquet bỏ cột Label, không chuẩn hóa)",
+ "java_extractor": {
+  "path": "Java_CICFlowMeter_M0_Trial/upstream",
+  "commit": "98a5eba",
+  "profile": "m0-current-unverified"
+ }
+}
