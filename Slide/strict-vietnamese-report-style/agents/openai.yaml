@@ -1,0 +1,4 @@
+interface:
+  display_name: "Viết báo cáo tiếng Việt nghiêm ngặt"
+  short_description: "Loại dấu vết chatbot và văn phong công thức"
+  default_prompt: "Dùng $strict-vietnamese-report-style để viết lại đoạn này theo văn phong trực tiếp, tự nhiên và có căn cứ."

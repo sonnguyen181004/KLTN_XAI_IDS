@@ -1,0 +1,109 @@
+{
+ "n_ssh": 400,
+ "n_hulk": 104,
+ "n_benign": 107,
+ "M0": {
+  "SSH-Bruteforce": {
+   "n": 400,
+   "recall_pct": 20.75,
+   "top": {
+    "DoS attacks-Hulk": 159,
+    "Benign": 158,
+    "SSH-Bruteforce": 83
+   }
+  },
+  "DoS attacks-Hulk": {
+   "n": 104,
+   "recall_pct": 99.04,
+   "top": {
+    "DoS attacks-Hulk": 103,
+    "Benign": 1
+   }
+  },
+  "Benign": {
+   "n": 107,
+   "fpr_pct": 99.07,
+   "top": {
+    "DoS attacks-Hulk": 106,
+    "Benign": 1
+   }
+  }
+ },
+ "M0b": {
+  "SSH-Bruteforce": {
+   "n": 400,
+   "recall_pct": 4.0,
+   "top": {
+    "DoS attacks-Hulk": 159,
+    "Benign": 155,
+    "Infilteration": 70
+   }
+  },
+  "DoS attacks-Hulk": {
+   "n": 104,
+   "recall_pct": 99.04,
+   "top": {
+    "DoS attacks-Hulk": 103,
+    "Benign": 1
+   }
+  },
+  "Benign": {
+   "n": 107,
+   "fpr_pct": 99.07,
+   "top": {
+    "DoS attacks-Hulk": 106,
+    "Benign": 1
+   }
+  }
+ },
+ "M1": {
+  "SSH-Bruteforce": {
+   "n": 400,
+   "recall_pct": 0.0,
+   "top": {
+    "Benign": 400
+   }
+  },
+  "DoS attacks-Hulk": {
+   "n": 104,
+   "recall_pct": 0.0,
+   "top": {
+    "Benign": 104
+   }
+  },
+  "Benign": {
+   "n": 107,
+   "fpr_pct": 0.0,
+   "top": {
+    "Benign": 107
+   }
+  }
+ },
+ "M1_noenv": {
+  "SSH-Bruteforce": {
+   "n": 400,
+   "recall_pct": 0.0,
+   "top": {
+    "Benign": 400
+   }
+  },
+  "DoS attacks-Hulk": {
+   "n": 104,
+   "recall_pct": 0.0,
+   "top": {
+    "Benign": 104
+   }
+  },
+  "Benign": {
+   "n": 107,
+   "fpr_pct": 0.0,
+   "top": {
+    "Benign": 107
+   }
+  }
+ },
+ "M1_noenv_indist": {
+  "accuracy": 99.977,
+  "macro_f1": 98.679
+ }
+}

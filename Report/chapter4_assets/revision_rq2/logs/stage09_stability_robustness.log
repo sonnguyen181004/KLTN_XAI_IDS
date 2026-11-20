@@ -1,0 +1,26 @@
+2026-10-28 10:05:37,373 [INFO] stage09_stability_robustness: ================================================================================
+2026-10-28 10:05:37,373 [INFO] stage09_stability_robustness: GĐ 9: STABILITY VÀ ROBUSTNESS (SHAP VÀ LIME)
+2026-10-28 10:05:37,373 [INFO] stage09_stability_robustness: ================================================================================
+2026-10-28 10:05:42,446 [INFO] stage09_stability_robustness: -- 1. Stability theo seed --
+2026-10-28 10:06:15,904 [INFO] stage09_stability_robustness:   seed 1/10 hoàn tất (33.5s đã trôi qua)
+2026-10-28 10:07:01,918 [INFO] stage09_stability_robustness:   seed 2/10 hoàn tất (79.5s đã trôi qua)
+2026-10-28 10:07:46,549 [INFO] stage09_stability_robustness:   seed 3/10 hoàn tất (124.1s đã trôi qua)
+2026-10-28 10:08:17,329 [INFO] stage09_stability_robustness:   seed 4/10 hoàn tất (154.9s đã trôi qua)
+2026-10-28 10:09:01,427 [INFO] stage09_stability_robustness:   seed 5/10 hoàn tất (199.0s đã trôi qua)
+2026-10-28 10:09:50,865 [INFO] stage09_stability_robustness:   seed 6/10 hoàn tất (248.4s đã trôi qua)
+2026-10-28 10:10:40,554 [INFO] stage09_stability_robustness:   seed 7/10 hoàn tất (298.1s đã trôi qua)
+2026-10-28 10:11:15,173 [INFO] stage09_stability_robustness:   seed 8/10 hoàn tất (332.7s đã trôi qua)
+2026-10-28 10:12:04,357 [INFO] stage09_stability_robustness:   seed 9/10 hoàn tất (381.9s đã trôi qua)
+2026-10-28 10:12:59,445 [INFO] stage09_stability_robustness:   seed 10/10 hoàn tất (437.0s đã trôi qua)
+2026-10-28 10:12:59,613 [INFO] stage09_stability_robustness: LIME stability (Jaccard@5 trung bình giữa 10 seed, 1339 flow): mean=0.5811 median=0.4910
+2026-10-28 10:13:02,286 [INFO] stage09_stability_robustness: SHAP stability (rerun vs GĐ4, cùng model): 1339/1339 flow khớp tuyệt đối Top-5 -> Jaccard trung bình=1.000000
+2026-10-28 10:13:02,290 [INFO] stage09_stability_robustness: -- 2. Robustness với nhiễu đầu vào --
+2026-10-28 10:13:56,888 [INFO] stage09_stability_robustness:   sigma=1%: SHAP Jaccard@5=0.5111 | LIME Jaccard@5=0.3514
+2026-10-28 10:14:34,571 [INFO] stage09_stability_robustness:   sigma=5%: SHAP Jaccard@5=0.4778 | LIME Jaccard@5=0.2514
+2026-10-28 10:15:28,489 [INFO] stage09_stability_robustness:   sigma=10%: SHAP Jaccard@5=0.4561 | LIME Jaccard@5=0.1843
+2026-10-28 10:15:28,958 [INFO] stage09_stability_robustness: -- 3. Đường hội tụ LIME theo num_samples (kw/disc đã khóa) --
+2026-10-28 10:15:34,127 [INFO] stage09_stability_robustness:   num_samples=500: median_R2=0.3477 (5.1s)
+2026-10-28 10:15:40,211 [INFO] stage09_stability_robustness:   num_samples=1000: median_R2=0.2577 (6.1s)
+2026-10-28 10:16:00,713 [INFO] stage09_stability_robustness:   num_samples=5000: median_R2=0.1430 (20.5s)
+2026-10-28 10:16:29,027 [INFO] stage09_stability_robustness:   num_samples=10000: median_R2=0.1420 (28.3s)
+2026-10-28 10:16:29,343 [INFO] stage09_stability_robustness: GĐ 9 HOÀN TẤT.

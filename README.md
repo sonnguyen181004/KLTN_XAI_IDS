@@ -99,7 +99,8 @@ Khóa luận tốt nghiệp: **nghiên cứu và ứng dụng Explainable AI (XA
 | Vì sao LIME chưa giải thích được, kết quả đối chiếu PCAP | [Kiểm chứng XAI](RQ3_IDS_System/docs/xai_validation.md) |
 | Ma trận 78 đặc trưng, khác biệt train/capture và giới hạn | [Tương thích đặc trưng](RQ3_IDS_System/docs/feature_compatibility.md) |
 
-**Chạy nhanh:** RQ3 (M0) chạy bằng hai terminal với token, lệnh ở đầu `RQ3_IDS_System/docs/dashboard_usage.md`. M1 chạy một lệnh `IDS_M1_Labun_ids.ps1`. Chỉ bật một bản mỗi lần (cùng cổng 8000 và 8501).
+**Chạy nhanh:** RQ3 (M0) chạy bằng hai terminal với token, lệnh ở đầu `RQ3_IDS_System/docs/dashboard_usage.md`. M1 chạy một lệnh `IDS_M1_Lab
+un_ids.ps1`. Chỉ bật một bản mỗi lần (cùng cổng 8000 và 8501).
 
 UI hiện có Giám sát flow, Realtime và Nạp CSV / PCAP; nút điều khiển capture bật bằng token local theo hướng dẫn HT4.4. Giữ nguyên XGBoost, LIME RQ2, nhánh A/B; chưa chứng nhận đầu vào train/PCAP hoàn toàn tương thích hoặc FPR live.
 
@@ -116,7 +117,6 @@ SELF_KLTN/
 │   ├── scripts/                      # stage00_*.py … stage13_*.py + build_report_*.py
 │   └── runs/<ngày>/                  # Kết quả mỗi lần chạy (CSV/JSON/PNG/docx), không ghi đè
 ├── v1_archive/RQ2_old_20260929/      # Toàn bộ kết quả RQ2 lần chạy trước (lưu trữ)
-├── xai-ids-study-hub/                # Trang demo tương tác, số liệu kéo từ RQ2/runs mới nhất
 ├── WorkFlow/                        # Sơ đồ workflow tổng quan (workflow_v3.mmd / .png)
 ├── RQ3_IDS_System/                  # RQ3: hệ thống IDS realtime có giải thích — xem mục 5
 │   ├── docs/plan.md                  # Kế hoạch + tiến độ chi tiết từng bước (1→16)
@@ -126,7 +126,10 @@ SELF_KLTN/
 │   └── data/                         # DB SQLite + dữ liệu chạy (không commit — xem .gitignore)
 ├── RQ4_Retrain_Compare/             # RQ4: huấn luyện lại trên dữ liệu đã sửa (M1), đánh giá và kiểm tra phục vụ bài báo — xem mục 8
 │   └── lab_captures/                 # PCAP và flow của các ca lab (WEB-B01, A07, B03)
-├── IDS_M1_Lab/                      # Bản chạy hệ thống IDS với M1 (13 lớp), kernel LIME 3000 — xem IDS_M1_Lab/README.md
+├── IDS_M1_Lab/                      # Bản chạy hệ thống IDS với M1 (13 lớp), kernel LIME 3000, SHAP cho cả Benign — xem IDS_M1_Lab/README.md
+├── lab_data/                        # Hướng dẫn dựng lab 3 máy (Kali, Ubuntu, IDS Windows), web Lab Shop, nhật ký thí nghiệm
+├── M0_Lab_Adaptation_Trial/         # Thử train tiếp M0 trên flow tấn công lab (offline), xem README trong thư mục
+├── Java_CICFlowMeter_M0_Trial/      # Thử CICFlowMeter bản Java với M0/M1
 ├── Paper_IEEE/                      # Bài báo theo mẫu IEEE (main.tex tiếng Anh, main_vi.tex tiếng Việt), hình, số liệu
 │   └── tools/                        # make_figures*.py, fill_numbers.py, check_tex.py, verify_numbers.py, verify_vi_vs_en.py
 ├── Tai_lieu_tham_khao/              # Nhãn CICIDS2018, bài báo, hỏi–đáp bảo vệ
@@ -157,6 +160,13 @@ SELF_KLTN/
 - **Tuning:** 7 cấu hình; cấu hình depth 12 / lr 0,08 đạt F1 85,95% nhưng bản depth 8 được giữ làm mô hình giải thích.
 - **Hạn chế cần nói rõ:** test set được dùng để chọn cấu hình (không có validation riêng) nên số liệu hơi lạc quan.
 - **Chạy lại ba lần chia (31/10/2026):** gộp train và test (3,5 triệu flow), chia lại phân tầng 80/20 với seed 1, 2, 3 và huấn luyện lại đúng siêu tham số trên. Accuracy 97,894 ± 0,004%, macro F1 86,42 ± 0,45%, tỷ lệ cảnh báo trên Benign 0,245 ± 0,006%, FNR 5,787 ± 0,018%. Trên phần test đã bỏ các dòng trùng với train (27,8% test), macro F1 còn 78,78 ± 0,92%. Macro F1 gốc 85,81% nằm ở đầu thấp của khoảng này. Mã `3_repeat_resplits.py`, kết quả ở `results/repeat_runs/`.
+- **Kiểm tra overfit/underfit của M0 (20/11/2026):** `4_cv_overfit_cach1.py --stage all`, kết quả và báo cáo tự sinh ở `results/cv_diagnostics/BAO_CAO_CACH1.md`.
+  - Dữ liệu: 23,67% dòng trùng hoàn toàn, 5,44% dòng có nhãn mâu thuẫn (trần accuracy 99,21%), 27,74% dòng test giống hệt train. Infilteration có 30,74% dòng trùng đặc trưng với Benign; SlowHTTPTest và FTP-BruteForce gần như trùng hoàn toàn với nhau.
+  - CV 5 fold: macro F1 train 88,54 ± 0,12, validation 86,63 ± 0,59, chênh 1,91 điểm, nên không overfit đáng kể. F1 chính thức 85,81 nằm trong khoảng CV ± 2 độ lệch chuẩn.
+  - Underfit ở Infilteration, SlowHTTPTest, FTP-BruteForce (do nhãn mâu thuẫn) và Brute Force-Web; overfit ở SQL Injection (train 94,8, validation 76,6, chỉ 70 mẫu validation).
+  - Số cây: F1 validation bão hòa từ khoảng 75 cây (86,31 ở 100 cây, 86,25 ở 300 cây) trong khi FPR tăng từ 0,231% lên 0,268%. Báo cáo tự sinh ghi "100 cây hơi ít" vì chỉ dựa vào loss; đọc theo F1 và FPR thì 100 cây là hợp lý.
+  - Learning curve: F1 validation tăng từ 78,4 (5% dữ liệu) lên 86,3 (100%), vẫn còn tăng, nên thêm dữ liệu lớp hiếm có thể giúp.
+  - Chia lại 80/20 với 5 seed: macro F1 86,51 ± 0,43, FPR 0,243 ± 0,005%, FNR 5,79 ± 0,02%. Seed 1 đến 3 cho F1 giống hệt `3_repeat_resplits.py`. F1 "sạch" khác ở seed 1 và 2 vì script cũ lấy trung bình trên cả 15 lớp (lớp vắng tính 0), script mới chỉ lấy các lớp có mặt.
 - **Đính chính FPR (16/10/2026):** code và bảng kết quả đã tách FPR = 1.139 / 490.000 ≈ **0,2324%** (Benign bị báo thành Attack) với FNR = 12.071 / 210.000 ≈ **5,7481%** (Attack bị bỏ sót thành Benign). Bảng tuning cũ được đổi tên cột sai thành FNR, không suy đoán FPR của từng cấu hình. Xem [định nghĩa và giới hạn](RQ1_Model_Training_xboost/FPR_CORRECTION.md). Đây là số liệu test dataset, không phải FPR traffic live.
 
 Chạy lại:
@@ -306,23 +316,16 @@ Mỗi stage ghi vào `RQ2/runs/<ngày>/gdN_.../` cùng log (`RQ2/runs/<ngày>/lo
 | `RQ2/runs/<ngày>/gd13_report/docx/RQ2_Kien_thuc_chung_Ly_thuyet.docx` | Lý thuyết SHAP/LIME + định nghĩa mọi chỉ số, dễ hiểu |
 | `RQ2/runs/<ngày>/gd13_report/docx/RQ2_Quy_trinh_Thuc_Hien_Chi_Tiet.docx` | Từng giai đoạn GĐ0–GĐ13 đã làm gì, làm thế nào |
 | `v1_archive/RQ2_old_20260929/` | Toàn bộ kết quả lần chạy trước (lưu trữ, không chạy tiếp) |
-| `xai-ids-study-hub/` | Trang demo tương tác, số liệu kéo từ run RQ2 mới nhất (xem mục 4.9) |
 
-### 4.9 Trang demo tương tác (`xai-ids-study-hub/`)
+### 4.9 Trang demo tương tác
 
-Một trang tĩnh (`xai-ids-study-hub/dist/index.html`) trình bày lại toàn bộ RQ1–RQ2 dưới dạng demo tương tác (waterfall SHAP, vùng lân cận LIME, so sánh SHAP/LIME trên flow thật, Attack Atlas 14 kịch bản, flashcard/quiz ôn thi). Số liệu "Real Project Data" lấy trực tiếp từ `RQ2/runs/<ngày mới nhất>/` qua script:
-
-```powershell
-python xai-ids-study-hub\tools\build_data.py   # ghi lại dist/data.js
-```
-
-Chạy lại script này sau mỗi lần chạy RQ2 mới để đồng bộ số liệu. Mở `xai-ids-study-hub/dist/index.html` trực tiếp bằng trình duyệt (không cần server).
+Thư mục `xai-ids-study-hub/` đã xóa khỏi repo ngày 20/11/2026 (không còn dùng). Lấy lại từ lịch sử git nếu cần: `git checkout 5a12c61 -- xai-ids-study-hub`.
 
 ---
 
 ## 5. RQ3 — Hệ thống IDS realtime có giải thích (`RQ3_IDS_System/`)
 
-Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ. Kiến trúc gốc: `Kiến trúc hệ thống IDS.docx` (6 tầng: Bắt gói → Chuẩn hóa → Dự đoán XGBoost → Giải thích SHAP/LIME + độ tin cậy → Nhánh hiển thị A/B → API + Dashboard). Kế hoạch + tiến độ chi tiết từng bước nằm ở [`RQ3_IDS_System/docs/plan.md`](RQ3_IDS_System/docs/plan.md) — **đây là nguồn chi tiết nhất**, README chỉ tóm tắt.
+Xây **từ đầu**, không dùng lại `cicflowmeter_capture_demo/` cũ (thư mục này đã xóa khỏi repo ngày 20/11/2026). Kiến trúc gốc: `Kiến trúc hệ thống IDS.docx` (6 tầng: Bắt gói → Chuẩn hóa → Dự đoán XGBoost → Giải thích SHAP/LIME + độ tin cậy → Nhánh hiển thị A/B → API + Dashboard). Kế hoạch + tiến độ chi tiết từng bước nằm ở [`RQ3_IDS_System/docs/plan.md`](RQ3_IDS_System/docs/plan.md) — **đây là nguồn chi tiết nhất**, README chỉ tóm tắt.
 
 **Trạng thái: Bước 1–13/16 xong**, đã test thật bằng model+dữ liệu thật (không phải giả lập), kể cả traffic thật bắt từ máy thật qua Wireshark/CICFlowMeter.
 
@@ -451,7 +454,6 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 
 ## 7. Lưu ý
 
-- Không di chuyển riêng thư mục `.venv` trong `cicflowmeter_capture_demo/` (môi trường ảo phụ thuộc đường dẫn).
 - Tệp bắt đầu bằng `~$` là khóa tạm của Word, tự biến mất khi đóng tài liệu.
 - Số liệu trong README lấy từ các file `summary_*.csv` / `run_info.json` mới nhất trong từng thư mục output; nếu chạy lại, hãy cập nhật.
 
@@ -482,6 +484,6 @@ Báo cáo tiếp thu ý kiến gửi thầy: tài liệu "Báo cáo tiếp thu �
 
 **Các thư mục:**
 - `RQ4_Retrain_Compare/`: mã dựng dữ liệu, huấn luyện M0b và M1, đánh giá, kiểm tra riêng M1, `scripts/17_paper_checks.py` (khoảng tin cậy, SHAP cùng lớp đầu ra, kiểm tra cộng dồn, kiểm chứng vùng FIN theo phiên, độ trễ), `scripts/18_lab_predict_m0_m1.py` và `scripts/19_lab_lime_validity.py` (flow lab, LIME với nền khác). Kết quả ở `results/` (`paper_checks.json`, `lab_m1/`).
-- `Paper_IEEE/`: `main.tex` (tiếng Anh) và `main_vi.tex` (tiếng Việt) theo mẫu IEEEtran, `refs.bib` (15 tài liệu đã kiểm chứng nguồn), `figures/` và `figures_vi/`, `main.pdf` và `main_vi.pdf` đã dựng.
+- `Paper_IEEE/`: `main.tex` (tiếng Anh) và `main_vi.tex` (tiếng Việt) theo mẫu IEEEtran, `refs.bib` (15 tài liệu đã kiểm chứng nguồn), `figures/` và `figures_vi/`, `main_vi.pdf` đã dựng (bản tiếng Anh dựng lại từ `main.tex`). `group3.pdf` và `GR3-FIX.pdf` là bản nộp nhóm, `notes/` là ghi chú rà soát.
 
 **Dựng lại bài báo:** bản tiếng Anh biên dịch được bằng pdfLaTeX hoặc XeLaTeX. Bản tiếng Việt dùng phông TeX Gyre Termes nên phải biên dịch bằng **XeLaTeX** (trên Overleaf chọn compiler XeLaTeX). Trên máy có Tectonic: `tectonic main.tex` và `tectonic main_vi.tex`. Chạy các công cụ trong `Paper_IEEE/tools/`: hình dựng lại bằng `python tools/make_figures.py` và `python tools/make_figures_vi.py`; số RQ1 sinh bằng `python tools/fill_numbers.py`. Kiểm tra trước khi nộp: `python tools/check_tex.py` (tham chiếu, nhãn, môi trường) và `python tools/verify_numbers.py` (đối chiếu số trong bài với file kết quả). Tên tác giả bản tiếng Anh viết không dấu vì phông Times của mẫu IEEE không có chữ Việt có dấu.

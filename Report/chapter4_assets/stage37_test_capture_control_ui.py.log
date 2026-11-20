@@ -1,0 +1,13 @@
+
+test_auth_origin_host_and_schema (__main__.ControlTests.test_auth_origin_host_and_schema) ... ok
+test_local_listener_and_streamlit_none_ip (__main__.ControlTests.test_local_listener_and_streamlit_none_ip) ... ok
+test_nonlocal_client_and_disabled (__main__.ControlTests.test_nonlocal_client_and_disabled) ... ok
+test_remote_browser_ui_never_calls_controller (__main__.ControlTests.test_remote_browser_ui_never_calls_controller) ... 2026-10-28 09:25:50.459 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_ui_refresh_never_starts_and_buttons_send_commands (__main__.ControlTests.test_ui_refresh_never_starts_and_buttons_send_commands) ... 2026-10-28 09:25:52.139 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.240s
+
+OK

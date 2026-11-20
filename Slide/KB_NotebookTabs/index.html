@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo IDS có giải thích RQ3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+:root{
+  --outer:#2d2d2d;--page:#f8f6f1;--ink:#1a1a1a;--muted:#5d5a52;--rule:#d8d3c6;
+  --tab-1:#98d4bb;--tab-2:#c7b8ea;--tab-3:#f4b8c5;--tab-4:#a8d8ea;--tab-5:#ffe6a7;
+  --display:'Playfair Display','Bodoni Moda','Noto Serif',Georgia,serif;
+  --body:'Be Vietnam Pro','DM Sans','Noto Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --stage-bg:#171717;--slide-bg:var(--outer);
+}
+/* === VIEWPORT BASE (bat buoc) === */
+html, body { width:100%; height:100%; margin:0; overflow:hidden; background:var(--stage-bg,#000); }
+.deck-viewport { position:fixed; inset:0; overflow:hidden; background:var(--stage-bg,#000); }
+.deck-stage { position:absolute; left:0; top:0; width:1920px; height:1080px; overflow:hidden;
+  transform-origin:0 0; background:var(--slide-bg,#fff); }
+.slide { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; display:block;
+  visibility:hidden; opacity:0; pointer-events:none; background:var(--slide-bg,#fff); }
+.slide.active, .slide.visible { visibility:visible; opacity:1; pointer-events:auto; z-index:1; }
+img, video, canvas, svg { max-width:100%; max-height:100%; }
+.deck-controls { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:1000; }
+@media print {
+  html, body { width:1920px; height:auto; overflow:visible; background:#fff; }
+  .deck-viewport { position:static; overflow:visible; background:#fff; }
+  .deck-stage { position:static; width:auto; height:auto; transform:none !important; background:none; }
+  .slide { position:relative; display:block !important; visibility:visible !important; opacity:1 !important;
+    pointer-events:auto !important; width:1920px; height:1080px; break-after:page; page-break-after:always; }
+  .slide:last-child { break-after:auto; page-break-after:auto; }
+  .deck-controls,.progress,.pg,.edit-hotzone,.edit-toggle,#zoom { display:none !important; }
+  .reveal{opacity:1!important;transform:none!important}
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.2s !important; }
+}
+
+/* === ANIMATION === */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.slide.visible .reveal{opacity:1;transform:none}
+.slide.visible .reveal:nth-child(1){transition-delay:.05s}
+.slide.visible .reveal:nth-child(2){transition-delay:.15s}
+.slide.visible .reveal:nth-child(3){transition-delay:.25s}
+.slide.visible .reveal:nth-child(4){transition-delay:.35s}
+.slide.visible .reveal:nth-child(5){transition-delay:.45s}
+.slide.visible .reveal:nth-child(n+6){transition-delay:.55s}
+
+body{font-family:var(--body);color:var(--ink)}
+
+/* === SO TAY: giay, lo dong gay, tab === */
+.paper{position:absolute;left:36px;top:36px;width:1790px;height:1008px;background:var(--page);z-index:2;
+  border-radius:8px 4px 4px 8px;
+  box-shadow:0 20px 56px rgba(0,0,0,.5),inset 0 0 0 1px rgba(0,0,0,.05),inset 36px 0 44px -38px rgba(0,0,0,.22)}
+.hole{position:absolute;left:34px;width:36px;height:36px;border-radius:50%;background:var(--outer);
+  box-shadow:inset 4px 4px 8px rgba(0,0,0,.65),0 1px 0 rgba(255,255,255,.5)}
+.tabs{position:absolute;inset:0;z-index:1}
+.tab{position:absolute;left:1796px;width:96px;height:170px;border-radius:0 16px 16px 0;background:var(--c);
+  writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center;padding-left:34px;box-sizing:border-box;
+  font:600 21px var(--body);letter-spacing:.04em;color:#1a1a1a;cursor:pointer;
+  box-shadow:3px 3px 10px rgba(0,0,0,.35);transition:width .3s var(--ease),filter .3s;filter:saturate(.82) brightness(.96)}
+.tab:hover{filter:none}
+.tab.on{width:116px;font-weight:700;filter:none;padding-left:38px}
+.content{position:absolute;left:156px;top:84px;width:1600px;height:912px;z-index:3;display:flex;flex-direction:column;overflow:visible}
+.foot{position:absolute;left:156px;bottom:44px;z-index:3;font:500 17px var(--body);letter-spacing:.06em;color:#9a9588}
+
+/* === TIEU DE === */
+.kick{font:600 20px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:16px}
+.kick::before{content:"";width:54px;height:14px;border-radius:2px;background:var(--c);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+h2{font:700 58px/1.12 var(--display);margin:12px 0 0;letter-spacing:-.005em;max-width:1560px}
+.head{flex:none}
+
+/* === BIA === */
+.cover{display:grid;grid-template-columns:1000px 1fr;gap:70px;height:100%;align-items:center}
+.cover h1{font:800 92px/1.08 var(--display);margin:26px 0 0;letter-spacing:-.01em}
+.cover .lead{font-size:32px;line-height:1.5;color:var(--muted);margin:34px 0 0;max-width:900px}
+.meta{display:flex;gap:46px;margin-top:56px;font:500 19px var(--body);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.meta b{display:block;margin-top:8px;font:600 24px var(--body);color:var(--ink);text-transform:none;letter-spacing:0}
+.cover-r{display:flex;flex-direction:column;gap:30px}
+.card3{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:26px 32px;box-shadow:0 8px 20px rgba(0,0,0,.12);display:flex;align-items:center;gap:26px;transform:rotate(var(--rot,0deg))}
+.card3:nth-child(1){border-top:12px solid var(--tab-1)}
+.card3:nth-child(2){border-top:12px solid var(--tab-2)}
+.card3:nth-child(3){border-top:12px solid var(--tab-3)}
+.card3 b{font:700 96px/1 var(--display)}
+.card3 span{font-size:27px;line-height:1.35;color:var(--muted)}
+.slide.cover-slide.visible .card3.reveal{transform:rotate(var(--rot,0deg))}
+
+/* === CHUNG === */
+.lead2{font-size:32px;line-height:1.5;color:var(--muted);margin:26px 0 0;max-width:1500px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:34px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:34px}
+.idx{background:#fff;border:1px solid var(--rule);border-top:14px solid var(--c);border-radius:6px;padding:28px 30px 30px;box-shadow:0 4px 10px rgba(0,0,0,.07)}
+.idx .no{font:700 20px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.idx h3{font:700 36px/1.2 var(--display);margin:12px 0 0}
+.idx p{font-size:26px;line-height:1.45;color:var(--muted);margin:14px 0 0;min-height:150px}
+.idx em{font:600 24px var(--body);font-style:normal;color:var(--ink)}
+.step{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:26px 30px;position:relative;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.step .n{position:absolute;right:22px;top:14px;font:700 54px var(--display);color:var(--c);-webkit-text-stroke:1px rgba(0,0,0,.18)}
+.step h3{font:700 32px/1.2 var(--display);margin:0;padding-right:60px}
+.step p{font-size:25px;line-height:1.42;color:var(--muted);margin:12px 0 0}
+.grid3.two{grid-template-columns:repeat(2,1fr);gap:24px}
+.grid3.two .step{padding:24px 32px 26px}
+.grid3.two .step p{font-size:27px}
+.grid3.two .step h3{font-size:34px}
+.defs .def{background:#fff;border-left:10px solid var(--c);border-radius:4px;padding:20px 26px;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.defs .def:nth-child(1){border-color:var(--tab-1)}.defs .def:nth-child(2){border-color:var(--tab-3)}.defs .def:nth-child(3){border-color:var(--tab-4)}
+.defs h3{font:700 32px var(--display);margin:0}
+.defs p{font-size:24px;line-height:1.4;color:var(--muted);margin:8px 0 0}
+.defs{margin-top:28px}
+
+/* === GHI CHU (chu thich quan trong) === */
+.note{background:#fff;border:1px solid var(--rule);border-left:10px solid var(--c);border-radius:4px;padding:18px 26px 20px;
+  font-size:25px;line-height:1.42;color:#33312c;box-shadow:0 3px 8px rgba(0,0,0,.07)}
+.note .k{display:block;font:700 28px/1.25 var(--display);color:#000;margin-bottom:6px}
+.note.wide{margin-top:24px}
+.row{display:grid;gap:22px;margin-top:22px}
+.row .note.wide{margin-top:0}
+
+/* === HINH === */
+.fig{position:relative;margin:0}
+.shot{border-radius:6px;overflow:hidden;background:#0e1117;box-shadow:0 10px 26px rgba(0,0,0,.28);border:1px solid rgba(0,0,0,.35)}
+.shot img{display:block;width:100%;height:auto;max-width:none;max-height:none;cursor:zoom-in}
+.tape{position:absolute;left:34px;top:-30px;z-index:2;background:var(--c);color:#1a1a1a;font:700 18px var(--body);letter-spacing:.04em;padding:4px 18px;
+  transform:rotate(-2.2deg);box-shadow:0 2px 5px rgba(0,0,0,.25);opacity:.96}
+.side{display:grid;grid-template-columns:auto 1fr;gap:40px;margin-top:0;align-items:center;flex:1;padding-bottom:30px}
+.stk{display:flex;flex-direction:column;gap:42px}
+.col-notes{display:flex;flex-direction:column;gap:20px}
+.topfig{margin-top:44px;display:flex;justify-content:center}
+.topfig+.row{margin-top:26px}
+.stackf .topfig{margin-top:44px;display:flex;justify-content:center}
+.stackf .topfig:first-child{margin-top:28px}
+.stackf{display:flex;flex-direction:column}
+.stackf+.row{margin-top:26px}
+
+/* === BANG === */
+.tbl{width:100%;border-collapse:collapse;margin-top:28px;font-size:26px;line-height:1.35;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.tbl th{font:700 19px var(--body);letter-spacing:.08em;text-transform:uppercase;text-align:left;color:var(--muted);padding:16px 22px;border-bottom:3px solid var(--ink);background:#faf8f2}
+.tbl td{padding:13px 22px;border-bottom:1px solid var(--rule);vertical-align:top;color:#33312c}
+.tbl td:first-child{font-weight:600;color:var(--ink)}
+.tbl tr.hot td{background:rgba(255,230,167,.55)}
+.tbl.compact{font-size:24px;margin-top:0}
+.tbl.compact td{padding:11px 20px}
+.tbl.compact th{padding:12px 20px}
+.cmp{display:grid;grid-template-columns:480px 1fr;gap:34px;margin-top:30px;align-items:start}
+.bigs{display:flex;flex-direction:column;gap:20px}
+.bignum{background:#fff;border:1px solid var(--rule);border-left:10px solid var(--tab-1);border-radius:4px;padding:16px 26px;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.bignum b{font:800 72px/1 var(--display)}.bignum b small{font:600 34px var(--body);color:var(--muted)}
+.bignum span{display:block;font-size:24px;line-height:1.35;color:var(--muted);margin-top:8px}
+.bignum:nth-child(2){border-color:var(--tab-4)}.bignum:nth-child(3){border-color:var(--tab-3)}
+
+.stats{margin-top:34px}
+.stat{background:#fff;border:1px solid var(--rule);border-top:14px solid var(--c);border-radius:6px;padding:26px 28px 30px;box-shadow:0 4px 10px rgba(0,0,0,.07)}
+.stat:nth-child(1){border-top-color:var(--tab-3)}.stat:nth-child(2){border-top-color:var(--tab-1)}.stat:nth-child(3){border-top-color:var(--tab-2)}.stat:nth-child(4){border-top-color:var(--tab-4)}
+.stat b{font:800 78px/1 var(--display)}.stat b small{font:600 34px var(--body);color:var(--muted)}
+.stat span{display:block;font-size:25px;line-height:1.4;color:var(--muted);margin-top:14px}
+
+.bars{margin-top:34px;display:flex;flex-direction:column;gap:22px}
+.bar{display:grid;grid-template-columns:560px 1fr 380px;gap:26px;align-items:center;background:#fff;border:1px solid var(--rule);border-radius:4px;padding:18px 26px;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.bar .lb{font-size:25px;line-height:1.3;font-weight:600}
+.bar .trk{height:34px;background:#ebe7da;border-radius:4px;overflow:hidden}
+.bar .trk i{display:block;height:100%;background:var(--c)}
+.bar .vl{font:700 26px var(--body)}
+.bar:nth-child(3) .trk i,.bar:nth-child(4) .trk i{background:#e07a8c}
+.lims{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:20px 26px}
+.lims li{background:#fff;border:1px solid var(--rule);border-left:10px solid var(--c);border-radius:4px;padding:20px 28px;font-size:27px;line-height:1.45;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.lims li:last-child{grid-column:1/-1}
+
+/* === KET === */
+.closing{height:100%;display:flex;flex-direction:column;justify-content:center}
+.closing h1{font:800 88px/1.08 var(--display);margin:24px 0 0}
+.closing .three{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+.closing .three .step p{font-size:26px}
+.qa{font:600 italic 40px var(--display);margin:52px 0 0;color:var(--muted)}
+
+/* === UI === */
+.progress{position:fixed;left:0;top:0;height:4px;background:#98d4bb;width:0;z-index:1001;transition:width .4s var(--ease)}
+.pg{position:fixed;right:14px;bottom:8px;z-index:1001;font:500 14px var(--body);color:#8f8f8f;letter-spacing:.08em}
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000}
+.edit-toggle{position:fixed;top:14px;left:14px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:10001;background:#ffe6a7;color:#000;border:0;border-radius:4px;padding:8px 12px;font:600 14px var(--body);cursor:pointer}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto}
+body.editing [contenteditable]{outline:1px dashed #c08a00;outline-offset:4px}
+#zoom{position:fixed;inset:0;z-index:5000;background:rgba(10,10,10,.92);display:none;align-items:center;justify-content:center;cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom img{max-width:96vw;max-height:94vh;width:auto;height:auto;box-shadow:0 10px 60px rgba(0,0,0,.6)}
+
+/* === BIG: slide thua noi dung, phong chu === */
+.big .tbl{font-size:30px}.big .tbl td{padding:20px 26px}.big .tbl th{font-size:21px;padding:18px 26px}
+.big .note{font-size:27px;padding:20px 28px}.big .note .k{font-size:33px}
+.big .step p{font-size:29px}.big .step h3{font-size:38px}.big .step{padding:30px 34px}
+.big .stat span{font-size:29px}.big .stat b{font-size:92px}.big .stat{padding:28px 30px 30px}
+.big .lims li{font-size:31px;padding:26px 34px}
+.big .idx p{font-size:28px;min-height:170px}.big .idx h3{font-size:40px}.big .idx em{font-size:27px}
+.big .lead2{font-size:34px}
+.big.closing-slide .closing h1{font-size:104px}
+.big .row{gap:26px;margin-top:30px}
+.big .grid3{gap:28px}
+
+.mid .tbl{font-size:27px}.mid .tbl td{padding:17px 24px}.mid .note{font-size:27px;padding:20px 28px}.mid .note .k{font-size:31px}.mid .row{margin-top:30px;gap:26px}
+
+.big .grid3 .step{padding:24px 30px}.big .grid3 .step p{font-size:26px}.big .grid3 .step h3{font-size:34px}
+.big .grid3:not(.two) .step{padding:22px 28px}
+.mid .tbl td{padding:14px 24px}.mid .tbl{margin-top:22px}.mid .row{margin-top:22px}
+.big .grid3.two .step{padding:30px 36px 32px}.big .grid3.two .step p{font-size:30px}.big .grid3.two .step h3{font-size:38px}
+.big .grid3.two{gap:28px;margin-top:40px}
+.big .grid3.two .step{padding:24px 34px 26px}.big .grid3.two .step p{font-size:28px;margin-top:10px}.big .grid3.two .step h3{font-size:36px}
+.big .grid3.two{gap:24px;margin-top:30px}
+
+.lims li:last-child{grid-column:auto}.big .lims li{font-size:34px;padding:34px 38px;line-height:1.5}.lims{gap:28px 30px;margin-top:44px}
+
+.big .lims li{min-height:250px;display:flex;align-items:center;font-size:38px}.lims{margin-top:50px}
+.big .grid3.col1{grid-template-columns:1fr;gap:28px;margin-top:44px}
+.big .grid3.col1 .step{padding:36px 60px 38px 44px}.big .grid3.col1 .step h3{font-size:44px}.big .grid3.col1 .step p{font-size:32px;margin-top:14px}.big .grid3.col1 .step .n{font-size:80px;top:18px;right:36px}
+
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="pg" id="pg"></div>
+<div class="edit-hotzone" id="hotzone"></div>
+<button class="edit-toggle" id="editToggle">Sửa chữ (E)</button>
+<div class="deck-viewport">
+<div class="deck-stage" id="stage">
+<section class="slide cover-slide" data-sec="0" style="--c:#ffe6a7"><div class="tabs"><div class="tab on" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content">
+<div class="cover">
+  <div class="cover-l">
+    <div class="kick reveal">Báo cáo và thuyết trình demo · RQ3</div>
+    <h1 class="reveal">Demo hệ thống IDS có giải thích trong bối cảnh SOC</h1>
+    <p class="lead reveal">Mô hình XGBoost 15 lớp, giải thích bằng SHAP và LIME, kiểm chứng trên file CSV, file PCAP và bắt mạng trực tiếp trên Wi-Fi.</p>
+    <div class="meta reveal"><span>Bản hoàn thiện<b>20/10/2026</b></span><span>Dữ liệu huấn luyện<b>CICIDS2018</b></span><span>Phiên bản mô hình<b>52eb5a671ee82109</b></span></div>
+  </div>
+  <div class="cover-r">
+    <div class="card3 reveal" style="--rot:-2deg"><b>3</b><span>lượt demo gồm CSV, PCAP và Wi-Fi trực tiếp</span></div>
+    <div class="card3 reveal" style="--rot:1.5deg"><b>15</b><span>lớp, gồm 14 loại tấn công và Benign</span></div>
+    <div class="card3 reveal" style="--rot:-1deg"><b>78</b><span>đặc trưng cho mỗi flow</span></div>
+  </div>
+</div></div><div class="foot">Demo IDS có giải thích · RQ3 · Mở đầu</div></section>
+<section class="slide big " data-sec="0" style="--c:#ffe6a7"><div class="tabs"><div class="tab on" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Mở đầu</div><h2>Demo này trả lời câu hỏi gì</h2></div>
+<p class="lead2 reveal">Hệ thống phát hiện xâm nhập chạy được từ đầu đến cuối trên dữ liệu thật hay không, và lời giải thích đi kèm cảnh báo đáng tin đến mức nào?</p>
+<div class="grid4">
+  <div class="idx reveal" style="--c:#98d4bb"><span class="no">Lượt 1</span><h3>Nạp file CSV</h3><p>105 flow, 15 lớp, mỗi lớp 7 flow, có nhãn thật để chấm điểm.</p><em>khoảng 8 phút</em></div>
+  <div class="idx reveal" style="--c:#c7b8ea"><span class="no">Lượt 2</span><h3>Phát lại PCAP</h3><p>tesst2.pcapng, 154,8 KB, 61 flow. Quan sát Benign bị gắn nhãn Hulk.</p><em>khoảng 5 phút</em></div>
+  <div class="idx reveal" style="--c:#f4b8c5"><span class="no">Lượt 3</span><h3>Bắt Wi-Fi trực tiếp</h3><p>So với PCAP và xem vì sao LIME không dùng được trên traffic thật.</p><em>khoảng 6 phút</em></div>
+  <div class="idx reveal" style="--c:#a8d8ea"><span class="no">Kết luận</span><h3>So sánh và giới hạn</h3><p>Bảng so sánh Hulk, kết luận, giới hạn và việc tiếp theo.</p><em>khoảng 4 phút</em></div>
+</div>
+<div class="note reveal wide"><span class="k">Hai hiện tượng cần chú ý</span>Lưu lượng duyệt web bình thường đôi khi bị gắn nhãn tấn công Hulk. LIME hoạt động tốt trên dữ liệu của dataset nhưng không dùng được khi chạy trên traffic thật.</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Mở đầu</div></section>
+<section class="slide big " data-sec="0" style="--c:#ffe6a7"><div class="tabs"><div class="tab on" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Luồng xử lý của hệ thống</div><h2>Một cổng /predict cho cả ba nguồn dữ liệu</h2></div><div class="grid3"><div class="step reveal"><span class="n">1</span><h3>Nguồn dữ liệu</h3><p>CSV đã có 78 đặc trưng, file PCAP hoặc bắt trực tiếp trên card Wi-Fi.</p></div><div class="step reveal"><span class="n">2</span><h3>Trích xuất flow</h3><p>CICFlowMeter gom packet thành flow và tính 78 đặc trưng đúng thứ tự huấn luyện.</p></div><div class="step reveal"><span class="n">3</span><h3>Chuẩn hóa</h3><p>Kiểm tra đủ 78 cột, đúng thứ tự, xử lý giá trị lỗi, đổi đơn vị thời gian nếu bật.</p></div><div class="step reveal"><span class="n">4</span><h3>Dự đoán</h3><p>XGBoost 15 lớp trả xác suất từng lớp, lớp cao nhất là nhãn dự đoán.</p></div><div class="step reveal"><span class="n">5</span><h3>Cảnh báo</h3><p>Mọi flow có nhãn khác Benign tạo một cảnh báo.</p></div><div class="step reveal"><span class="n">6</span><h3>SHAP tự động</h3><p>Hàng đợi tối đa 200 cảnh báo, mỗi cảnh báo lấy Top-5 đặc trưng đóng góp nhiều nhất.</p></div><div class="step reveal"><span class="n">7</span><h3>Độ tin cậy giải thích</h3><p>Đếm đặc trưng nhạy môi trường trong Top-5 và kiểm tra lớp hiếm, gán nhánh A hoặc B.</p></div><div class="step reveal"><span class="n">8</span><h3>LIME theo yêu cầu</h3><p>Chỉ chạy khi người dùng bấm, chỉ hiển thị khi vùng lân cận đủ tin cậy.</p></div><div class="step reveal"><span class="n">9</span><h3>Dashboard</h3><p>Số liệu, biểu đồ, lịch sử flow, chi tiết từng flow và thời gian xử lý.</p></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Mở đầu</div></section>
+<section class="slide " data-sec="0" style="--c:#ffe6a7"><div class="tabs"><div class="tab on" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hiểu nhanh trước khi demo</div><h2>Bảo vệ đã học từ một cuốn sách có sẵn</h2></div>
+<div class="grid3 defs" style="margin-top:20px">
+  <div class="def reveal"><h3>Benign</h3><p>Lưu lượng bình thường của người dùng, ví dụ mở trang web hoặc truy vấn DNS.</p></div>
+  <div class="def reveal"><h3>DoS Hulk</h3><p>Tấn công làm quá tải máy chủ web bằng rất nhiều yêu cầu HTTP có URL ngẫu nhiên.</p></div>
+  <div class="def reveal"><h3>Cờ FIN</h3><p>Gói báo rằng bên gửi muốn đóng kết nối một cách lịch sự, như câu chào cúp máy.</p></div>
+</div>
+<table class="tbl reveal" style="margin-top:20px;font-size:24px">
+<tr><th>Kiểu cuộc gọi</th><th>Có nói chuyện</th><th>Có chào cúp FIN</th><th>Sách dạy bảo vệ điều gì</th></tr>
+<tr><td>Benign đóng bằng FIN, 9.815 flow train</td><td>Không</td><td>Có</td><td>Gọi rồi cúp ngay, là người bình thường.</td></tr>
+<tr><td>Hulk đóng bằng FIN, 445 flow train</td><td>Có</td><td>Có</td><td>Chỉ thấy ở kẻ xấu Hulk, 445 trên 445.</td></tr>
+<tr><td>Hulk thông thường, 99,7% flow Hulk trong test</td><td>Thường chưa</td><td>Không</td><td>Dấu hiệu chính là header TCP 32 byte của máy Linux tấn công.</td></tr>
+<tr class="hot"><td>Duyệt web thật hôm nay</td><td>Có</td><td>Có</td><td>Giống hệt dòng Hulk đóng bằng FIN nên bảo vệ hô Hulk.</td></tr>
+</table>
+<div class="note reveal wide"><span class="k">Lỗi không nằm ở người duyệt web</span>Cuốn sách học thiếu ví dụ về người bình thường vừa nói chuyện vừa chào cúp máy, nên mô hình nhớ nhầm rằng kiểu này chỉ của kẻ xấu.</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Mở đầu</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 1 · Màn hình giám sát khi chưa có dữ liệu</div><h2>Bắt đầu từ trạng thái sạch</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 1</span><div class="shot"><img src="images/image1.png" alt="Hình 1"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Ba điều cần kiểm tra</span>API đang hoạt động, mô hình đã nạp 15 lớp, hàng đợi SHAP đang trống, 0 trên 200.</div><div class="note reveal"><span class="k">Truy vết được</span>Phiên bản mô hình 52eb5a671ee82109 hiển thị cuối thanh bên, mọi kết quả đều truy được về đúng mô hình.</div><div class="note reveal"><span class="k">Bộ lọc phạm vi</span>Lọc theo lượt dữ liệu, nguồn, thời gian, IP nguồn và đích, nhãn dự đoán và nhánh giải thích.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 2 · Nạp file CSV</div><h2>Gửi 105 flow vào /predict</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 2</span><div class="shot"><img src="images/image2.png" alt="Hình 2"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">105 flow thành công, 0 dòng lỗi</span>File đủ 78 đặc trưng, đúng thứ tự cột, không có NaN hay vô cực.</div><div class="note reveal"><span class="k">Không bật đổi giây sang micro giây</span>CSV dataset đã ở micro giây. Bật nhầm thì Flow Duration và các đặc trưng IAT lệch một triệu lần.</div><div class="note reveal"><span class="k">Thời gian</span>CSV không có cột thời gian nên hệ thống lấy giờ API nhận flow, hiển thị theo GMT+7.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 3 · Tổng quan lượt CSV sau khi dự đoán</div><h2>89 cảnh báo, đều đã có SHAP</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 3</span><div class="shot"><img src="images/image3.png" alt="Hình 3"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">16 Benign và 89 cảnh báo</span>Tức 15,2% và 84,8%. Đây không phải tỉ lệ báo nhầm, vì file cố ý có 98 flow tấn công và chỉ 7 flow Benign.</div><div class="note reveal"><span class="k">SHAP xong 89 trên 89</span>Không có cảnh báo nào bị bỏ hoặc lỗi.</div><div class="note reveal"><span class="k">46 xem lại, 43 bình thường</span>Nhánh B và nhánh A. Benign dài nhất với 16 flow, Infiltration chỉ còn 2 flow.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Đối chiếu với nhãn thật</div><h2>86 trên 105 flow nhận đúng</h2></div>
+<div class="cmp">
+  <div class="bigs">
+    <div class="bignum reveal"><b>89<small> / 98</small></b><span>flow tấn công được gắn nhãn tấn công, tức 90,8%</span></div>
+    <div class="bignum reveal"><b>7<small> / 7</small></b><span>flow Benign thật đều nhận đúng, không có báo nhầm</span></div>
+    <div class="bignum reveal"><b>9</b><span>flow lọt, gồm 4 Brute Force Web và 5 Infiltration bị đoán Benign</span></div>
+  </div>
+  <table class="tbl reveal compact">
+    <tr><th>Lớp thật</th><th>Đúng</th><th>Bị nhận nhầm thành</th><th>Recall mẫu</th><th>Recall RQ1</th></tr>
+    <tr class="hot"><td>Infiltration</td><td>2/7</td><td>Benign, 5 flow</td><td>29%</td><td>15,98%</td></tr>
+    <tr class="hot"><td>DoS SlowHTTPTest</td><td>2/7</td><td>FTP-BruteForce, 5 flow</td><td>29%</td><td>37,64%</td></tr>
+    <tr class="hot"><td>Brute Force Web</td><td>3/7</td><td>Benign, 4 flow</td><td>43%</td><td>70,49%</td></tr>
+    <tr class="hot"><td>SQL Injection</td><td>4/7</td><td>Brute Force Web, 3 flow</td><td>57%</td><td>52,94%</td></tr>
+    <tr><td>DDoS LOIC-UDP</td><td>6/7</td><td>DDoS LOIC-HTTP, 1 flow</td><td>86%</td><td>96,24%</td></tr>
+    <tr><td>FTP-BruteForce</td><td>6/7</td><td>DoS SlowHTTPTest, 1 flow</td><td>86%</td><td>91,30%</td></tr>
+    <tr><td>Chín lớp còn lại</td><td>7/7</td><td>Không có</td><td>100%</td><td>95,65% đến 100%</td></tr>
+  </table>
+</div>
+<div class="note reveal wide"><span class="k">Đọc cho đúng</span>81,9% không phải độ chính xác của mô hình. Mẫu cân bằng 7 flow mỗi lớp nên lớp yếu bị phóng đại. Độ chính xác chính thức của RQ1 tính trên 700.000 flow. Các lớp yếu trùng với lớp yếu của RQ1, nghĩa là đường nạp CSV cho kết quả nhất quán với mô hình.</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 4 · Bảng lịch sử và phân tích flow</div><h2>Mỗi dòng là một flow, mới nhất trước</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 4</span><div class="shot"><img src="images/image4.png" alt="Hình 4"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">IP chưa được cung cấp</span>CSV dataset không có địa chỉ IP nên hệ thống để trống thay vì tự bịa. Cổng đích cho biết dịch vụ, ví dụ 21 là FTP, 22 là SSH, 80 là HTTP.</div><div class="note reveal"><span class="k">Ba dòng xác suất chỉ 59 đến 63%</span>Hai dòng FTP-BruteForce và một dòng SlowHTTPTest. Đây là những dòng mô hình không chắc chắn.</div><div class="note reveal"><span class="k">Phân trang</span>50 flow mỗi trang, 3 trang cho 105 flow.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 5 · Chi tiết flow có xác suất 59,97%</div><h2>Xác suất thấp báo trước một dự đoán sai</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 5</span><div class="shot"><img src="images/image5.png" alt="Hình 5"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Mô hình phân vân giữa hai lớp</span>Hai thanh đứng đầu là SlowHTTPTest và FTP-BruteForce. Nhãn thật của flow là FTP-BruteForce.</div><div class="note reveal"><span class="k">Xác suất 59,97%</span>Thấp hơn nhiều so với mức trên 99% của đa số cảnh báo. Đây là tín hiệu để analyst kiểm tra lại.</div><div class="note reveal"><span class="k">Nhánh A không có nghĩa là đúng</span>Flow này nằm ở nhánh A nhưng vẫn là dự đoán sai.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 6 · Nhánh A và B</div><h2>Vì sao hệ thống có hai nhánh</h2></div><div class="topfig"><figure class="fig reveal" style="width:1450px"><span class="tape">Hình 6</span><div class="shot"><img src="images/image7.png" alt="Hình 6"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Quy tắc</span>Không dấu hiệu nào bật thì nhánh A. Có ít nhất một dấu hiệu bật thì nhánh B kèm lời nhắc xem lại.</div><div class="note reveal"><span class="k">Dấu hiệu 1, nhạy môi trường</span>Từ 2 đặc trưng như cổng đích, header TCP, cửa sổ nhận hay cờ FIN nằm trong Top-5 SHAP.</div><div class="note reveal"><span class="k">Dấu hiệu 2, lớp hiếm</span>Lớp có dưới 100 mẫu train. Hiện chỉ có SQL Injection với 70 mẫu.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 7 · SHAP và LIME của cùng một flow</div><h2>Hai phương pháp, hai câu chuyện</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 7a · SHAP</span><div class="shot"><img src="images/image8.png" alt="Hình 7a · SHAP"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 7b · LIME</span><div class="shot"><img src="images/image9.png" alt="Hình 7b · LIME"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">SHAP</span>Fwd Seg Size Min có dấu cảnh báo tam giác vì thuộc nhóm nhạy môi trường, đóng góp khoảng cộng 4,9.</div><div class="note reveal"><span class="k">LIME</span>Top-5 gồm Bwd Pkts/s khoảng 0,042 và Fwd Seg Size Min khoảng 0,038. Đây là hệ số của mô hình tuyến tính xấp xỉ.</div><div class="note reveal"><span class="k">Chỉ đồng ý ở hai đặc trưng</span>Fwd Seg Size Min và Bwd Pkts/s. Ba đặc trưng còn lại khác nhau.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 8 và 9 · Đánh giá giải thích và thời gian xử lý</div><h2>Faithfulness 0,597 và Jaccard 0,25</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 8</span><div class="shot"><img src="images/image10.png" alt="Hình 8"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 9</span><div class="shot"><img src="images/image11.png" alt="Hình 9"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Faithfulness proxy drop 0,597</span>Xóa Top-5 SHAP làm xác suất lớp dự đoán tụt khoảng 60 điểm phần trăm.</div><div class="note reveal"><span class="k">Jaccard@5 bằng 0,25</span>SHAP và LIME có 2 đặc trưng chung trên tổng 8 đặc trưng khác nhau.</div><div class="note reveal"><span class="k">Chờ hàng đợi khoảng 5.505 ms</span>Đây là thời gian xếp hàng khi 89 cảnh báo cùng đến. Thời gian tính SHAP thật chỉ khoảng 187 ms, toàn bộ /predict khoảng 78 ms.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 11 · Flow DDoS HOIC, nhánh B</div><h2>Nhánh B xuất hiện trên một dự đoán đúng</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 11</span><div class="shot"><img src="images/image13.png" alt="Hình 11"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Xác suất 99,94%, dự đoán đúng</span>Cửa sổ TCP ban đầu 32.738 byte và cổng đích 80, đúng kiểu HTTP flood của HOIC.</div><div class="note reveal"><span class="k">Vì sao nhánh B</span>Hai trong bốn đặc trưng nhạy môi trường nằm trong Top-5 SHAP, đạt ngưỡng 2.</div><div class="note reveal"><span class="k">Nhánh B là lời nhắc đọc thận trọng</span>Cả 7 flow HOIC, Hulk, Slowloris và SSH-Bruteforce đều vào nhánh B và đều được nhận đúng. Không phải báo hiệu mô hình sai.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 12 · SHAP và LIME của flow HOIC</div><h2>SHAP và LIME chỉ chung một đặc trưng</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 12a · SHAP</span><div class="shot"><img src="images/image15.png" alt="Hình 12a · SHAP"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 12b · LIME</span><div class="shot"><img src="images/image17.png" alt="Hình 12b · LIME"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">SHAP</span>Init Fwd Win Byts khoảng cộng 6,6 chi phối, lớn hơn mọi đặc trưng khác. Tiếp theo là Dst Port khoảng cộng 0,6.</div><div class="note reveal"><span class="k">LIME</span>Init Fwd Win Byts khoảng cộng 0,039 và ACK Flag Cnt khoảng cộng 0,035 đẩy về HOIC, ba đặc trưng khác kéo ngược.</div><div class="note reveal"><span class="k">Không có đáp án đúng duy nhất</span>Hai phương pháp chỉ chung Init Fwd Win Byts, nên không xem phương pháp nào là đáp án đúng.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="1" style="--c:#98d4bb"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab on" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 13 · Đánh giá giải thích của flow HOIC</div><h2>Faithfulness 0,994, Jaccard 0,111</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 13</span><div class="shot"><img src="images/image19.png" alt="Hình 13"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Faithfulness 0,994</span>Xóa Top-5 SHAP làm xác suất HOIC gần như sụp hoàn toàn, nên Top-5 thật sự là phần mô hình dựa vào.</div><div class="note reveal"><span class="k">Jaccard@5 bằng 0,111</span>Chỉ 1 đặc trưng chung trên 9 đặc trưng khác nhau. Faithfulness cao chưa chứng minh đó là dấu vết tấn công thật.</div><div class="note reveal"><span class="k">Tổng kết lượt CSV</span>Nạp 105 trên 105 flow, 89 cảnh báo đều có SHAP, LIME chạy được trên flow dataset với R² 0,849 và 0,467.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 1 CSV</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 14 · Chọn PCAP và bấm trích xuất</div><h2>Lượt 2 phát lại file PCAP</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 14</span><div class="shot"><img src="images/image20.png" alt="Hình 14"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">tesst2.pcapng, 154,8 KB</span>CICFlowMeter bản rq3-cfm-0.5.0-lifecycle-v3 trích đặc trưng rồi gửi từng flow vào cùng cổng /predict, giới hạn 120 giây.</div><div class="note reveal"><span class="k">Có địa chỉ IP thật</span>Khác CSV của dataset, PCAP cho phép bảng flow hiển thị nguồn và đích.</div><div class="note reveal"><span class="k">Mỗi lần gửi là một lượt riêng</span>Không ghi đè lịch sử, không cần xóa dữ liệu cũ để chạy lại.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 15 · Kết quả lượt PCAP</div><h2>61 flow, hầu hết là Benign</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 15</span><div class="shot"><img src="images/image21.png" alt="Hình 15"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">58 Benign và 3 cảnh báo</span>Tức 95,1% và 4,9%. Cả 3 cảnh báo đã có SHAP và đều ở nhánh B.</div><div class="note reveal"><span class="k">Đúng hình ảnh duyệt web bình thường</span>Máy 172.20.10.8 đi tới cổng 443 của các dịch vụ web và cổng 53 UDP của DNS, xác suất Benign khoảng 94 đến 99%.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 16 · Flow bị gắn nhãn DoS Hulk trong PCAP</div><h2>Dòng cam nổi bật trong bảng</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 16</span><div class="shot"><img src="images/image22.png" alt="Hình 16"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Nguồn là cổng 443</span>Flow từ 171.242.7.232 cổng 443 về máy trình diễn, tức máy chủ web phản hồi. Rất có thể là duyệt web bình thường.</div><div class="note reveal"><span class="k">Xác suất 97,07%</span>Nhánh Xem lại, SHAP có, LIME chưa chạy.</div><div class="note reveal"><span class="k">Gợi ý FIN và có dữ liệu</span>Cột gợi ý cho biết flow thuộc nhóm có thể báo nhầm.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 17 · Chi tiết flow, vì sao nghi ngờ Hulk</div><h2>Vì sao mô hình nghi ngờ flow này là Hulk</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 17</span><div class="shot"><img src="images/image23.png" alt="Hình 17"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Hai đặc trưng đẩy về Hulk</span>Số gói cờ FIN bằng 1 và độ dài gói lớn nhất 93 byte.</div><div class="note reveal"><span class="k">Trong train, kiểu này chỉ ở Hulk</span>Flow đóng bằng FIN và có gửi dữ liệu chỉ gặp ở Hulk, 445 trên 445 flow, và không có flow Benign nào.</div><div class="note reveal"><span class="k">Nhánh B</span>3 trên 4 đặc trưng nhạy môi trường nằm trong Top-5, vượt ngưỡng 2, kèm hộp Gợi ý có thể báo nhầm.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 18 và 19 · Xác suất và SHAP của flow Hulk</div><h2>Cờ FIN đứng đầu, không phải header 32 byte</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 18</span><div class="shot"><img src="images/image24.png" alt="Hình 18"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 19</span><div class="shot"><img src="images/image25.png" alt="Hình 19"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Mô hình không phân vân</span>Hulk khoảng 97%, Benign khoảng 3%. Chỉ nhìn xác suất thì không nhận ra báo nhầm.</div><div class="note reveal"><span class="k">SHAP</span>FIN Flag Cnt khoảng cộng 5,87, Fwd Pkt Len Max khoảng cộng 2,95. Ba đặc trưng nhạy môi trường có dấu cảnh báo.</div><div class="note reveal"><span class="k">Cùng nhãn, khác lý do</span>Hulk thật dựa vào Fwd Seg Size Min, không phải cờ FIN. Đó là bằng chứng mô hình đang nhầm.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 20 · LIME không đủ tin cậy trên flow thật</div><h2>Hệ thống thừa nhận thay vì vẽ số sai</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 20</span><div class="shot"><img src="images/image26.png" alt="Hình 20"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Không vẽ biểu đồ, không điền R² bằng 1</span>Trong 1.000 mẫu chỉ còn rất ít mẫu có trọng số, cỡ mẫu hiệu dụng khoảng 1.</div><div class="note reveal"><span class="k">Vì sao</span>Mẫu giả được sinh quanh flow dựa trên 2.000 flow mẫu của tập train, còn flow thật nằm quá xa dữ liệu mẫu này.</div><div class="note reveal"><span class="k">Dự đoán không đổi</span>XGBoost vẫn giữ nguyên nhãn và SHAP vẫn dùng được ở tab bên cạnh.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="2" style="--c:#c7b8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab on" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 21 · Đánh giá giải thích và thời gian của flow PCAP</div><h2>Chờ hàng đợi chỉ 9,6 ms vì có 3 cảnh báo</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 21a</span><div class="shot"><img src="images/image27.png" alt="Hình 21a"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 21b</span><div class="shot"><img src="images/image28.png" alt="Hình 21b"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Nhánh B, faithfulness 0,97</span>3 đặc trưng môi trường trong Top-5. Jaccard@5 và Stability hiển thị Chưa có vì LIME không có Top-5 hợp lệ.</div><div class="note reveal"><span class="k">Toàn bộ /predict khoảng 42,6 ms</span>Chuẩn hóa 8 ms, dự đoán 25,9 ms, SHAP khoảng 141 ms.</div><div class="note reveal"><span class="k">Tổng kết lượt PCAP</span>Pipeline chạy từ PCAP tới cảnh báo có SHAP và đưa ra đúng hai tín hiệu cảnh giác, là nhánh B và gợi ý FIN cộng có dữ liệu.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 2 PCAP</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 22 · Điều khiển bắt traffic realtime</div><h2>Lượt 3 bắt trực tiếp trên Wi-Fi</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 22</span><div class="shot"><img src="images/image29.png" alt="Hình 22"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Chỉ bắt trên máy và mạng được phép</span>Phiên chạy đến khi bấm Dừng hoặc gặp lỗi, không tự dừng sau 60 giây.</div><div class="note reveal"><span class="k">Ba nút</span>Bắt đầu capture, Dừng capture và Đối soát sau restart, nút cuối chỉ dùng khi API khởi động lại giữa chừng.</div><div class="note reveal"><span class="k">Thao tác demo</span>Bấm Bắt đầu capture rồi lướt web bình thường vài chục giây.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 23 · Phiên capture đang chạy</div><h2>366 packet thành 3 flow</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 23a · Vừa bắt đầu</span><div class="shot"><img src="images/image30.png" alt="Hình 23a · Vừa bắt đầu"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 23b · Sau ít phút</span><div class="shot"><img src="images/image31.png" alt="Hình 23b · Sau ít phút"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Chưa có flow không có nghĩa là chưa có packet</span>Flow chỉ được xuất khi kết nối kết thúc hoặc hết thời gian chờ.</div><div class="note reveal"><span class="k">Đã nhận 366 packet</span>Xuất 3 flow, API xác nhận 3 flow, hai tiến trình capture và feeder đều sẵn sàng.</div><div class="note reveal"><span class="k">Tách riêng phiên này</span>Mã lượt dự đoán cho phép bấm Xem flow của phiên này để chuyển sang dashboard.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 24 · Lịch sử flow realtime</div><h2>Chỉ lướt web mà vẫn có flow bị gắn Hulk</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 24</span><div class="shot"><img src="images/image32.png" alt="Hình 24"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Không phát tấn công</span>Nguồn 192.168.1.82 là chính máy trình diễn trên Wi-Fi, chỉ duyệt web.</div><div class="note reveal"><span class="k">Các dòng Hulk xác suất khoảng 97%</span>Đều ở nhánh Xem lại, SHAP có, gợi ý FIN và có dữ liệu.</div><div class="note reveal"><span class="k">Đích là cổng 443</span>Các máy chủ web như 8.211.55.206, 23.59.80.232, cùng mẫu với flow Hulk trong PCAP.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 25 · Một lượt realtime khác</div><h2>Phần lớn flow vẫn là Benign</h2></div><div class="topfig"><figure class="fig reveal" style="width:1400px"><span class="tape">Hình 25</span><div class="shot"><img src="images/image33.png" alt="Hình 25"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">39 flow, tất cả Benign</span>Xác suất Benign từ khoảng 86,6% đến 99,6%, không có cảnh báo nào.</div><div class="note reveal"><span class="k">Không báo Hulk tràn lan</span>Nhiều flow duyệt web đóng bằng FIN vẫn là Benign. Chỉ một nhóm hẹp rơi vào lối tắt FIN cộng có dữ liệu.</div><div class="note reveal"><span class="k">Tỉ lệ cảnh báo Hulk 8 đến 23%</span>Theo báo cáo kiểm tra ngày 19/10, dao động tùy lúc đo.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 26 · Chi tiết flow realtime bị gắn Hulk 95,22%</div><h2>Một kết nối HTTPS bình thường</h2></div><div class="side"><div class="col-img"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 26</span><div class="shot"><img src="images/image34.png" alt="Hình 26"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">Có dữ liệu và 4 gói FIN</span>Kết nối kéo dài khoảng 19 giây, cách một trang web đóng kết nối lịch sự, không phải tấn công.</div><div class="note reveal"><span class="k">192.168.1.82 tới 166.108.200.175</span>Cổng 443 qua TCP, nguồn dữ liệu feeder_live, nhánh B, 3 trên 4 đặc trưng môi trường.</div><div class="note reveal"><span class="k">Hạn chế của dữ liệu huấn luyện</span>Mô hình dựa vào một lối tắt hẹp. Đây không phải lỗi của hệ thống.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 27 và 28 · SHAP và LIME của flow realtime</div><h2>SHAP giống PCAP, LIME không dùng được</h2></div><div class="side"><div class="col-img stk"><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 27 · SHAP</span><div class="shot"><img src="images/image35.png" alt="Hình 27 · SHAP"></div></figure><figure class="fig reveal" style="width:1120px"><span class="tape">Hình 28 · LIME</span><div class="shot"><img src="images/image36.png" alt="Hình 28 · LIME"></div></figure></div><div class="col-notes"><div class="note reveal"><span class="k">SHAP gần như bản sao của PCAP</span>Spearman 0,998 và Top-5 trùng 4 trên 5. PCAP tái lập được hiện tượng realtime.</div><div class="note reveal"><span class="k">999 trên 1.000 mẫu có trọng số 0</span>Cỡ mẫu hiệu dụng khoảng 1, LIME gần như chỉ còn nhìn vào chính flow gốc.</div><div class="note reveal"><span class="k">Lệch mẫu nền</span>Fwd Byts/b Avg bằng 96 ở flow nhưng bằng 0 ở cả 2.000 mẫu nền. Fwd Blk Rate Avg bằng 80,863974 và nền cũng bằng 0.</div></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="3" style="--c:#f4b8c5"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab on" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hình 28 · Thời gian xử lý một flow realtime</div><h2>LIME không bị loại vì chậm</h2></div><div class="topfig"><figure class="fig reveal" style="width:1500px"><span class="tape">Hình 28c</span><div class="shot"><img src="images/image38.png" alt="Hình 28c"></div></figure></div><div class="row" style="grid-template-columns:repeat(3,1fr)"><div class="note reveal"><span class="k">Toàn bộ /predict 25,8 ms</span>Chuẩn hóa 1,7 ms, dự đoán 19,9 ms.</div><div class="note reveal"><span class="k">SHAP 41,7 ms, độ tin cậy 47,2 ms</span>LIME 35 và 139 ms cho hai lần bấm.</div><div class="note reveal"><span class="k">Lưu ý khi đọc</span>Total đã chứa các bước con, không cộng các dòng lại. Nguyên nhân LIME thất bại là vị trí flow so với dữ liệu nền.</div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Lượt 3 Wi-Fi</div></section>
+<section class="slide " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">So sánh · báo cáo kiểm tra ngày 19/10/2026</div><h2>Hulk trong dataset khác Hulk trên traffic thật</h2></div>
+<table class="tbl reveal">
+<tr><th>Tiêu chí</th><th>Hulk thật trong dataset</th><th>Flow realtime bị gắn Hulk</th></tr>
+<tr class=hot><td>Đặc trưng SHAP lớn nhất</td><td>Fwd Seg Size Min, khoảng +6,49</td><td>FIN Flag Cnt, khoảng +5,87</td></tr>
+<tr class=hot><td>Đóng góp của Fwd Seg Size Min</td><td>+6,49</td><td>Chỉ +0,32</td></tr>
+<tr><td>Đóng góp của Fwd Pkt Len Max</td><td>+0,21</td><td>+2,62</td></tr>
+<tr><td>Đóng góp của Dst Port</td><td>Rất nhỏ</td><td>Trừ 0,59, kéo ra xa Hulk</td></tr>
+<tr><td>Cổng đích, trung vị</td><td>80</td><td>443</td></tr>
+<tr><td>FIN Flag Cnt, trung vị</td><td>0</td><td>2</td></tr>
+<tr><td>Fwd Pkt Len Max, trung vị</td><td>0 byte, chưa gửi dữ liệu</td><td>1.454 byte, đã gửi dữ liệu</td></tr>
+<tr><td>Fwd Seg Size Min, trung vị</td><td>32 byte, máy tấn công Linux</td><td>20 byte, máy Windows</td></tr>
+</table>
+<div class="note reveal wide"><span class="k">Hai đường tới nhãn Hulk</span>Hulk thật đi qua dấu hiệu header TCP 32 byte của máy Linux sinh tấn công trong lab. Traffic duyệt web đi qua lối tắt hiếm đóng bằng FIN và có gửi dữ liệu. Cột Hulk thật dựa trên 1.500 flow trong test_set, cột realtime dựa trên 84 flow traffic thật.</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide big " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Chuỗi bằng chứng</div><h2>Vì sao Benign bị nhầm thành Hulk</h2></div>
+<div class="grid4 stats">
+  <div class="stat reveal"><b>445<small> / 445</small></b><span>flow Hulk đóng bằng FIN trong train đều có gửi dữ liệu</span></div>
+  <div class="stat reveal"><b>9.815</b><span>flow Benign đóng bằng FIN trong train đều là flow rỗng</span></div>
+  <div class="stat reveal"><b>84<small> / 84</small></b><span>flow realtime khớp quy tắc đều bị báo Hulk. PCAP là 9 trên 9</span></div>
+  <div class="stat reveal"><b>0<small> / 769</small></b><span>flow realtime không khớp quy tắc bị báo Hulk. PCAP là 0 trên 85</span></div>
+</div>
+<div class="note reveal wide"><span class="k">Quy tắc giải thích trọn vẹn</span>Flow đóng bằng FIN, có gửi dữ liệu và header nhỏ thì bị báo Hulk. Mô hình học đúng điều dữ liệu dạy, nhưng traffic web thật vi phạm quy luật đó.</div>
+<div class="note reveal wide"><span class="k">Câu hỏi còn mở</span>Vì sao dữ liệu train gần như không có flow Benign vừa có dữ liệu vừa đóng bằng FIN. Có hai giả thuyết chưa phân xử được. Công cụ gom flow cũ có thể cắt flow sai ở chỗ đóng kết nối, hoặc môi trường lab tấn công dồn dập nên ít kết nối kịp đóng gọn.</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">LIME trên dataset và trên traffic thật</div><h2>Vì sao realtime không dùng được LIME</h2></div>
+<div class="bars">
+  <div class="bar reveal"><span class="lb">Cảnh báo trên tập B, dữ liệu sạch của dự án</span><div class="trk"><i style="width:72%"></i></div><span class="vl">143 trên 198, 72%</span></div>
+  <div class="bar reveal"><span class="lb">Hai flow dataset trong demo CSV</span><div class="trk"><i style="width:100%"></i></div><span class="vl">Có biểu đồ, R² 0,849 và 0,467</span></div>
+  <div class="bar reveal"><span class="lb">Cảnh báo realtime, lượt 4 phút</span><div class="trk"><i style="width:1.5%"></i></div><span class="vl">1 trên 113</span></div>
+  <div class="bar reveal"><span class="lb">Cảnh báo từ hai file PCAP</span><div class="trk"><i style="width:0.5%"></i></div><span class="vl">0 trên 8</span></div>
+</div>
+<div class="row" style="grid-template-columns:repeat(2,1fr)">
+<div class="note reveal"><span class="k">Không phải do tốc độ</span>LIME mất trung vị khoảng 56 ms mỗi cảnh báo. Nguyên nhân là vị trí của flow so với 2.000 mẫu nền của tập train.</div>
+<div class="note reveal"><span class="k">SHAP là giải thích chính khi chạy realtime</span>Hệ thống gắn trạng thái không đủ tin cậy và bỏ R² thay vì hiển thị hệ số vô nghĩa. LIME được trình bày như một giới hạn đã đo được.</div>
+</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Hiệu năng quan sát được</div><h2>Phát hiện mất vài chục mili giây mỗi flow</h2></div>
+<table class="tbl reveal">
+<tr><th>Bước</th><th>CSV 105 flow</th><th>PCAP</th><th>Realtime</th></tr>
+<tr><td>normalize</td><td>2,6 đến 2,8 ms</td><td>8,0 ms</td><td>1,7 ms</td></tr>
+<tr><td>predict</td><td>13,5 đến 30,0 ms</td><td>25,9 ms</td><td>19,9 ms</td></tr>
+<tr class="hot"><td>total /predict</td><td>43,6 đến 77,9 ms</td><td>42,6 ms</td><td>25,8 ms</td></tr>
+<tr class="hot"><td>shap_queue_wait</td><td>5.227 đến 5.505 ms</td><td>9,6 ms</td><td>15,8 ms</td></tr>
+<tr><td>shap</td><td>180 đến 187 ms</td><td>140,9 ms</td><td>41,7 ms</td></tr>
+<tr><td>reliability</td><td>78 đến 386 ms</td><td>68,5 ms</td><td>47,2 ms</td></tr>
+<tr><td>lime</td><td>119 đến 132 ms</td><td>95,0 ms</td><td>35,0 và 138,8 ms</td></tr>
+</table>
+<div class="row" style="grid-template-columns:repeat(2,1fr)">
+<div class="note reveal"><span class="k">Chờ hàng đợi phụ thuộc số cảnh báo</span>Từ vài mili giây lên hơn 5 giây khi 89 cảnh báo cùng đến, trong khi thời gian tính SHAP vẫn dưới 200 ms.</div>
+<div class="note reveal"><span class="k">Chỉ là bậc độ lớn</span>Mỗi cột là một hoặc hai flow cụ thể, chưa phải thống kê và chưa phải độ trễ end-to-end.</div>
+</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide big " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Kết luận</div><h2>Sáu điều rút ra từ ba lượt demo</h2></div><div class="grid3 two"><div class="step reveal"><span class="n">1</span><h3>Chạy trọn vòng trên ba đường vào</h3><p>CSV, PCAP và Wi-Fi đều đi qua cùng cổng /predict, cùng mô hình XGBoost 15 lớp, mọi cảnh báo đều có SHAP.</p></div><div class="step reveal"><span class="n">2</span><h3>Nhất quán với mô hình RQ1</h3><p>Bắt 89 trên 98 flow tấn công, nhận đúng 7 trên 7 flow Benign. Lớp yếu trùng với lớp yếu của RQ1.</p></div><div class="step reveal"><span class="n">3</span><h3>Xác suất thấp là tín hiệu có ích</h3><p>Flow bị nhận nhầm chỉ có xác suất 59,97%, trong khi đa số cảnh báo trên 99%.</p></div><div class="step reveal"><span class="n">4</span><h3>Benign bị nhầm Hulk do lối tắt</h3><p>Trong train, mọi flow đóng bằng FIN và có dữ liệu đều là Hulk, 445 trên 445. Realtime và PCAP cùng một cơ chế.</p></div><div class="step reveal"><span class="n">5</span><h3>LIME chỉ dùng được trên dataset</h3><p>72% hợp lệ trên tập B nhưng chỉ 1 trên 113 trên realtime, vì flow thật nằm xa mẫu nền.</p></div><div class="step reveal"><span class="n">6</span><h3>Nhánh B là lời nhắc đọc thận trọng</h3><p>Nhánh B bật cả ở dự đoán đúng. Phần phát hiện mất 26 đến 78 ms mỗi flow, đủ nhanh cho thời gian thực.</p></div></div></div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide big " data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Giới hạn</div><h2>Giới hạn của phần demo</h2></div><ul class="lims"><li class="reveal">Chưa có demo tấn công thật kèm nhãn xác nhận, nên chưa đo được tỉ lệ bắt và FPR thật.</li><li class="reveal">Tỉ lệ cảnh báo Hulk trên traffic thật mới là tỉ lệ cảnh báo, chưa phải FPR.</li><li class="reveal">Nguyên nhân sâu xa của lối tắt FIN trong dữ liệu huấn luyện chưa được xác định.</li><li class="reveal">Số đo thời gian và chỉ số faithfulness mới ở mức tham khảo, lấy từ vài flow cụ thể.</li></ul></div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide big mid-slide" data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content"><div class="head reveal"><div class="kick">Việc tiếp theo</div><h2>Kế hoạch tiếp theo</h2></div>
+<div class="grid3 col1">
+  <div class="step reveal"><span class="n">1</span><h3>Demo tấn công có nhãn thật</h3><p>Chạy các đợt tấn công trong môi trường lab riêng, ghi lại thời gian và nguồn tấn công để gắn nhãn sau.</p></div>
+  <div class="step reveal"><span class="n">2</span><h3>Đo tỉ lệ bắt và báo nhầm thật</h3><p>Có nhãn xác nhận thì mới tính được FPR thật và kiểm chứng giả thuyết về lối tắt FIN.</p></div>
+  <div class="step reveal"><span class="n">3</span><h3>Đặt tiêu chí đạt trước khi chạy</h3><p>Tiêu chí được chốt từ đầu để không chỉnh lại sau khi đã thấy kết quả.</p></div>
+</div>
+</div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+<section class="slide big closing-slide" data-sec="4" style="--c:#a8d8ea"><div class="tabs"><div class="tab" data-sec="0" style="--c:#ffe6a7;top:86px">Mở đầu</div><div class="tab" data-sec="1" style="--c:#98d4bb;top:268px">Lượt 1 CSV</div><div class="tab" data-sec="2" style="--c:#c7b8ea;top:450px">Lượt 2 PCAP</div><div class="tab" data-sec="3" style="--c:#f4b8c5;top:632px">Lượt 3 Wi-Fi</div><div class="tab on" data-sec="4" style="--c:#a8d8ea;top:814px">Phân tích</div></div><div class="paper"><i class="hole" style="top:190px"></i><i class="hole" style="top:487px"></i><i class="hole" style="top:784px"></i></div><div class="content">
+<div class="closing">
+  <div class="kick reveal">Kết thúc phần demo</div>
+  <h1 class="reveal">Cảm ơn đã lắng nghe</h1>
+  <div class="three">
+    <div class="step reveal"><span class="n">1</span><h3>Chạy trọn vòng</h3><p>Từ packet tới cảnh báo có giải thích trên CSV, PCAP và Wi-Fi, nhất quán với RQ1.</p></div>
+    <div class="step reveal"><span class="n">2</span><h3>Tìm ra một nguyên nhân cụ thể</h3><p>Duyệt web bị gắn Hulk vì lối tắt FIN cộng có dữ liệu trong train. Giữ ở mức tỉ lệ cảnh báo vì chưa có nhãn thật.</p></div>
+    <div class="step reveal"><span class="n">3</span><h3>Nêu rõ giới hạn của LIME</h3><p>Dùng được trên dataset, không dùng được trên traffic thật. Bước tiếp theo là các đợt tấn công có nhãn trong mạng Host-Only.</p></div>
+  </div>
+  <p class="qa reveal">Câu hỏi và trao đổi</p>
+</div></div><div class="foot">Demo IDS có giải thích · RQ3 · Phân tích</div></section>
+</div>
+</div>
+<div id="zoom"><img alt=""></div>
+<script>
+class Deck{
+  constructor(){
+    this.stage=document.getElementById('stage');
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.cur=0;this.last=0;this.editing=false;
+    this.bar=document.getElementById('progress');this.pg=document.getElementById('pg');
+    this.zoom=document.getElementById('zoom');
+    this.scale();addEventListener('resize',()=>this.scale());
+    this.bind();
+    const h=parseInt(location.hash.replace('#',''),10);
+    this.go(isNaN(h)?0:h-1,true);
+  }
+  scale(){
+    const f=Math.min(innerWidth/1920,innerHeight/1080);
+    this.stage.style.transform=`translate(${(innerWidth-1920*f)/2}px, ${(innerHeight-1080*f)/2}px) scale(${f})`;
+  }
+  go(n,noHash){
+    n=Math.max(0,Math.min(this.slides.length-1,n));
+    this.closeZoom();
+    this.slides.forEach(s=>{s.classList.remove('active','visible')});
+    const s=this.slides[n];
+    s.classList.add('active');
+    void s.offsetWidth;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>s.classList.add('visible')));
+    this.cur=n;
+    this.bar.style.width=((n+1)/this.slides.length*100)+'%';
+    this.pg.textContent=(n+1)+' / '+this.slides.length;
+    if(!noHash)history.replaceState(null,'','#'+(n+1));
+  }
+  next(){this.go(this.cur+1)}
+  prev(){this.go(this.cur-1)}
+  closeZoom(){this.zoom.classList.remove('on')}
+  toggleEdit(on){
+    this.editing=on===undefined?!this.editing:on;
+    document.body.classList.toggle('editing',this.editing);
+    document.getElementById('editToggle').classList.toggle('active',this.editing);
+    document.querySelectorAll('h1,h2,h3,p,li,td,th,.note,.kick,.lb,.vl').forEach(e=>{
+      if(this.editing)e.setAttribute('contenteditable','true');else e.removeAttribute('contenteditable');
+    });
+  }
+  bind(){
+    addEventListener('keydown',e=>{
+      const t=e.target;
+      if(t&&t.isContentEditable&&e.key!=='Escape')return;
+      if(e.key==='Escape'){this.closeZoom();if(this.editing)this.toggleEdit(false);return}
+      if(e.key==='e'||e.key==='E'){this.toggleEdit();return}
+      if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();this.next()}
+      else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.prev()}
+      else if(e.key==='Home'){this.go(0)}
+      else if(e.key==='End'){this.go(this.slides.length-1)}
+    });
+    let x0=null;
+    addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+    addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>60)(dx<0?this.next():this.prev());x0=null});
+    addEventListener('wheel',e=>{
+      if(this.zoom.classList.contains('on'))return;
+      const now=Date.now();if(now-this.last<700||Math.abs(e.deltaY)<20)return;
+      this.last=now;e.deltaY>0?this.next():this.prev();
+    },{passive:true});
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',e=>{
+      e.stopPropagation();
+      const sec=t.dataset.sec;
+      const i=this.slides.findIndex(s=>s.dataset.sec===sec);
+      if(i>=0)this.go(i);
+    }));
+    document.querySelectorAll('.shot img').forEach(im=>im.addEventListener('click',e=>{
+      if(this.editing)return;
+      this.zoom.querySelector('img').src=im.src;this.zoom.classList.add('on');
+    }));
+    this.zoom.addEventListener('click',()=>this.closeZoom());
+    // che do sua chu: phim E hoac goc tren trai, tre 400 ms
+    const hz=document.getElementById('hotzone'),bt=document.getElementById('editToggle');let tm=null;
+    const show=()=>{clearTimeout(tm);bt.classList.add('show')};
+    const hide=()=>{tm=setTimeout(()=>bt.classList.remove('show'),400)};
+    hz.addEventListener('mouseenter',show);hz.addEventListener('mouseleave',hide);
+    bt.addEventListener('mouseenter',show);bt.addEventListener('mouseleave',hide);
+    bt.addEventListener('click',()=>this.toggleEdit());
+  }
+}
+const deck=new Deck();
+
+</script>
+</body>
+</html>

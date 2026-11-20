@@ -1,0 +1,111 @@
+ĐÁNH GIÁ BẢN THẢO BÀI BÁO
+
+Kết luận chung
+
+Bài đã có câu chuyện nghiên cứu rõ và phù hợp để phát triển thành bài báo. Trục chính xuất phát từ phát hiện ở RQ3, không phải từ việc kể lại lần lượt RQ1, RQ2 và RQ3. Hệ thống triển khai phát sinh cảnh báo Hulk trên traffic được người dùng xác nhận là Benign. Kết quả này mâu thuẫn với độ chính xác 97,9% trên benchmark. SHAP khoanh vùng FIN Flag Cnt. Phân tích đường đi trong cây xác định vùng FIN. Kiểm tra dữ liệu train cho thấy vùng này có 445 mẫu và toàn bộ là Hulk. Dữ liệu corrected bổ sung hơn 405 nghìn mẫu Benign vào cùng vùng. Mô hình huấn luyện lại loại bỏ cảnh báo trên 784 flow đã thu, nhưng không chuyển tốt về dataset cũ. Chuỗi phát hiện, giải thích, kiểm chứng dữ liệu, sửa và đánh giá giới hạn tạo thành một câu chuyện hoàn chỉnh.
+
+Điểm mạnh nhất của bài là có một ca lỗi cụ thể, cơ chế chẩn đoán cụ thể và phép thử sửa lỗi. Bài không dừng ở việc so sánh SHAP với LIME hoặc báo cáo thêm một mô hình có Accuracy cao. Phát hiện về dataset shortcut là đóng góp có ý nghĩa hơn việc mô tả hệ thống IDS.
+
+Các vấn đề cần sửa trước khi nộp
+
+1. Giảm mức khẳng định về nguyên nhân của lỗi trích xuất
+
+Abstract và Conclusion đang viết theo hướng lỗi xảy ra vì extractor cũ cắt flow tại FIN đầu tiên. Bài chỉ có bằng chứng thống kê về vùng FIN, kết quả từ dữ liệu corrected và kết luận của tài liệu Engelen cùng Liu. Bài cũng thừa nhận không có raw packet của dữ liệu gốc để kiểm tra trực tiếp. Vì vậy, từ because hiện mạnh hơn bằng chứng hiện có.
+
+Nên viết rằng phân bố quan sát được phù hợp với lỗi first-FIN đã được báo cáo trong nghiên cứu trước. Kết quả của bài chứng minh mô hình học shortcut của dataset. Nó chưa trực tiếp chứng minh binary extractor nào đã tạo từng dòng CSV gốc.
+
+2. Không gọi 19,0% là FPR thực địa nếu ground truth chỉ do người dùng xác nhận
+
+784 flow đến từ một máy Windows, không có activity log chi tiết. Vì vậy, cách gọi chắc chắn nhất là attack-alert rate trên user-confirmed benign traffic. Bảng có thể giữ cột FPR nếu chú thích rõ nhãn Benign được xác nhận theo phiên thu thập, nhưng Abstract và Contributions nên dùng alert rate. Khoảng tin cậy Wilson 95% cho 149 trên 784 flow là khoảng 16,41% đến 21,90%. Với M1, 0 trên 784 không có nghĩa FPR thật bằng tuyệt đối 0. Cận trên Wilson 95% vẫn khoảng 0,49%.
+
+Cần bổ sung bảng mô tả các phiên thu traffic gồm ngày, thời lượng, ứng dụng hoặc hoạt động, giao diện mạng, số packet, số flow, tiêu chí loại trừ và cách xác nhận không có tấn công. Nếu không có activity log, giữ giới hạn này ở cả Methods và Discussion.
+
+3. Diễn giải counterfactual thận trọng hơn
+
+Việc đặt FIN Flag Cnt về 0, Fwd Pkt Len Max về 0 hoặc Fwd Seg Size Min lên 32 có thể tạo vector không tương ứng với một flow mạng hợp lệ. Phép thử hiện tại chứng minh độ nhạy của nhãn đối với thao tác trên đặc trưng. Nó chưa chứng minh quan hệ nhân quả trong traffic thật.
+
+Nên đổi tên mục Counterfactual edits thành Feature-intervention sensitivity tests, hoặc bổ sung ràng buộc tính hợp lệ. Một phương án tốt hơn là thay giá trị bằng giá trị của các flow Benign gần nhất trong dữ liệu corrected, giữ các quan hệ số học giữa đặc trưng và báo cáo khoảng cách đến phân phối train. Nếu vẫn dùng phép đặt về 0, cần ghi rõ đây là intervention trong không gian đặc trưng và có thể nằm ngoài phân phối.
+
+4. Làm rõ cách phát hiện vùng FIN để tránh cảm giác chọn điều kiện sau khi đã xem kết quả
+
+Bài chưa mô tả đủ thuật toán tạo ba ngưỡng FIN Flag Cnt từ 1, Fwd Pkt Len Max từ 66 và Fwd Seg Size Min dưới 32. Cần nói rõ vùng này được lấy từ đường đi nào, cây nào, tiêu chí chọn cây, số flow dùng để khám phá và tập nào dùng để xác nhận.
+
+Thiết kế thuyết phục hơn là dùng một hoặc vài phiên đầu làm discovery set, khóa ba điều kiện, sau đó đánh giá trên các phiên còn lại và corrected test set. Nếu không thể chia lại, phải ghi đây là phân tích hậu nghiệm và tránh trình bày 99,998% như kết quả xác nhận hoàn toàn độc lập.
+
+5. Làm rõ ý nghĩa của so sánh M0 và M1
+
+Hai mô hình học từ hai dataset có quy trình tạo flow và số lớp khác nhau. Kết quả cross-evaluation cho thấy hai mô hình phù hợp với hai miền dữ liệu khác nhau. Không nên mô tả M1 là mô hình tốt hơn một cách tổng quát. Bài đã nêu giới hạn no transfer, nhưng cần đưa thông điệp này lên Abstract rõ hơn.
+
+Cần mô tả đầy đủ bảng ánh xạ 15 lớp sang 13 lớp, cách xử lý hai lớp không còn attack được xác nhận, thứ tự 78 đặc trưng và mọi bước preprocessing. M0 và M1 dùng cùng tên cột chưa đủ để bảo đảm ngữ nghĩa đặc trưng giống nhau.
+
+6. Bổ sung đánh giá chia theo thời gian hoặc nguồn
+
+Random split của cả hai dataset có trùng lặp và có thể làm kết quả lạc quan. Dự án đã có kết quả blocked cross-validation theo khối thời gian cho M1. Kết quả này nên xuất hiện trong bài, ít nhất ở dạng một dòng tổng hợp hoặc phụ lục. Nó mạnh hơn việc chỉ báo cáo random 80/20 split.
+
+Nên báo cáo trung bình, độ lệch chuẩn hoặc khoảng của Accuracy, Macro F1, Macro Recall, FPR và FNR qua các khối thời gian. Đồng thời trình bày kết quả sau khi loại exact duplicates. Kết quả hiện có cho thấy Macro F1 của các fold sạch thay đổi khoảng 98,01% đến 99,98%, nên vẫn cần giải thích mức biến động giữa các khối.
+
+7. Thu hẹp phát biểu về LIME và SHAP
+
+Kết luận LIME fails on real flows chỉ đúng với cấu hình đã khóa gồm kernel width 3,312, 1.000 mẫu perturbation và background 2.000 flow. Bài thừa nhận chưa thử kernel width khác. Abstract và Conclusion nên viết under the evaluated configuration.
+
+TreeSHAP tạo được giá trị cho mọi flow và đạt kiểm tra cộng dồn không đồng nghĩa lời giải thích chắc chắn đúng về mặt ngữ nghĩa. Nên thay valid explanation bằng additive explanation that passed the numerical additivity check. SHAP vẫn giải thích hành vi của mô hình, không chứng minh đặc trưng phản ánh nguyên nhân tấn công.
+
+8. Chứng minh hoặc giảm nhẹ từ real-time trong tiêu đề
+
+Bài chỉ báo cáo median 12,4 ms cho classification và 32,5 ms cho SHAP. Chưa có p95, p99, throughput, queue delay, số luồng đồng thời, cấu hình máy và tình trạng quá tải. Nếu giữ cụm real-time trong tiêu đề, cần bổ sung các số này và mô tả cách đo. Nếu không đủ dữ liệu, dùng deployed hoặc operational prototype sẽ an toàn hơn real-time.
+
+9. Tập trung đóng góp và cắt phần phụ
+
+Reliability flags chưa được kiểm chứng như thước đo chất lượng giải thích. Nội dung này không nên xuất hiện như một đóng góp chính trong Abstract. Có thể giữ một đoạn ngắn ở System và chuyển chi tiết sang future work.
+
+Phần so sánh SHAP và LIME trên 1.339 flow hỗ trợ quyết định dùng SHAP, nhưng không phải câu chuyện trung tâm. Nếu giới hạn sáu trang, rút Table IV xuống một câu và chuyển bảng đầy đủ sang phụ lục hoặc tài liệu bổ sung. Dành chỗ cho provenance của 784 flow, quy trình tạo FIN zone và blocked evaluation.
+
+10. Hoàn thiện hình thức nộp bài
+
+Trang đầu vẫn còn Author Names, Affiliation và Email address. Đây là lỗi bắt buộc phải xử lý theo chế độ anonymous hoặc camera-ready của nơi nộp.
+
+Trang 6 chỉ có phần cuối tài liệu tham khảo ở một cột và phần lớn trang để trống. Nên cân bằng hai cột tài liệu tham khảo hoặc điều chỉnh ngắt trang. Sơ đồ Fig. 1 có đường nối chéo dài từ REST API về XGBoost, khiến hướng xử lý khó đọc. Dùng connector vuông góc hoặc bố trí pipeline thành một hàng sẽ rõ hơn.
+
+Đề xuất biểu đồ theo mức ưu tiên
+
+Ưu tiên 1. Biểu đồ chuỗi bằng chứng của bài
+
+Thay Fig. 1 hoặc thu nhỏ Fig. 1 để thêm một hình gồm sáu bước. Benchmark M0 đạt 97,9%. RQ3 quan sát 149 trên 784 cảnh báo. SHAP xác định FIN. Decision path tạo FIN zone. Train cũ có 0 Benign và 445 Hulk trong zone. Train corrected có 405.347 Benign và 330 Hulk, sau đó M1 cho 0 trên 784 cảnh báo. Hình này giúp người đọc hiểu toàn bộ câu chuyện trong chưa đến một phút.
+
+Ưu tiên 2. Heatmap hoặc dot plot cross-dataset
+
+Vẽ hai panel. Panel đầu là Macro F1 của M0 và M1 trên original test và corrected test. Panel thứ hai là benign alert rate của M0 và M1 trên original, corrected và real benign. Gắn số trực tiếp lên điểm và thêm khoảng tin cậy cho real benign. Hình này kể rõ hai kết quả đồng thời, M1 sửa lỗi real nhưng không transfer về dữ liệu cũ.
+
+Ưu tiên 3. Cải tiến Fig. 2 về vùng FIN
+
+Fig. 2 hiện chuẩn hóa mỗi dataset thành 100%, nên người đọc không thấy chênh lệch quy mô tuyệt đối. Nên dùng hai panel. Panel A trình bày số lượng Benign và Hulk trong FIN zone theo thang log hoặc dot plot. Panel B trình bày tỷ lệ Benign của mỗi dataset rơi vào FIN zone và tỷ lệ bị M0 báo tấn công trong và ngoài zone. Cách này nối cấu trúc dataset với lỗi dự đoán.
+
+Ưu tiên 4. Phân bố thay vì chỉ lấy trung bình SHAP
+
+Fig. 3 dùng mean signed SHAP nên có thể che phân tán và triệt tiêu dấu. Nên thêm boxplot hoặc violin plot của SHAP cho FIN Flag Cnt và Fwd Pkt Len Max trên 148 flow. Để so sánh M0 với M1 công bằng hơn, có thể vẽ xác suất Hulk của cùng 148 flow trước và sau retraining, hoặc vẽ SHAP đối với cùng output Hulk. Hình hiện tại so SHAP của lớp Hulk ở M0 với SHAP của lớp Benign ở M1, nên không phải so sánh cùng đại lượng.
+
+Ưu tiên 5. Biểu đồ blocked evaluation
+
+Vẽ Macro F1 và FPR cho năm fold theo khối thời gian, gồm kết quả trước và sau khi loại exact duplicates. Biểu đồ này trả lời trực tiếp lo ngại rằng kết quả 99,996% chỉ do random split và trùng lặp.
+
+Ưu tiên 6. Biểu đồ LIME validity nếu còn chỗ
+
+Thay Table IV bằng biểu đồ tỷ lệ pass và phân bố effective sample size cho ba nhóm gồm benchmark cohort, real traffic với M0 background và real traffic với M1 background. Nó trực tiếp hỗ trợ phát biểu LIME không tạo được neighborhood phù hợp dưới cấu hình đã thử.
+
+Ưu tiên 7. Biểu đồ latency nếu giữ real-time
+
+Vẽ median, p95 và p99 của normalize, predict, SHAP, queue wait và end-to-end latency. Ghi cấu hình máy, số flow và tải. Một con số median đơn lẻ chưa đủ bảo vệ cụm real-time.
+
+Cấu trúc nội dung đề xuất
+
+Introduction nên kết thúc bằng một câu hỏi nghiên cứu duy nhất. Câu hỏi phù hợp là liệu lời giải thích cục bộ có thể truy một lỗi triển khai về shortcut trong dữ liệu huấn luyện, và liệu retraining trên dữ liệu corrected có loại bỏ lỗi đó hay không.
+
+Data and Methods nên trình bày provenance của original data, corrected data và real traffic, sau đó mô tả M0, M1, cách xác định zone, feature interventions và các thước đo. System chỉ cần đủ để chứng minh các flow đi qua cùng pipeline.
+
+Results nên đi theo đúng câu chuyện. Phần đầu trình bày field failure. Phần tiếp theo chẩn đoán bằng SHAP và decision path. Sau đó kiểm tra train data. Tiếp theo đánh giá M1 và cross-transfer. Cuối cùng mới trình bày giới hạn LIME và latency.
+
+Discussion cần tách ba mức kết luận. Mức được chứng minh là M0 dùng một vùng đặc trưng chỉ chứa Hulk trong train cũ và vùng đó tập trung cảnh báo trên traffic đã thu. Mức được hỗ trợ nhưng chưa kiểm tra trực tiếp là lỗi first-FIN đã tạo ra vùng này. Mức chưa được chứng minh là M1 sẽ tổng quát tốt trên tấn công ngoài môi trường.
+
+Nhận xét cuối
+
+Bản thảo không thiếu câu chuyện. Câu chuyện hiện tại mạnh hơn hướng bài chỉ so sánh hai mô hình hoặc hai phương pháp XAI. Việc cần làm là giảm các khẳng định nhân quả chưa được kiểm tra trực tiếp, tăng độ tin cậy của ground truth ngoài, trình bày rõ cách tạo FIN zone và thay các hình mô tả hệ thống bằng hình thể hiện chuỗi bằng chứng. Nếu sửa các điểm này, bài sẽ tập trung hơn và khó bị phản biện ở phần methodology.

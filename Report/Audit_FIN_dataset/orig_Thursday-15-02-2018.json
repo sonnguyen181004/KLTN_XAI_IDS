@@ -1,0 +1,23 @@
+{
+ "Benign": {
+  "n": 631988,
+  "fin": 6026,
+  "fin_data0": 21,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DoS attacks-GoldenEye": {
+  "n": 41508,
+  "fin": 1,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DoS attacks-Slowloris": {
+  "n": 10990,
+  "fin": 125,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

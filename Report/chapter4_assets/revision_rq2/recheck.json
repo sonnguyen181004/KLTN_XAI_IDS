@@ -1,0 +1,104 @@
+{
+  "rq2_2_stability_lime_per_flow.csv": {
+    "rows": 1339,
+    "max_difference": 0.0
+  },
+  "rq2_2_noise_robustness.csv": {
+    "rows": 3,
+    "max_difference": 0.0
+  },
+  "rq2_2_lime_convergence.csv": {
+    "rows": 4,
+    "max_difference": 0.0
+  },
+  "agreement_reaggregated": [
+    {
+      "k": 3,
+      "flow_id": 348692.8349514563,
+      "jaccard": 0.16280806572068707,
+      "spearman_topk_union": -0.3263309506027953,
+      "kendall_tau_topk_union": -0.2631316903161563,
+      "spearman_full78": 0.28363443213936207,
+      "kendall_full78": 0.20546816887369534,
+      "rbo": 0.29651472018827735,
+      "sign_agreement": 0.9476082004555809,
+      "jaccard_group": 0.29648991784914114
+    },
+    {
+      "k": 5,
+      "flow_id": 348692.8349514563,
+      "jaccard": 0.1413694180684472,
+      "spearman_topk_union": -0.3660844010358573,
+      "kendall_tau_topk_union": -0.2858731344168237,
+      "spearman_full78": 0.28363443213936207,
+      "kendall_full78": 0.20546816887369534,
+      "rbo": 0.28120399415764724,
+      "sign_agreement": 0.8395009812167087,
+      "jaccard_group": 0.3924748390767808
+    },
+    {
+      "k": 10,
+      "flow_id": 348692.8349514563,
+      "jaccard": 0.16168003909421766,
+      "spearman_topk_union": -0.38348235276670617,
+      "kendall_tau_topk_union": -0.2808286604869009,
+      "spearman_full78": 0.28363443213936207,
+      "kendall_full78": 0.20546816887369534,
+      "rbo": 0.26883617078056815,
+      "sign_agreement": 0.710428131190843,
+      "jaccard_group": 0.7967501753909522
+    },
+    {
+      "k": 20,
+      "flow_id": 348692.8349514563,
+      "jaccard": 0.24762261136909147,
+      "spearman_topk_union": -0.3253895072060774,
+      "kendall_tau_topk_union": -0.23130953997956896,
+      "spearman_full78": 0.28363443213936207,
+      "kendall_full78": 0.20546816887369534,
+      "rbo": 0.28088924750252753,
+      "sign_agreement": 0.5054289561571115,
+      "jaccard_group": 1.0
+    }
+  ],
+  "domain_reaggregated": [
+    {
+      "scope": "broad",
+      "method": "LIME",
+      "precision_at_5": 0.1285714285714286,
+      "recall": 0.09183673469387754,
+      "f1": 0.10714285714285712
+    },
+    {
+      "scope": "broad",
+      "method": "SHAP",
+      "precision_at_5": 0.24285714285714288,
+      "recall": 0.17091836734693874,
+      "f1": 0.20054945054945053
+    },
+    {
+      "scope": "strict",
+      "method": "LIME",
+      "precision_at_5": 0.08571428571428573,
+      "recall": 0.10714285714285714,
+      "f1": 0.09523809523809523
+    },
+    {
+      "scope": "strict",
+      "method": "SHAP",
+      "precision_at_5": 0.17142857142857146,
+      "recall": 0.21428571428571427,
+      "f1": 0.19047619047619047
+    }
+  ],
+  "xgb_tuning_saved_max": {
+    "Cấu hình": "Depth=12, LR=0.08",
+    "Thời gian (s)": 344.8,
+    "Train F1 (%)": 89.38,
+    "Test Acc (%)": 97.92,
+    "Test Prec (%) [Sub-1.1]": 90.67,
+    "Test F1 (%) [Sub-1.1]": 85.95,
+    "FNR Attack (%) [đính chính tên cột FPR cũ]": 5.5981,
+    "Ghi chú": "Cây rất sâu (Kiểm tra Overfitting)"
+  }
+}

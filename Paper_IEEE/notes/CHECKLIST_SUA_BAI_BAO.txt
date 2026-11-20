@@ -1,0 +1,201 @@
+CHECKLIST TỔNG HỢP CÁC CHỖ CẦN SỬA TRONG BÀI BÁO
+
+MỨC 1. BẮT BUỘC SỬA TRƯỚC KHI GỬI THẦY HOẶC NỘP
+
+1. Thông tin tác giả
+
+Vị trí: phần đầu main.tex, khu vực title và author.
+
+Thay Author Names, Affiliation, City, Country và Email address bằng thông tin thật. Nếu nơi nộp yêu cầu phản biện ẩn danh thì xóa toàn bộ thông tin nhận dạng theo đúng template, không để placeholder.
+
+2. Giảm mức khẳng định về nguyên nhân first-FIN
+
+Vị trí: Abstract, Introduction, mục Why the model learned it, Discussion và Conclusion.
+
+Không viết chắc chắn rằng shortcut xuất hiện vì extractor gốc cắt flow tại FIN đầu tiên. Dự án không có raw PCAP tương ứng với original CSV để kiểm tra trực tiếp. Cách viết phù hợp là phân bố quan sát được nhất quán với lỗi first-FIN đã được Engelen và Liu báo cáo. Bài chứng minh mô hình học một vùng shortcut trong dữ liệu cũ, nhưng chỉ suy luận nguồn gốc lịch sử của vùng đó.
+
+3. Sửa thuật ngữ FPR đối với 784 flow
+
+Vị trí: Abstract, Contributions, Table III, Results, Discussion và Conclusion.
+
+784 flow được người dùng xác nhận là Benign nhưng không có activity log chi tiết. Trong Abstract và Contributions, dùng attack-alert rate on user-confirmed benign traffic. Nếu Table III giữ tên FPR, phải thêm chú thích về cách xác nhận nhãn. Không viết M1 có FPR thực địa tuyệt đối bằng 0. Kết quả quan sát là 0 cảnh báo trên 784 flow. Cận trên Wilson 95% vẫn khoảng 0,49%.
+
+4. Mô tả đầy đủ nguồn 784 flow
+
+Vị trí: Data and Models, mục Real traffic.
+
+Bổ sung bảng theo phiên gồm ngày thu, thời lượng, giao diện mạng, hoạt động hoặc ứng dụng, số packet, số flow, tiêu chí chọn và loại, cách xác nhận không có tấn công. Nêu rõ 784 flow thuộc những phiên nào trong tổng số flow đã lưu. Giữ hạn chế rằng không có activity log chi tiết.
+
+5. Làm rõ cách xác định FIN zone
+
+Vị trí: Experiments and Results, mục Finding the cause with explanations.
+
+Mô tả ba ngưỡng được lấy từ cây nào, đường đi nào, tiêu chí chọn cây và flow nào dùng để khám phá. Nêu rõ đây là phân tích hậu nghiệm nếu các ngưỡng được tạo sau khi xem lỗi. Nếu có thể, dùng một nhóm phiên làm discovery set, khóa ba điều kiện rồi xác nhận trên các phiên còn lại và corrected test set.
+
+6. Đổi cách diễn giải counterfactual
+
+Vị trí: mục Counterfactual edits và Abstract.
+
+Đặt FIN về 0, Fwd Pkt Len Max về 0 hoặc Fwd Seg Size Min lên 32 có thể tạo vector ngoài phân phối hoặc không hợp lệ về mặt mạng. Đổi tên thành Feature-intervention sensitivity tests. Kết luận chỉ nên là nhãn dự đoán nhạy với các thao tác trên đặc trưng này. Không gọi đó là bằng chứng nhân quả.
+
+7. Làm rõ so sánh M0 và M1
+
+Vị trí: Data and Models, Table I, Results và Discussion.
+
+Nêu rõ hai mô hình học từ hai miền dữ liệu khác nhau, số lớp khác nhau và có thể khác ngữ nghĩa đặc trưng do pipeline tạo flow. Không kết luận M1 tốt hơn một cách tổng quát. M1 loại bỏ shortcut trên bộ dữ liệu và traffic đã thử nhưng không chuyển tốt về original test.
+
+8. Bổ sung bảng tổng quan dataset cũ và corrected
+
+Vị trí: Table I trong Data and Models.
+
+Bảng cần có nguồn dữ liệu, cách tạo flow, cách gắn nhãn, số flow train và test, số lớp, hai lớp không còn attack được xác nhận, tỷ lệ test trùng train, số Benign và Hulk trong FIN zone, tỷ lệ flow có FIN và cách chia train, test. Không đưa toàn bộ 78 đặc trưng vào bảng chính. Khác biệt chi tiết về cờ TCP, bulk, window và các công thức đặc trưng để ở phụ lục.
+
+9. Thu hẹp kết luận về LIME và TreeSHAP
+
+Vị trí: Abstract, SHAP and LIME on live flows và Conclusion.
+
+Viết rằng LIME thất bại dưới cấu hình đã đánh giá gồm kernel width 3,312, 1.000 mẫu perturbation và background 2.000 flow. Không kết luận LIME nói chung không dùng được trên traffic thật. Với TreeSHAP, viết rằng phương pháp tạo được lời giải thích cộng dồn và vượt kiểm tra additivity. Không dùng valid explanation như bằng chứng lời giải thích đúng về mặt ngữ nghĩa.
+
+10. Xử lý tuyên bố real-time
+
+Vị trí: Title, System và Discussion.
+
+Nếu giữ real-time trong tiêu đề, bổ sung cấu hình máy, số flow đo, median, p95, p99, throughput, queue wait và end-to-end latency. Nếu chưa có đủ số liệu, đổi real-time thành deployed hoặc operational prototype.
+
+MỨC 2. NÊN BỔ SUNG ĐỂ TĂNG ĐỘ TIN CẬY PHƯƠNG PHÁP
+
+11. Đưa blocked cross-validation vào bài
+
+Vị trí: Baseline detection hoặc phần phụ lục.
+
+Bổ sung kết quả năm fold theo khối thời gian của M1, gồm kết quả trước và sau loại exact duplicates. Đây là bằng chứng tốt hơn random split. Báo cáo Macro F1, Macro Recall, FPR và FNR theo từng fold hoặc khoảng biến động.
+
+12. Thêm khoảng tin cậy
+
+Vị trí: Table III và phần mô tả 784 flow.
+
+Thêm Wilson 95% confidence interval cho alert rate của M0 và M1 trên 784 flow. Từ số liệu hiện có, M0 là khoảng 16,41% đến 21,90%. M1 quan sát 0 trên 784, cận trên khoảng 0,49%.
+
+13. Tách discovery và validation
+
+Vị trí: phương pháp tạo FIN zone.
+
+Nếu còn dữ liệu theo nhiều phiên, dùng phiên đầu để tìm shortcut và phiên sau để xác nhận. Báo cáo riêng số flow, alert rate và tỷ lệ rơi vào FIN zone của từng nhóm. Cách này giảm nguy cơ chọn vùng sau khi đã xem toàn bộ kết quả.
+
+14. Bổ sung khả năng tái lập
+
+Vị trí: Data and Models hoặc phụ lục.
+
+Ghi phiên bản dataset corrected, URL hoặc checksum, phiên bản code extractor, feature order, mapping 15 lớp sang 13 lớp, seed, siêu tham số, tiêu chí chọn mô hình và phần dữ liệu đã dùng để chọn cấu hình. Nêu rõ test set cũ từng được dùng để chọn trong bảy cấu hình nên kết quả có mức lạc quan nhất định.
+
+15. Làm rõ preprocessing và semantic compatibility
+
+Vị trí: Data and Models.
+
+Không chỉ nói cả hai dataset có 78 cột. Cần nêu các khác biệt đã biết ở cờ TCP, bulk, window, header, length và cách phân đoạn flow. Tên cột giống nhau không bảo đảm ý nghĩa và miền giá trị giống nhau.
+
+16. Thêm baseline đơn giản cho corrected dataset
+
+Vị trí: Retraining on corrected data and its limits.
+
+Giữ majority baseline, depth-three decision tree và learning curve vì chúng chứng minh benchmark corrected dễ. Trình bày gọn trong một bảng hoặc phụ lục, tránh để các số này rải rác trong văn xuôi.
+
+17. Làm rõ giới hạn của traffic tấn công ngoài
+
+Vị trí: Real traffic, Retraining và Limitations.
+
+Hai flow SSH brute-force chỉ là sanity check. Không dùng để suy ra detection rate. Cần ưu tiên thu thêm traffic tấn công có ground truth, nhiều phiên, nhiều máy và nhiều loại tấn công.
+
+18. Giảm vai trò của reliability flags
+
+Vị trí: Abstract và System.
+
+Các flag chưa được kiểm chứng là thước đo chất lượng giải thích. Không trình bày chúng như đóng góp chính. Giữ dưới dạng cảnh báo giao diện hoặc chuyển thành future work.
+
+MỨC 3. BIỂU ĐỒ VÀ BẢNG CẦN SỬA HOẶC BỔ SUNG
+
+19. Thêm hình chuỗi bằng chứng trung tâm
+
+Nội dung đề xuất gồm benchmark 97,9%, 149 trên 784 cảnh báo, SHAP chỉ ra FIN, decision path tạo FIN zone, original train có 0 Benign và 445 Hulk, corrected train có 405.347 Benign và 330 Hulk, M1 quan sát 0 trên 784 cảnh báo.
+
+Đây nên là hình quan trọng nhất. Có thể thay Fig. 1 hoặc thu nhỏ sơ đồ hệ thống để dành chỗ.
+
+20. Sửa Fig. 1
+
+Đường nối chéo từ REST API về XGBoost khó theo dõi. Bố trí pipeline thành một hàng hoặc dùng connector vuông góc. Nếu số trang hạn chế, sơ đồ hệ thống có thể chuyển sang phụ lục vì nó không phải bằng chứng chính của bài.
+
+21. Sửa Fig. 2
+
+Hai thanh hiện đều được chuẩn hóa thành 100%, làm mất chênh lệch quy mô. Nên tạo hai panel. Panel đầu thể hiện số Benign và Hulk trong FIN zone bằng dot plot hoặc thang log. Panel sau thể hiện tỷ lệ Benign rơi vào zone và FPR trong, ngoài zone.
+
+22. Sửa Fig. 3
+
+Biểu đồ hiện so SHAP của lớp Hulk ở M0 với SHAP của lớp Benign ở M1, nên hai panel không cùng đại lượng. Nên vẽ xác suất Hulk của cùng 148 flow trước và sau retraining, hoặc tính SHAP đối với cùng output Hulk. Bổ sung boxplot hoặc violin plot để thể hiện phân bố, không chỉ mean signed SHAP.
+
+23. Thêm heatmap cross-dataset
+
+Tạo hai panel. Panel đầu là Macro F1 của M0 và M1 trên original test và corrected test. Panel sau là Benign alert rate trên original, corrected và 784 real flow. Hình phải cho thấy cả tác dụng sửa shortcut và giới hạn no transfer.
+
+24. Thêm biểu đồ blocked evaluation
+
+Vẽ Macro F1 và FPR của năm fold thời gian, trước và sau loại duplicate. Biểu đồ này bảo vệ kết quả M1 trước phản biện về random split.
+
+25. Đổi Table IV hoặc chuyển phụ lục
+
+Table IV về SHAP và LIME không phải bằng chứng trung tâm. Nếu giữ, bổ sung kết quả trên real traffic, effective sample size và pass rate. Nếu giới hạn sáu trang, chuyển bảng đầy đủ sang phụ lục và giữ một câu tóm tắt trong bài chính.
+
+26. Thêm biểu đồ latency nếu giữ real-time
+
+Vẽ median, p95 và p99 cho normalize, predict, SHAP, queue wait và end-to-end. Ghi cấu hình máy, số flow và mức tải.
+
+MỨC 4. SẮP XẾP LẠI NỘI DUNG
+
+27. Introduction
+
+Kết thúc Introduction bằng một câu hỏi nghiên cứu rõ. Câu hỏi đề xuất là liệu lời giải thích cục bộ có thể truy một lỗi triển khai về shortcut trong dữ liệu huấn luyện, và retraining trên dữ liệu corrected có loại bỏ lỗi đó hay không.
+
+28. Data and Methods
+
+Sắp xếp theo thứ tự provenance của ba nguồn dữ liệu, M0 và M1, cách tạo FIN zone, feature interventions, thước đo và kiểm tra thống kê. Phần System chỉ giữ thông tin cần để chứng minh các flow đi qua cùng pipeline.
+
+29. Results
+
+Nên kể theo thứ tự phát hiện lỗi ngoài, SHAP khoanh vùng, decision path xác định zone, kiểm tra train data, retraining M1, cross-transfer, blocked evaluation, giới hạn LIME và latency. Cấu trúc này bám sát câu chuyện phát triển từ RQ3.
+
+30. Discussion
+
+Tách ba mức kết luận. Kết luận được chứng minh là M0 dùng vùng chỉ có Hulk trong train cũ và vùng này tập trung cảnh báo trên traffic đã thu. Kết luận được hỗ trợ nhưng chưa kiểm tra trực tiếp là lỗi first-FIN đã tạo vùng đó. Kết luận chưa được chứng minh là M1 sẽ tổng quát tốt trên traffic tấn công ngoài.
+
+31. Conclusion
+
+Không lặp lại câu nguyên nhân first-FIN như sự thật đã chứng minh. Nêu đúng phạm vi là shortcut được xác nhận trên original train, corrected data và 784 flow được người dùng xác nhận Benign. Kết thúc bằng nhu cầu đánh giá trên traffic tấn công độc lập, nhiều máy và nhiều môi trường.
+
+MỨC 5. TRÌNH BÀY VÀ KIỂM TRA CUỐI
+
+32. Cân bằng trang tài liệu tham khảo
+
+Trang 6 hiện gần như để trống. Dùng cơ chế cân bằng cột hoặc điều chỉnh ngắt trang để tài liệu tham khảo phân bố đều hơn.
+
+33. Kiểm tra template nơi nộp
+
+Xác nhận khổ giấy, giới hạn trang, chế độ anonymous, cách trình bày DOI, URL, arXiv và yêu cầu về supplementary material.
+
+34. Kiểm tra tính nhất quán thuật ngữ
+
+Dùng thống nhất original dataset, corrected dataset, M0, M1, FIN zone, user-confirmed benign traffic, alert rate, false-positive rate và feature intervention. Không đổi qua lại giữa corrected, improved và new dataset nếu chưa định nghĩa.
+
+35. Kiểm tra số liệu
+
+Đối chiếu lại mọi số trong Abstract, Tables, Figures và Conclusion với các tệp kết quả. Các số cần kiểm tra đặc biệt gồm 149 trên 784, 148 flow trong zone, 445 Hulk, 405.347 Benign, 330 Hulk, 100.819 Benign corrected test trong zone, tỷ lệ duplicate và các chỉ số cross-evaluation.
+
+THỨ TỰ THỰC HIỆN ĐỀ XUẤT
+
+Lượt một sửa các mục 1 đến 10 vì đây là các điểm phản biện có thể bác kết luận của bài.
+
+Lượt hai bổ sung bảng dataset, blocked evaluation, khoảng tin cậy và mô tả 784 flow.
+
+Lượt ba làm lại ba hình chính gồm chuỗi bằng chứng, cross-dataset và FIN zone.
+
+Lượt bốn rút gọn phần System cùng SHAP và LIME để giữ giới hạn trang.
+
+Lượt năm kiểm tra số liệu, thuật ngữ, tài liệu tham khảo và render lại toàn bộ PDF.

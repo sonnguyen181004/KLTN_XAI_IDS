@@ -1,0 +1,131 @@
+CÂU CHUYỆN BÀI BÁO THEO TRÌNH TỰ NGHIÊN CỨU
+
+Tên bài đề xuất
+
+Từ hiệu năng nội bộ đến khả năng khái quát: phân tích bằng XAI và kiểm chứng độc lập mô hình phát hiện xâm nhập dựa trên XGBoost
+
+1. Tổng quan nghiên cứu
+
+Các mô hình học máy dùng cho hệ thống phát hiện xâm nhập thường được đánh giá bằng Accuracy, F1-score, tỷ lệ cảnh báo sai và tỷ lệ bỏ sót trên một tập kiểm thử tách ra từ cùng bộ dữ liệu huấn luyện. Cách đánh giá này cho biết mô hình tái hiện các mẫu đã xuất hiện trong bộ dữ liệu tốt đến mức nào. Nó chưa trả lời đầy đủ việc mô hình có giữ được hiệu năng khi dữ liệu đến từ mạng thật, thời điểm khác hoặc pipeline trích xuất đặc trưng khác hay không.
+
+Dự án đã xây dựng mô hình XGBoost phân loại 15 loại lưu lượng từ 78 đặc trưng của CSE-CIC-IDS2018. Mô hình sau đó được tích hợp với SHAP, LIME và hệ thống IDS có khả năng nhận dữ liệu CSV, PCAP và lưu lượng mạng. Quá trình tích hợp tạo điều kiện đánh giá mô hình ngoài tập kiểm thử nội bộ, đồng thời quan sát trực tiếp các đặc trưng dẫn đến từng cảnh báo.
+
+2. Kết quả nền và vấn đề phát sinh
+
+Trên tập kiểm thử nội bộ gồm 700.000 dòng, mô hình đạt Accuracy 97,91%, Macro Precision 90,84%, Macro Recall 83,99% và Macro F1 85,81%. FPR trên lớp Benign là 0,2324%. Riêng lớp DoS attacks-Hulk đạt F1-score xấp xỉ 99,997%. Các số liệu này cho thấy Hulk gần như được phân loại hoàn hảo trong miền dữ liệu kiểm thử cũ.
+
+Kết quả kiểm tra dữ liệu sau đó phát hiện 194.149 dòng của tập test trùng với tập train, tương ứng khoảng 27,74% tập test. Tỷ lệ trùng lặp này không tự chứng minh toàn bộ kết quả là sai, nhưng làm giảm mức độ độc lập của phép đánh giá nội bộ. Vì vậy, chỉ số 97,91% chưa đủ để đại diện cho khả năng khái quát khi triển khai.
+
+Khi mô hình được đưa vào hệ thống IDS và chạy với lưu lượng thu ngoài tập huấn luyện, một luồng mạng được biết là bình thường bị dự đoán thành Hulk với xác suất khoảng 93,3%. Hai tệp PCAP khác tạo ra tổng cộng 99 flow bằng extractor hiện hành, trong đó có tám cảnh báo Hulk. Tám cảnh báo này chưa được dùng để tính FPR vì hai PCAP chưa có ground truth đầy đủ. Chúng chỉ được xem là tín hiệu cho thấy mô hình cần được kiểm chứng trên một nguồn dữ liệu độc lập có nhãn.
+
+Mâu thuẫn giữa hiệu năng nội bộ gần như hoàn hảo đối với Hulk và cảnh báo Hulk trên lưu lượng triển khai là điểm xuất phát của bài báo.
+
+3. Khoảng trống nghiên cứu
+
+Dự án hiện có ba khoảng trống liên kết với nhau.
+
+Khoảng trống thứ nhất nằm ở đánh giá mô hình. Tập kiểm thử cũ được lấy từ cùng nguồn dữ liệu và có tỷ lệ dòng trùng với tập huấn luyện. Dự án chưa có một phép đánh giá độc lập đủ nhãn để đo FPR và recall trong môi trường ngoài.
+
+Khoảng trống thứ hai nằm ở khả năng truy vết dữ liệu. Các báo cáo dataset cho biết dữ liệu 3,5 triệu dòng được lấy mẫu và chia train, test, nhưng dự án chưa tìm thấy pipeline tạo các tệp cleaned, bước chia train và test, phiên bản extractor lịch sử hoặc cặp PCAP và CSV gốc. Vì thiếu các thành phần này, chưa thể xác định chắc chắn khác biệt đặc trưng đến từ công cụ trích xuất, bước tiền xử lý hay môi trường tạo lưu lượng.
+
+Khoảng trống thứ ba nằm ở cách sử dụng XAI. SHAP hoặc LIME có thể cho biết đặc trưng nào ảnh hưởng đến một dự đoán, nhưng lời giải thích không tự chứng minh dự đoán đúng. LIME còn không tạo được neighborhood hữu hiệu cho cả tám cảnh báo Hulk trong hai PCAP. Vì vậy, lời giải thích cần được kiểm tra thêm bằng cấu trúc cây, phân bố của tập huấn luyện và dữ liệu có nhãn độc lập.
+
+4. Mục đích nghiên cứu
+
+Nghiên cứu nhằm đánh giá khả năng khái quát của mô hình IDS trên dữ liệu độc lập và xác định liệu XAI có thể truy ra các khoảng trống cụ thể trong dữ liệu huấn luyện dẫn đến cảnh báo sai hay không. Trên cơ sở đó, nghiên cứu so sánh các phương án huấn luyện lại để xác định cách giảm cảnh báo sai mà vẫn duy trì khả năng phát hiện Hulk.
+
+5. Mục tiêu nghiên cứu
+
+Mục tiêu thứ nhất là thiết lập kết quả baseline của mô hình hiện tại trên tập kiểm thử nội bộ và ghi nhận các giới hạn của phép đánh giá này.
+
+Mục tiêu thứ hai là xây dựng hoặc lựa chọn một bộ kiểm thử độc lập có ground truth, gồm lưu lượng Benign và Hulk, sau đó đánh giá mô hình hiện tại bằng cùng một pipeline trích xuất đã khóa phiên bản.
+
+Mục tiêu thứ ba là dùng SHAP để xác định các đặc trưng chi phối false positive Hulk, truy đường đi tương ứng trong cây XGBoost và kiểm tra mật độ của vùng đặc trưng đó trong tập huấn luyện.
+
+Mục tiêu thứ tư là huấn luyện các mô hình mới bằng những chiến lược khác nhau và so sánh chúng trên cùng bộ dữ liệu độc lập.
+
+Mục tiêu thứ năm là đề xuất quy trình đánh giá IDS kết hợp chỉ số dự đoán, kiểm tra tương thích đặc trưng, XAI và kiểm thử độc lập.
+
+6. Câu hỏi nghiên cứu
+
+RQ1. Hiệu năng của mô hình XGBoost thay đổi như thế nào giữa tập kiểm thử nội bộ và bộ dữ liệu độc lập có ground truth?
+
+RQ2. Những đặc trưng và tổ hợp đặc trưng nào chi phối các false positive Hulk trên dữ liệu độc lập?
+
+RQ3. Kết quả giải thích của SHAP và LIME có đủ tin cậy để chẩn đoán nguyên nhân cảnh báo sai hay không?
+
+RQ4. Huấn luyện lại bằng dữ liệu Benign bổ sung hoặc bằng nhóm đặc trưng ít phụ thuộc môi trường có làm giảm FPR mà không làm giảm đáng kể recall Hulk hay không?
+
+7. Giả thuyết nghiên cứu
+
+H1. Hiệu năng trên bộ kiểm thử độc lập thấp hơn hiệu năng trên tập kiểm thử nội bộ do khác biệt về phân bố dữ liệu và cách biểu diễn đặc trưng.
+
+H2. Một phần false positive Hulk tập trung trong các vùng đặc trưng có ít hoặc không có mẫu Benign trong tập huấn luyện.
+
+H3. Bổ sung mẫu Benign đúng vào các vùng còn thiếu giúp giảm FPR hiệu quả hơn việc loại bỏ riêng lẻ một đặc trưng có giá trị SHAP cao.
+
+Các giả thuyết này chưa phải kết luận. Chúng phải được chấp nhận hoặc bác bỏ bằng kết quả kiểm thử độc lập và thí nghiệm huấn luyện lại.
+
+8. Phương pháp nghiên cứu
+
+Giai đoạn một tái lập mô hình baseline trên dữ liệu nội bộ. Nhóm báo cáo Accuracy, Macro Precision, Macro Recall, Macro F1, FPR trên Benign, FNR trên tấn công và kết quả của từng lớp. Tỷ lệ dòng trùng giữa train và test được báo cáo như một giới hạn của thiết kế dữ liệu.
+
+Giai đoạn hai chuẩn bị bộ kiểm thử độc lập. Bộ dữ liệu cần chứa các phiên Benign và Hulk có thời điểm bắt đầu, kết thúc và điều kiện sinh lưu lượng được ghi lại. Bộ này không được dùng trong quá trình chọn đặc trưng, tinh chỉnh tham số hoặc chọn mô hình. Pipeline trích xuất 78 đặc trưng phải được khóa phiên bản trước khi chạy đánh giá.
+
+Giai đoạn ba chẩn đoán lỗi bằng XAI. Với từng false positive Hulk, nghiên cứu tính SHAP, kiểm tra tính cộng dồn và lấy các đặc trưng có đóng góp lớn nhất. Sau đó, nghiên cứu truy đường đi của mẫu trong các cây của lớp Hulk và lọc tập huấn luyện theo đúng các điều kiện phân nhánh. Cách làm này giúp phân biệt một nhận xét dựa trên biểu đồ SHAP với một vùng quyết định có thể kiểm tra trực tiếp trong dữ liệu.
+
+LIME được giữ làm phương pháp đối chiếu nhưng chỉ được diễn giải khi vượt qua kiểm tra chất lượng neighborhood và fidelity cục bộ. Một kết quả LIME có R bình phương dương vẫn chưa đủ nếu dự đoán của surrogate tại điểm gốc lệch xa xác suất của mô hình.
+
+Giai đoạn bốn huấn luyện và so sánh ba cấu hình. Mô hình A giữ nguyên dữ liệu và đặc trưng hiện tại. Mô hình B bổ sung các mẫu Benign có ground truth tại những vùng gây nhầm. Mô hình C giảm ảnh hưởng của nhóm đặc trưng có dấu hiệu phụ thuộc môi trường bằng một quy tắc được xác định trước khi xem kết quả bộ test độc lập. Các mô hình dùng cùng cách chia dữ liệu, ngân sách tinh chỉnh và tiêu chí chọn mô hình.
+
+Giai đoạn năm đánh giá cả ba mô hình trên cùng bộ kiểm thử độc lập đã khóa. So sánh tập trung vào FPR trên Benign, recall Hulk, Macro F1, ma trận nhầm lẫn và độ ổn định của Top-5 đặc trưng giải thích. Kết quả nội bộ được trình bày song song để xác định phương án nào chỉ cải thiện trên dữ liệu cũ và phương án nào thực sự cải thiện khả năng khái quát.
+
+9. Kết quả thực nghiệm đã có
+
+Kết quả thứ nhất xác nhận mô hình có hiệu năng nội bộ cao nhưng phép đánh giá chưa hoàn toàn độc lập. Accuracy đạt 97,91%, Macro F1 đạt 85,81% và FPR trên Benign là 0,2324%. Tập test có khoảng 27,74% dòng trùng với train.
+
+Kết quả thứ hai cho thấy SHAP phù hợp hơn LIME cho vai trò giải thích chính trong cấu hình hiện tại. Trong phép đánh giá faithfulness tại k bằng 5, SHAP thắng LIME trên khoảng 77,97% đến 79,99% số flow tùy baseline. SHAP có tính cộng dồn ổn định trên các mẫu đã kiểm tra. LIME đạt kiểm tra R bình phương tối thiểu trên 85,96% cohort nội bộ, nhưng tỷ lệ này chỉ là điều kiện chất lượng sơ bộ. Trên tám cảnh báo Hulk của hai PCAP, cả tám kết quả LIME đều bị đánh dấu insufficient_neighborhood.
+
+Kết quả thứ ba chỉ ra sự khác biệt giữa đặc trưng quan trọng toàn cục và đặc trưng quan trọng trong một ca lỗi. Trên toàn bộ lớp Hulk của tập test, Fwd Seg Size Min đứng đầu với mean absolute SHAP khoảng 6,49. Đối với một cảnh báo Hulk sai trên traffic live, FIN Flag Cnt có đóng góp SHAP khoảng 5,87 và trở thành đặc trưng nổi bật của dự đoán đó.
+
+Kết quả thứ tư xác nhận cảnh báo này gắn với một vùng dữ liệu huấn luyện rất hẹp. Đường đi trong cây có Gain cao nhất sử dụng ba điều kiện gồm Fwd Seg Size Min nhỏ hơn 32, FIN Flag Cnt lớn hơn hoặc bằng 1 và Fwd Pkt Len Max lớn hơn hoặc bằng 66. Trong 2,8 triệu dòng train, 445 dòng thỏa cả ba điều kiện. Toàn bộ 445 dòng mang nhãn Hulk và không có dòng Benign.
+
+Kết quả trên không có nghĩa rằng FIN tự nó là dấu hiệu tấn công. Tập train vẫn có 9.815 trên 1.960.000 flow Benign mang FIN khác 0 và 445 trên 155.042 flow Hulk mang FIN khác 0. Bằng chứng hiện tại chỉ hỗ trợ kết luận rằng tổ hợp ba điều kiện tạo thành một vùng mà mô hình đã thấy Hulk nhưng chưa thấy Benign.
+
+10. Cách kể phần thảo luận
+
+Phần thảo luận bắt đầu từ nghịch lý giữa kết quả nội bộ và biểu hiện triển khai. Mô hình dự đoán Hulk gần như hoàn hảo trên tập test cũ nhưng vẫn có thể báo Hulk cho một kết nối Benign ngoài môi trường đó. Phân tích XAI cho thấy mô hình không vận hành sai về mặt tính toán. Mô hình đi theo các nhánh đã học từ vùng dữ liệu chỉ chứa Hulk.
+
+Từ phát hiện này, bài báo chuyển trọng tâm từ câu hỏi mô hình có chính xác hay không sang câu hỏi dữ liệu đã cung cấp cho mô hình những trường hợp nào. Đây là điểm nối giữa kết quả RQ1, kết quả XAI của RQ2 và hệ thống triển khai của RQ3.
+
+SHAP giúp phát hiện đặc trưng và hướng tác động, nhưng kết luận chỉ trở nên đủ mạnh sau khi đường đi trong cây và 2,8 triệu dòng train được kiểm tra. LIME cung cấp một đối chứng cần thiết vì sự thất bại của neighborhood cho thấy một phương pháp giải thích có thể không còn hợp lệ khi dữ liệu triển khai lệch xa nền huấn luyện.
+
+11. Kết quả mới cần bổ sung để hoàn thành bài báo
+
+Nhóm chưa có kết quả của bộ test độc lập có ground truth và chưa có kết quả của các mô hình huấn luyện lại. Đây là hai phần bắt buộc trước khi viết kết luận cuối.
+
+Nếu mô hình B giảm FPR độc lập và giữ recall Hulk, kết quả sẽ ủng hộ giả thuyết thiếu mẫu Benign trong vùng đặc trưng. Nếu mô hình C tốt hơn mô hình B, kết quả sẽ ủng hộ nhận định rằng mô hình đang phụ thuộc quá nhiều vào các đặc trưng gắn với môi trường hoặc pipeline. Nếu cả hai không cải thiện, nghiên cứu phải bác bỏ hai giả thuyết này trong phạm vi thí nghiệm và xem lại tính tương thích của extractor, cách phân đoạn flow hoặc nguồn ground truth.
+
+12. Kết luận theo đúng trình tự
+
+Bài báo không bắt đầu bằng việc khẳng định dataset cũ bị lỗi. Bài bắt đầu từ một mô hình có kết quả nội bộ cao, sau đó trình bày một hiện tượng bất thường khi triển khai. XAI được dùng để hình thành giả thuyết về khoảng trống dữ liệu. Cấu trúc cây và thống kê trên tập train được dùng để kiểm tra giả thuyết đó. Bộ dữ liệu độc lập và thí nghiệm huấn luyện lại được dùng để đưa ra kết luận cuối cùng.
+
+Kết luận hiện tại chỉ nên dừng ở mức sau. Mô hình có một vùng quyết định mà dữ liệu train chỉ cung cấp mẫu Hulk và chưa cung cấp mẫu Benign. Vùng này trùng với một cảnh báo Hulk sai đã quan sát trên traffic live. Tài liệu hiện có chưa đủ để xác định nguyên nhân lịch sử của khoảng trống hoặc khẳng định phương án huấn luyện lại nào tốt nhất.
+
+13. Đóng góp dự kiến của bài báo
+
+Đóng góp thứ nhất là chỉ ra bằng thực nghiệm khoảng cách giữa đánh giá nội bộ và hành vi của một IDS khi nhận dữ liệu ngoài.
+
+Đóng góp thứ hai là xây dựng cách dùng XAI theo chuỗi kiểm chứng gồm SHAP, đường đi trong cây, phân bố dữ liệu train và ground truth độc lập.
+
+Đóng góp thứ ba là cung cấp so sánh có kiểm soát giữa mô hình gốc và các mô hình huấn luyện lại nhằm xác định nguyên nhân cùng phương án xử lý false positive Hulk.
+
+NGUỒN BẰNG CHỨNG NỘI BỘ
+
+Kết quả mô hình RQ1 nằm trong RQ1_Model_Training_xboost/results/bang_2_ket_qua_chinh_thuc_rq1.csv và bang_chi_tiet_15_lop_tan_cong.csv.
+
+Số dòng trùng train, test và kết quả SHAP, LIME nằm trong RQ2/runs/20261009/gd13_report/rq2_master_summary.json.
+
+Kết quả PCAP, LIME suy biến và giới hạn ground truth nằm trong RQ3_IDS_System/docs/xai_validation.md, các mục Bằng chứng từ PCAP người dùng và Kiểm tra lại model, SHAP và LIME trên hai PCAP.
+
+Kết quả truy cây, vùng 445 mẫu Hulk và khác biệt train, capture nằm trong RQ3_IDS_System/docs/feature_compatibility.md, mục HT2.5 và mục Dữ liệu train khác PCAP ở đâu.

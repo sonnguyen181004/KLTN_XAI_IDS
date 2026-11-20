@@ -1,0 +1,37 @@
+{
+ "BENIGN": {
+  "n": 2771024,
+  "fin": 1457466,
+  "fin_data0": 1259779,
+  "fin_data66": 1026424,
+  "zone": 1025167
+ },
+ "DoS GoldenEye": {
+  "n": 22560,
+  "fin": 17366,
+  "fin_data0": 17366,
+  "fin_data66": 17366,
+  "zone": 1
+ },
+ "DoS GoldenEye - Attempted": {
+  "n": 4301,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DoS Slowloris": {
+  "n": 8490,
+  "fin": 434,
+  "fin_data0": 434,
+  "fin_data66": 203,
+  "zone": 103
+ },
+ "DoS Slowloris - Attempted": {
+  "n": 2280,
+  "fin": 48,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

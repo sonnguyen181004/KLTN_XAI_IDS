@@ -1,0 +1,23 @@
+{
+ "Benign": {
+  "n": 416887,
+  "fin": 3484,
+  "fin_data0": 4,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "FTP-BruteForce": {
+  "n": 193360,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "SSH-Bruteforce": {
+  "n": 187589,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

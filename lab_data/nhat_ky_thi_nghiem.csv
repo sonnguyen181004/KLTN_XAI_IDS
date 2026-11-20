@@ -1,0 +1,2 @@
+﻿run_name,loai,nhom,muc,lan,gio_bat_dau_vn,gio_ket_thuc_vn,ip_nguon,ip_dich,cong_dich,file_csv,file_pcap,ghi_chu
+baseline_script_01,binh_thuong,baseline,0,1,,,192.168.11.133,192.168.11.134,80,baseline_script_01.csv,,Nhieu nen: DNS toi 192.168.11.1 va mDNS cua Ubuntu

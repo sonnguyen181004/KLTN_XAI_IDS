@@ -1,0 +1,23 @@
+{
+ "Benign": {
+  "n": 446595,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DoS attacks-Hulk": {
+  "n": 461912,
+  "fin": 1267,
+  "fin_data0": 1267,
+  "fin_data66": 1267,
+  "zone": 1267
+ },
+ "DoS attacks-SlowHTTPTest": {
+  "n": 139890,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

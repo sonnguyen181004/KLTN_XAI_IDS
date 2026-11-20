@@ -430,6 +430,27 @@ def flow_comparison(flow_id: str):
     return feature_reference.compare(flow_detail(flow_id))
 
 
+@app.get('/flows/{flow_id}/shap')
+def flow_shap_on_demand(flow_id: str, label: Optional[str] = None, top_k: int = Query(10, ge=1, le=30)):
+    """Lab M1: SHAP theo yêu cầu cho BẤT KỲ flow nào, kể cả Benign (SHAP tự động chỉ chạy cho
+    cảnh báo). Tính tại chỗ từ đặc trưng đã lưu, không ghi DB. `label` mặc định là nhãn model đã
+    dự đoán; truyền lớp khác để xem vì sao điểm lớp đó thấp/cao (vd lớp tấn công nghi ngờ)."""
+    import pandas as pd
+    conn = db.get_connection(DB_PATH)
+    try:
+        features = db.get_flow_features(conn, flow_id)
+        row = conn.execute('SELECT predicted_label FROM Prediction WHERE flow_id = ?', (flow_id,)).fetchone()
+    finally:
+        conn.close()
+    if features is None or row is None:
+        raise HTTPException(404, 'Không có flow này')
+    label = label or row[0]
+    if label not in detector.class_names:
+        raise HTTPException(400, f"Lớp '{label}' không có trong model")
+    frame = pd.DataFrame([features])[detector.feature_names]
+    return shap_explainer.explain(frame, label, top_k=top_k) | {'predicted_label': row[0]}
+
+
 @app.get("/explain_queue_status")
 def explain_queue_status():
     """Chỉ để quan sát/debug: xem hàng đợi giải thích đang ở trạng thái nào."""

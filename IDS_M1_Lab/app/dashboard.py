@@ -145,7 +145,7 @@ def show_detail(flow_id):
         duration = (flow.get('features') or {}).get('Flow Duration')
         st.write('Thời lượng flow: ' + (f'{duration / 1e6:.6f} giây' if duration is not None else 'Chưa có'))
     if not flow['is_alert']:
-        st.info('Benign: vẫn lưu dự đoán, không tạo cảnh báo và không chạy SHAP/LIME theo thiết kế.')
+        st.info('Benign: vẫn lưu dự đoán, không tạo cảnh báo. Lab M1: bấm tính SHAP theo yêu cầu ở tab «SHAP tự động».')
     prediction, shap_tab, lime_tab, comparison, reliability, raw = st.tabs(
         ['Xác suất các lớp', 'SHAP tự động', 'LIME theo yêu cầu', 'Đối chứng đặc trưng', 'Đánh giá giải thích', 'Đặc trưng và thời gian'])
     with prediction:
@@ -167,6 +167,23 @@ def show_detail(flow_id):
                 st.dataframe(flow['shap_top5'], hide_index=True, width='stretch')
         else:
             st.info(STATUS.get(flow['explanation_status'], 'Chưa có SHAP'))
+            # Lab M1: SHAP theo yêu cầu cho flow không có cảnh báo (Benign), tính tại chỗ, không ghi DB.
+            classes = list(flow['probabilities'])
+            runner_up = sorted(flow['probabilities'], key=flow['probabilities'].get, reverse=True)[:2]
+            target = st.selectbox('Giải thích cho lớp', classes, index=classes.index(flow['predicted_label']),
+                                  key='shap_od_class_' + flow_id,
+                                  help='Mặc định là lớp model chọn. Chọn lớp khác (vd lớp tấn công điểm cao thứ hai) để xem vì sao điểm lớp đó cao hoặc thấp.')
+            if st.button('Tính SHAP theo yêu cầu', key='shap_od_' + flow_id):
+                try:
+                    result = get('/flows/' + flow_id + '/shap', {'label': target, 'top_k': 10})
+                    st.session_state['shap_od_result_' + flow_id] = result
+                except requests.RequestException as exc:
+                    st.error(f'Không tính được SHAP: {exc}')
+            result = st.session_state.get('shap_od_result_' + flow_id)
+            if result:
+                st.caption(f"SHAP cho lớp «{result['class_explained']}» (model dự đoán «{result['predicted_label']}»). Sai số additivity {result['additivity_error']:.1e}.")
+                bars(result['top_k'], 'feature', 'phi', signed=True)
+                st.dataframe(result['top_k'], hide_index=True, width='stretch')
     with lime_tab:
         lime_status = flow.get('lime_status', 'not_requested')
         if not flow['is_alert']:

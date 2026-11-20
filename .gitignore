@@ -60,3 +60,18 @@ IDS_M1_Lab/data/*.db-shm
 IDS_M1_Lab/data/*.db-wal
 IDS_M1_Lab/data/*.lock
 IDS_M1_Lab/data/capture_sessions/
+
+# Dọn 20/11/2026: file sinh lúc chạy, bản sao, công cụ bên thứ ba — chỉ giữ trên máy
+Report/.qa_*/
+RQ1_Model_Training_xboost/results/cv_diagnostics/_cache/
+RQ1_Model_Training_xboost/results/*.log
+RQ1_Model_Training_xboost/results/*.err
+RQ3_IDS_System/data/demo_m0m1/
+IDS_M1_Lab/data/*.lock
+IDS_M1_Lab/data/capture_sessions/
+IDS_M1_Lab/models/_backup_*/
+*.pcap
+*.pcapng
+KHO_HOC_UPLOAD/
+Slide/frontend-slides-main/
+Slide/_kb_media/

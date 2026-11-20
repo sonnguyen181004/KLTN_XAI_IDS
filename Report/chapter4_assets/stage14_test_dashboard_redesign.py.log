@@ -1,0 +1,28 @@
+PASS migration, aggregation >200, pagination, legacy/timezone
+PASS real prediction, metadata, async SHAP, Benign and alert detail
+PASS FIN+data hint and why-suspect line
+PASS source-IP filter in dashboard
+PASS custom time range in dashboard
+PASS branch A/B explanation card and steps
+PASS real PCAP extraction + prediction via UI
+PASS CSV upload, run auto-selection, no duplicate send on refresh
+PASS dashboard render, run filter, Benign/alert, LIME click, stable selection
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_ui_test_kuoiwfmo\feeder.csv
+[feeder] Gửi tới: http://127.0.0.1:9687/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: 26fd1aff-ae39-414a-a3d2-06e6c02140db — feeder.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_ui_test_kuoiwfmo\feeder.csv.feeder-state.json
+[feeder] Dòng mới #1: GỬI OK -> flow_id=6edd7bd9-b9dd-4dfb-a451-a6a2d7ca1086, predicted_label=DoS attacks-Hulk, is_alert=True, explanation_status=queued
+[feeder] Dừng sau 2 lần kiểm tra. Đã xác nhận: 1; gửi OK phiên này: 1.
+PASS feeder blank-line deduplication and per-run metadata
+PASS degenerate LIME guard, null R2/agreement, diagnostic UI and feature comparison
+PASS storage API, normal/low-space/unavailable dashboard states
+ALL DASHBOARD REDESIGN TESTS PASSED (temporary data only)
+
+2026-10-28 09:23:27.035 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:32.692 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:34.085 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:36.875 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:42.090 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:53.237 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:54.252 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-28 09:23:55.692 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.

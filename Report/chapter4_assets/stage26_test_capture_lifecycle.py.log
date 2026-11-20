@@ -1,0 +1,28 @@
+
+test_active_boundary_independent_of_gc_order (__main__.LifecycleTests.test_active_boundary_independent_of_gc_order) ... ok
+test_default_cli_selects_v3_and_keeps_v2_explicit (__main__.LifecycleTests.test_default_cli_selects_v3_and_keeps_v2_explicit) ... ok
+test_ethernet_padding_does_not_consume_tcp_sequence_space (__main__.LifecycleTests.test_ethernet_padding_does_not_consume_tcp_sequence_space) ... ok
+test_expiry_reason_uses_earliest_deadline_even_when_gc_is_delayed (__main__.LifecycleTests.test_expiry_reason_uses_earliest_deadline_even_when_gc_is_delayed) ... ok
+test_fin_payload_wraparound_and_retransmission (__main__.LifecycleTests.test_fin_payload_wraparound_and_retransmission) ... ok
+test_fin_waits_for_both_directions_and_ack (__main__.LifecycleTests.test_fin_waits_for_both_directions_and_ack) ... ok
+test_flush_idempotent_and_closed_session_rejects_packets (__main__.LifecycleTests.test_flush_idempotent_and_closed_session_rejects_packets) ... ok
+test_gc_and_packet_admission_are_atomic (__main__.LifecycleTests.test_gc_and_packet_admission_are_atomic) ... ok
+test_idle_boundary_independent_of_gc_order (__main__.LifecycleTests.test_idle_boundary_independent_of_gc_order) ... ok
+test_late_packet_after_export_does_not_reopen_old_flow (__main__.LifecycleTests.test_late_packet_after_export_does_not_reopen_old_flow) ... ok
+test_late_packet_is_visible_and_never_negative_iat (__main__.LifecycleTests.test_late_packet_is_visible_and_never_negative_iat) ... ok
+test_late_policy_is_independent_of_gc_and_other_tuple (__main__.LifecycleTests.test_late_policy_is_independent_of_gc_and_other_tuple) ... ok
+test_midstream_new_syn_is_not_merged (__main__.LifecycleTests.test_midstream_new_syn_is_not_merged) ... ok
+test_quiet_flow_is_exported_at_max_age (__main__.LifecycleTests.test_quiet_flow_is_exported_at_max_age) ... ok
+test_rst_exports_packet_and_tuple_reuse_starts_new_flow (__main__.LifecycleTests.test_rst_exports_packet_and_tuple_reuse_starts_new_flow) ... ok
+test_same_time_packets_are_not_late (__main__.LifecycleTests.test_same_time_packets_are_not_late) ... ok
+test_simultaneous_open_is_not_split (__main__.LifecycleTests.test_simultaneous_open_is_not_split) ... ok
+test_single_fin_and_midstream_data_do_not_close (__main__.LifecycleTests.test_single_fin_and_midstream_data_do_not_close) ... ok
+test_syn_retransmission_and_different_isn (__main__.LifecycleTests.test_syn_retransmission_and_different_isn) ... ok
+test_tcp_and_udp_never_merge (__main__.LifecycleTests.test_tcp_and_udp_never_merge) ... ok
+test_write_failure_retains_late_reason_on_flush (__main__.LifecycleTests.test_write_failure_retains_late_reason_on_flush) ... ok
+test_writer_failure_keeps_buffered_flow (__main__.LifecycleTests.test_writer_failure_keeps_buffered_flow) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.352s
+
+OK

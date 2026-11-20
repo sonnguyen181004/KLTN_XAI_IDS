@@ -1,0 +1,13 @@
+SYNTHETIC: packets=3200 exported=3200 peak_buffer=64 elapsed_s=21.784 traced_python_peak_bytes=701761
+
+test_flow_limit_and_byte_limit (__main__.CaptureLimitsTests.test_flow_limit_and_byte_limit) ... ok
+test_low_disk_refuses_export_without_deleting_buffer (__main__.CaptureLimitsTests.test_low_disk_refuses_export_without_deleting_buffer) ... ok
+test_packet_limit_rejects_before_admission_and_flushes_accepted (__main__.CaptureLimitsTests.test_packet_limit_rejects_before_admission_and_flushes_accepted) ... ok
+test_real_cli_limit_is_failure_not_success_and_keeps_partial_csv (__main__.CaptureLimitsTests.test_real_cli_limit_is_failure_not_success_and_keeps_partial_csv) ... ok
+test_repeated_drains_keep_buffer_bounded (__main__.CaptureLimitsTests.test_repeated_drains_keep_buffer_bounded) ... ok
+test_zero_negative_and_noninteger_limits_refused (__main__.CaptureLimitsTests.test_zero_negative_and_noninteger_limits_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 23.642s
+
+OK

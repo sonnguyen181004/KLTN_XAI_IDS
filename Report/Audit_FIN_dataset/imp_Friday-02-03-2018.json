@@ -1,0 +1,23 @@
+{
+ "BENIGN": {
+  "n": 3951351,
+  "fin": 1789355,
+  "fin_data0": 1555923,
+  "fin_data66": 1355580,
+  "zone": 1353810
+ },
+ "Botnet Ares": {
+  "n": 142921,
+  "fin": 142921,
+  "fin_data0": 142921,
+  "fin_data66": 142921,
+  "zone": 142921
+ },
+ "Botnet Ares - Attempted": {
+  "n": 262,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

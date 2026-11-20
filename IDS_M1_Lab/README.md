@@ -2,6 +2,8 @@
 
 Bản chạy của hệ thống RQ3 với mô hình M1 (XGBoost huấn luyện trên dữ liệu đã sửa của Liu và cộng sự, 13 lớp). Thư mục này dùng để thử M1 trên flow thật và phục vụ bài báo trong `Paper_IEEE/`. Nó không sửa và không ghi đè file nào của RQ1, RQ2, RQ3, RQ4 hay báo cáo.
 
+**Cập nhật 17/11/2026:** `models/m1_xgboost_model.pkl` đã được train lại từ đầu trên dữ liệu improved (13 lớp, cùng siêu tham số với M0) và ghi đè bản cũ. `train_stats.json`, `lime_background.npy`, `clean_holdout_set.csv` dựng lại theo model mới; bản của model cũ lưu ở `models/_backup_before_rebuild_20261117_163032/` (chỉ trên máy, không đưa lên git). Thư mục dựng `M1_Rebuild/` đã xóa, nên `config.yaml` trỏ `train_set`/`test_set` về `RQ4_Retrain_Compare/data/d2_train.parquet` và `d2_test.parquet` (cùng nguồn dữ liệu improved).
+
 Hướng dẫn thao tác trên dashboard: [docs/dashboard_usage_m1.md](docs/dashboard_usage_m1.md).
 
 ## Khác biệt so với RQ3_IDS_System
@@ -13,11 +15,12 @@ Hướng dẫn thao tác trên dashboard: [docs/dashboard_usage_m1.md](docs/dash
 | `n_classes_expected` | 15 | 13 |
 | LIME `kernel_width` | 3,312 (khóa theo RQ2) | 3000 |
 | Cơ sở dữ liệu | `RQ3_IDS_System/data/ids_system.db` | `IDS_M1_Lab/data/ids_system.db` |
-| Mã `app/` | gốc | bản sao, chỉ khác 3 chỗ bên dưới |
+| Mã `app/` | gốc | bản sao, chỉ khác 4 chỗ bên dưới |
 
 Ba chỗ khác trong mã, đều chỉ để chạy được trong thư mục này:
 - `app/capture_supervisor.py` và `app/ingestion_ui.py`: nếu chưa có `.venv_capture` riêng thì dùng `RQ3_IDS_System/.venv_capture` (chỉ đọc).
 - `app/dashboard.py`: hướng dẫn trong màn hình Realtime trỏ tới thư mục này và venv của RQ3.
+- SHAP theo yêu cầu cho cả flow Benign: API `GET /flows/{flow_id}/shap?label=<lớp>&top_k=10` trong `app/main.py` (tính tại chỗ, không ghi DB) và nút «Tính SHAP theo yêu cầu» ở tab SHAP của dashboard, chọn được lớp cần giải thích (ví dụ lớp tấn công có điểm cao thứ hai).
 
 ## Vì sao kernel LIME là 3000
 
@@ -56,10 +59,11 @@ Không bật hai API cùng dùng một DB. Bắt gói thật cần Npcap và mô
 | Đường dẫn | Vai trò | Có trong git |
 |---|---|---|
 | `app/` | API, dashboard, capture, SHAP, LIME | có |
-| `scripts/` | Script kiểm thử từng bước (kế thừa từ RQ3) và hai script riêng của lab: `m1_full_test_csv.py` (gửi 236 dòng Tập B vào `/predict`, đối chiếu nhãn), `m1_lime_sweep.py` (thử cấu hình LIME trên một flow PCAP) | có |
+| `scripts/` | Script kiểm thử từng bước (kế thừa từ RQ3) và các script riêng của lab: `m1_full_test_csv.py` (gửi 236 dòng Tập B vào `/predict`, đối chiếu nhãn), `m1_lime_sweep.py` (thử cấu hình LIME trên một flow PCAP), `m1_vs_m0_on_db.py` (chạy M0 và M1 trên toàn bộ flow trong DB, ghi `data/m1_vs_m0_db.csv`), `m1_vs_m0_on_unsw.py` (thử M0 và M1 trên mẫu CIC-UNSW-NB15, `data/unsw_eval_sample.csv`) | có |
+| `shap_check.py` | Xem SHAP vì sao flow tấn công thật (cổng 22, 80) bị gán Benign; chạy từ thư mục `IDS_M1_Lab` | có |
 | `config.yaml`, `run_ids.ps1`, `requirements*.txt` | Cấu hình và chạy | có |
-| `models/m1_*` | M1 và bộ mã hóa nhãn, sao chép từ `RQ4_Retrain_Compare/models/` | không (file lớn, sinh lại bằng RQ4) |
-| `data/` | DB SQLite chạy thật (gồm 784 flow thực đã xác nhận), `train_stats.json`, `lime_background.npy`, `clean_holdout_set.csv` (236 dòng, không trùng train), phiên capture | không |
+| `models/m1_*` | M1 (bản train lại 17/11/2026) và bộ mã hóa nhãn | có (file nhỏ, khoảng 4 MB) |
+| `data/` | DB SQLite chạy thật (gồm 784 flow thực đã xác nhận và các phiên tấn công lab), `train_stats.json`, `lime_background.npy`, `clean_holdout_set.csv` (không trùng train), kết quả đối chiếu M0/M1 | có; phiên capture và file khóa thì không |
 
 Dựng lại `train_stats.json` và `lime_background.npy` từ train đã sửa bằng `scripts/stage08_compute_train_stats.py` và `scripts/stage09_compute_lime_background.py`; `clean_holdout_set.csv` bằng `scripts/stage03_build_clean_dataset.py`.
 
@@ -70,13 +74,19 @@ Dựng lại `train_stats.json` và `lime_background.npy` từ train đã sửa 
 | 784 flow thực đã xác nhận bình thường | M0: 149 cảnh báo (19,01%). M1: 0 cảnh báo (cận trên 95% là 0,47%) |
 | WEB-B01 (duyệt web, 21 flow) | M0: 19 trên 21 cảnh báo. M1: 0 trên 21 |
 | A07 và B03 (SSH brute force) | M1: SSH-Bruteforce (độ tin cậy 0,82 và 0,78). M0: Hulk |
+| Hulk thật (hulk-rs, 211 flow) | M0: 209 trên 211 bắt đúng. M1: 0 trên 211, toàn Benign |
+| SSH brute force thật (698 flow ngắn, khoảng 3 gói) | M0: 60,7% báo động, 20,7% đúng loại. M1: 0 trên 698 |
+| UDP cổng cao hợp lệ (nghi Zalo, chưa xác nhận) | M0: Benign. M1: 57 flow báo nhầm Infilteration |
+
+Bản M1 train lại ngày 17/11/2026 cho kết quả tương tự trên Hulk và SSH thật (vẫn 0%). Phân tích chi tiết và hướng làm M2 (thêm dữ liệu lab) ở `Report/KE_HOACH_DU_LIEU_VA_IDS.md`.
 
 Số liệu và script kiểm tra nằm ở `RQ4_Retrain_Compare/results/` và `Paper_IEEE/tools/verify_numbers.py`.
 
 ## Giới hạn
 
 - Nhãn bình thường của 784 flow dựa vào xác nhận bằng lời của nhóm, không có nhật ký hoạt động. SSH chỉ có hai flow (A07, B03), chưa đủ để tính tỷ lệ.
-- Tab so sánh trên dashboard đang so M1 với chính M1. Đối chiếu M0 và M1 dùng `RQ4_Retrain_Compare/scripts/18_lab_predict_m0_m1.py`.
+- Tab so sánh trên dashboard đang so M1 với chính M1. Đối chiếu M0 và M1 dùng `scripts/m1_vs_m0_on_db.py` hoặc `RQ4_Retrain_Compare/scripts/18_lab_predict_m0_m1.py`.
+- Script dựng bản M1 train lại nằm trong `M1_Rebuild/` đã xóa, nên hiện không tái lập được model này từ repo.
 - Cờ "môi trường" và gợi ý Hulk FIN trong `config.yaml` viết cho lỗi của dữ liệu cũ, có thể không còn đúng với M1.
 - `rq2_cohort_ids` và `rq2_master_summary` trong `config.yaml` vẫn trỏ về RQ2, chỉ các script kiểm tra cũ cần đến.
 - Một số chú thích trong mã vẫn ghi `RQ3_IDS_System`.

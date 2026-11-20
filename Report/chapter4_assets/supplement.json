@@ -1,0 +1,112 @@
+{
+  "faithfulness_max_saved_difference": {
+    "comprehensiveness_auc": 2.11189270515888e-08,
+    "sufficiency_auc": 2.928619380337949e-08
+  },
+  "stability_reaggregated_only": {
+    "n_flows": 1339,
+    "mean": 0.5810979922630407,
+    "median": 0.4910052910052909
+  },
+  "fin_region_train_counts": {
+    "DoS attacks-Hulk": 445
+  },
+  "flag_ranges": {
+    "FIN Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "SYN Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "RST Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "PSH Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "ACK Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "URG Flag Cnt": [
+      0.0,
+      1.0
+    ],
+    "ECE Flag Cnt": [
+      0.0,
+      1.0
+    ]
+  },
+  "historical_live": {
+    "test_run_id": "7aa30eb1-a4cb-4592-b318-1a79fd1e5257",
+    "interface": "Wi-Fi",
+    "duration_seconds": 1200,
+    "isolated_database": true,
+    "generated_network_traffic": false,
+    "status": "passed",
+    "started_at": "2026-10-18T05:08:25.387384+00:00",
+    "capture_limits": {
+      "max_buffered_packets": 50000,
+      "max_buffered_bytes": 67108864
+    },
+    "model_version": "52eb5a671ee82109",
+    "capture_process_elapsed_seconds": 1202.61,
+    "capture_exit_code": 0,
+    "capture_limit_reached": false,
+    "flows_received_before_capture_exit": 1142,
+    "flows_received_while_sniffing": 1142,
+    "accepted_packets": 176425,
+    "exported_packets": 176425,
+    "csv_packet_total": 176425,
+    "csv_flows": 1225,
+    "api_flows": 1225,
+    "labels": {
+      "Benign": 974,
+      "DoS attacks-Hulk": 250,
+      "Infilteration": 1
+    },
+    "feature_columns": 78,
+    "class_probabilities": 15,
+    "metadata_version_and_ip_pass": true,
+    "duration_unit_conversion_pass": true,
+    "queue": {
+      "qsize": 0,
+      "maxsize": 200,
+      "n_queued": 251,
+      "n_processed": 251,
+      "n_dropped": 0,
+      "n_recovered": 0,
+      "recovery_pending": 0
+    },
+    "live_run_dashboard_app_test_pass": true,
+    "feeder_error_count": 0,
+    "capture_counters": {
+      "accepted_packets": 176425,
+      "exported_packets": 176425,
+      "exported_flows": 1225
+    },
+    "buffer_counters": {
+      "limit_rejected": 0,
+      "peak_open_flows": 113,
+      "peak_buffered_packets": 48495,
+      "buffered_packet_bytes": 0
+    },
+    "finished_at": "2026-10-18T05:29:04.889075+00:00",
+    "sample_count": 108,
+    "peak_sampled_rss_mib": {
+      "api": 463.05078125,
+      "capture": 522.92578125,
+      "feeder": 97.65625
+    },
+    "last_sample_cpu_seconds": {
+      "api": 1300.671875,
+      "capture": 124.546875,
+      "feeder": 7.796875
+    },
+    "max_sampled_queue": 1
+  }
+}

@@ -1,0 +1,16 @@
+Label,train,test
+Benign,1960000,490000
+DDOS attack-HOIC,238320,59580
+DDoS attacks-LOIC-HTTP,205417,51354
+DoS attacks-Hulk,155042,38760
+Bot,100650,25162
+Infilteration,57258,14315
+SSH-Bruteforce,41828,10457
+DoS attacks-GoldenEye,14774,3694
+FTP-BruteForce,14028,3507
+DoS attacks-SlowHTTPTest,6938,1735
+DoS attacks-Slowloris,3620,905
+DDOS attack-LOIC-UDP,1384,346
+Brute Force -Web,487,122
+Brute Force -XSS,184,46
+SQL Injection,70,17

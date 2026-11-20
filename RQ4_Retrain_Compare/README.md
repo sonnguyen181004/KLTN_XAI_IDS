@@ -142,4 +142,4 @@ Dữ liệu trung gian (`data/`) và mô hình (`models/`) không được commi
 | LIME trên flow thật với nền đã sửa và quét độ rộng kernel | Xong (`19_`, `20_`) |
 | Kiểm tra theo khối thời gian cho M0 trên dữ liệu gốc | Không làm |
 | Bài báo IEEE (tiếng Anh và tiếng Việt) | Bản nháp ở `../Paper_IEEE/` |
-| Báo cáo đầy đủ | `report/Bao_cao_RQ4_so_sanh_dataset_cu_va_moi.docx`, dựng bằng `report/build_report.js` |
+| Báo cáo đầy đủ | dựng bằng `report/build_report.js` (file docx đã xóa khỏi repo ngày 20/11/2026, chạy lại script để tạo); bảng tóm tắt sơ bộ ở `report/tong_hop_so_bo_ket_qua.docx` |

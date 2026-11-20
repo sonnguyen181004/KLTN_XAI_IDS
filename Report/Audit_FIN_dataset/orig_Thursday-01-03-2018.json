@@ -1,0 +1,16 @@
+{
+ "Benign": {
+  "n": 147496,
+  "fin": 1498,
+  "fin_data0": 2,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "Infilteration": {
+  "n": 65403,
+  "fin": 453,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

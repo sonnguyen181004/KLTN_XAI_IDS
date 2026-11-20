@@ -1,0 +1,10 @@
+{
+  "source": "Tong_hop_Random_Forest.docx table 7",
+  "rows": 15,
+  "support": 700000,
+  "macro_precision_from_rounded_rows": 0.7864933333333333,
+  "macro_recall_from_rounded_rows": 0.8602066666666667,
+  "macro_f1_from_rounded_rows": 0.8080466666666666,
+  "accuracy_from_rounded_recalls": 0.9316782141428572,
+  "scope": "Arithmetic consistency of documented RF results only, not rerun predictions"
+}

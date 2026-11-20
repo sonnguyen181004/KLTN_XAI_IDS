@@ -1,0 +1,7 @@
+{
+  "lime_mean_pairwise_jaccard5": 0.5810979922630407,
+  "lime_median_pairwise_jaccard5": 0.49100529100529094,
+  "n_stability_seeds": 10,
+  "shap_jaccard5_rerun": 1.0,
+  "shap_note": "TreeExplainer là xác định cho model cố định — Jaccard=1.0 (hoặc rất gần 1.0 do làm tròn số) là kỳ vọng, không phải augment ngẫu nhiên."
+}

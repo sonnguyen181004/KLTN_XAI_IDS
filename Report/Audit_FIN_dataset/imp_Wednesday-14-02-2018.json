@@ -1,0 +1,23 @@
+{
+ "BENIGN": {
+  "n": 2997049,
+  "fin": 1468499,
+  "fin_data0": 1276556,
+  "fin_data66": 1044470,
+  "zone": 1043193
+ },
+ "FTP-BruteForce - Attempted": {
+  "n": 193354,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "SSH-BruteForce": {
+  "n": 94197,
+  "fin": 94197,
+  "fin_data0": 94197,
+  "fin_data66": 94197,
+  "zone": 0
+ }
+}

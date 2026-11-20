@@ -201,8 +201,8 @@ def show_detail(flow_id):
         st.dataframe([{'Chỉ số': name, 'Giá trị': str(flow.get(key)) if flow.get(key) is not None else 'Chưa có'}
             for name, key in [('Nhánh', 'branch'), ('Số đặc trưng môi trường trong Top-5', 'env_fingerprint_count'),
               ('Cờ môi trường', 'env_fingerprint_flag'), ('Cờ lớp hiếm', 'rare_class_flag'),
-              ('Faithfulness proxy drop', 'faithfulness_proxy_drop'), ('Jaccard@5', 'agreement_jaccard5'),
-              ('Stability tham chiếu RQ2', 'stability_lookup')]], hide_index=True, width='stretch')
+              ('Faithfulness proxy drop', 'faithfulness_proxy_drop'), ('Jaccard@5', 'agreement_jaccard5')]],
+            hide_index=True, width='stretch')
         st.caption('Proxy không phải phép đo faithfulness đầy đủ RQ2. Cờ môi trường/lớp hiếm chỉ yêu cầu xem xét, không chứng minh model sai. Không tạo điểm tin cậy tổng hợp.')
         if flow.get('robustness_lookup'):
             st.json(flow['robustness_lookup'])

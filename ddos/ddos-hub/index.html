@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Học về tấn công DDoS - Hướng dẫn đầy đủ với 5 demo tương tác, giải thích chi tiết và bài kiểm tra trắc nghiệm">
+  <meta name="keywords" content="DDoS, tấn công mạng, bảo mật, cybersecurity, học DDoS, botnet">
+  <title>DDoS Learning Hub | Học về Tấn công DDoS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Lên đầu trang">▲</button>
+
+  <!-- Background Canvas -->
+  <canvas id="particles-canvas"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- ===== SIDEBAR NAVIGATION ===== -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚡</span>
+      <div class="logo-text">DDoS<br><small>Learning Hub</small></div>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item" data-section="hero"><a href="#hero" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-text">Trang chủ</span></a></li>
+      <li class="nav-item" data-section="theory"><a href="#theory" class="nav-link"><span class="nav-icon">📖</span><span class="nav-text">Lý thuyết</span></a></li>
+      <li class="nav-item" data-section="concepts"><a href="#concepts" class="nav-link"><span class="nav-icon">🧠</span><span class="nav-text">Khái niệm</span></a></li>
+      <li class="nav-item" data-section="server-sim"><a href="#server-sim" class="nav-link"><span class="nav-icon">🎮</span><span class="nav-text">Server Sim</span></a></li>
+      <li class="nav-item" data-section="attack-map"><a href="#attack-map" class="nav-link"><span class="nav-icon">🗺️</span><span class="nav-text">Bản đồ</span></a></li>
+      <li class="nav-item" data-section="types"><a href="#types" class="nav-link"><span class="nav-icon">📚</span><span class="nav-text">Các loại</span></a></li>
+      <li class="nav-item" data-section="packet-analyzer"><a href="#packet-analyzer" class="nav-link"><span class="nav-icon">🧪</span><span class="nav-text">Packet</span></a></li>
+      <li class="nav-item" data-section="syn-flood"><a href="#syn-flood" class="nav-link"><span class="nav-icon">🧩</span><span class="nav-text">SYN Flood</span></a></li>
+      <li class="nav-item" data-section="defense-lab"><a href="#defense-lab" class="nav-link"><span class="nav-icon">🛡️</span><span class="nav-text">Phòng thủ</span></a></li>
+      <li class="nav-item" data-section="case-studies"><a href="#case-studies" class="nav-link"><span class="nav-icon">📜</span><span class="nav-text">Case Studies</span></a></li>
+      <li class="nav-item" data-section="ai-detection"><a href="#ai-detection" class="nav-link"><span class="nav-icon">🤖</span><span class="nav-text">AI Detection</span></a></li>
+      <li class="nav-item" data-section="ml-concepts"><a href="#ml-concepts" class="nav-link"><span class="nav-icon">🎓</span><span class="nav-text">ML & XAI</span></a></li>
+      <li class="nav-item" data-section="history"><a href="#history" class="nav-link"><span class="nav-icon">📊</span><span class="nav-text">Lịch sử</span></a></li>
+      <li class="nav-item" data-section="terminal"><a href="#terminal" class="nav-link"><span class="nav-icon">💻</span><span class="nav-text">Terminal</span></a></li>
+      <li class="nav-item" data-section="quiz"><a href="#quiz" class="nav-link"><span class="nav-icon">🎯</span><span class="nav-text">Kiểm tra</span></a></li>
+    </ul>
+    <div class="sidebar-progress-wrap">
+      <div class="sidebar-progress-track">
+        <div class="sidebar-progress-fill" id="scroll-progress"></div>
+      </div>
+      <span class="progress-label" id="progress-pct">0%</span>
+    </div>
+  </nav>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <button class="menu-btn" id="menu-toggle">☰</button>
+    <span class="mobile-title">⚡ DDoS Learning Hub</span>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ========== SECTION 1: HERO ========== -->
+    <section id="hero" class="section hero-section">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-pulse"></span>
+            Tài liệu giáo dục · Educational Only
+          </div>
+          <h1 class="hero-title">
+            <span class="glitch" data-text="TẤN CÔNG">TẤN CÔNG</span><br>
+            <span class="hero-ddos-text">DDoS</span><br>
+            <span class="hero-subtitle-word">là gì?</span>
+          </h1>
+          <p class="hero-desc">
+            Khám phá cơ chế hoạt động của tấn công <strong>DDoS</strong> qua demo tương tác,
+            hình ảnh trực quan và giải thích chi tiết bằng tiếng Việt.
+          </p>
+          <div class="hero-stats-row">
+            <div class="hero-stat-box"><span class="hstat-num" data-to="10">0</span><span class="hstat-lbl">Module học</span></div>
+            <div class="hero-stat-box"><span class="hstat-num" data-to="5">0</span><span class="hstat-lbl">Demo live</span></div>
+            <div class="hero-stat-box"><span class="hstat-num" data-to="6">0</span><span class="hstat-lbl">Loại tấn công</span></div>
+            <div class="hero-stat-box"><span class="hstat-num" data-to="10">0</span><span class="hstat-lbl">Câu hỏi quiz</span></div>
+          </div>
+          <div class="hero-actions">
+            <a href="#theory" class="btn-primary">📖 Bắt đầu học <span>→</span></a>
+            <a href="#server-sim" class="btn-secondary">🎮 Thử Demo ngay</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="attack-anim-wrapper">
+            <div class="hero-attacker-grid" id="hero-bots"></div>
+            <div class="hero-arrows-layer" id="hero-arrows"></div>
+            <div class="hero-server-box" id="hero-server">
+              <div class="hsrv-lights">
+                <span class="hlight green" id="hl-1"></span>
+                <span class="hlight green" id="hl-2"></span>
+                <span class="hlight green" id="hl-3"></span>
+              </div>
+              <div class="hsrv-body">
+                <div class="hsrv-slot"></div>
+                <div class="hsrv-slot"></div>
+                <div class="hsrv-slot"></div>
+              </div>
+              <div class="hsrv-label">SERVER</div>
+              <div class="hsrv-status" id="hero-srv-status">🟢 ONLINE</div>
+            </div>
+          </div>
+          <div class="hero-fire-wrap hidden" id="hero-fire">🔥💥🔥</div>
+        </div>
+      </div>
+
+      <div class="scroll-down">
+        <div class="scroll-chevron"></div>
+        <span>Cuộn xuống để khám phá</span>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 2: THEORY ========== -->
+    <section id="theory" class="section theory-section">
+      <div class="section-header">
+        <div class="sec-badge">📖 Lý thuyết cơ bản</div>
+        <h2 class="sec-title">DDoS là gì?</h2>
+        <p class="sec-desc">Distributed Denial of Service — Từ chối Dịch vụ Phân tán</p>
+      </div>
+
+      <!-- Definition -->
+      <div class="def-card glass-card">
+        <div class="def-icon-wrap">🎯</div>
+        <div class="def-body">
+          <h3>Định nghĩa chính xác</h3>
+          <p><strong>DDoS (Distributed Denial of Service)</strong> là hình thức tấn công mạng trong đó kẻ tấn công sử dụng <span class="hl-cyan">hàng nghìn máy tính bị kiểm soát</span> (gọi là <strong>botnet</strong>) để đồng loạt gửi lưu lượng khổng lồ vào một server mục tiêu, khiến nó <span class="hl-red">quá tải và ngừng hoạt động</span> — người dùng thật không thể truy cập được.</p>
+        </div>
+      </div>
+
+      <!-- DoS vs DDoS -->
+      <div class="subsec-header">
+        <h3 class="subsec-title">⚖️ DoS vs DDoS — Khác biệt quan trọng</h3>
+      </div>
+      <div class="compare-row">
+        <div class="compare-card glass-card dos-side">
+          <div class="compare-top">
+            <span class="cmp-icon">💻</span>
+            <div>
+              <h4>DoS</h4>
+              <span class="cmp-badge yellow-badge">Denial of Service</span>
+            </div>
+          </div>
+          <ul class="cmp-list">
+            <li>✦ Từ <strong>1 máy tính</strong> tấn công</li>
+            <li>✦ Dễ bị phát hiện & chặn IP</li>
+            <li>✦ Băng thông hạn chế</li>
+            <li>✦ Ít nguy hiểm hơn</li>
+            <li>✦ IP nguồn dễ xác định</li>
+          </ul>
+          <div class="cmp-diagram">
+            <span class="cmp-node">💻</span>
+            <span class="cmp-arr">━━━━━▶</span>
+            <span class="cmp-node">🖥️</span>
+          </div>
+        </div>
+
+        <div class="compare-vs-badge">VS</div>
+
+        <div class="compare-card glass-card ddos-side">
+          <div class="compare-top">
+            <span class="cmp-icon">🌐</span>
+            <div>
+              <h4>DDoS</h4>
+              <span class="cmp-badge red-badge">Distributed DoS</span>
+            </div>
+          </div>
+          <ul class="cmp-list">
+            <li>⚡ Từ <strong>hàng nghìn máy</strong> tấn công</li>
+            <li>⚡ Rất khó xác định nguồn</li>
+            <li>⚡ Băng thông cực lớn (Tbps)</li>
+            <li>⚡ Cực kỳ nguy hiểm</li>
+            <li>⚡ IP bị giả mạo (IP Spoofing)</li>
+          </ul>
+          <div class="cmp-diagram multi">
+            <div class="cmp-bots">💻📱💻📱💻📱</div>
+            <span class="cmp-arr">━━▶</span>
+            <span class="cmp-node">🖥️</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline How DDoS Works -->
+      <div class="subsec-header">
+        <h3 class="subsec-title">⚙️ Cơ chế hoạt động — Từng bước</h3>
+      </div>
+      <div class="timeline-steps">
+        <div class="ts-item">
+          <div class="ts-num">01</div>
+          <div class="ts-icon">🦠</div>
+          <div class="ts-content glass-card">
+            <h4>Xây dựng Botnet</h4>
+            <p>Kẻ tấn công lây nhiễm malware vào hàng nghìn thiết bị (PC, điện thoại, camera IoT, router). Các thiết bị này trở thành <strong>"zombie"</strong> — chủ nhân không hay biết thiết bị đang bị điều khiển.</p>
+            <div class="ts-tags"><span class="tag">Malware</span><span class="tag">Botnet</span><span class="tag">Zombie Device</span></div>
+          </div>
+        </div>
+        <div class="ts-item">
+          <div class="ts-num">02</div>
+          <div class="ts-icon">📡</div>
+          <div class="ts-content glass-card">
+            <h4>C&amp;C Server phát lệnh</h4>
+            <p>Kẻ tấn công dùng máy chủ <strong>Command &amp; Control (C&amp;C)</strong> ra lệnh cho toàn bộ botnet. Xác định mục tiêu, thời điểm tấn công và loại tấn công (UDP Flood, HTTP Flood...).</p>
+            <div class="ts-tags"><span class="tag">C&C Server</span><span class="tag">Command</span><span class="tag">IRC/HTTP/P2P</span></div>
+          </div>
+        </div>
+        <div class="ts-item">
+          <div class="ts-num">03</div>
+          <div class="ts-icon">💥</div>
+          <div class="ts-content glass-card">
+            <h4>Đồng loạt tấn công</h4>
+            <p>Tất cả bot <strong>đồng thời</strong> gửi lưu lượng khổng lồ đến server mục tiêu. Có thể đạt hàng triệu requests/giây hoặc hàng Terabits/giây băng thông. Server bắt đầu chậm lại và không phản hồi.</p>
+            <div class="ts-tags"><span class="tag">Flood</span><span class="tag">Overload</span><span class="tag">Millions RPS</span></div>
+          </div>
+        </div>
+        <div class="ts-item">
+          <div class="ts-num">04</div>
+          <div class="ts-icon">💀</div>
+          <div class="ts-content glass-card">
+            <h4>Server sập — Dịch vụ ngừng hoạt động</h4>
+            <p>CPU đạt 100%, RAM đầy tràn, băng thông cạn kiệt. Server không thể phản hồi yêu cầu hợp lệ. Người dùng thật nhận được lỗi <strong>"503 Service Unavailable"</strong>. Thiệt hại tài chính và uy tín.</p>
+            <div class="ts-tags"><span class="tag">Downtime</span><span class="tag">503 Error</span><span class="tag">Revenue Loss</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botnet size -->
+      <div class="subsec-header">
+        <h3 class="subsec-title">🤖 Quy mô Botnet trong thực tế</h3>
+      </div>
+      <div class="botnet-visual glass-card">
+        <div class="bv-bars">
+          <div class="bv-bar" style="--h:25%"><div class="bv-fill"></div><span>Nhỏ<br>~1K</span></div>
+          <div class="bv-bar" style="--h:50%"><div class="bv-fill"></div><span>Vừa<br>~50K</span></div>
+          <div class="bv-bar" style="--h:80%"><div class="bv-fill"></div><span>Lớn<br>~500K</span></div>
+          <div class="bv-bar highlight-bv" style="--h:100%"><div class="bv-fill"></div><span>Mirai<br>~600K</span></div>
+        </div>
+        <div class="bv-info">
+          <div class="bv-note">
+            <span class="bv-note-icon">⚠️</span>
+            <div>
+              <strong>Mirai Botnet (2016)</strong>
+              <p>Lây nhiễm ~600,000 thiết bị IoT. Tạo cuộc tấn công <strong>1.2 Tbps</strong> vào Dyn DNS, làm sập Twitter, Reddit, GitHub, Netflix, Spotify trong nhiều giờ.</p>
+            </div>
+          </div>
+          <div class="bv-note">
+            <span class="bv-note-icon">🏠</span>
+            <div>
+              <strong>Thiết bị IoT — Mối nguy hiểm lớn</strong>
+              <p>Camera an ninh, smart TV, router, tủ lạnh thông minh... đều có thể trở thành bot nếu dùng mật khẩu mặc định hoặc firmware lỗi thời.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: KHÁI NIỆM CƠ BẢN ========== -->
+    <section id="concepts" class="section concepts-section">
+      <div class="section-header">
+        <div class="sec-badge">🧠 Kiến thức nền tảng</div>
+        <h2 class="sec-title">10 Khái niệm cơ bản cần biết</h2>
+        <p class="sec-desc">Hiểu những khái niệm này trước sẽ giúp bạn nắm DDoS nhanh hơn rất nhiều. <strong>Click vào thẻ</strong> để xem giải thích chi tiết kèm ví dụ dễ hiểu!</p>
+      </div>
+
+      <div class="concepts-filter">
+        <button class="cf-btn active" data-cf="all">🔢 Tất cả</button>
+        <button class="cf-btn" data-cf="network">🌐 Mạng</button>
+        <button class="cf-btn" data-cf="protocol">📡 Giao thức</button>
+        <button class="cf-btn" data-cf="security">🛡️ Bảo mật</button>
+        <button class="cf-btn" data-cf="performance">⚡ Hiệu năng</button>
+      </div>
+
+      <div class="concepts-grid" id="concepts-grid">
+
+        <!-- 0. IDS (Intrusion Detection System) -->
+        <div class="cc-card glass-card" data-cat="security">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🛡️</span>
+            <div class="cc-titles"><h3>IDS (Intrusion Detection System)</h3><span class="cc-sub">Hệ thống Phát hiện Xâm nhập Mạng</span></div>
+            <span class="cc-cat-badge sec-badge">Bảo mật</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📹</span><div><strong>Hình dung đơn giản:</strong> IDS giống như <em>Camera giám sát chống trộm thông minh ở Ngân hàng</em>. Camera âm thầm quan sát 24/7, khi thấy kẻ trộm trùm mặt phá két sắt $\rightarrow$ Camera lập tức <strong>bật chuông cảnh báo (Alert)</strong> cho ban quản lý.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Phân loại IDS cốt lõi:</h4>
+              <ul class="cc-ul">
+                <li><strong>NIDS (Network IDS):</strong> Đặt tại gateway, giám sát luồng traffic đi qua hạ tầng mạng.</li>
+                <li><strong>HIDS (Host IDS):</strong> Cài trực tiếp trên máy chủ, giám sát nhật ký và tiến trình nội bộ.</li>
+                <li><strong>IDS vs IPS:</strong> IDS phát hiện và phát cảnh báo (không tự chặn). IPS phát hiện và tự động chặn traffic ngay lập tức.</li>
+              </ul>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Ứng dụng XAI-IDS:</span><p>Hệ thống <strong>XAI-IDS dựa trên Machine Learning</strong> hiện đại — vừa phát hiện đợt tấn công DDoS vừa tự động <strong>GIẢI THÍCH LÝ DO</strong> tại sao chặn bằng thuật toán SHAP / LIME.</p></div>
+          </div>
+        </div>
+
+        <!-- 1. IP Address -->
+        <div class="cc-card glass-card" data-cat="network">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🌐</span>
+            <div class="cc-titles"><h3>IP Address</h3><span class="cc-sub">Địa chỉ của thiết bị trên mạng</span></div>
+            <span class="cc-cat-badge net-badge">Mạng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏠</span><div><strong>Hình dung đơn giản:</strong> IP giống như <em>địa chỉ nhà</em>. Muốn gửi thư, cần biết địa chỉ nhà người nhận. Trên internet, mỗi thiết bị có 1 địa chỉ IP riêng để biết gửi dữ liệu đến đâu.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Chi tiết kỹ thuật</h4>
+              <ul class="cc-ul">
+                <li>🔵 <strong>IPv4:</strong> Dạng <code>192.168.1.1</code> — 4 nhóm số (0–255), có ~4.3 tỷ địa chỉ</li>
+                <li>🔵 <strong>IPv6:</strong> Dạng <code>2001:db8::1</code> — 128-bit, có 340 undecillion địa chỉ</li>
+                <li>🏠 <strong>IP Nội bộ (Private):</strong> <code>192.168.x.x</code>, <code>10.x.x.x</code> — dùng trong LAN</li>
+                <li>🌍 <strong>IP Công khai (Public):</strong> Tất cả mọi người trên internet đều thấy được</li>
+                <li>🔄 <strong>IP Động (Dynamic):</strong> Thay đổi mỗi lần kết nối (ISP cấp)</li>
+              </ul>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p>Kẻ tấn công thường dùng <strong>IP Spoofing</strong> — giả mạo địa chỉ IP nguồn để ẩn danh tính và khiến server khó chặn. Trong DNS Amplification, IP nạn nhân bị dùng làm IP nguồn giả để nhận phản hồi từ hàng nghìn DNS server.</p></div>
+          </div>
+        </div>
+
+        <!-- 2. Port -->
+        <div class="cc-card glass-card" data-cat="network">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🚪</span>
+            <div class="cc-titles"><h3>Port (Cổng)</h3><span class="cc-sub">Cửa vào từng dịch vụ của server</span></div>
+            <span class="cc-cat-badge net-badge">Mạng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏢</span><div><strong>Hình dung đơn giản:</strong> Server như tòa nhà văn phòng nhiều phòng. IP là địa chỉ tòa nhà, Port là số phòng cụ thể. Muốn truy cập web → phòng 80 (HTTP). Muốn web bảo mật → phòng 443 (HTTPS).</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Các Port phổ biến</h4>
+              <div class="port-table-mini">
+                <div class="ptm-row"><span class="ptm-port">80</span><span class="ptm-proto">HTTP</span><span class="ptm-desc">Website thường (không mã hóa)</span></div>
+                <div class="ptm-row"><span class="ptm-port">443</span><span class="ptm-proto">HTTPS</span><span class="ptm-desc">Website có SSL/TLS bảo mật</span></div>
+                <div class="ptm-row"><span class="ptm-port">53</span><span class="ptm-proto">DNS</span><span class="ptm-desc">Tra cứu tên miền → IP</span></div>
+                <div class="ptm-row"><span class="ptm-port">22</span><span class="ptm-proto">SSH</span><span class="ptm-desc">Quản trị server từ xa</span></div>
+                <div class="ptm-row"><span class="ptm-port">3306</span><span class="ptm-proto">MySQL</span><span class="ptm-desc">Cơ sở dữ liệu</span></div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p><strong>UDP Flood</strong> gửi packet đến các port ngẫu nhiên (1–65535), buộc server kiểm tra từng port → lãng phí CPU. <strong>SYN Flood</strong> thường nhắm port 80/443 vì đây là port web quan trọng nhất.</p></div>
+          </div>
+        </div>
+
+        <!-- 3. Packet -->
+        <div class="cc-card glass-card" data-cat="network">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">📦</span>
+            <div class="cc-titles"><h3>Packet (Gói tin)</h3><span class="cc-sub">Đơn vị nhỏ nhất của dữ liệu mạng</span></div>
+            <span class="cc-cat-badge net-badge">Mạng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🚚</span><div><strong>Hình dung đơn giản:</strong> Gửi file 100MB → cắt thành hàng nghìn gói nhỏ (packets). Mỗi gói có nhãn số thứ tự + địa chỉ gửi/nhận. Bên nhận ghép lại theo thứ tự — như xếp hình puzzle.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Cấu trúc một Packet</h4>
+              <div class="packet-struct-mini">
+                <div class="psm-part head-p"><div class="psm-label">HEADER</div><div class="psm-items">IP nguồn · IP đích · Port · TTL · Protocol · Checksum</div></div>
+                <div class="psm-part data-p"><div class="psm-label">PAYLOAD (Data)</div><div class="psm-items">Nội dung thực sự: HTML, ảnh, video, dữ liệu...</div></div>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--text-dim)">Packet size thông thường: 64 bytes đến 1500 bytes (MTU Ethernet)</p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p>DDoS gửi hàng <strong>triệu packet/giây</strong>. Server phải kiểm tra header từng packet → CPU cạn kiệt. Packet nhỏ (64 bytes) liên tục = dấu hiệu SYN Flood/UDP Flood vì kẻ tấn công muốn gửi nhiều nhất có thể.</p></div>
+          </div>
+        </div>
+
+        <!-- 4. Bandwidth -->
+        <div class="cc-card glass-card" data-cat="performance">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🚿</span>
+            <div class="cc-titles"><h3>Băng thông (Bandwidth)</h3><span class="cc-sub">Khả năng truyền tải dữ liệu tối đa</span></div>
+            <span class="cc-cat-badge perf-badge">Hiệu năng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏗️</span><div><strong>Hình dung đơn giản:</strong> Đường ống dẫn nước — ống to = nhiều nước chảy qua. Khi DDoS xảy ra, hàng nghìn bot thi nhau đổ nước vào ống → ống nghẹt, nước của bạn (traffic hợp lệ) không chảy qua được nữa.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Thang đo thực tế</h4>
+              <div class="bw-scale">
+                <div class="bws-item"><span class="bws-val">50–500 Mbps</span><span class="bws-desc">🏠 Hộ gia đình Việt Nam</span></div>
+                <div class="bws-item"><span class="bws-val">1–10 Gbps</span><span class="bws-desc">🏢 Doanh nghiệp vừa</span></div>
+                <div class="bws-item"><span class="bws-val">10–100 Gbps</span><span class="bws-desc">🌐 Data Center lớn</span></div>
+                <div class="bws-item bws-red"><span class="bws-val">1.2–2.3 Tbps</span><span class="bws-desc">💥 DDoS lớn nhất lịch sử</span></div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p><strong>Volumetric Attack</strong> (UDP/ICMP Flood) nhằm <em>lấp đầy hoàn toàn đường ống băng thông</em>. Khi 100% băng thông bị chiếm → mọi request đều timeout, kể cả từ người dùng hợp lệ.</p></div>
+          </div>
+        </div>
+
+        <!-- 5. TCP vs UDP -->
+        <div class="cc-card glass-card" data-cat="protocol">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🤝</span>
+            <div class="cc-titles"><h3>TCP vs UDP</h3><span class="cc-sub">Hai giao thức truyền tải chính của Internet</span></div>
+            <span class="cc-cat-badge proto-badge">Giao thức</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📮</span><div><strong>TCP</strong> như bưu phẩm có xác nhận — đảm bảo đến nơi, đúng thứ tự, báo lại nếu thất lạc. Chậm hơn nhưng đáng tin.<br><strong>UDP</strong> như ném tờ rơi — gửi và quên, không cần biết ai nhận, nhưng cực kỳ nhanh.</div></div>
+            <div class="cc-tech-box">
+              <div class="tcp-udp-compare">
+                <div class="tuc-col"><div class="tuc-head tcp-h">TCP</div><div class="tuc-body"><div class="tuc-item good">✓ Đảm bảo giao nhận</div><div class="tuc-item good">✓ Đúng thứ tự</div><div class="tuc-item good">✓ Kiểm soát lỗi</div><div class="tuc-item bad">✗ Chậm hơn</div><div class="tuc-use">Dùng: HTTP, HTTPS, Email, SSH</div></div></div>
+                <div class="tuc-vs">VS</div>
+                <div class="tuc-col"><div class="tuc-head udp-h">UDP</div><div class="tuc-body"><div class="tuc-item bad">✗ Không đảm bảo</div><div class="tuc-item bad">✗ Có thể mất gói</div><div class="tuc-item bad">✗ Ít kiểm tra lỗi</div><div class="tuc-item good">✓ Rất nhanh</div><div class="tuc-use">Dùng: DNS, Video call, Game online</div></div></div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p>UDP dễ bị khai thác vì <strong>không cần handshake</strong> — gửi UDP với IP giả là xong, không cần xác thực. TCP có 3-way handshake an toàn hơn nhưng chính cơ chế này bị khai thác trong <strong>SYN Flood</strong>.</p></div>
+          </div>
+        </div>
+
+        <!-- 6. DNS -->
+        <div class="cc-card glass-card" data-cat="protocol">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">📒</span>
+            <div class="cc-titles"><h3>DNS — Domain Name System</h3><span class="cc-sub">Hệ thống phân giải tên miền</span></div>
+            <span class="cc-cat-badge proto-badge">Giao thức</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📞</span><div><strong>Hình dung đơn giản:</strong> Danh bạ điện thoại của Internet. Bạn nhớ tên (google.com) nhưng không nhớ số điện thoại (IP: 142.250.74.14) → DNS tra giúp, cực nhanh (&lt;1ms).</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Quy trình DNS Resolution</h4>
+              <div class="dns-flow-mini">
+                <div class="dfm-step">Gõ<br><code>google.com</code></div>
+                <div class="dfm-arr">→</div>
+                <div class="dfm-step">DNS Cache<br>kiểm tra</div>
+                <div class="dfm-arr">→</div>
+                <div class="dfm-step">DNS Resolver<br>tra cứu</div>
+                <div class="dfm-arr">→</div>
+                <div class="dfm-step">Nhận IP<br><code>142.x.x.x</code></div>
+                <div class="dfm-arr">→</div>
+                <div class="dfm-step">Kết nối<br>server</div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p><strong>DNS Amplification:</strong> Gửi DNS query nhỏ (~50 bytes) với IP giả (IP nạn nhân) đến DNS server mở. DNS phản hồi gói lớn (~3500 bytes) đến nạn nhân. Hệ số khuếch đại <strong>70 lần</strong>! Tấn công 1 Gbps → nạn nhân nhận 70 Gbps.</p></div>
+          </div>
+        </div>
+
+        <!-- 7. Latency -->
+        <div class="cc-card glass-card" data-cat="performance">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">⏱️</span>
+            <div class="cc-titles"><h3>Latency (Độ trễ / Ping)</h3><span class="cc-sub">Thời gian data đi từ A đến B và quay lại</span></div>
+            <span class="cc-cat-badge perf-badge">Hiệu năng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏃</span><div><strong>Hình dung đơn giản:</strong> Bạn hỏi câu hỏi, bao lâu nhận được trả lời? Ping 20ms = server trả lời sau 20 phần nghìn giây. Latency thấp = nhanh = tốt. Latency cao = lag = website chậm.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Thang đo Latency</h4>
+              <div class="latency-meter">
+                <div class="lm-item lm-great"><span>0–20ms</span><span>🟢 Xuất sắc — Game, video call OK</span></div>
+                <div class="lm-item lm-good"><span>20–100ms</span><span>🟡 Tốt — Dùng web bình thường</span></div>
+                <div class="lm-item lm-ok"><span>100–300ms</span><span>🟠 Kém — Web chậm</span></div>
+                <div class="lm-item lm-bad"><span>&gt;500ms</span><span>🔴 Rất tệ — Không dùng được</span></div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p>Dấu hiệu đầu tiên của DDoS là <strong>latency tăng đột biến</strong>. Server quá tải → hàng đợi request dài → phải chờ lâu → timeout → người dùng thấy trang web treo rồi báo lỗi 503.</p></div>
+          </div>
+        </div>
+
+        <!-- 8. Firewall & WAF -->
+        <div class="cc-card glass-card" data-cat="security">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🔥</span>
+            <div class="cc-titles"><h3>Firewall &amp; WAF</h3><span class="cc-sub">Tường lửa và bộ lọc tấn công ứng dụng</span></div>
+            <span class="cc-cat-badge sec-badge">Bảo mật</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">👮</span><div><strong>Firewall</strong> như bảo vệ ở cổng: kiểm tra IP, port, protocol — cho qua nếu OK, chặn nếu đáng ngờ.<br><strong>WAF (Web Application Firewall)</strong> thông minh hơn: đọc cả nội dung request, phát hiện tấn công như SQL injection, HTTP flood, XSS...</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Firewall kiểm tra gì?</h4>
+              <ul class="cc-ul">
+                <li>🔍 IP nguồn: có trong blacklist không?</li>
+                <li>🔍 Port đích: có được phép mở không?</li>
+                <li>🔍 Protocol: TCP/UDP/ICMP?</li>
+                <li>🔍 Rate: gửi bao nhiêu request/giây từ 1 IP?</li>
+                <li>🔍 State (Stateful FW): kết nối có bắt đầu đúng cách không?</li>
+                <li>🔍 WAF: nội dung có chứa pattern tấn công không?</li>
+              </ul>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Trong DDoS:</span><p>Firewall thường có thể bị áp đảo nếu traffic quá lớn (&gt;100 Gbps) vì phải xử lý từng packet. WAF hiệu quả với Layer 7. Cần kết hợp <strong>Firewall + WAF + CDN + Rate Limiting</strong> để chống DDoS hiệu quả.</p></div>
+          </div>
+        </div>
+
+        <!-- 9. CDN -->
+        <div class="cc-card glass-card" data-cat="security">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🌍</span>
+            <div class="cc-titles"><h3>CDN &amp; Anycast</h3><span class="cc-sub">Mạng phân phối nội dung toàn cầu</span></div>
+            <span class="cc-cat-badge sec-badge">Hạ tầng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏪</span><div><strong>Hình dung đơn giản:</strong> Thay vì 1 kho hàng ở Hà Nội, bạn có kho ở Hà Nội, Sài Gòn, Singapore, Tokyo, London... Khách lấy hàng từ kho gần nhất → nhanh hơn và nếu 1 kho bị tấn công, các kho khác vẫn hoạt động.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 CDN hoạt động thế nào?</h4>
+              <ul class="cc-ul">
+                <li>🌐 Phân tán hàng trăm server (PoP) trên toàn cầu</li>
+                <li>🌐 Anycast: cùng 1 IP nhưng trỏ đến server gần nhất</li>
+                <li>🌐 Cache nội dung tĩnh (ảnh, JS, CSS) tại edge</li>
+                <li>🌐 Cloudflare: 200+ thành phố | Akamai: 4000+ PoP</li>
+              </ul>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ Chống DDoS cực hiệu quả:</span><p>Traffic tấn công 1 Tbps được <strong>phân tán</strong> ra 200 server → mỗi server chỉ chịu 5 Gbps → không ai sập. Cloudflare hấp thụ DDoS &gt;100 Tbps. Lý do Google, GitHub không sập dù bị tấn công kỷ lục.</p></div>
+          </div>
+        </div>
+
+        <!-- 10. OSI Model -->
+        <div class="cc-card glass-card" data-cat="network">
+          <div class="cc-head" onclick="toggleConcept(this)">
+            <span class="cc-ico">🏗️</span>
+            <div class="cc-titles"><h3>Mô hình OSI — 7 Tầng mạng</h3><span class="cc-sub">Kiến trúc chuẩn của mạng máy tính</span></div>
+            <span class="cc-cat-badge net-badge">Kiến trúc</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏢</span><div><strong>Hình dung đơn giản:</strong> Tòa nhà 7 tầng — mỗi tầng có nhiệm vụ riêng. Dữ liệu được "đóng gói" thêm lớp ở mỗi tầng khi gửi đi, và "bóc lớp" khi nhận về. Tầng thấp phục vụ tầng cao.</div></div>
+            <div class="cc-tech-box">
+              <div class="osi-stack">
+                <div class="os-layer os-l7"><span class="osl-num">7</span><span class="osl-name">Application</span><span class="osl-ex">HTTP, DNS, FTP, Email</span><span class="osl-atk atk-red">→ HTTP Flood, Slowloris</span></div>
+                <div class="os-layer os-l6"><span class="osl-num">6</span><span class="osl-name">Presentation</span><span class="osl-ex">Mã hóa SSL/TLS, Nén data</span><span class="osl-atk atk-red">→ SSL Exhaustion</span></div>
+                <div class="os-layer os-l5"><span class="osl-num">5</span><span class="osl-name">Session</span><span class="osl-ex">Quản lý phiên kết nối</span><span class="osl-atk">—</span></div>
+                <div class="os-layer os-l4"><span class="osl-num">4</span><span class="osl-name">Transport</span><span class="osl-ex">TCP, UDP, Port</span><span class="osl-atk atk-red">→ SYN Flood</span></div>
+                <div class="os-layer os-l3"><span class="osl-num">3</span><span class="osl-name">Network</span><span class="osl-ex">IP, Router, ICMP</span><span class="osl-atk atk-red">→ UDP, ICMP, DNS Flood</span></div>
+                <div class="os-layer os-l2"><span class="osl-num">2</span><span class="osl-name">Data Link</span><span class="osl-ex">MAC Address, Switch</span><span class="osl-atk">→ MAC Flood</span></div>
+                <div class="os-layer os-l1"><span class="osl-num">1</span><span class="osl-name">Physical</span><span class="osl-ex">Cáp mạng, WiFi, Quang</span><span class="osl-atk">—</span></div>
+              </div>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ DDoS tấn công theo tầng:</span><p><strong>Layer 3–4:</strong> Volumetric (UDP, ICMP, SYN Flood) — tốn băng thông lớn, dễ tạo. <strong>Layer 7:</strong> Application (HTTP Flood, Slowloris) — khó phân biệt với traffic thật, cần WAF thông minh để phát hiện.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== SECTION 3: SERVER SIMULATOR ========== -->
+    <section id="server-sim" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🎮 Demo Tương Tác #1</div>
+        <h2 class="sec-title">Mô phỏng tấn công Server</h2>
+        <p class="sec-desc">Tự tay điều khiển cuộc tấn công, thêm bot và quan sát server sụp đổ theo thời gian thực</p>
+      </div>
+
+      <div class="sim-layout">
+        <!-- Server Display -->
+        <div class="sim-server-col">
+          <div class="server-display glass-card">
+            <div class="server-visual-area">
+              <div class="sim-server-box" id="sim-server">
+                <div class="ssrv-top"><span>SERVER</span></div>
+                <div class="ssrv-body">
+                  <div class="ssrv-row">
+                    <div class="ssrv-drive"></div><div class="ssrv-drive"></div>
+                    <div class="ssrv-ind" id="ind-pwr">PWR</div>
+                  </div>
+                  <div class="ssrv-row">
+                    <div class="ssrv-drive"></div><div class="ssrv-drive"></div>
+                    <div class="ssrv-ind" id="ind-net">NET</div>
+                  </div>
+                  <div class="ssrv-row">
+                    <div class="ssrv-drive"></div><div class="ssrv-drive"></div>
+                    <div class="ssrv-ind" id="ind-hdd">HDD</div>
+                  </div>
+                </div>
+              </div>
+              <div class="server-effects">
+                <div class="srv-status-badge" id="server-status-label">🟢 ONLINE</div>
+                <div class="srv-smoke hidden" id="server-smoke">💨 💨 💨</div>
+                <div class="srv-fire hidden" id="server-fire">🔥💥🔥</div>
+              </div>
+            </div>
+
+            <div class="health-section">
+              <div class="health-row">
+                <span class="health-lbl">❤️ Server Health</span>
+                <span class="health-val" id="server-health-value">100%</span>
+              </div>
+              <div class="health-track">
+                <div class="health-fill" id="server-health-bar"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Packet Animation Canvas -->
+          <div class="glass-card packet-viz-card">
+            <div class="pv-header">📦 Luồng Packet đến server</div>
+            <canvas id="packet-canvas" width="300" height="160"></canvas>
+          </div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div class="sim-stats-col glass-card">
+          <h3 class="panel-title">📊 Thống kê thời gian thực</h3>
+          <div class="stats-grid-2">
+            <div class="sg-item">
+              <div class="sg-icon">⚡</div>
+              <div class="sg-info"><span class="sg-label">Requests/giây</span><span class="sg-val" id="server-rps">0</span></div>
+            </div>
+            <div class="sg-item">
+              <div class="sg-icon">📡</div>
+              <div class="sg-info"><span class="sg-label">Băng thông</span><span class="sg-val" id="server-bandwidth">0 MB/s</span></div>
+            </div>
+            <div class="sg-item">
+              <div class="sg-icon">🔧</div>
+              <div class="sg-info"><span class="sg-label">CPU</span><span class="sg-val" id="server-cpu">0%</span></div>
+            </div>
+            <div class="sg-item">
+              <div class="sg-icon">💾</div>
+              <div class="sg-info"><span class="sg-label">RAM</span><span class="sg-val" id="server-ram">0%</span></div>
+            </div>
+            <div class="sg-item">
+              <div class="sg-icon">🤖</div>
+              <div class="sg-info"><span class="sg-label">Số Bot</span><span class="sg-val" id="bot-count">0</span></div>
+            </div>
+            <div class="sg-item">
+              <div class="sg-icon">🚦</div>
+              <div class="sg-info"><span class="sg-label">Trạng thái</span><span class="sg-val status-online" id="server-status-text">Online</span></div>
+            </div>
+          </div>
+
+          <div class="resource-meters">
+            <div class="rm-item">
+              <span class="rm-label">CPU</span>
+              <div class="rm-track"><div class="rm-fill cpu-fill" id="cpu-bar"></div></div>
+              <span class="rm-pct" id="cpu-pct">0%</span>
+            </div>
+            <div class="rm-item">
+              <span class="rm-label">RAM</span>
+              <div class="rm-track"><div class="rm-fill ram-fill" id="ram-bar"></div></div>
+              <span class="rm-pct" id="ram-pct">0%</span>
+            </div>
+            <div class="rm-item">
+              <span class="rm-label">BW</span>
+              <div class="rm-track"><div class="rm-fill bw-fill" id="bw-bar"></div></div>
+              <span class="rm-pct" id="bw-pct">0%</span>
+            </div>
+          </div>
+
+          <div class="system-log">
+            <div class="log-title">📋 Log hệ thống</div>
+            <div class="log-body" id="server-log">
+              <div class="log-line info">[ Hệ thống sẵn sàng hoạt động ]</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="sim-control-col glass-card">
+          <h3 class="panel-title">🎮 Bảng điều khiển</h3>
+
+          <div class="ctrl-section">
+            <div class="ctrl-label">⚔️ Tấn công</div>
+            <div class="ctrl-btns">
+              <button class="btn-attack" id="btn-add-bot" title="Thêm 1 bot tấn công">
+                <span class="btn-ico">🤖</span><span>+1 Bot</span>
+              </button>
+              <button class="btn-attack" id="btn-add-bots" title="Thêm 10 bot cùng lúc">
+                <span class="btn-ico">🤖×10</span><span>+10 Bot</span>
+              </button>
+              <button class="btn-attack btn-flood-red" id="btn-flood" title="Phát động Flood Attack">
+                <span class="btn-ico">💥</span><span>Flood Attack!</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ctrl-section">
+            <div class="ctrl-label">🛡️ Phòng thủ</div>
+            <div class="ctrl-btns">
+              <button class="btn-defend" id="btn-firewall">
+                <span class="btn-ico">🛡️</span><span id="fw-label">Bật Firewall</span>
+              </button>
+              <button class="btn-reset" id="btn-reset-server">
+                <span class="btn-ico">🔄</span><span>Reset</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ctrl-section">
+            <div class="ctrl-label">🔍 Giải thích trạng thái</div>
+            <div class="status-explain">
+              <div class="se-item"><span class="se-dot green-dot"></span><span>Online — Hoạt động bình thường</span></div>
+              <div class="se-item"><span class="se-dot yellow-dot"></span><span>Degraded — Bắt đầu chậm lại</span></div>
+              <div class="se-item"><span class="se-dot orange-dot"></span><span>Overloaded — Quá tải nặng</span></div>
+              <div class="se-item"><span class="se-dot red-dot"></span><span>DOWN — Server đã sập!</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 4: ATTACK MAP ========== -->
+    <section id="attack-map" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🗺️ Demo Tương Tác #2</div>
+        <h2 class="sec-title">Bản đồ tấn công toàn cầu</h2>
+        <p class="sec-desc">Mô phỏng cách botnet từ nhiều quốc gia đồng loạt tấn công một server mục tiêu</p>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-main-card glass-card">
+          <canvas id="map-canvas"></canvas>
+          <div class="map-btns">
+            <button class="btn-attack" id="btn-start-map">▶ Bắt đầu tấn công</button>
+            <button class="btn-reset" id="btn-reset-map">🔄 Reset</button>
+          </div>
+        </div>
+
+        <div class="map-side glass-card">
+          <h3 class="panel-title">📊 Thông tin tấn công</h3>
+          <div class="map-metrics">
+            <div class="mm-item"><span class="mm-label">🌍 IP tấn công</span><span class="mm-val" id="map-ip-count">0</span></div>
+            <div class="mm-item"><span class="mm-label">⚡ Packets/giây</span><span class="mm-val" id="map-pps">0</span></div>
+            <div class="mm-item"><span class="mm-label">📡 Băng thông</span><span class="mm-val" id="map-bandwidth">0 Gbps</span></div>
+            <div class="mm-item"><span class="mm-label">🌐 Quốc gia</span><span class="mm-val" id="map-countries">0</span></div>
+          </div>
+
+          <h4 class="panel-subtitle">🏆 Top nguồn tấn công</h4>
+          <div class="country-list" id="country-list">
+            <div class="cl-placeholder">Chưa có dữ liệu...</div>
+          </div>
+
+          <div class="map-explainer">
+            <p>🔴 Điểm đỏ = nguồn bot</p>
+            <p>🔵 Vòng tròn xanh = server mục tiêu</p>
+            <p>Đường sáng = packet đang di chuyển</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 5: TYPES OF DDOS ========== -->
+    <section id="types" class="section types-section">
+      <div class="section-header">
+        <div class="sec-badge">📚 Kiến thức</div>
+        <h2 class="sec-title">6 Loại tấn công DDoS phổ biến nhất</h2>
+        <p class="sec-desc">Nhấn vào thẻ để lật và xem chi tiết từng loại tấn công</p>
+      </div>
+
+      <div class="layer-filter">
+        <button class="lf-btn active" data-layer="all">🔢 Tất cả</button>
+        <button class="lf-btn" data-layer="network">🌐 Layer Mạng</button>
+        <button class="lf-btn" data-layer="transport">🔌 Layer Vận chuyển</button>
+        <button class="lf-btn" data-layer="application">🖥️ Layer Ứng dụng</button>
+      </div>
+
+      <div class="types-grid">
+
+        <div class="type-card" data-layer="network">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">🌊</div>
+              <h3>UDP Flood</h3>
+              <div class="tc-layer-badge net-badge">Layer Mạng</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="3"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>🌊 UDP Flood</h3>
+              <p>Gửi lượng lớn <strong>UDP packets</strong> ngẫu nhiên đến các port của mục tiêu. Server phải kiểm tra từng port và gửi lại "ICMP Destination Unreachable" → cạn kiệt tài nguyên nhanh chóng.</p>
+              <div class="tc-diag"><span class="td-node">Bot</span><span class="td-line">──UDP Packets──▶</span><span class="td-node">Server</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> Rate limiting, UDP filtering tại ISP/Firewall</div>
+              <div class="tc-layer-badge net-badge">Layer Mạng (OSI 3)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-card" data-layer="network">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">📍</div>
+              <h3>ICMP Flood</h3>
+              <div class="tc-layer-badge net-badge">Layer Mạng</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="2"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>📍 ICMP Flood (Ping of Death)</h3>
+              <p>Gửi hàng triệu <strong>ICMP Echo Request (ping)</strong>. Server phải trả lời từng cái → CPU và băng thông bị ngốn hết. Phiên bản nâng cao gửi packet oversized (>65,535 bytes) gây crash hệ điều hành.</p>
+              <div class="tc-diag"><span class="td-node">Bot</span><span class="td-line">──PING──▶</span><span class="td-node">Server</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> Chặn ICMP tại firewall, giới hạn ping rate</div>
+              <div class="tc-layer-badge net-badge">Layer Mạng (OSI 3)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-card" data-layer="transport">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">🤝</div>
+              <h3>SYN Flood</h3>
+              <div class="tc-layer-badge trans-badge">Layer Vận chuyển</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="4"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>🤝 SYN Flood</h3>
+              <p>Khai thác TCP 3-way handshake: gửi hàng ngàn <strong>SYN packets</strong> nhưng không hoàn thành ACK. Server giữ các "half-open connections" trong bộ nhớ → bảng kết nối đầy → từ chối kết nối hợp lệ.</p>
+              <div class="tc-diag"><span class="td-node">Bot</span><span class="td-line">──SYN──▶<br>✗ không ACK</span><span class="td-node">Server</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> SYN Cookies, giảm SYN timeout, Firewall stateful</div>
+              <div class="tc-layer-badge trans-badge">Layer Vận chuyển (OSI 4)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-card" data-layer="application">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">🌐</div>
+              <h3>HTTP Flood</h3>
+              <div class="tc-layer-badge app-badge">Layer Ứng dụng</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="5"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>🌐 HTTP Flood</h3>
+              <p>Gửi hàng triệu <strong>HTTP GET/POST requests</strong> hợp lệ. Rất khó phân biệt với traffic thật vì request đúng định dạng. Server phải xử lý từng request, truy vấn database → CPU cạn kiệt hoàn toàn.</p>
+              <div class="tc-diag"><span class="td-node">Bot</span><span class="td-line">──GET / HTTP/1.1──▶</span><span class="td-node">Web</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> CAPTCHA, Rate limiting/IP, WAF, CDN, JS challenge</div>
+              <div class="tc-layer-badge app-badge">Layer Ứng dụng (OSI 7)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-card" data-layer="application">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">🐌</div>
+              <h3>Slowloris</h3>
+              <div class="tc-layer-badge app-badge">Layer Ứng dụng</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="4"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>🐌 Slowloris</h3>
+              <p>Mở nhiều kết nối HTTP và <strong>gửi header cực kỳ chậm</strong>, không bao giờ hoàn thành. Server giữ tất cả kết nối chờ đợi → hết slot kết nối → users thật không vào được. Chỉ cần 1 máy để tấn công!</p>
+              <div class="tc-diag"><span class="td-node">1 Bot</span><span class="td-line">──GET / HTTP\r\n<br>...chờ mãi...</span><span class="td-node">Server</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> Giới hạn kết nối/IP, timeout ngắn hơn, Nginx, HAProxy</div>
+              <div class="tc-layer-badge app-badge">Layer Ứng dụng (OSI 7)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-card" data-layer="network">
+          <div class="tc-inner">
+            <div class="tc-front glass-card">
+              <div class="tc-icon">📢</div>
+              <h3>DNS Amplification</h3>
+              <div class="tc-layer-badge net-badge">Layer Mạng</div>
+              <div class="tc-danger"><span>Nguy hiểm:</span><div class="danger-bar" data-level="5"></div></div>
+              <div class="tc-hint">👆 Click để xem chi tiết</div>
+            </div>
+            <div class="tc-back glass-card">
+              <h3>📢 DNS Amplification</h3>
+              <p>Gửi DNS query nhỏ (~50 bytes) với <strong>IP giả mạo</strong> (IP nạn nhân) đến DNS servers mở. DNS trả lời gói lớn (~2000 bytes) đến nạn nhân. Hệ số khuếch đại <strong>lên đến 70x</strong>! 1 Gbps → 70 Gbps.</p>
+              <div class="tc-diag"><span class="td-node">Bot</span><span class="td-line">──50B──▶DNS<br>DNS──2000B──▶</span><span class="td-node">Victim</span></div>
+              <div class="tc-mitigate"><strong>🛡️ Phòng thủ:</strong> BCP38, DNS response rate limiting, nguồn mở DNS</div>
+              <div class="tc-layer-badge net-badge">Layer Mạng (OSI 3)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== SECTION 6: PACKET ANALYZER ========== -->
+    <section id="packet-analyzer" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🧪 Demo Tương Tác #3</div>
+        <h2 class="sec-title">Phân tích Packet thời gian thực</h2>
+        <p class="sec-desc">Quan sát luồng packets đến server — phân biệt traffic bình thường và tấn công DDoS</p>
+      </div>
+
+      <div class="analyzer-layout">
+        <div class="analyzer-ctrl glass-card">
+          <div class="terminal-bar">
+            <span class="tb-dot red"></span><span class="tb-dot yellow"></span><span class="tb-dot green"></span>
+            <span class="tb-title">packet_analyzer.sh</span>
+          </div>
+
+          <div class="filter-row">
+            <button class="fbtn active" id="filter-all" data-filter="all">📋 Tất cả</button>
+            <button class="fbtn" id="filter-normal" data-filter="normal">🟢 Bình thường</button>
+            <button class="fbtn" id="filter-suspicious" data-filter="suspicious">🟡 Khả nghi</button>
+            <button class="fbtn" id="filter-blocked" data-filter="blocked">🔴 Bị chặn</button>
+          </div>
+
+          <div class="ana-attack-btns">
+            <button class="btn-defend" id="btn-normal-traffic">📶 Traffic bình thường</button>
+            <button class="btn-attack" id="btn-attack-traffic">⚡ Bật tấn công DDoS</button>
+            <button class="btn-reset" id="btn-reset-analyzer">🔄 Reset</button>
+          </div>
+
+          <div class="ana-stats">
+            <div class="as-item"><span>Tổng packets:</span><span id="total-packets" class="as-val">0</span></div>
+            <div class="as-item"><span>🟢 Bình thường:</span><span id="normal-packets" class="as-val green-text">0</span></div>
+            <div class="as-item"><span>🟡 Khả nghi:</span><span id="suspicious-packets" class="as-val yellow-text">0</span></div>
+            <div class="as-item"><span>🔴 Bị chặn:</span><span id="blocked-packets" class="as-val red-text">0</span></div>
+          </div>
+
+          <div class="ana-explainer">
+            <p>💡 <strong>Tip:</strong> Trong tấn công DDoS, server nhận quá nhiều packet đến mức không thể xử lý kịp, kể cả packet hợp lệ cũng bị chậm trễ.</p>
+          </div>
+        </div>
+
+        <div class="packet-stream-card glass-card">
+          <div class="ps-header">
+            <span>Thời gian</span>
+            <span>IP Nguồn</span>
+            <span>IP Đích</span>
+            <span>Giao thức</span>
+            <span>Kích thước</span>
+            <span>Trạng thái</span>
+          </div>
+          <div class="packet-stream" id="packet-stream">
+            <div class="ps-empty">Nhấn nút để bắt đầu phân tích packets...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISUAL PACKET ANATOMY GUIDE -->
+      <div class="glass-card" style="margin-top:24px; padding:24px;">
+        <h3 style="font-family:var(--font-title); font-size:16px; color:var(--cyan); margin-bottom:8px;">📦 Sơ đồ Giải phẫu Chi tiết Gói tin Mạng (Network Packet Anatomy)</h3>
+        <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Gói tin mạng giống như một <strong>lá thư bưu điện được bọc 3 lớp phong bì bảo vệ</strong> để gửi từ máy khách đến server qua Internet.</p>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:20px;">
+          
+          <!-- Layer 2: Ethernet Header -->
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-left:4px solid #888; padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:#aaa; font-weight:700; margin-bottom:6px;">🏷️ LAYER 2: ETHERNET FRAME (Lớp Bưu điện)</div>
+            <p style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">Địa chỉ phần cứng vật lý trên card mạng (Vô tuyến/Cáp mạng)</p>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              • <strong>Src MAC Address:</strong> <code>00:1A:2B:3C:4D:5E</code> (Địa chỉ máy gửi)<br>
+              • <strong>Dst MAC Address:</strong> <code>AA:BB:CC:DD:EE:FF</code> (Địa chỉ Router kế tiếp)<br>
+              • <strong>EtherType:</strong> <code>0x0800</code> (Báo tín hiệu bên trong chứa gói IPv4)
+            </div>
+          </div>
+
+          <!-- Layer 3: IP Header -->
+          <div style="background:rgba(0,122,255,0.04); border:1px solid rgba(0,122,255,0.2); border-left:4px solid var(--cyan); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--cyan); font-weight:700; margin-bottom:6px;">🌐 LAYER 3: IP HEADER (Lớp Địa chỉ Nhà)</div>
+            <p style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">Phong bì ghi địa chỉ nhà người gửi và địa chỉ nhà người nhận trên Internet</p>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              • <strong>Src IP:</strong> <code>118.70.x.x</code> (Địa chỉ IP người gửi)<br>
+              • <strong>Dst IP:</strong> <code>10.0.0.1</code> (Địa chỉ IP Server đích)<br>
+              • <strong>TTL (Time to Live):</strong> <code>64</code> (Số chặng Router tối đa - Giảm 1 sau mỗi Router để tránh lặp vô tận)<br>
+              • <strong>Protocol ID:</strong> <code>6</code> (6 = TCP, 17 = UDP, 1 = ICMP)
+            </div>
+          </div>
+
+          <!-- Layer 4: TCP Header -->
+          <div style="background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.2); border-left:4px solid var(--yellow); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--yellow); font-weight:700; margin-bottom:6px;">🚪 LAYER 4: TCP HEADER (Lớp Số phòng)</div>
+            <p style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">Số phòng dịch vụ cụ thể + Tín hiệu bắt tay truyền tải</p>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              • <strong>Dst Port:</strong> <code>80 (HTTP) / 443 (HTTPS)</code> (Phòng dịch vụ web)<br>
+              • <strong>Seq / Ack Number:</strong> Số thứ tự trang sách để ghép data đúng vị trí<br>
+              • <strong>4 TCP Flags Cốt lõi:</strong><br>
+              &nbsp;&nbsp;👋 <code>SYN</code>: Xin chào, khởi tạo kết nối!<br>
+              &nbsp;&nbsp;🤝 <code>ACK</code>: Đã nhận, xác nhận kết nối!<br>
+              &nbsp;&nbsp;👋 <code>FIN</code>: Chào tạm biệt, đóng kết nối.<br>
+              &nbsp;&nbsp;🛑 <code>RST</code>: Hủy ngắt kết nối khẩn cấp!
+            </div>
+          </div>
+
+          <!-- Layer 7: Payload Data -->
+          <div style="background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.2); border-left:4px solid var(--green); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--green); font-weight:700; margin-bottom:6px;">📄 LAYER 7: PAYLOAD DATA (Bức thư bên trong)</div>
+            <p style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">Nội dung dữ liệu thực sự được ứng dụng xử lý</p>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              • <strong>HTTP Request:</strong> <code>GET /index.html HTTP/1.1</code><br>
+              • <strong>Host Header:</strong> <code>Host: mywebsite.com</code><br>
+              • <strong>User-Agent:</strong> <code>Mozilla/5.0 (Windows NT 10.0...)</code><br>
+              • <strong>Data Payload:</strong> Mã HTML, Ảnh, Video, JSON Data...
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 7: SYN FLOOD ========== -->
+    <section id="syn-flood" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🧩 Demo Tương Tác #4</div>
+        <h2 class="sec-title">Mô phỏng SYN Flood</h2>
+        <p class="sec-desc">Hiểu cách TCP 3-way Handshake bị khai thác — xem animation trực quan</p>
+      </div>
+
+      <!-- Normal Handshake Explanation -->
+      <div class="handshake-explain glass-card">
+        <h3>🤝 TCP 3-way Handshake hoạt động như thế nào?</h3>
+        <div class="hs-diagram">
+          <div class="hs-side hs-client-side"><div class="hs-label">Client</div><div class="hs-icon">💻</div></div>
+          <div class="hs-steps-col">
+            <div class="hs-step s1">
+              <div class="hs-arrow right-arrow">SYN ──────────────────▶</div>
+              <div class="hs-step-desc">"Tôi muốn kết nối với bạn"</div>
+            </div>
+            <div class="hs-step s2">
+              <div class="hs-arrow left-arrow">◀────────────── SYN-ACK</div>
+              <div class="hs-step-desc">"OK, tôi đã nhận được, sẵn sàng!"</div>
+            </div>
+            <div class="hs-step s3">
+              <div class="hs-arrow right-arrow">ACK ──────────────────▶</div>
+              <div class="hs-step-desc">✅ "Kết nối thành công! Bắt đầu gửi data."</div>
+            </div>
+          </div>
+          <div class="hs-side hs-server-side"><div class="hs-label">Server</div><div class="hs-icon">🖥️</div></div>
+        </div>
+        <div class="hs-attack-explain">
+          <div class="hae-icon">⚠️</div>
+          <div>
+            <strong>Trong SYN Flood:</strong> Attacker gửi hàng ngàn SYN nhưng <em>không bao giờ gửi ACK</em>. Server phải dành bộ nhớ cho từng "half-open connection" chờ ACK đến khi timeout (30-120 giây). Khi bảng kết nối đầy → người dùng thật bị từ chối!
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-demo-layout">
+        <canvas id="syn-canvas"></canvas>
+
+        <div class="syn-side">
+          <div class="syn-ctrl glass-card">
+            <h3 class="panel-title">🎮 Điều khiển</h3>
+            <button class="btn-defend" id="btn-normal-conn">✅ Kết nối bình thường</button>
+            <button class="btn-attack" id="btn-syn-flood-start">💥 Kích hoạt SYN Flood</button>
+            <button class="btn-defend" id="btn-syn-cookie">🍪 Bật SYN Cookie</button>
+            <button class="btn-reset" id="btn-reset-syn">🔄 Reset</button>
+
+            <div class="syn-stats">
+              <div class="ss-item"><span>Kết nối thành công:</span><span id="valid-connections" class="green-text">0</span></div>
+              <div class="ss-item"><span>Half-open (Dở dang):</span><span id="half-open-connections" class="yellow-text">0</span></div>
+              <div class="ss-item"><span>Bị từ chối:</span><span id="refused-connections" class="red-text">0</span></div>
+              <div class="ss-item"><span>Trạng thái SYN Cookie:</span><span id="syn-cookie-status" class="red-text">TẮT</span></div>
+              <div class="capacity-section" style="margin-top:8px; padding:10px; border-radius:6px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.05);">
+                <span>Dung lượng Hàng đợi:</span>
+                <div class="cap-track"><div class="cap-fill" id="capacity-fill"></div></div>
+                <span id="capacity-text">0 / 20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 8: DEFENSE LAB ========== -->
+    <section id="defense-lab" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🛡️ Demo Tương Tác #5</div>
+        <h2 class="sec-title">Phòng thủ chống DDoS — Trò chơi</h2>
+        <p class="sec-desc">Bảo vệ server của bạn khỏi các đợt tấn công liên tiếp bằng 4 công cụ phòng thủ!</p>
+      </div>
+
+      <div class="defense-layout">
+        <div class="defense-game-area glass-card">
+          <div class="defense-scoreboard">
+            <div class="dsb-item"><span class="dsb-label">🏆 Điểm</span><span class="dsb-val" id="defense-score">0</span></div>
+            <div class="dsb-item"><span class="dsb-label">⏱️ Thời gian</span><span class="dsb-val" id="defense-timer">00:00</span></div>
+            <div class="dsb-item"><span class="dsb-label">🌊 Đợt</span><span class="dsb-val" id="defense-wave">0</span></div>
+          </div>
+
+          <div class="defense-hp-row">
+            <span>❤️ Server HP</span>
+            <div class="dhp-track"><div class="dhp-fill" id="defense-hp-bar"></div></div>
+            <span id="defense-hp-text">100/100</span>
+          </div>
+
+          <canvas id="defense-canvas"></canvas>
+
+          <div class="defense-tools-grid">
+            <button class="tool-btn" id="btn-rate-limiter">
+              <span class="tool-ico">⏱️</span>
+              <span class="tool-nm">Rate Limiter</span>
+              <span class="tool-ds">Giới hạn request/IP</span>
+              <div class="tool-cd" id="cd-rate-limiter"></div>
+            </button>
+            <button class="tool-btn" id="btn-waf">
+              <span class="tool-ico">🔥</span>
+              <span class="tool-nm">WAF</span>
+              <span class="tool-ds">Lọc traffic độc hại</span>
+              <div class="tool-cd" id="cd-waf"></div>
+            </button>
+            <button class="tool-btn" id="btn-cdn">
+              <span class="tool-ico">🌐</span>
+              <span class="tool-nm">CDN/Anycast</span>
+              <span class="tool-ds">Phân tán traffic</span>
+              <div class="tool-cd" id="cd-cdn"></div>
+            </button>
+            <button class="tool-btn" id="btn-blacklist">
+              <span class="tool-ico">🚫</span>
+              <span class="tool-nm">IP Blacklist</span>
+              <span class="tool-ds">Chặn IP xấu</span>
+              <div class="tool-cd" id="cd-blacklist"></div>
+            </button>
+          </div>
+
+          <div id="defense-start-screen" class="defense-start-screen">
+            <div class="dss-icon">🛡️</div>
+            <h3>Trò chơi Phòng thủ DDoS</h3>
+            <p>Sử dụng 4 công cụ để bảo vệ server. Mỗi công cụ giảm thiệt hại trong 5 giây nhưng có cooldown. Server sẽ bị tấn công ngày càng mạnh hơn theo từng đợt!</p>
+            <button class="btn-primary" id="btn-start-defense">🚀 Bắt đầu trò chơi!</button>
+          </div>
+
+          <div class="defense-event-log" id="defense-log">
+            <div class="log-line info">Nhấn bắt đầu để chơi...</div>
+          </div>
+        </div>
+
+        <div class="defense-guide glass-card">
+          <h3 class="panel-title">📖 Hướng dẫn công cụ</h3>
+          <div class="dg-item">
+            <div class="dg-ico">⏱️</div>
+            <div><strong>Rate Limiter</strong><p>Giới hạn số request từ mỗi IP trong 1 giây. Giảm 60% thiệt hại. Cooldown: 8s</p></div>
+          </div>
+          <div class="dg-item">
+            <div class="dg-ico">🔥</div>
+            <div><strong>WAF (Web App Firewall)</strong><p>Phân tích và lọc traffic độc hại theo patterns. Giảm 80% thiệt hại. Cooldown: 12s</p></div>
+          </div>
+          <div class="dg-item">
+            <div class="dg-ico">🌐</div>
+            <div><strong>CDN / Anycast</strong><p>Phân tán traffic ra nhiều server khắp thế giới. Giảm 70% thiệt hại. Cooldown: 15s</p></div>
+          </div>
+          <div class="dg-item">
+            <div class="dg-ico">🚫</div>
+            <div><strong>IP Blacklist</strong><p>Chặn hoàn toàn các IP đã được xác định là tấn công. Giảm 50% thiệt hại. Cooldown: 5s</p></div>
+          </div>
+          <div class="dg-tip">💡 <strong>Tip:</strong> Kết hợp nhiều công cụ cùng lúc để đạt hiệu quả tốt nhất!</div>
+        </div>
+      </div>
+
+      <!-- DEFENSE TOOLS TRADE-OFFS MATRIX -->
+      <div class="glass-card" style="margin-top:20px; padding:20px;">
+        <h4 style="font-family:var(--font-title); font-size:14px; color:var(--cyan); margin-bottom:12px;">⚖️ Bảng So sánh Đánh đổi các Công cụ Phòng thủ (Defense Trade-offs)</h4>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border); color:var(--cyan); font-family:var(--font-mono);">
+                <th style="padding:8px;">Công cụ</th>
+                <th style="padding:8px;">Layer OSI</th>
+                <th style="padding:8px;">Ưu điểm chính</th>
+                <th style="padding:8px;">Hạn chế / Điểm yếu</th>
+                <th style="padding:8px;">Chi phí</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">⏱️ Rate Limiting</td>
+                <td style="padding:8px; color:var(--yellow);">Layer 4 & 7</td>
+                <td style="padding:8px; color:var(--text-dim);">Chặn IP gửi quá nhiều request/s</td>
+                <td style="padding:8px; color:var(--red);">Dễ chặn nhầm IP công cộng (WiFi/NAT)</td>
+                <td style="padding:8px; color:var(--green);">Thấp (Miễn phí trên Nginx)</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">🔥 WAF (Web Firewall)</td>
+                <td style="padding:8px; color:var(--yellow);">Layer 7 App</td>
+                <td style="padding:8px; color:var(--text-dim);">Soi nội dung HTTP Payload, phát hiện bot</td>
+                <td style="padding:8px; color:var(--red);">Tốn CPU xử lý, không chặn được Volumetric L3</td>
+                <td style="padding:8px; color:var(--yellow);">Trung bình - Cao</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">🌐 CDN & Anycast</td>
+                <td style="padding:8px; color:var(--yellow);">Layer 3, 4, 7</td>
+                <td style="padding:8px; color:var(--text-dim);">Hấp thụ traffic Tbps bằng 200+ PoP toàn cầu</td>
+                <td style="padding:8px; color:var(--red);">Traffic động không cache vẫn phải vào origin</td>
+                <td style="padding:8px; color:var(--red);">Rất đắt (Enterprise)</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; font-weight:700; color:var(--text);">🚫 IP Blacklist</td>
+                <td style="padding:8px; color:var(--yellow);">Layer 3 & 4</td>
+                <td style="padding:8px; color:var(--text-dim);">Chặn triệt để các IP xấu đã bị phát hiện</td>
+                <td style="padding:8px; color:var(--red);">Vô dụng khi Botnet 500,000 IP đổi liên tục</td>
+                <td style="padding:8px; color:var(--green);">Rất thấp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 9: HISTORY ========== -->
+    <section id="history" class="section history-section">
+      <div class="section-header">
+        <div class="sec-badge">📊 Thực tế lịch sử</div>
+        <h2 class="sec-title">Các vụ DDoS lớn nhất lịch sử</h2>
+        <p class="sec-desc">Những cuộc tấn công đã làm rúng chuyển Internet và thay đổi cách chúng ta bảo mật</p>
+      </div>
+
+      <div class="history-timeline-list">
+        <div class="ht-item left-item">
+          <div class="ht-year">2007</div>
+          <div class="ht-content glass-card">
+            <div class="ht-flag">🇪🇪</div>
+            <h3>Estonia — Cuộc chiến mạng quốc gia đầu tiên</h3>
+            <div class="ht-stats">
+              <span class="hts">58 website chính phủ</span>
+              <span class="hts">3 tuần tấn công</span>
+              <span class="hts yellow-text">~95 Mbps</span>
+            </div>
+            <p>Được coi là cuộc chiến không gian mạng cấp quốc gia đầu tiên trong lịch sử. Toàn bộ cơ sở hạ tầng internet Estonia bị tê liệt sau khi Estonia di dời đài tưởng niệm Thế chiến II.</p>
+          </div>
+        </div>
+
+        <div class="ht-item right-item">
+          <div class="ht-year">2016</div>
+          <div class="ht-content glass-card">
+            <div class="ht-flag">🤖</div>
+            <h3>Mirai Botnet — IoT bị vũ khí hóa</h3>
+            <div class="ht-stats">
+              <span class="hts red-text">1.2 Tbps</span>
+              <span class="hts">~600,000 bot</span>
+              <span class="hts">Twitter, Reddit, Netflix sập</span>
+            </div>
+            <p>Botnet từ các thiết bị IoT (camera IP, router gia đình) tấn công Dyn DNS, làm sập hàng loạt dịch vụ lớn nhất nước Mỹ. Lần đầu tiên thế giới nhận ra mối nguy từ thiết bị thông minh.</p>
+          </div>
+        </div>
+
+        <div class="ht-item left-item">
+          <div class="ht-year">2018</div>
+          <div class="ht-content glass-card">
+            <div class="ht-flag">🐙</div>
+            <h3>GitHub — Kỷ lục băng thông (lúc đó)</h3>
+            <div class="ht-stats">
+              <span class="hts red-text">1.35 Tbps</span>
+              <span class="hts">Memcached amplification</span>
+              <span class="hts yellow-text">10 phút sập</span>
+            </div>
+            <p>GitHub bị tấn công bởi Memcached reflection/amplification với hệ số khuếch đại 51,000x. GitHub sử dụng Akamai Prolexic và phục hồi sau ~10 phút. Memcached servers phải được vá ngay sau đó.</p>
+          </div>
+        </div>
+
+        <div class="ht-item right-item">
+          <div class="ht-year">2020</div>
+          <div class="ht-content glass-card">
+            <div class="ht-flag">☁️</div>
+            <h3>AWS — Tấn công vào đám mây khổng lồ</h3>
+            <div class="ht-stats">
+              <span class="hts red-text">2.3 Tbps</span>
+              <span class="hts">CLDAP reflection</span>
+              <span class="hts green-text">AWS Shield bảo vệ</span>
+            </div>
+            <p>Amazon Web Services hứng chịu cuộc tấn công lớn nhất từng được ghi nhận lúc đó, sử dụng kỹ thuật CLDAP (Connectionless LDAP) phản xạ. AWS Shield tự động hấp thụ toàn bộ, không có dịch vụ nào sập.</p>
+          </div>
+        </div>
+
+        <div class="ht-item left-item">
+          <div class="ht-year">2022</div>
+          <div class="ht-content glass-card">
+            <div class="ht-flag">🔴</div>
+            <h3>Google — Kỷ lục thế giới mọi thời đại</h3>
+            <div class="ht-stats">
+              <span class="hts red-text">46 triệu req/giây</span>
+              <span class="hts">HTTPS Layer 7</span>
+              <span class="hts green-text">Google Cloud hấp thụ</span>
+            </div>
+            <p>Cuộc tấn công lớn nhất lịch sử: 46 triệu HTTPS requests mỗi giây — tương đương tất cả lưu lượng Wikipedia trong 10 giây! Xuất phát từ 132 quốc gia, sử dụng 5,256 nguồn IP. Google Cloud Armor chặn thành công.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated Counters -->
+      <div class="counters-row">
+        <div class="counter-box glass-card" data-target="46000000" data-suffix="">
+          <div class="cb-val" id="ctr-rps">0</div>
+          <div class="cb-label">Req/giây kỷ lục<br>(Google 2022)</div>
+        </div>
+        <div class="counter-box glass-card" data-target="2300" data-suffix="Gbps">
+          <div class="cb-val" id="ctr-tbps">0</div>
+          <div class="cb-label">Gbps lớn nhất<br>(AWS 2020)</div>
+        </div>
+        <div class="counter-box glass-card" data-target="600000" data-suffix="">
+          <div class="cb-val" id="ctr-bots">0</div>
+          <div class="cb-label">Bot Mirai Botnet<br>(2016)</div>
+        </div>
+        <div class="counter-box glass-card" data-target="51000" data-suffix="x">
+          <div class="cb-val" id="ctr-amp">0</div>
+          <div class="cb-label">Hệ số khuếch đại<br>Memcached</div>
+        </div>
+      </div>
+    <!-- ========== SECTION: CASE STUDIES ========== -->
+    <section id="case-studies" class="section case-studies-section">
+      <div class="section-header">
+        <div class="sec-badge">📜 Phân tích Thực tế</div>
+        <h2 class="sec-title">Hồ sơ 4 vụ Tấn công Kinh điển</h2>
+        <p class="sec-desc">Học từ các cuộc tấn công DDoS lớn nhất lịch sử. <strong>Click vào hồ sơ</strong> để xem sơ đồ diễn biến, phân tích khái niệm và bài học rút ra!</p>
+      </div>
+
+      <div class="cs-cards-grid">
+        <!-- Case 1: Mirai -->
+        <div class="cs-card glass-card" onclick="openCaseStudyModal('mirai')">
+          <div class="cs-card-badge danger">🤖 IoT Botnet</div>
+          <h3 class="cs-card-title">Mirai Botnet (2016)</h3>
+          <p class="cs-card-desc">600,000 thiết bị Camera IP & Router bị lây nhiễm mật khẩu mặc định, đánh sập Dyn DNS làm ngưng trệ Twitter, Netflix toàn Bắc Mỹ.</p>
+          <div class="cs-card-foot">
+            <span class="cs-cf-val">1.2 Tbps</span>
+            <span class="cs-cf-link">Xem phân tích chi tiết →</span>
+          </div>
+        </div>
+
+        <!-- Case 2: GitHub Memcached -->
+        <div class="cs-card glass-card" onclick="openCaseStudyModal('github')">
+          <div class="cs-card-badge warn">💥 Amplification 51,000x</div>
+          <h3 class="cs-card-title">GitHub Memcached Attack (2018)</h3>
+          <p class="cs-card-desc">Cuộc tấn công khuếch đại kỷ lục 1.35 Tbps không cần Botnet, lợi dụng máy chủ Memcached mở cổng UDP 11211 dội ngược về GitHub.</p>
+          <div class="cs-card-foot">
+            <span class="cs-cf-val">1.35 Tbps / 126.9M PPS</span>
+            <span class="cs-cf-link">Xem phân tích chi tiết →</span>
+          </div>
+        </div>
+
+        <!-- Case 3: Google Rapid Reset -->
+        <div class="cs-card glass-card" onclick="openCaseStudyModal('google')">
+          <div class="cs-card-badge danger">⚡ HTTP/2 Layer 7</div>
+          <h3 class="cs-card-title">Google Rapid Reset (2023)</h3>
+          <p class="cs-card-desc">Tấn công kỷ lục thế giới 398 Triệu Requests/giây khai thác lỗ hổng vắt cạn CPU trong cơ chế Stream Multiplexing của giao thức HTTP/2.</p>
+          <div class="cs-card-foot">
+            <span class="cs-cf-val">398 Triệu RPS</span>
+            <span class="cs-cf-link">Xem phân tích chi tiết →</span>
+          </div>
+        </div>
+
+        <!-- Case 4: Spamhaus DNS -->
+        <div class="cs-card glass-card" onclick="openCaseStudyModal('spamhaus')">
+          <div class="cs-card-badge warn">🌐 DNS Open Resolver</div>
+          <h3 class="cs-card-title">Spamhaus DNS Attack (2013)</h3>
+          <p class="cs-card-desc">Cuộc tấn công khuếch đại DNS 300 Gbps đầu tiên trong lịch sử gây quá tải các tuyến cáp quang trục chính Tier-1 làm chậm mạng Châu Âu.</p>
+          <div class="cs-card-foot">
+            <span class="cs-cf-val">300 Gbps</span>
+            <span class="cs-cf-link">Xem phân tích chi tiết →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: AI DETECTION DEMO ========== -->
+    <section id="ai-detection" class="section demo-section">
+      <div class="section-header">
+        <div class="sec-badge demo-badge">🤖 Demo Tương Tác #6 (Nâng cao)</div>
+        <h2 class="sec-title">Phát hiện DDoS bằng AI & Machine Learning</h2>
+        <p class="sec-desc">Quan sát thuật toán Trí tuệ nhân tạo trích xuất 4 đặc trưng traffic và tự động phân loại DDoS thời gian thực</p>
+      </div>
+
+      <div class="ai-layout">
+        <!-- Left: Controls & Concept Info -->
+        <div class="ai-ctrl-col glass-card">
+          <h4 style="font-family:var(--font-title); color:var(--cyan); margin-bottom:16px;">⚙️ Thiết lập Mô hình AI</h4>
+
+          <div class="ctrl-section">
+            <label class="ctrl-label">Chọn thuật toán AI / ML:</label>
+            <select id="ai-model-select" class="cf-btn active" style="width:100%; font-size:13px; text-align:left;">
+              <option value="dt">🌳 Cây quyết định (Decision Tree)</option>
+              <option value="rf" selected>🌲 Rừng ngẫu nhiên (Random Forest)</option>
+              <option value="dnn">🧠 Mạng Nơ-ron Sâu (Deep Learning DNN)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-section">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <label class="ctrl-label">Ngưỡng tin cậy (Confidence Threshold):</label>
+              <span id="ai-threshold-val" style="color:var(--yellow); font-family:var(--font-mono); font-weight:700;">85%</span>
+            </div>
+            <input type="range" id="ai-threshold-slider" min="50" max="98" value="85" style="width:100%; cursor:pointer;">
+            <p style="font-size:11px; color:var(--text-dim); margin-top:4px;">Đặt ngưỡng cao = ít chặn nhầm nhưng dễ bỏ sót. Đặt thấp = chặn triệt để nhưng dễ chặn nhầm.</p>
+          </div>
+
+          <!-- Dynamic Concept Explanation Box -->
+          <div id="ai-model-info-box" class="cc-tech-box" style="margin-top:16px;"></div>
+
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button id="btn-start-ai" onclick="toggleAISimulation()" class="btn-primary" style="flex:1;">▶️ Bắt đầu AI Phân Tích Traffic</button>
+            <button id="btn-reset-ai" onclick="resetAISimulation()" class="btn-reset">🔄 Reset</button>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Stream & Confusion Matrix -->
+        <div class="ai-dashboard-col glass-card">
+          <div class="ai-matrix-row">
+            <div class="aim-box"><span class="aim-val" id="ai-stat-total">0</span><span class="aim-lbl">Tổng Packets</span></div>
+            <div class="aim-box"><span class="aim-val" id="ai-stat-tp" style="color:var(--green)">0</span><span class="aim-lbl">Phát hiện DDoS</span></div>
+            <div class="aim-box"><span class="aim-val" id="ai-stat-fp" style="color:var(--red)">0</span><span class="aim-lbl">Chặn Nhầm (FP)</span></div>
+            <div class="aim-box"><span class="aim-val" id="ai-stat-acc" style="color:var(--cyan)">0%</span><span class="aim-lbl">Độ chính xác</span></div>
+          </div>
+
+          <h4 style="font-family:var(--font-title); font-size:13px; color:var(--cyan); margin:16px 0 10px 0;">🔍 Luồng phân loại Traffic (Click dòng bất kỳ để soi chi tiết)</h4>
+          
+          <div id="ai-stream-list" class="ai-stream-list">
+            <div class="pdp-hint">Chưa có dữ liệu. Nhấn "Bắt đầu AI Phân Tích" để kích hoạt mô hình...</div>
+          </div>
+
+          <!-- AI Packet Detail Breakdown Inspector -->
+          <div id="ai-packet-detail-panel" class="packet-detail-panel glass-card hidden" style="margin-top:16px;">
+            <div class="pdp-head">
+              <h4 style="font-family:var(--font-title); font-size:13px; color:var(--cyan);">🔬 Kết quả Soi chi tiết Thuật toán AI</h4>
+              <button onclick="document.getElementById('ai-packet-detail-panel').classList.add('hidden')">✕ Đóng</button>
+            </div>
+            <div id="ai-pdp-content" class="pdp-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Explanation Panel for AI -->
+      <div id="ai-live-explain-panel" class="live-explain-panel glass-card">
+        <div class="lep-icon">🧠</div>
+        <div style="flex:1">
+          <div class="lep-title" id="ai-live-explain-title">💡 Giải thích nguyên lý AI phát hiện DDoS</div>
+          <div class="lep-text" id="ai-live-explain-text">Mô hình AI đang ở trạng thái chờ. Nhấn bắt đầu để AI trích xuất 4 đặc trưng (Packet Rate, Entropy, SYN/ACK Ratio, IP Subnet) và đưa ra quyết định.</div>
+          <div class="lep-concepts" style="margin-top:12px">
+            <span class="lep-concept-label">🔗 Khái niệm liên quan:</span>
+            <a class="lep-chip" href="#concepts">🤖 Machine Learning</a>
+            <a class="lep-chip" href="#concepts">📊 Feature Extraction</a>
+            <a class="lep-chip" href="#concepts">⚠️ False Positive</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: ML & XAI CONCEPTS & DEMO ========== -->
+    <section id="ml-concepts" class="section ml-concepts-section">
+      <div class="section-header">
+        <div class="sec-badge">🎓 Chuyên sâu AI & XAI</div>
+        <h2 class="sec-title">Kiến thức Nền tảng Machine Learning & XAI</h2>
+        <p class="sec-desc">Hiểu rõ <strong>từng chỉ số đánh giá AI (Accuracy, Precision, Recall, F1)</strong>, Ma trận Nhầm lẫn và thuật toán giải thích <strong>SHAP / LIME</strong> qua các ví dụ đời thực dễ nhớ!</p>
+      <!-- DEDICATED IDS DEEP-DIVE BOX -->
+      <div class="glass-card" style="margin-bottom:28px; padding:24px; border-left:4px solid var(--green);">
+        <h3 style="font-family:var(--font-title); font-size:18px; color:var(--green); margin-bottom:12px;">🛡️ Chuyên sâu Bảo mật: IDS là gì? Tổng quan Hệ thống Phát hiện Xâm nhập</h3>
+        <p style="font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:16px;">
+          <strong>IDS (Intrusion Detection System)</strong> là hệ thống giám sát lưu lượng mạng hoặc hoạt động hệ thống nhằm phát hiện các hành vi bất thường, tấn công độc hại hoặc vi phạm chính sách an ninh mạng.
+        </p>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+          <!-- NIDS vs HIDS -->
+          <div style="background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.2); padding:16px; border-radius:var(--radius);">
+            <h4 style="font-family:var(--font-mono); font-size:13px; color:var(--green); margin-bottom:8px;">1. Phân loại theo Vị trí: NIDS vs HIDS</h4>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              <strong>NIDS (Network IDS):</strong> Đặt tại cổng mạng chính (Gateway/Switch SPAN port). Giám sát luồng packets đi qua toàn bộ hạ tầng mạng.<br>
+              <strong>HIDS (Host IDS):</strong> Cài trực tiếp trên từng máy chủ cụ thể. Giám sát log file, tiến trình (process) và hệ thống tập tin.
+            </div>
+          </div>
+
+          <!-- Signature vs Anomaly -->
+          <div style="background:rgba(0,122,255,0.04); border:1px solid rgba(0,122,255,0.2); padding:16px; border-radius:var(--radius);">
+            <h4 style="font-family:var(--font-mono); font-size:13px; color:#4da6ff; margin-bottom:8px;">2. Phân loại theo Cơ chế: Signature vs Anomaly</h4>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              <strong>Signature-based IDS:</strong> So sánh traffic với cơ sở dữ liệu mẫu tấn công có sẵn (như mẫu vi-rút). Nhanh nhưng không thể phát hiện tấn công mới (Zero-day).<br>
+              <strong>Anomaly-based ML-IDS:</strong> Học thói quen traffic bình thường để phát hiện các hành vi bất thường mới xuất hiện.
+            </div>
+          </div>
+
+          <!-- Why XAI-IDS -->
+          <div style="background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.2); padding:16px; border-radius:var(--radius);">
+            <h4 style="font-family:var(--font-mono); font-size:13px; color:var(--yellow); margin-bottom:8px;">3. Tại sao Hệ thống IDS cần XAI?</h4>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              <strong>IDS ML truyền thống:</strong> Hoạt động như Hộp đen (Black-box). Khi phát cảnh báo, chuyên gia vận hành không rõ nguyên nhân tại sao AI lại chặn.<br>
+              <strong>Hệ thống XAI-IDS:</strong> Cung cấp biểu đồ SHAP / LIME giải thích rõ lý do <em>"Chặn gói tin này vì Packet Rate tăng đột biến (+0.45 điểm SHAP)"</em>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 ML & XAI CONCEPT CARDS GRID -->
+      <div class="concepts-grid" style="margin-bottom:36px;">
+
+        <!-- 1. Accuracy -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🎯</span>
+            <div class="cc-titles"><h3>Accuracy (Độ chính xác tổng thể)</h3><span class="cc-sub">Tỷ lệ đoán đúng tất cả các trường hợp</span></div>
+            <span class="cc-cat-badge perf-badge">Chỉ số ML</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📝</span><div><strong>Hình dung đơn giản:</strong> Thi trắc nghiệm 100 câu bạn làm đúng 95 câu $\rightarrow$ Accuracy = 95%.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Công thức toán học:</h4>
+              <p><code>Accuracy = (Đoán đúng DDoS + Đoán đúng Người thật) / Tổng số Packets</code></p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">Hạn chế của Accuracy (Bẫy dữ liệu mất cân bằng):</span><p>Nếu mạng có 999 gói người dùng hợp lệ và chỉ có 1 gói DDoS, mô hình đoán toàn bộ là người dùng thật vẫn đạt <strong>Accuracy 99.9%</strong> nhưng <strong>bỏ sót hoàn toàn cuộc tấn công</strong>. Do đó Accuracy không đủ để đánh giá an ninh mạng.</p></div>
+          </div>
+        </div>
+
+        <!-- 2. Precision -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🎯</span>
+            <div class="cc-titles"><h3>Precision (Độ chính xác Cảnh báo)</h3><span class="cc-sub">Đo lường mức độ TRÁNH CHẶN NHẦM</span></div>
+            <span class="cc-cat-badge sec-badge">Chỉ số ML</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">👮</span><div><strong>Hình dung đơn giản:</strong> Cảnh sát bắt 10 người nghi vấn. Sau khi kiểm tra thấy 9 người đúng là tội phạm $\rightarrow$ Precision = 90%. Nếu chỉ có 2 tội phạm $\rightarrow$ Precision = 20% (bắt nhầm quá nhiều người tốt!).</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Công thức toán học:</h4>
+              <p><code>Precision = Bắt đúng DDoS / (Bắt đúng DDoS + Chặn nhầm Người thật)</code></p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">Ứng dụng trong Bảo mật Web:</span><p>Precision cao giúp <strong>hệ thống không chặn nhầm người dùng hợp lệ</strong>. Nếu Precision thấp, người dùng sẽ bị từ chối dịch vụ bất ngờ.</p></div>
+          </div>
+        </div>
+
+        <!-- 3. Recall -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🔍</span>
+            <div class="cc-titles"><h3>Recall (Độ nhạy Phát hiện)</h3><span class="cc-sub">Đo lường mức độ TRÁNH BỎ SÓT</span></div>
+            <span class="cc-cat-badge sec-badge-cc">Tối quan trọng</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🔍</span><div><strong>Hình dung đơn giản:</strong> Máy dò kim loại ở sân bay phát hiện 99/100 vật nguy hiểm $\rightarrow$ Recall = 99%. Nếu chỉ phát hiện 50 vật $\rightarrow$ Recall = 50% (nguy cơ bỏ sót!).</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Công thức toán học:</h4>
+              <p><code>Recall = Bắt đúng DDoS / (Bắt đúng DDoS + Bỏ sót DDoS)</code></p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">Tầm quan trọng của Recall:</span><p>Trong an ninh mạng, <strong>Recall quan trọng hơn Precision</strong>. Bỏ sót 1 cuộc tấn công DDoS có thể làm ngưng trệ toàn bộ hệ thống, trong khi cảnh báo nhầm 1 vài gói tin hợp lệ ít gây thiệt hại hơn.</p></div>
+          </div>
+        </div>
+
+        <!-- 4. F1-Score -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🏆</span>
+            <div class="cc-titles"><h3>F1-Score (Điểm cân bằng F1)</h3><span class="cc-sub">Chỉ số đánh giá tổng hợp</span></div>
+            <span class="cc-cat-badge net-badge">Chuẩn Đánh giá</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">⚖️</span><div><strong>Hình dung đơn giản:</strong> Điểm đánh giá trung bình cả môn Precision và môn Recall. Muốn điểm F1 cao thì mô hình phải đạt kết quả tốt ở cả hai chỉ số.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Công thức toán học:</h4>
+              <p><code>F1-Score = 2 * (Precision * Recall) / (Precision + Recall)</code></p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">Ý nghĩa của F1-Score:</span><p>F1-Score là chỉ số tổng hợp chứng minh mô hình AI đạt điểm cân bằng: vừa <strong>không bỏ sót đợt tấn công</strong> vừa <strong>không chặn nhầm người dùng hợp lệ</strong>.</p></div>
+          </div>
+        </div>
+
+        <!-- 5. Confusion Matrix -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">📊</span>
+            <div class="cc-titles"><h3>Confusion Matrix (Ma trận Nhầm lẫn)</h3><span class="cc-sub">Bảng 4 ô đếm kết quả dự đoán</span></div>
+            <span class="cc-cat-badge proto-badge">Cấu trúc</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🩺</span><div><strong>Hình dung đơn giản:</strong> Bảng kết quả xét nghiệm y tế: Dương tính thật (có bệnh), Âm tính thật (khỏe mạnh), Báo nhầm bệnh, và Bỏ sót bệnh.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 4 Ô trong ma trận:</h4>
+              <ul class="cc-ul">
+                <li>🟢 <strong>True Positive (TP):</strong> DDoS thật &rarr; AI báo DDoS (ĐÚNG)</li>
+                <li>🔵 <strong>True Negative (TN):</strong> Người thật &rarr; AI báo Người thật (ĐÚNG)</li>
+                <li>🟡 <strong>False Positive (FP):</strong> Người thật &rarr; AI báo DDoS (CHẶN NHẦM)</li>
+                <li>🔴 <strong>False Negative (FN):</strong> DDoS thật &rarr; AI báo Người thật (BỎ SÓT - NGUY HIỂM)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. FP vs FN -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">⚠️</span>
+            <div class="cc-titles"><h3>False Positive vs False Negative</h3><span class="cc-sub">Chặn nhầm vs Bỏ sót đợt tấn công</span></div>
+            <span class="cc-cat-badge sec-badge">So sánh</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🔔</span><div><strong>False Positive (FP):</strong> Chuông báo cháy kêu khi chỉ có ai thắp hương (Cảnh báo nhầm).<br><strong>False Negative (FN):</strong> Trộm vào nhà nhưng chuông chống trộm im lặng (Bỏ sót tội phạm).</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Tác hại thực tế:</h4>
+              <p>🔴 <strong>FN (Bỏ sót):</strong> Server sập hoàn toàn, dữ liệu bị đe dọa. Hậu quả cực kỳ nghiêm trọng.<br>🟡 <strong>FP (Chặn nhầm):</strong> Một vài khách hàng bấm F5 lại trang. Hậu quả nhẹ hơn.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Decision Tree vs Random Forest vs XGBoost -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🌲</span>
+            <div class="cc-titles"><h3>Decision Tree vs Random Forest vs XGBoost</h3><span class="cc-sub">3 Mô hình AI phổ biến nhất trong IDS</span></div>
+            <span class="cc-cat-badge proto-badge">Thuật toán</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">⚽</span><div><strong>Decision Tree:</strong> 1 Trọng tài bắt trận đấu.<br><strong>Random Forest:</strong> Hội đồng 50 trọng tài cùng bỏ phiếu bầu chọn.<br><strong>XGBoost:</strong> Đội bóng trận sau xem lại video học rút kinh nghiệm sâu sắc từ lỗi sai của trận trước!</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Thuật toán nào mạnh nhất?</h4>
+              <p>⚡ <strong>XGBoost (Extreme Gradient Boosting)</strong> là mô hình đạt F1-Score cao nhất cho dữ liệu bảng IDS và được khuyên dùng nhất!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. SHAP -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🎯</span>
+            <div class="cc-titles"><h3>SHAP (SHapley Additive exPlanations)</h3><span class="cc-sub">Giải thích AI bằng Lý thuyết Trò chơi</span></div>
+            <span class="cc-cat-badge sec-badge-cc">XAI Cốt lõi</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">🏆</span><div><strong>Hình dung đơn giản:</strong> Giống như chia tiền thưởng cho 4 cầu thủ sau trận thắng. SHAP tính toán công bằng con số cụ thể xem cầu thủ nào (Packet Rate, Size, Port) đóng góp bao nhiêu % công sức vào kết luận DDoS.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Cách đọc con số SHAP Value cụ thể:</h4>
+              <p>🔴 <strong>SHAP Value là DƯƠNG (ví dụ: +0.42):</strong> Đặc trưng đó đang <strong>ĐẨY kết quả về hướng DDoS</strong> (Tăng xác suất tấn công thêm 42%).<br>🟢 <strong>SHAP Value là ÂM (ví dụ: -0.18):</strong> Đặc trưng đó đang <strong>KÉO kết quả về hướng Bình thường</strong> (Giảm nguy cơ tấn công đi 18%).</p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ 2 Biểu đồ SHAP chính:</span><p>1. <strong>Summary Plot (Beeswarm):</strong> Xếp hạng đặc trưng quan trọng nhất toàn mô hình (Global).<br>2. <strong>Waterfall / Force Plot:</strong> Sơ đồ kéo co giải thích chi tiết cho 1 gói tin cụ thể (Local).</p></div>
+          </div>
+        </div>
+
+        <!-- 9. LIME -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">🔍</span>
+            <div class="cc-titles"><h3>LIME (Local Surrogates)</h3><span class="cc-sub">Giải thích cục bộ ngay tại hiện trường</span></div>
+            <span class="cc-cat-badge sec-badge">XAI Cốt lõi</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📸</span><div><strong>Hình dung đơn giản:</strong> Thay vì điều tra lịch sử cả thành phố, cảnh sát phỏng vấn riêng 1 nhân chứng ngay tại bức ảnh hiện trường để giải thích nhanh bức ảnh đó.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 Cách đọc Trọng số LIME Weight (w):</h4>
+              <p>🔴 <strong>LIME Weight w &gt; 0 (ví dụ: +0.82):</strong> Ủng hộ kết luận gói tin là DDoS.<br>🟢 <strong>LIME Weight w &lt; 0 (ví dụ: -0.45):</strong> Chống lại kết luận DDoS (ủng hộ bình thường).</p>
+            </div>
+            <div class="cc-ddos-box"><span class="cdb-title">⚡ So sánh SHAP vs LIME:</span><p>SHAP dựa trên <strong>Lý thuyết Trò chơi</strong> (Chính xác toán học tuyệt đối, nhất quán toàn cục lẫn cục bộ). LIME tạo <strong>Mô hình Tuyến tính Xấp xỉ Cục bộ</strong> (Nhanh, dễ hình dung tại 1 vị trí gói tin).</p></div>
+          </div>
+        </div>
+
+        <!-- 10. Feature Extraction -->
+        <div class="cc-card glass-card" onclick="toggleConcept(this)">
+          <div class="cc-head">
+            <span class="cc-ico">📦</span>
+            <div class="cc-titles"><h3>Feature Extraction (Trích xuất Đặc trưng)</h3><span class="cc-sub">Biến dòng traffic mạng thành con số cho AI học</span></div>
+            <span class="cc-cat-badge net-badge">Tiền xử lý</span>
+            <span class="cc-toggle">▼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-analogy-box"><span class="cab-icon">📑</span><div><strong>Hình dung đơn giản:</strong> Bác sĩ đo chiều cao, cân nặng, nhịp tim, huyết áp để đánh giá sức khỏe. AI đo 4 chỉ số của gói tin để đánh giá có phải DDoS không.</div></div>
+            <div class="cc-tech-box">
+              <h4>📋 4 Đặc trưng hay dùng:</h4>
+              <ul class="cc-ul">
+                <li>📊 <strong>Packet Rate (PPS):</strong> Số gói tin/giây.</li>
+                <li>📏 <strong>Payload Size StdDev:</strong> Độ lệch chuẩn kích thước gói tin.</li>
+                <li>🔄 <strong>SYN/ACK Ratio:</strong> Tỷ lệ gói bắt tay SYN so với ACK.</li>
+                <li>🌐 <strong>Subnet Dispersion:</strong> Độ phân tán địa chỉ IP nguồn.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DEDICATED DEEP-DIVE BOX: SHAP LÀ GÌ? LIME LÀ GÌ? -->
+      <div class="glass-card" style="margin-bottom:36px; padding:24px; border-left:4px solid var(--cyan);">
+        <h3 style="font-family:var(--font-title); font-size:18px; color:var(--cyan); margin-bottom:16px;">Chuyên sâu XAI: Giải thích Thuật toán SHAP &amp; LIME</h3>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom:20px;">
+          <!-- Box SHAP -->
+          <div style="background:rgba(0,245,255,0.04); border:1px solid rgba(0,245,255,0.2); padding:16px; border-radius:var(--radius);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+              <span style="font-size:24px;">🎯</span>
+              <div>
+                <h4 style="font-family:var(--font-title); font-size:15px; color:var(--cyan); margin:0;">SHAP (SHapley Additive exPlanations)</h4>
+                <span style="font-size:11px; color:var(--text-dim);">Dựa trên Lý thuyết Trò chơi (Game Theory - Nobel 2012)</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">
+              <strong>SHAP là gì?</strong> Là thuật toán tính toán con số đóng góp công bằng (SHAP Value) của từng đặc trưng đầu vào vào kết quả dự đoán của AI.<br><br>
+              <strong>Ví dụ:</strong> Đội bóng có 4 cầu thủ (Packet Rate, Size, Port, IP Subnet). Sau trận thắng 3-0, SHAP tính xem cầu thủ A ghi 2 bàn (+0.60), cầu thủ B kiến tạo (+0.20), cầu thủ C phạm lỗi (-0.10). Tổng lại = 0.70 (Khẳng định DDoS!).<br><br>
+              <strong>2 Biểu đồ SHAP chính:</strong><br>
+              • <strong>Summary Plot:</strong> So sánh độ quan trọng của tất cả đặc trưng trên toàn bộ tập dữ liệu (Global).<br>
+              • <strong>Force / Waterfall Plot:</strong> Giải thích chi tiết cho từng gói tin cụ thể (Local).
+            </p>
+          </div>
+
+          <!-- Box LIME -->
+          <div style="background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.2); padding:16px; border-radius:var(--radius);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+              <span style="font-size:24px;">🔍</span>
+              <div>
+                <h4 style="font-family:var(--font-title); font-size:15px; color:var(--yellow); margin:0;">LIME (Local Interpretable Model-agnostic)</h4>
+                <span style="font-size:11px; color:var(--text-dim);">Dựa trên Mô hình Tuyến tính Xấp xỉ Cục bộ (Local Surrogates)</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">
+              <strong>LIME là gì?</strong> Là thuật toán giải thích cục bộ bằng cách tạo ra các điểm dữ liệu giả quanh 1 gói tin hiện tại, sau đó dùng đường thẳng đơn giản <code>y = w1*x1 + w2*x2 + b</code> để xấp xỉ hành vi AI.<br><br>
+              <strong>Ví dụ:</strong> Cảnh sát chụp ảnh hiện trường vụ án và phỏng vấn riêng các nhân chứng xung quanh đúng vị trí đó, thay vì điều tra toàn bộ thành phố.<br><br>
+              <strong>Đặc điểm LIME:</strong><br>
+              • Trọng số <strong>LIME Weight (w &gt; 0)</strong>: Tăng nguy cơ DDoS.<br>
+              • Trọng số <strong>LIME Weight (w &lt; 0)</strong>: Giảm nguy cơ DDoS.<br>
+              • Chạy nhanh, độc lập với loại mô hình AI.
+            </p>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <h4 style="font-family:var(--font-title); font-size:13px; color:var(--text); margin-bottom:10px;">Bảng So sánh 5 Tiêu chí đối kháng SHAP vs LIME</h4>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border); color:var(--cyan); font-family:var(--font-mono);">
+                <th style="padding:8px;">Tiêu chí So sánh</th>
+                <th style="padding:8px; color:var(--cyan);">SHAP (SHapley Additive exPlanations)</th>
+                <th style="padding:8px; color:var(--yellow);">LIME (Local Interpretable Explanations)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">1. Cơ sở Toán học</td>
+                <td style="padding:8px; color:var(--text-dim);">Lý thuyết Trò chơi (Game Theory Shapley Values)</td>
+                <td style="padding:8px; color:var(--text-dim);">Mô hình Tuyến tính xấp xỉ cục bộ (Surrogate Linear)</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">2. Phạm vi Giải thích</td>
+                <td style="padding:8px; color:var(--green);">Cả Cục bộ (Local) &amp; Toàn cục (Global)</td>
+                <td style="padding:8px; color:var(--yellow);">Chỉ Cục bộ (Local - 1 mẫu tại 1 thời điểm)</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">3. Tính Nhất quán</td>
+                <td style="padding:8px; color:var(--green);">Chính xác toán học tuyệt đối (Không thay đổi)</td>
+                <td style="padding:8px; color:var(--red);">Có thể biến thiên nhẹ giữa các lần tạo mẫu giả</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px; font-weight:700; color:var(--text);">4. Tốc độ Tính toán</td>
+                <td style="padding:8px; color:var(--yellow);">Chậm hơn (TreeSHAP tối ưu tốt cho mô hình cây)</td>
+                <td style="padding:8px; color:var(--green);">Rất nhanh (Lấy mẫu ngẫu nhiên)</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; font-weight:700; color:var(--text);">5. Phạm vi Ứng dụng</td>
+                <td style="padding:8px; color:var(--cyan); font-weight:700;">Khuyên dùng hàng đầu cho Mô hình Cây (TreeSHAP)</td>
+                <td style="padding:8px; color:var(--text-dim);">Dùng làm mô hình đối chứng so sánh</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="demo-block glass-card" style="margin-bottom:30px; padding:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="font-family:var(--font-title); color:var(--cyan); font-size:16px;">Demo Mô phỏng 1: Mũi tên Kéo co SHAP (SHAP Force Plot)</h3>
+            <p style="font-size:12px; color:var(--text-dim);">Kéo slider để xem các đặc trưng tạo lực kéo màu ĐỎ (+ điểm DDoS) hay màu XANH (- điểm Bình thường)</p>
+          </div>
+          <span id="shap-result-badge" class="sec-badge danger">🔴 KẾT LUẬN SHAP: DDOS ATTACK</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+          <!-- Controls -->
+          <div>
+            <div class="ctrl-section" style="margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px;">
+                <span>Packet Rate (PPS):</span>
+                <span id="shap-pps-val" style="color:var(--yellow); font-family:var(--font-mono);">25,000 pps</span>
+              </div>
+              <input type="range" id="shap-pps-slider" min="500" max="50000" value="25000" style="width:100%">
+            </div>
+
+            <div class="ctrl-section" style="margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px;">
+                <span>Size StdDev:</span>
+                <span id="shap-std-val" style="color:var(--yellow); font-family:var(--font-mono);">2.5 B</span>
+              </div>
+              <input type="range" id="shap-std-slider" min="0" max="300" value="2" style="width:100%">
+            </div>
+
+            <div class="ctrl-section" style="margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px;">
+                <span>Tỷ lệ SYN/ACK:</span>
+                <span id="shap-syn-val" style="color:var(--yellow); font-family:var(--font-mono);">20 : 1</span>
+              </div>
+              <input type="range" id="shap-syn-slider" min="1" max="30" value="20" style="width:100%">
+            </div>
+          </div>
+
+          <!-- SHAP Tug-of-War Visualization Bars -->
+          <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; background:rgba(0,0,0,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-size:12px; font-weight:700; color:var(--text); text-align:center;">
+              Điểm xác suất DDoS tổng hợp: <span id="shap-total-score" style="color:var(--cyan); font-family:var(--font-mono); font-size:18px;">85.0%</span>
+            </div>
+
+            <div>
+              <span style="font-size:11px; color:var(--text-dim);">Lực kéo Packet Rate:</span>
+              <div style="height:18px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; margin-top:4px;">
+                <div id="shap-bar-pps" style="height:100%; font-size:10px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; transition:width 0.3s ease;"></div>
+              </div>
+            </div>
+
+            <div>
+              <span style="font-size:11px; color:var(--text-dim);">Lực kéo Size StdDev:</span>
+              <div style="height:18px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; margin-top:4px;">
+                <div id="shap-bar-std" style="height:100%; font-size:10px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; transition:width 0.3s ease;"></div>
+              </div>
+            </div>
+
+            <div>
+              <span style="font-size:11px; color:var(--text-dim);">Lực kéo SYN/ACK Ratio:</span>
+              <div style="height:18px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; margin-top:4px;">
+                <div id="shap-bar-syn" style="height:100%; font-size:10px; font-weight:700; color:#fff; display:flex; align-items:center; justify-content:center; transition:width 0.3s ease;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Explanation Panel for SHAP -->
+        <div id="shap-explain-panel" class="live-explain-panel glass-card" style="margin-top:16px;">
+          <div class="lep-icon">🎯</div>
+          <div style="flex:1">
+            <div class="lep-title" id="shap-explain-title">SHAP Giải thích</div>
+            <div class="lep-text" id="shap-explain-text">Hãy kéo các thanh slider bên trên để xem lực kéo SHAP biến đổi.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO 2: CONFUSION MATRIX & METRICS SIMULATOR -->
+      <div class="demo-block glass-card" style="padding:24px;">
+        <h3 style="font-family:var(--font-title); color:var(--cyan); font-size:16px; margin-bottom:6px;">Demo Mô phỏng 2: Ma trận Nhầm lẫn (Confusion Matrix) &amp; Chỉ số Đánh giá Mô hình</h3>
+        <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Điều chỉnh Ngưỡng nhạy (Sensitivity Threshold) để quan sát sự đánh đổi giữa <strong>Chặn Nhầm (Precision)</strong> và <strong>Bỏ Sót (Recall)</strong></p>
+
+        <div style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+            <span>Ngưỡng nhạy AI (Threshold):</span>
+            <span id="cm-threshold-val" style="color:var(--yellow); font-family:var(--font-mono); font-weight:700;">50%</span>
+          </div>
+          <input type="range" id="cm-threshold-slider" min="10" max="90" value="50" style="width:100%">
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+          <!-- 2x2 Matrix Grid -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div style="background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.3); padding:16px; border-radius:var(--radius); text-align:center;">
+              <span style="font-size:11px; color:var(--green); display:block; font-weight:700;">TRUE POSITIVE (TP)</span>
+              <span id="cm-cell-tp" style="font-family:var(--font-title); font-size:24px; color:var(--green);">190</span>
+              <span style="font-size:10px; color:var(--text-dim); display:block; margin-top:4px;">Bắt đúng DDoS (Tốt)</span>
+            </div>
+
+            <div style="background:rgba(255,0,60,0.08); border:1px solid rgba(255,0,60,0.3); padding:16px; border-radius:var(--radius); text-align:center;">
+              <span style="font-size:11px; color:var(--red); display:block; font-weight:700;">FALSE NEGATIVE (FN)</span>
+              <span id="cm-cell-fn" style="font-family:var(--font-title); font-size:24px; color:var(--red);">10</span>
+              <span style="font-size:10px; color:var(--text-dim); display:block; margin-top:4px;">BỎ SÓT (Nguy hiểm)</span>
+            </div>
+
+            <div style="background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.3); padding:16px; border-radius:var(--radius); text-align:center;">
+              <span style="font-size:11px; color:var(--yellow); display:block; font-weight:700;">FALSE POSITIVE (FP)</span>
+              <span id="cm-cell-fp" style="font-family:var(--font-title); font-size:24px; color:var(--yellow);">15</span>
+              <span style="font-size:10px; color:var(--text-dim); display:block; margin-top:4px;">CHẶN NHẦM người dùng</span>
+            </div>
+
+            <div style="background:rgba(0,122,255,0.08); border:1px solid rgba(0,122,255,0.3); padding:16px; border-radius:var(--radius); text-align:center;">
+              <span style="font-size:11px; color:#4da6ff; display:block; font-weight:700;">TRUE NEGATIVE (TN)</span>
+              <span id="cm-cell-tn" style="font-family:var(--font-title); font-size:24px; color:#4da6ff;">785</span>
+              <span style="font-size:10px; color:var(--text-dim); display:block; margin-top:4px;">Cho qua đúng người dùng</span>
+            </div>
+          </div>
+
+          <!-- Calculated Metrics Display -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-content:center;">
+            <div class="aim-box"><span class="aim-val" id="cm-metric-acc" style="color:var(--cyan);">97.5%</span><span class="aim-lbl">Accuracy (Chính xác chung)</span></div>
+            <div class="aim-box"><span class="aim-val" id="cm-metric-prec" style="color:var(--yellow);">92.7%</span><span class="aim-lbl">Precision (Tránh chặn nhầm)</span></div>
+            <div class="aim-box"><span class="aim-val" id="cm-metric-rec" style="color:var(--green);">95.0%</span><span class="aim-lbl">Recall (Tránh bỏ sót)</span></div>
+            <div class="aim-box" style="border-color:var(--cyan); background:rgba(0,245,255,0.05);"><span class="aim-val" id="cm-metric-f1" style="color:var(--cyan); font-weight:900;">93.8%</span><span class="aim-lbl">F1-Score (Đánh giá Tổng hợp)</span></div>
+          </div>
+        </div>
+
+        <!-- Live Explanation Panel for CM -->
+        <div id="cm-explain-panel" class="live-explain-panel glass-card" style="margin-top:16px;">
+          <div class="lep-icon">📊</div>
+          <div style="flex:1">
+            <div class="lep-title" id="cm-explain-title">Đánh giá Ma trận Nhầm lẫn</div>
+            <div class="lep-text" id="cm-explain-text">Kéo thanh trượt Ngưỡng nhạy bên trên để quan sát các chỉ số biến đổi.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- XAI-IDS CAPSTONE DATAFLOW ARCHITECTURE DIAGRAM -->
+      <div class="glass-card" style="margin-top:30px; padding:24px;">
+        <h3 style="font-family:var(--font-title); color:var(--cyan); font-size:16px; margin-bottom:6px;">Quy trình Kiến trúc 5 Bước của Hệ thống XAI-IDS</h3>
+        <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Sơ đồ luồng dữ liệu từ luồng Mạng thô $\rightarrow$ Mô hình XGBoost $\rightarrow$ SHAP/LIME $\rightarrow$ Giao diện Cảnh báo Dashboard</p>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; text-align:center;">
+          <div style="background:rgba(0,122,255,0.08); border:1px solid rgba(0,122,255,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--cyan); font-weight:700; margin-bottom:6px;">1. DỮ LIỆU ĐẦU VÀO</div>
+            <div style="font-size:11px; color:var(--text-dim); line-height:1.5;">Tải file <code>.pcap</code> hoặc Bộ dataset <code>CICIDS2017</code> / <code>CICDDoS2019</code></div>
+          </div>
+
+          <div style="background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--yellow); font-weight:700; margin-bottom:6px;">2. TRÍCH XUẤT (Scapy)</div>
+            <div style="font-size:11px; color:var(--text-dim); line-height:1.5;">Đo Packet Rate (PPS), Size StdDev, SYN/ACK Ratio, IP Subnet</div>
+          </div>
+
+          <div style="background:rgba(155,89,182,0.08); border:1px solid rgba(155,89,182,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:#bb86fc; font-weight:700; margin-bottom:6px;">3. DỰ ĐOÁN (XGBoost)</div>
+            <div style="font-size:11px; color:var(--text-dim); line-height:1.5;">Phân loại <code>Normal</code> vs <code>DDoS Attack</code> với độ tin cậy %</div>
+          </div>
+
+          <div style="background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--green); font-weight:700; margin-bottom:6px;">4. XAI GIẢI THÍCH (TreeSHAP)</div>
+            <div style="font-size:11px; color:var(--text-dim); line-height:1.5;">Tính con số SHAP Values (+/-) đo đóng góp từng đặc trưng</div>
+          </div>
+
+          <div style="background:rgba(255,0,60,0.08); border:1px solid rgba(255,0,60,0.3); padding:16px; border-radius:var(--radius);">
+            <div style="font-family:var(--font-mono); font-size:12px; color:var(--red); font-weight:700; margin-bottom:6px;">5. DASHBOARD (Streamlit)</div>
+            <div style="font-size:11px; color:var(--text-dim); line-height:1.5;">Hiển thị Cảnh báo + Biểu đồ Force Plot cho Chuyên gia SOC</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 10: QUIZ ========== -->
+    <section id="quiz" class="section quiz-section">
+      <div class="section-header">
+        <div class="sec-badge">🎯 Kiểm tra kiến thức</div>
+        <h2 class="sec-title">Bài kiểm tra DDoS</h2>
+        <p class="sec-desc">10 câu hỏi trắc nghiệm để đánh giá mức độ hiểu biết của bạn</p>
+      </div>
+
+      <div class="quiz-wrap glass-card">
+        <!-- Start Screen -->
+        <div id="quiz-start-screen" class="quiz-start-screen">
+          <div class="qss-icon">🎯</div>
+          <h3>Bạn đã sẵn sàng kiểm tra?</h3>
+          <p>10 câu trắc nghiệm về DDoS. Mỗi câu đúng 10 điểm. Có giải thích sau mỗi câu!</p>
+          <div class="badge-preview-row">
+            <div class="bpr-item bronze">🥉 Người mới<br><small>0–40 điểm</small></div>
+            <div class="bpr-item silver">🥈 Trung cấp<br><small>50–70 điểm</small></div>
+            <div class="bpr-item gold">🥇 Chuyên gia<br><small>80–100 điểm</small></div>
+          </div>
+          <button class="btn-primary" id="btn-start-quiz">🚀 Bắt đầu kiểm tra!</button>
+        </div>
+
+        <!-- Quiz Game -->
+        <div id="quiz-game" class="quiz-game hidden">
+          <div class="qg-header">
+            <div class="qg-progress-track">
+              <div class="qg-progress-fill" id="quiz-progress"></div>
+            </div>
+            <div class="qg-meta">
+              <span id="quiz-qnum">Câu 1/10</span>
+              <span id="quiz-score-display">Điểm: 0</span>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-text" id="quiz-question">Loading...</div>
+            <div class="quiz-options" id="quiz-options"></div>
+            <div class="quiz-feedback hidden" id="quiz-feedback"></div>
+          </div>
+
+          <button class="btn-primary hidden" id="btn-next-q">Câu tiếp theo →</button>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="quiz-result" class="quiz-result hidden">
+          <div class="qr-icon" id="qr-icon">🏆</div>
+          <h3 id="qr-title">Kết quả</h3>
+          <div class="qr-score" id="qr-score">0/100</div>
+          <div class="qr-badge" id="qr-badge"></div>
+          <div class="qr-message" id="qr-message"></div>
+          <div class="qr-actions">
+            <button class="btn-primary" id="btn-retry-quiz">🔄 Làm lại bài kiểm tra</button>
+            <a href="#hero" class="btn-secondary">🏠 Về trang chủ</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: TERMINAL ========== -->
+    <section id="terminal" class="section">
+      <div class="section-header">
+        <h2 class="sec-title">💻 Terminal Học thuật</h2>
+        <p class="sec-desc">Giao diện dòng lệnh giả lập — thực hành các lệnh phân tích mạng, tìm hiểu tấn công DDoS và cơ chế phòng thủ. Gõ <code>help</code> để bắt đầu.</p>
+      </div>
+
+      <div class="glass-card" style="padding:0;overflow:hidden;">
+        <!-- Terminal title bar -->
+        <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(0,0,0,0.5);border-bottom:1px solid rgba(0,245,255,0.1);">
+          <span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
+          <span style="margin-left:8px;font-size:12px;color:rgba(220,220,240,0.4);font-family:monospace;">root@ddos-lab:~</span>
+        </div>
+
+        <!-- Terminal output -->
+        <div id="terminal-container" style="background:#030308;min-height:380px;max-height:480px;display:flex;flex-direction:column;cursor:text;">
+          <div id="terminal-output"
+            style="flex:1;overflow-y:auto;padding:16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;color:#c0c0d0;min-height:320px;max-height:400px;">
+          </div>
+
+          <!-- Input line -->
+          <form id="terminal-form" style="display:flex;align-items:center;padding:8px 16px;border-top:1px solid rgba(0,245,255,0.08);background:rgba(0,0,0,0.3);">
+            <span style="color:#00ff88;font-family:monospace;font-size:13px;margin-right:4px;white-space:nowrap;">root@ddos-lab</span>
+            <span style="color:#e0e0f0;font-family:monospace;font-size:13px;margin-right:2px;">:</span>
+            <span style="color:#00f5ff;font-family:monospace;font-size:13px;margin-right:6px;">~$</span>
+            <input id="terminal-input" type="text" autocomplete="off" spellcheck="false"
+              placeholder="Gõ lệnh... (Tab để autocomplete)"
+              style="flex:1;background:transparent;border:none;outline:none;color:#e0e0f0;font-family:'JetBrains Mono',monospace;font-size:13px;caret-color:#00f5ff;">
+          </form>
+        </div>
+      </div>
+
+      <!-- Quick command hints -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+        <span style="font-size:11px;color:rgba(220,220,240,0.4);">Thử nhanh:</span>
+        <button onclick="document.getElementById('terminal-input').value='ping 8.8.8.8';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">ping</button>
+        <button onclick="document.getElementById('terminal-input').value='nmap';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">nmap</button>
+        <button onclick="document.getElementById('terminal-input').value='ddos --syn';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">ddos --syn</button>
+        <button onclick="document.getElementById('terminal-input').value='shap';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">shap</button>
+        <button onclick="document.getElementById('terminal-input').value='botnet';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">botnet</button>
+        <button onclick="document.getElementById('terminal-input').value='status';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">status</button>
+        <button onclick="document.getElementById('terminal-input').value='matrix';document.getElementById('terminal-form').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))" class="quick-cmd-btn">matrix</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-logo">⚡ DDoS Learning Hub</div>
+        <p class="footer-warning">⚠️ Trang web này chỉ dành cho mục đích <strong>giáo dục</strong>. Tấn công DDoS là hành vi vi phạm pháp luật tại Việt Nam và nhiều quốc gia trên thế giới.</p>
+        <p class="footer-sub">Học để bảo vệ — Không học để tấn công 🛡️</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Scripts — Demos loaded first, then main -->
+  <script src="demos/server-sim.js"></script>
+  <script src="demos/network-map.js"></script>
+  <script src="demos/packet-analyzer.js"></script>
+  <script src="demos/syn-flood.js"></script>
+  <script src="demos/defense-lab.js"></script>
+  <script src="demos/quiz.js"></script>
+  <script src="demos/concepts.js"></script>
+  <script src="demos/explain.js"></script>
+  <script src="demos/case-studies.js"></script>
+  <script src="demos/ai-detection.js"></script>
+  <script src="demos/ml-concepts.js"></script>
+  <script src="demos/terminal.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

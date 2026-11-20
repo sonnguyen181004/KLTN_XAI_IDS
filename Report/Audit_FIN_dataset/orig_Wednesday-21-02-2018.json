@@ -1,0 +1,16 @@
+{
+ "Benign": {
+  "n": 358851,
+  "fin": 1,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DDOS attack-HOIC": {
+  "n": 686012,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

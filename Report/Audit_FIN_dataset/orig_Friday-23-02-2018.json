@@ -1,0 +1,30 @@
+{
+ "Benign": {
+  "n": 739695,
+  "fin": 5731,
+  "fin_data0": 11,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "Brute Force -Web": {
+  "n": 213,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "Brute Force -XSS": {
+  "n": 146,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "SQL Injection": {
+  "n": 53,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

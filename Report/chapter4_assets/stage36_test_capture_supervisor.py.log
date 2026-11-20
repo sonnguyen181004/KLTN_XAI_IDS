@@ -1,0 +1,13 @@
+
+test_close_cooperatively_stops_owned_session (__main__.SupervisorTests.test_close_cooperatively_stops_owned_session) ... ok
+test_missing_interpreter_has_no_reservation (__main__.SupervisorTests.test_missing_interpreter_has_no_reservation) ... ok
+test_os_exit_poll_race_does_not_falsely_fail_stop (__main__.SupervisorTests.test_os_exit_poll_race_does_not_falsely_fail_stop) ... ok
+test_popen_failure_clears_only_unspawned_intent (__main__.SupervisorTests.test_popen_failure_clears_only_unspawned_intent) ... ok
+test_second_spawn_failure_rolls_back_first_worker (__main__.SupervisorTests.test_second_spawn_failure_rolls_back_first_worker) ... ok
+test_start_retry_conflict_stop_drain_complete (__main__.SupervisorTests.test_start_retry_conflict_stop_drain_complete) ... ok
+test_worker_script_failure_does_not_leave_feeder_running (__main__.SupervisorTests.test_worker_script_failure_does_not_leave_feeder_running) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 20.588s
+
+OK

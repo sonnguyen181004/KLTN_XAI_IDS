@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDS có giải thích: SHAP so với LIME trên CSE-CIC-IDS2018</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* === THEME: SOC console (tối, đèn cảnh báo hổ phách) === */
+:root{
+  --bg:#0a0f1a; --bg2:#101828; --bg3:#17233a; --line:#26344f;
+  --text:#eef2f9; --muted:#97a6c0;
+  --amber:#ffb020; --amber-soft:rgba(255,176,32,.14);
+  --cyan:#35d3c4; --cyan-soft:rgba(53,211,196,.13);
+  --red:#ff5d5d;
+  --font-display:'Be Vietnam Pro',sans-serif; --font-mono:'JetBrains Mono',monospace;
+  --stage-bg:#000; --slide-bg:var(--bg);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-display);color:var(--text)}
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* === ANIMATION === */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.slide.visible .reveal{opacity:1;transform:none}
+.slide.visible .reveal:nth-child(1){transition-delay:.05s}
+.slide.visible .reveal:nth-child(2){transition-delay:.15s}
+.slide.visible .reveal:nth-child(3){transition-delay:.25s}
+.slide.visible .reveal:nth-child(4){transition-delay:.35s}
+.slide.visible .reveal:nth-child(5){transition-delay:.45s}
+.slide.visible .reveal:nth-child(6){transition-delay:.55s}
+
+/* === SLIDE CHUNG === */
+.slide{padding:96px 120px 90px;background:
+  radial-gradient(900px 600px at 95% -10%,rgba(255,176,32,.07),transparent 60%),
+  radial-gradient(800px 600px at -5% 110%,rgba(53,211,196,.07),transparent 60%),
+  var(--bg);}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:120px 120px;mask-image:radial-gradient(ellipse at 80% 20%,#000 0,transparent 55%);-webkit-mask-image:radial-gradient(ellipse at 80% 20%,#000 0,transparent 55%);opacity:.25}
+.slide>*{position:relative}
+.tag{font-family:var(--font-mono);font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:16px}
+.tag::before{content:"";width:44px;height:3px;background:var(--amber)}
+h2{font-size:72px;font-weight:800;line-height:1.12;letter-spacing:-.01em;margin:22px 0 0;max-width:1500px}
+h2 em{font-style:normal;color:var(--amber)}
+.sub{font-size:36px;color:var(--muted);margin-top:20px;line-height:1.5;max-width:1400px}
+.foot{position:absolute!important;left:120px;right:120px;bottom:40px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:18px;color:var(--muted);letter-spacing:.06em}
+.body{margin-top:64px}
+.mono{font-family:var(--font-mono)}
+.cite{font-family:var(--font-mono);font-size:20px;color:var(--cyan)}
+
+/* === COVER === */
+.cover{display:flex;flex-direction:column;justify-content:center;padding-left:150px}
+.cover .big{font-size:128px;font-weight:800;line-height:1.02;letter-spacing:-.03em;margin:34px 0 0}
+.cover .big span{color:var(--amber)}
+.cover .lead{font-size:36px;color:var(--muted);margin-top:40px;max-width:1300px;line-height:1.5}
+.cover .meta{margin-top:72px;display:flex;gap:56px;font-family:var(--font-mono);font-size:22px;color:var(--muted)}
+.cover .meta b{display:block;color:var(--text);font-weight:500;margin-top:6px;font-size:24px}
+.cover .pulse{position:absolute!important;right:140px;top:200px;width:560px;height:560px}
+.pulse i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--amber);opacity:.5;animation:ring 4s infinite var(--ease)}
+.pulse i:nth-child(2){animation-delay:1.3s;border-color:var(--cyan)}
+.pulse i:nth-child(3){animation-delay:2.6s}
+.pulse b{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px;border-radius:50%;background:var(--amber);box-shadow:0 0 60px 12px rgba(255,176,32,.5)}
+@keyframes ring{0%{transform:scale(.1);opacity:.9}100%{transform:scale(1);opacity:0}}
+
+/* === GRID / CARDS === */
+.grid{display:grid;gap:32px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:linear-gradient(180deg,var(--bg2),var(--bg));border:1.5px solid var(--line);border-radius:6px;padding:48px 52px}
+.card.amber{border-color:var(--amber);background:linear-gradient(180deg,var(--amber-soft),transparent)}
+.card.cyan{border-color:var(--cyan);background:linear-gradient(180deg,var(--cyan-soft),transparent)}
+.card h3{font-size:44px;font-weight:600;line-height:1.25}
+.card p,.card li{font-size:33px;line-height:1.5;color:var(--muted);margin-top:18px}
+.card ul{list-style:none}
+.card li{padding-left:30px;position:relative}
+.card li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:12px;background:var(--amber)}
+.num{font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--amber);letter-spacing:.08em}
+.stat{font-size:140px;font-weight:800;line-height:1;color:var(--amber);letter-spacing:-.03em}
+.stat small{font-size:44px;color:var(--text);font-weight:500;margin-left:6px}
+.stat-l{font-size:31px;color:var(--muted);margin-top:16px;line-height:1.4}
+
+/* === FLOW (rule -> ML -> XAI) === */
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1}
+.arrow{width:80px;display:flex;align-items:center;justify-content:center;font-size:54px;color:var(--amber)}
+
+/* === TERMINAL === */
+.term{background:#05080f;border:1.5px solid var(--line);border-radius:6px;font-family:var(--font-mono);font-size:32px;line-height:1.7;padding:34px 38px;color:var(--cyan)}
+.term .k{color:var(--muted)}.term .w{color:var(--amber)}.term .r{color:var(--red)}
+.term hr{border:0;border-top:1px dashed var(--line);margin:16px 0}
+
+/* === TABLE === */
+table{width:100%;border-collapse:collapse;font-size:28px;line-height:1.4}
+th{font-family:var(--font-mono);font-size:21px;letter-spacing:.1em;text-transform:uppercase;text-align:left;color:var(--amber);padding:0 18px 16px;border-bottom:2px solid var(--amber)}
+td{padding:26px 18px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+td:first-child{color:var(--text);font-weight:600}
+
+/* === SUB-RQ LIST === */
+.rq{display:grid;grid-template-columns:200px 1fr;gap:0 24px;padding:34px 0;border-top:1px solid var(--line)}
+.rq:last-child{border-bottom:1px solid var(--line)}
+.rq .num{padding-top:4px}
+.rq h4{font-size:40px;font-weight:600}
+.rq p{font-size:30px;color:var(--muted);margin-top:10px;line-height:1.45}
+
+/* === UI === */
+.deck-controls{display:flex;gap:18px;align-items:center;font-family:var(--font-mono);font-size:16px;color:var(--muted);background:rgba(10,15,26,.8);padding:8px 18px;border-radius:30px;border:1px solid var(--line)}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--amber);width:0;z-index:1001;transition:width .4s var(--ease)}
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000}
+.edit-toggle{position:fixed;top:14px;left:14px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:10001;background:var(--amber);color:#000;border:0;border-radius:4px;padding:8px 12px;font:600 14px var(--font-mono);cursor:pointer}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto}
+body.editing [contenteditable]{outline:1px dashed var(--amber);outline-offset:4px}
+</style></head><body><div class="deck-viewport"><main class="deck-stage" id="deckStage">
+
+<!-- 01 COVER -->
+<section class="slide cover active">
+  <div class="pulse"><i></i><i></i><i></i><b></b></div>
+  <div class="tag reveal">Đồ án tốt nghiệp · Bảo đảm thông tin &amp; An ninh mạng</div>
+  <div class="big reveal">Phát hiện xâm nhập<br>có <span>giải thích</span></div>
+  <p class="lead reveal">So sánh SHAP và LIME với Random Forest, XGBoost trên bộ dữ liệu CSE-CIC-IDS2018, kèm bảng điều khiển SOC tương tác</p>
+  <div class="meta reveal"><div>BỘ DỮ LIỆU<b>CSE-CIC-IDS2018</b></div><div>MÔ HÌNH<b>RF · XGBoost</b></div><div>XAI<b>SHAP · LIME</b></div></div>
+</section>
+
+<!-- 02 BỐI CẢNH -->
+<section class="slide">
+  <div class="tag reveal">1.1 · Bối cảnh</div>
+  <h2 class="reveal">Từ chữ ký đến học máy: IDS phải theo kịp <em>quy mô và tốc độ</em></h2>
+  <div class="body flow">
+    <div class="card step reveal"><div class="num">01 · MỐI ĐE DỌA</div><h3 style="margin-top:14px">Lưu lượng bùng nổ</h3><p>Đám mây và IoT làm lưu lượng lớn hơn, nhanh hơn, phức tạp hơn. APT, DDoS, dò mật khẩu, khai thác web đe dọa tính bí mật, toàn vẹn, sẵn sàng.</p></div>
+    <div class="arrow">→</div>
+    <div class="card step reveal"><div class="num">02 · DỰA TRÊN LUẬT</div><h3 style="margin-top:14px">Snort, Suricata</h3><p>So khớp chữ ký, hiệu quả với mẫu đã biết nhưng khó với zero-day, tải trọng đa hình, kỹ thuật né tránh.</p></div>
+    <div class="arrow">→</div>
+    <div class="card step amber reveal"><div class="num">03 · HỌC MÁY</div><h3 style="margin-top:14px">Random Forest, XGBoost</h3><p>Học mẫu thống kê của luồng mạng, thường đạt kết quả tốt trên các kịch bản tấn công phức tạp. <span class="cite">[2]</span></p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 03 DATASET -->
+<section class="slide">
+  <div class="tag reveal">1.1.3 · Bộ dữ liệu chuẩn</div>
+  <h2 class="reveal">CSE-CIC-IDS2018: lưu lượng doanh nghiệp mô phỏng trên <em>AWS</em></h2>
+  <div class="body grid g3" style="margin-top:44px">
+    <div class="card reveal"><div class="stat">80</div><div class="stat-l">đặc trưng thống kê mỗi luồng, trích xuất bằng CICFlowMeter</div></div>
+    <div class="card reveal"><div class="stat">7<small>nhóm</small></div><div class="stat-l">tấn công cùng lưu lượng hợp lệ nhiều ngày: DoS, DDoS, PortScan, Brute Force, Web, Botnet, Infiltration</div></div>
+    <div class="card cyan reveal"><div class="stat" style="color:var(--cyan)">AWS</div><div class="stat-l">xây dựng bởi Communications Security Establishment và Canadian Institute for Cybersecurity <span class="cite">[3]</span></div></div>
+  </div>
+  <div class="term reveal" style="margin-top:28px;font-size:25px;padding:24px 34px"><span class="k">$ attacks --list</span><br>Brute Force <span class="w">FTP/SSH</span> · DoS/DDoS <span class="w">LOIC, HOIC, Slowloris</span> · Web <span class="w">SQLi, XSS</span> · Infiltration · Botnet</div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 04 VẤN ĐỀ -->
+<section class="slide">
+  <div class="tag reveal">1.2 · Vấn đề nghiên cứu</div>
+  <h2 class="reveal">Mô hình chính xác, nhưng <em>không nói vì sao</em> luồng đó độc hại</h2>
+  <div class="body grid g2" style="gap:44px">
+    <div>
+      <div class="num reveal" style="margin-bottom:16px">MÔ HÌNH TRẢ VỀ</div>
+      <div class="term reveal"><span class="k">flow_id</span> 8841207<br><span class="k">label</span> <span class="r">DDoS-LOIC-HTTP</span><br><span class="k">proba</span> 0.97<hr><span class="k">vì sao?</span> <span class="w">???</span></div>
+    </div>
+    <div>
+      <div class="num reveal" style="margin-bottom:16px">CHUYÊN VIÊN SOC CẦN</div>
+      <div class="card amber reveal"><ul>
+        <li>Đặc trưng nào đẩy xác suất lên cao</li>
+        <li>Căn cứ để phân biệt mối đe dọa thật với cảnh báo sai</li>
+        <li>Quyết định trong vài giây, trong hàng nghìn cảnh báo mỗi ngày</li>
+      </ul></div>
+    </div>
+  </div>
+  <p class="sub reveal" style="margin-top:36px">Kiểm tra thủ công từng bản ghi làm chậm ứng phó sự cố và cản trở đưa học máy vào vận hành.</p>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 05 NHU CẦU XAI -->
+<section class="slide">
+  <div class="tag reveal">1.2.3 · Nhu cầu giải thích</div>
+  <h2 class="reveal">SHAP và LIME: hai cách gán công trạng cho đặc trưng</h2>
+  <div class="body grid g2">
+    <div class="card amber reveal"><div class="num">SHAP · TreeExplainer</div><h3 style="margin-top:12px">Lý thuyết trò chơi hợp tác</h3><p>Giá trị Shapley phân bổ đóng góp cho từng đặc trưng. TreeSHAP giảm chi phí về mức đa thức, giữ độ chính xác cục bộ, tính thiếu vắng và tính nhất quán.</p></div>
+    <div class="card cyan reveal"><div class="num" style="color:var(--cyan)">LIME · TabularExplainer</div><h3 style="margin-top:12px">Mô hình thay thế cục bộ</h3><p>Xáo trộn ngẫu nhiên quanh luồng cần giải thích, khớp hồi quy tuyến tính thưa có trọng số khoảng cách để xấp xỉ vùng lân cận.</p></div>
+  </div>
+  <p class="sub reveal" style="margin-top:44px">Câu hỏi còn mở: hai phương pháp <b style="color:var(--text)">nhất quán, trung thực, chịu nhiễu và rẻ</b> đến đâu trên bộ dữ liệu lớn như CSE-CIC-IDS2018? <span class="cite">[4] [5]</span></p>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 06 TỔNG QUAN RQ -->
+<section class="slide">
+  <div class="tag reveal">1.3.1 · Câu hỏi nghiên cứu</div>
+  <h2 class="reveal">Ba câu hỏi chính, tám câu hỏi thành phần</h2>
+  <div class="body grid g3">
+    <div class="card reveal" style="min-height:660px"><div class="num">RQ1 · 2 sub-RQ</div><h3 style="margin-top:14px">Hiệu năng phát hiện và tối ưu mô hình</h3><p>Sau khi tối ưu siêu tham số, Random Forest và XGBoost hiệu quả ra sao?</p></div>
+    <div class="card amber reveal" style="min-height:660px"><div class="num">RQ2 · 4 sub-RQ</div><h3 style="margin-top:14px">Nhất quán, trung thực, ổn định của giải thích</h3><p>SHAP và LIME chính xác, nhất quán, ổn định đến mức nào và có khớp cơ chế tấn công đã biết không?</p></div>
+    <div class="card cyan reveal" style="min-height:660px"><div class="num" style="color:var(--cyan)">RQ3 · 2 sub-RQ</div><h3 style="margin-top:14px">Chi phí tính toán và triển khai thời gian thực</h3><p>Đánh đổi giữa phát hiện, độ trung thực và chi phí; biểu đồ nào giúp SOC hiểu cảnh báo trong vài giây?</p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 07 RQ1 -->
+<section class="slide">
+  <div class="tag reveal">RQ1</div>
+  <h2 class="reveal">Hiệu năng phát hiện và tối ưu mô hình</h2>
+  <p class="sub reveal">Sau khi tối ưu siêu tham số, Random Forest và XGBoost phát hiện xâm nhập trên CSE-CIC-IDS2018 hiệu quả như thế nào?</p>
+  <div class="body" style="margin-top:64px">
+    <div class="rq reveal"><div class="num">SUB-RQ 1.1</div><div><h4>Mô hình nào đạt F1-score và Precision cao hơn?</h4><p>So sánh sau khi hiệu chỉnh siêu tham số.</p></div></div>
+    <div class="rq reveal"><div class="num">SUB-RQ 1.2</div><div><h4>Tỷ lệ dương tính giả trên lưu lượng hợp lệ là bao nhiêu?</h4><p>Mô hình nào hạn chế cảnh báo sai tốt hơn khi triển khai thực tế?</p></div></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 08 RQ2 -->
+<section class="slide">
+  <div class="tag reveal">RQ2</div>
+  <h2 class="reveal">Nhất quán, trung thực và ổn định</h2>
+  <div class="body" style="margin-top:28px">
+    <div class="rq reveal" style="padding:26px 0"><div class="num">2.1</div><div><h4>Tính nhất quán và mức đồng thuận</h4><p>Trùng lặp đặc trưng quan trọng nhất của SHAP và LIME, đo bằng Jaccard Top-k và Spearman, theo từng loại tấn công.</p></div></div>
+    <div class="rq reveal" style="padding:26px 0"><div class="num">2.2</div><div><h4>Đối chiếu với kiến thức miền</h4><p>Đặc trưng đóng góp cao có phù hợp hành vi tấn công và dấu hiệu an ninh đã biết không?</p></div></div>
+    <div class="rq reveal" style="padding:26px 0"><div class="num">2.3</div><div><h4>Độ ổn định và khả năng chịu nhiễu</h4><p>Giá trị phân bổ thay đổi thế nào giữa các lần lấy mẫu ngẫu nhiên và khi dữ liệu bị nhiễu, xáo trộn?</p></div></div>
+    <div class="rq reveal" style="padding:26px 0"><div class="num">2.4</div><div><h4>Độ trung thực</h4><p>Bao nhiêu phần trăm giá trị phân bổ cục bộ phản ánh đúng ranh giới quyết định của mô hình hộp đen chính?</p></div></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 09 RQ3 -->
+<section class="slide">
+  <div class="tag reveal">RQ3</div>
+  <h2 class="reveal">Chi phí tính toán và khả năng triển khai <em>thời gian thực</em></h2>
+  <p class="sub reveal">Mối quan hệ đánh đổi giữa hiệu quả phát hiện, độ trung thực của giải thích và chi phí tính toán được thể hiện thế nào?</p>
+  <div class="body grid g2" style="margin-top:52px">
+    <div class="card amber reveal"><div class="num">SUB-RQ 3.1</div><div class="stat" style="font-size:120px;margin-top:22px">ms</div><p>Trên cùng cấu hình phần cứng, SHAP và LIME cần bao nhiêu mili giây để suy luận và tạo giải thích cho mỗi cảnh báo?</p></div>
+    <div class="card cyan reveal"><div class="num" style="color:var(--cyan)">SUB-RQ 3.2</div><div class="stat" style="font-size:120px;margin-top:22px;color:var(--cyan)">Vài giây</div><p>Biểu đồ nào giúp chuyên viên hiểu căn cứ cảnh báo: Beeswarm cho phân bố toàn cục, Force hoặc Waterfall cho từng cảnh báo?</p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 10 MỤC TIÊU -->
+<section class="slide">
+  <div class="tag reveal">1.3.2 · Mục tiêu</div>
+  <h2 class="reveal" style="font-size:60px">Xây dựng và đánh giá IDS có khả năng giải thích, kèm bảng điều khiển SOC</h2>
+  <div class="body grid g4" style="margin-top:44px;gap:24px">
+    <div class="card reveal" style="padding:40px 36px"><div class="num">01</div><h3 style="margin-top:12px;font-size:40px">Tiền xử lý</h3><p style="font-size:29px">Xử lý giá trị thiếu, vô hạn, bản ghi trùng và mất cân bằng lớp.</p></div>
+    <div class="card reveal" style="padding:40px 36px"><div class="num">02</div><h3 style="margin-top:14px;font-size:40px">Tối ưu mô hình</h3><p style="font-size:29px">GridSearchCV hoặc Bayes; ghi lại Precision, Recall, F1, FPR có thể tái lập.</p></div>
+    <div class="card amber reveal" style="padding:40px 36px"><div class="num">03</div><h3 style="margin-top:14px;font-size:40px">Đánh giá XAI</h3><p style="font-size:29px">TreeSHAP và LIME: Jaccard Top-k, độ trung thực, khớp dấu hiệu tấn công, độ ổn định.</p></div>
+    <div class="card cyan reveal" style="padding:40px 36px"><div class="num" style="color:var(--cyan)">04</div><h3 style="margin-top:14px;font-size:40px">Độ trễ và SOC</h3><p style="font-size:29px">Đo ms mỗi cảnh báo; dashboard Streamlit đóng gói Docker với Beeswarm và Force.</p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 11 Ý NGHĨA -->
+<section class="slide">
+  <div class="tag reveal">1.4 · Ý nghĩa</div>
+  <h2 class="reveal">Đóng góp cho học thuật và cho <em>ca trực SOC</em></h2>
+  <div class="body grid g2" style="gap:44px">
+    <div class="card reveal"><div class="num">HỌC THUẬT</div><h3 style="margin-top:14px">Bộ chỉ số định lượng so sánh XAI</h3><p>Độ tương đồng Top-k, tỷ lệ trung thực, độ ổn định khi dữ liệu bị xáo trộn. Làm rõ khác biệt giữa phân bổ theo lý thuyết trò chơi và mô hình thay thế cục bộ trong môi trường đám mây lưu lượng lớn.</p></div>
+    <div class="card amber reveal"><div class="num">THỰC TIỄN</div><h3 style="margin-top:14px">Biểu đồ Force và Beeswarm cho chuyên viên</h3><p>Chuyển giá trị phân bổ đặc trưng thành hình ảnh để kiểm tra căn cứ cảnh báo, rút ngắn thời gian phân loại ưu tiên trước khi xử lý sự cố.</p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 12 RELATED WORK -->
+<section class="slide">
+  <div class="tag reveal">2.2 · Nghiên cứu liên quan</div>
+  <h2 class="reveal" style="font-size:56px">Phần lớn dùng dữ liệu cũ, thiếu đo lường định lượng</h2>
+  <div class="body reveal" style="margin-top:36px">
+  <table>
+    <tr><th style="width:230px">Nghiên cứu</th><th style="width:230px">Dữ liệu</th><th style="width:230px">XAI</th><th>Giới hạn chưa xử lý</th></tr>
+    <tr><td>Arreche 2024 <span class="cite">[1]</span></td><td>CICIDS2017, UNSW-NB15</td><td>SHAP, LIME</td><td>Dữ liệu cũ; chưa đo tỷ lệ đồng thuận SHAP-LIME</td></tr>
+    <tr><td>Kuppa 2022 <span class="cite">[2]</span></td><td>Khảo sát</td><td>SHAP, LIME, Grad-CAM</td><td>Tổng quan định tính, không so sánh thực nghiệm</td></tr>
+    <tr><td>Sharafaldin 2018 <span class="cite">[3]</span></td><td>CICIDS2017</td><td>Không</td><td>Không áp dụng XAI, không đánh giá trên CSE-CIC-IDS2018</td></tr>
+    <tr><td>Uysal 2024 <span class="cite">[4]</span></td><td>Các bộ NIDS chuẩn</td><td>SHAP, LIME</td><td>Mẫu nhỏ; chưa đánh giá độ ổn định khi nhiễu</td></tr>
+    <tr><td>Obagbuwa 2026 <span class="cite">[5]</span></td><td>CICIDS2017</td><td>SHAP</td><td>Không so với LIME, không có dashboard SOC đóng gói</td></tr>
+  </table></div>
+  <div class="foot"><span>RP1 · Chương II · Bảng 2.1</span><span class="pg"></span></div>
+</section>
+
+<!-- 13 KHOẢNG TRỐNG -->
+<section class="slide">
+  <div class="tag reveal">2.3.1 · Khoảng trống</div>
+  <h2 class="reveal">Bốn khoảng trống cần lấp</h2>
+  <div class="body grid g2" style="gap:28px;margin-top:44px">
+    <div class="card reveal"><div class="num">GAP 1</div><h3 style="margin-top:10px">Dữ liệu</h3><p>Ít đánh giá toàn diện XAI trên CSE-CIC-IDS2018, bộ dữ liệu đám mây nhiều ngày và mất cân bằng lớp.</p></div>
+    <div class="card reveal"><div class="num">GAP 2</div><h3 style="margin-top:10px">Đo lường</h3><p>SHAP, LIME thường chỉ minh họa định tính; thiếu Top-k, Spearman, độ trung thực theo từng lớp tấn công.</p></div>
+    <div class="card amber reveal"><div class="num">GAP 3</div><h3 style="margin-top:10px">Độ ổn định</h3><p>Chưa đánh giá đầy đủ khi đầu vào chịu nhiễu Gaussian hoặc xáo trộn ngẫu nhiên.</p></div>
+    <div class="card cyan reveal"><div class="num" style="color:var(--cyan)">GAP 4</div><h3 style="margin-top:10px">Triển khai</h3><p>Ít báo cáo độ trễ; thiếu nền tảng mô-đun Docker kết hợp phân loại với biểu đồ Force, Beeswarm.</p></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương II</span><span class="pg"></span></div>
+</section>
+
+<!-- 14 ĐÓNG GÓP -->
+<section class="slide">
+  <div class="tag reveal">2.3.2 · Đóng góp dự kiến</div>
+  <h2 class="reveal">Bốn đóng góp của luận văn</h2>
+  <div class="body" style="margin-top:36px">
+    <div class="rq reveal"><div class="num">01</div><div><h4>Tối ưu mô hình trên CSE-CIC-IDS2018</h4><p>GridSearchCV hoặc Optuna cho RF và XGBoost, xử lý mất cân bằng lớp, đo FPR trên lưu lượng hợp lệ.</p></div></div>
+    <div class="rq reveal"><div class="num">02</div><div><h4>So sánh định lượng SHAP và LIME</h4><p>Top-k, tương quan thứ hạng, độ trung thực cục bộ, mức phù hợp kiến thức an ninh theo từng loại tấn công.</p></div></div>
+    <div class="rq reveal"><div class="num">03</div><div><h4>Kiểm tra độ ổn định bằng nhiễu và xáo trộn</h4><p>Đo thay đổi của giá trị phân bổ khi thêm nhiễu Gaussian và khi lặp lại lấy mẫu ngẫu nhiên.</p></div></div>
+    <div class="rq reveal"><div class="num">04</div><div><h4>Đo độ trễ và xây dựng dashboard SOC</h4><p>Streamlit đóng gói Docker với Force và Beeswarm, đo thời gian giải thích trên phần cứng xác định.</p></div></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương II</span><span class="pg"></span></div>
+</section>
+
+<!-- 15 PHẠM VI -->
+<section class="slide">
+  <div class="tag reveal">1.5 · Phạm vi và giới hạn</div>
+  <h2 class="reveal">Làm gì, và không làm gì</h2>
+  <div class="body grid g2" style="gap:44px">
+    <div class="card cyan reveal"><div class="num" style="color:var(--cyan)">PHẠM VI</div><ul style="margin-top:8px">
+      <li><b style="color:var(--text)">Dữ liệu:</b> CSE-CIC-IDS2018, hợp lệ và 7 nhóm tấn công</li>
+      <li><b style="color:var(--text)">Thuật toán:</b> Random Forest, XGBoost có hiệu chỉnh</li>
+      <li><b style="color:var(--text)">XAI:</b> SHAP TreeExplainer, LIME TabularExplainer, toàn cục và cục bộ</li>
+      <li><b style="color:var(--text)">Sản phẩm:</b> dashboard Streamlit, Docker</li></ul></div>
+    <div class="card amber reveal"><div class="num">GIỚI HẠN</div><ul style="margin-top:8px">
+      <li><b style="color:var(--text)">Theo luồng:</b> dùng bản ghi CSV, không bắt gói tin trực tiếp</li>
+      <li><b style="color:var(--text)">Nhiễu mô phỏng:</b> nhiễu đặc trưng tổng hợp, không có tấn công né tránh chủ động</li>
+      <li><b style="color:var(--text)">Phần cứng:</b> độ trễ chỉ đúng với cấu hình đã thử</li></ul></div>
+  </div>
+  <div class="foot"><span>RP1 · Chương I</span><span class="pg"></span></div>
+</section>
+
+<!-- 16 KẾT -->
+<section class="slide cover">
+  <div class="pulse"><i></i><i></i><i></i><b></b></div>
+  <div class="tag reveal">Tóm lại</div>
+  <div class="big reveal" style="font-size:96px">Không chỉ <span>phát hiện</span>,<br>mà còn <span>giải thích được</span></div>
+  <p class="lead reveal">Nghiên cứu đo SHAP và LIME bằng số liệu, trên dữ liệu đám mây hiện đại, và đưa kết quả vào tay chuyên viên SOC.</p>
+  <div class="meta reveal"><div>Cảm ơn thầy cô đã lắng nghe<b>Xin mời đặt câu hỏi</b></div></div>
+</section>
+</main></div>
+<div class="progress" id="progress"></div>
+<div class="deck-controls"><span id="counter">1 / 1</span><span>← → · Space · E: sửa chữ</span></div>
+<div class="edit-hotzone"></div><button class="edit-toggle" id="editToggle" title="Sửa chữ (E)">✏ sửa</button>
+<script>
+/* === ĐIỀU KHIỂN SLIDE === */
+class Deck{
+  constructor(){
+    this.s=[...document.querySelectorAll('.slide')];this.i=0;this.stage=document.getElementById('deckStage');
+    this.scale();addEventListener('resize',()=>this.scale());
+    addEventListener('keydown',e=>{
+      if(e.target.isContentEditable)return;
+      if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();this.go(this.i+1)}
+      if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.go(this.i-1)}
+      if(e.key==='Home')this.go(0);if(e.key==='End')this.go(this.s.length-1);
+    });
+    let sx=0;addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+    addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)this.go(this.i+(d<0?1:-1))});
+    let wl=0;addEventListener('wheel',e=>{const n=Date.now();if(n-wl<700)return;wl=n;this.go(this.i+(e.deltaY>0?1:-1))},{passive:true});
+    const h=parseInt(location.hash.slice(1));this.go(isNaN(h)?0:h-1);
+    this.s.forEach((s,k)=>{const p=s.querySelector('.pg');if(p)p.textContent=(k+1)+' / '+this.s.length});
+  }
+  scale(){const f=Math.min(innerWidth/1920,innerHeight/1080);
+    this.stage.style.transform=`translate(${(innerWidth-1920*f)/2}px,${(innerHeight-1080*f)/2}px) scale(${f})`}
+  go(n){this.i=Math.max(0,Math.min(n,this.s.length-1));
+    this.s.forEach((s,k)=>{s.classList.toggle('active',k===this.i);s.classList.toggle('visible',k===this.i)});
+    document.getElementById('counter').textContent=(this.i+1)+' / '+this.s.length;
+    document.getElementById('progress').style.width=((this.i+1)/this.s.length*100)+'%';
+    history.replaceState(null,'','#'+(this.i+1))}
+}
+const deck=new Deck();
+/* === SỬA CHỮ TRỰC TIẾP (phím E hoặc góc trên trái) === */
+const edit={on:false,toggle(){this.on=!this.on;document.body.classList.toggle('editing',this.on);
+  document.querySelectorAll('h2,h3,h4,p,li,td,.lead,.big').forEach(el=>el.contentEditable=this.on);
+  document.getElementById('editToggle').classList.toggle('active',this.on)}};
+const hz=document.querySelector('.edit-hotzone'),tg=document.getElementById('editToggle');let ht;
+hz.addEventListener('mouseenter',()=>{clearTimeout(ht);tg.classList.add('show')});
+[hz,tg].forEach(x=>x.addEventListener('mouseleave',()=>{ht=setTimeout(()=>{if(!edit.on)tg.classList.remove('show')},400)}));
+tg.addEventListener('mouseenter',()=>clearTimeout(ht));tg.addEventListener('click',()=>edit.toggle());
+addEventListener('keydown',e=>{if((e.key==='e'||e.key==='E')&&!e.target.isContentEditable)edit.toggle()});
+</script></body></html>

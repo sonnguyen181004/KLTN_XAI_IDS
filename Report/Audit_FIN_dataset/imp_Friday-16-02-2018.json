@@ -1,0 +1,30 @@
+{
+ "BENIGN": {
+  "n": 3060831,
+  "fin": 1363218,
+  "fin_data0": 1173366,
+  "fin_data66": 957499,
+  "zone": 955701
+ },
+ "FTP-BruteForce - Attempted": {
+  "n": 105520,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ },
+ "DoS Hulk": {
+  "n": 1803160,
+  "fin": 1802966,
+  "fin_data0": 1802966,
+  "fin_data66": 1802966,
+  "zone": 3614
+ },
+ "DoS Hulk - Attempted": {
+  "n": 86,
+  "fin": 0,
+  "fin_data0": 0,
+  "fin_data66": 0,
+  "zone": 0
+ }
+}

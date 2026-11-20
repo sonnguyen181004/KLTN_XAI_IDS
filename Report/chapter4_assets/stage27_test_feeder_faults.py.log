@@ -1,0 +1,95 @@
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_tqp1r8al\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: 09e5c27c-978d-47b9-b058-2eaf9fb95eb2 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_tqp1r8al\input.csv.feeder-state.json
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_6q4kjmqy\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: f8705609-09ea-49ff-bea5-9afd698aae28 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_6q4kjmqy\input.csv.feeder-state.json
+[feeder] Dòng mới #1: GỬI OK -> flow_id=confirmed-flow, predicted_label=Benign, is_alert=False, explanation_status=None
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_6q4kjmqy\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: f8705609-09ea-49ff-bea5-9afd698aae28 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_6q4kjmqy\input.csv.feeder-state.json
+[feeder] Dòng mới #1: GỬI OK -> flow_id=confirmed-flow, predicted_label=Benign, is_alert=False, explanation_status=None
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 1; gửi OK phiên này: 1.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: bb0ef985-b3a1-4c7c-af74-e5416fbd5d01 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (Phản hồi API chưa đủ thông tin xác nhận), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: bb0ef985-b3a1-4c7c-af74-e5416fbd5d01 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (Phản hồi API chưa đủ thông tin xác nhận), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: bb0ef985-b3a1-4c7c-af74-e5416fbd5d01 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (Phản hồi API chưa đủ thông tin xác nhận), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: bb0ef985-b3a1-4c7c-af74-e5416fbd5d01 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (Phản hồi API chưa đủ thông tin xác nhận), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: bb0ef985-b3a1-4c7c-af74-e5416fbd5d01 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_7jq1gz0a\input.csv.feeder-state.json
+[feeder] Dòng mới #1: GỬI OK -> flow_id=confirmed-flow, predicted_label=Benign, is_alert=False, explanation_status=None
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 1; gửi OK phiên này: 1.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (HTTP 408), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (HTTP 425), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (HTTP 429), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (HTTP 500), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng #1: chờ gửi lại (HTTP 503), giữ checkpoint; thử sau 0.01s.
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 0; gửi OK phiên này: 0.
+[feeder] Bắt đầu theo dõi: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv
+[feeder] Gửi tới: http://127.0.0.1:1/predict | đổi đơn vị μs: False | chu kỳ kiểm tra: 0.01s
+[feeder] Lượt: d9008545-d1a6-4c35-a8cb-19e005378586 — input.csv. Tiếp tục sau 0 dòng đã xác nhận.
+[feeder] Checkpoint: C:\Users\LOQ\AppData\Local\Temp\ids_feeder_fault_12hraci1\input.csv.feeder-state.json
+[feeder] Dòng mới #1: GỬI OK -> flow_id=confirmed-flow, predicted_label=Benign, is_alert=False, explanation_status=None
+[feeder] Dừng sau 1 lần kiểm tra. Đã xác nhận: 1; gửi OK phiên này: 1.
+
+test_bad_idempotency_ack_stops_without_advancing (__main__.FeederFaults.test_bad_idempotency_ack_stops_without_advancing) ... ok
+test_checkpoint_failure_after_ack_reuses_key_on_restart (__main__.FeederFaults.test_checkpoint_failure_after_ack_reuses_key_on_restart) ... ok
+test_invalid_ack_retries_same_key (__main__.FeederFaults.test_invalid_ack_retries_same_key) ... ok
+test_invalid_poll_interval_rejected (__main__.FeederFaults.test_invalid_poll_interval_rejected) ... ok
+test_transient_http_preserves_cursor (__main__.FeederFaults.test_transient_http_preserves_cursor) ... ok
+test_queue_200_marks_overflow_without_removing_accepted_tasks (__main__.QueueLimits.test_queue_200_marks_overflow_without_removing_accepted_tasks) ... ok
+test_recovery_does_not_starve_under_continuous_new_tasks (__main__.QueueLimits.test_recovery_does_not_starve_under_continuous_new_tasks) ... ok
+test_unlimited_queue_configuration_refused (__main__.QueueLimits.test_unlimited_queue_configuration_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.090s
+
+OK

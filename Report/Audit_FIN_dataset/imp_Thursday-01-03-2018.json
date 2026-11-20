@@ -1,0 +1,37 @@
+{
+ "BENIGN": {
+  "n": 4019781,
+  "fin": 1879947,
+  "fin_data0": 1641710,
+  "fin_data66": 1417036,
+  "zone": 1413878
+ },
+ "Infiltration - NMAP Portscan": {
+  "n": 39180,
+  "fin": 2398,
+  "fin_data0": 2007,
+  "fin_data66": 1069,
+  "zone": 1069
+ },
+ "Infiltration - Communication Victim Attacker": {
+  "n": 161,
+  "fin": 2,
+  "fin_data0": 2,
+  "fin_data66": 2,
+  "zone": 2
+ },
+ "Infiltration - Dropbox Download": {
+  "n": 39,
+  "fin": 13,
+  "fin_data0": 13,
+  "fin_data66": 6,
+  "zone": 6
+ },
+ "Infiltration - Dropbox Download - Attempted": {
+  "n": 13,
+  "fin": 8,
+  "fin_data0": 8,
+  "fin_data66": 5,
+  "zone": 5
+ }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "script": "stage26_test_capture_lifecycle.py",
+    "exit_code": 0,
+    "seconds": 2.610406299994793
+  },
+  {
+    "script": "stage27_test_feeder_faults.py",
+    "exit_code": 0,
+    "seconds": 1.497427999987849
+  },
+  {
+    "script": "stage29_test_capture_limits.py",
+    "exit_code": 0,
+    "seconds": 25.881339500003378
+  },
+  {
+    "script": "stage15_test_lime_validity.py",
+    "exit_code": 0,
+    "seconds": 2.9904227999941213
+  },
+  {
+    "script": "stage14_test_dashboard_redesign.py",
+    "exit_code": 0,
+    "seconds": 45.05344009998953
+  },
+  {
+    "script": "stage36_test_capture_supervisor.py",
+    "exit_code": 0,
+    "seconds": 20.9411831000034
+  },
+  {
+    "script": "stage37_test_capture_control_ui.py",
+    "exit_code": 0,
+    "seconds": 4.0447971999965375
+  }
+]

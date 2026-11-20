@@ -1,0 +1,51 @@
+{
+ "BENIGN": {
+  "n": 3525031,
+  "fin": 2031252,
+  "fin_data0": 1807258,
+  "fin_data66": 1562986,
+  "zone": 1560782
+ },
+ "Web Attack - Brute Force": {
+  "n": 69,
+  "fin": 69,
+  "fin_data0": 69,
+  "fin_data66": 69,
+  "zone": 69
+ },
+ "Web Attack - Brute Force - Attempted": {
+  "n": 76,
+  "fin": 76,
+  "fin_data0": 73,
+  "fin_data66": 73,
+  "zone": 73
+ },
+ "Web Attack - SQL": {
+  "n": 16,
+  "fin": 16,
+  "fin_data0": 16,
+  "fin_data66": 16,
+  "zone": 16
+ },
+ "Web Attack - SQL - Attempted": {
+  "n": 4,
+  "fin": 4,
+  "fin_data0": 3,
+  "fin_data66": 3,
+  "zone": 3
+ },
+ "Web Attack - XSS": {
+  "n": 40,
+  "fin": 38,
+  "fin_data0": 38,
+  "fin_data66": 38,
+  "zone": 38
+ },
+ "Web Attack - XSS - Attempted": {
+  "n": 3,
+  "fin": 3,
+  "fin_data0": 2,
+  "fin_data66": 2,
+  "zone": 2
+ }
+}

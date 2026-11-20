@@ -1,0 +1,137 @@
+KIỂM TRA NGUỒN VÀ NỘI DUNG BÀI BÁO
+
+1. Kết luận chung
+
+Không phát hiện tài liệu tham khảo giả trong 15 mục của refs.bib. Tên bài, tác giả và chủ đề của các tài liệu đều có thể đối chiếu với trang của nhà xuất bản, hội nghị hoặc bản thảo do tác giả công bố.
+
+Các kết quả chính cũng không có dấu hiệu được tự đặt ra. Những số liệu như 149 trên 784 cảnh báo, 148 cảnh báo Hulk, vùng FIN chứa 100.819 luồng benign, 99,97 phần trăm cảnh báo sai nằm trong vùng FIN, mức đóng góp SHAP 5,865, độ trễ 12,4 ms và 32,5 ms, cùng kết quả của M1 đều có tệp kết quả trong dự án.
+
+Vấn đề chính không phải là bịa nguồn hoặc bịa số liệu. Một số câu đang chuyển từ “bằng chứng phù hợp với một giả thuyết” thành “đã chứng minh nguyên nhân”. Một số trích dẫn cũng đúng tài liệu nhưng thông tin thư mục chưa đầy đủ.
+
+2. Kiểm tra 15 tài liệu tham khảo
+
+1) Sharafaldin và cộng sự, 2018. Tài liệu có thật. DOI 10.5220/0006639801080116. Đây là bài mô tả CICIDS2017 và nguyên tắc tạo dữ liệu. Trang chính thức CSE-CIC-IDS2018 cũng yêu cầu dẫn bài này, nên cách dẫn hiện tại chấp nhận được. Nên thêm địa chỉ trang dữ liệu CSE-CIC-IDS2018 để người đọc phân biệt hai bộ dữ liệu.
+
+2) Engelen và cộng sự, 2021. Tài liệu có thật và được dùng đúng hướng. DOI 10.1109/SPW53761.2021.00009. Bài kiểm tra CICIDS2017 và báo cáo lỗi xây dựng luồng, trích xuất đặc trưng và gán nhãn.
+
+3) Liu và cộng sự, 2022. Tài liệu có thật và rất phù hợp. DOI 10.1109/CNS56114.2022.9947235. Nhóm tác giả công bố dữ liệu tái tạo và tài liệu kỹ thuật. Tài liệu này nêu rõ luồng TCP sau sửa không còn kết thúc chỉ vì một gói FIN.
+
+4) Sommer và Paxson, 2010. Tài liệu có thật. DOI 10.1109/SP.2010.25. Nguồn phù hợp với lập luận về khoảng cách giữa đánh giá trong môi trường đóng và triển khai NIDS thực tế.
+
+5) Arp và cộng sự, 2022. Tài liệu có thật. Đây là bài tại USENIX Security 2022, trang 3971 đến 3988. Nội dung về các sai lầm phổ biến khi áp dụng học máy trong an ninh mạng phù hợp với phần tổng quan. Nên bổ sung trang và nhà xuất bản vào BibTeX.
+
+6) Geirhos và cộng sự, 2020. Tài liệu có thật. Bài được đăng tại Nature Machine Intelligence, tập 2, trang 665 đến 673, DOI 10.1038/s42256-020-00257-z. BibTeX hiện chỉ ghi arXiv, cần đổi sang thông tin bài đã xuất bản.
+
+7) Lundberg và Lee, 2017. Tài liệu có thật. Đây là bài NeurIPS về SHAP. Nguồn được dùng đúng cho định nghĩa SHAP.
+
+8) Lundberg và cộng sự, 2020. Tài liệu có thật. DOI 10.1038/s42256-019-0138-9. Nguồn được dùng đúng cho TreeSHAP và giải thích mô hình cây.
+
+9) Ribeiro và cộng sự, 2016. Tài liệu có thật. Đây là bài KDD về LIME. Nên bổ sung trang 1135 đến 1144 và DOI 10.1145/2939672.2939778.
+
+10) Chen và Guestrin, 2016. Tài liệu có thật. Đây là bài KDD về XGBoost, DOI 10.1145/2939672.2939785. Nên ghi DOI và trang 785 đến 794 thay vì chỉ ghi arXiv.
+
+11) Slack và cộng sự, 2019 hoặc 2020. Tài liệu có thật. Bản arXiv năm 2019 và bài AIES năm 2020 đều tồn tại. Bài chứng minh LIME và SHAP dựa trên nhiễu có thể bị đánh lừa trong thiết lập đối kháng. Không nên dùng nguồn này để khẳng định chung rằng mọi giải thích dựa trên nhiễu đều không đáng tin.
+
+12) Alvarez-Melis và Jaakkola, 2018. Tài liệu có thật. Bài nghiên cứu độ bền của phương pháp giải thích. Nguồn phù hợp với yêu cầu đầu vào tương tự nên cho giải thích tương tự.
+
+13) Warnecke và cộng sự, 2020. Tài liệu có thật. Bài EuroS&P đưa ra tiêu chí đánh giá giải thích trong an ninh, gồm độ chính xác, đầy đủ, hiệu quả và độ bền. Nguồn được dùng đúng nội dung.
+
+14) Neupane và cộng sự, 2022. Tài liệu có thật. Bản khảo sát X-IDS nêu nhu cầu định nghĩa tính giải thích, thiết kế cho từng nhóm người dùng và xây dựng thước đo đánh giá.
+
+15) Marino và cộng sự, 2018. Tài liệu có thật. DOI 10.1109/IECON.2018.8591457. Bài tìm thay đổi tối thiểu của đặc trưng để sửa các mẫu bị phân loại sai. refs.bib nên dùng loại inproceedings, thêm tên hội nghị, trang 3237 đến 3243 và DOI.
+
+3. Đối chiếu kết quả chính với tệp trong dự án
+
+M0 đạt 97,91 phần trăm accuracy, macro-F1 85,81 phần trăm và FPR 0,23 phần trăm trên test cũ. Kết quả có trong results/cross_evaluation.csv và kết quả RQ1.
+
+M0 cảnh báo 149 trên 784 luồng, trong đó có 148 cảnh báo Hulk. Kết quả khớp với results/paper_checks.json và results/cross_evaluation.csv.
+
+Nhãn benign của 784 luồng chỉ được người dùng xác nhận bằng lời. Bằng chứng nằm trong results/t3_session_log.csv và RQ3_IDS_System/docs/compare_m0_m1.md. Không có nhật ký hoạt động chi tiết hoặc nhãn độc lập. Bài phải luôn ghi “user-confirmed benign”, không được gọi đây là ground truth chắc chắn.
+
+Vùng FIN chứa 148 trong 149 cảnh báo trực tiếp. Trên test corrected, 100.817 trong 100.849 cảnh báo sai nằm trong vùng FIN. Hai kết quả khớp với results/paper_checks.json.
+
+Train cũ có 445 luồng trong vùng FIN và tất cả là Hulk. Train corrected có 405.347 benign và 330 Hulk trong vùng FIN. Hai kết quả khớp với results/compare_train_sets.json.
+
+FIN xuất hiện ở 428 trong 661.302 luồng TCP đủ gói trong train cũ. Tỷ lệ là khoảng 0,0647 phần trăm và được làm tròn thành 0,065 phần trăm. Tỷ lệ tương ứng của train corrected là 1.179.170 trên 1.662.550, xấp xỉ 70,93 phần trăm. Hai kết quả khớp với results/compare_train_sets.json.
+
+Giá trị SHAP trung bình của FIN đối với lớp Hulk là 5,865 log-odds. Kết quả khớp với results/paper_checks.json và results/t3_explain.json.
+
+Can thiệp FIN bằng 0 làm đổi nhãn của 148 luồng. Kết quả khớp với results/t3_explain.json. Đây là kiểm tra độ nhạy của mô hình, không phải phản thực hợp lệ về mặt mạng.
+
+M1 không cảnh báo trên 784 luồng và 21 luồng duyệt web. Kết quả khớp với results/cross_evaluation.csv và results/paper_checks.json. Kết quả này không đủ để kết luận M1 hoạt động tốt trên tấn công thực tế.
+
+M1 đạt 99,996 phần trăm accuracy và macro-F1 99,30 phần trăm. Kết quả khớp với results/cross_evaluation.csv. Bài đã nêu đúng cảnh báo về near-duplicate.
+
+Khi bỏ năm đặc trưng môi trường, macro-F1 còn 98,68 phần trăm. Kết quả khớp với results/diagnose_m1.json.
+
+Thời gian dự đoán trung vị là 12,4 ms. Thời gian tính SHAP trung vị là 32,5 ms. Kết quả khớp với results/paper_checks.json. Bài cần giữ thêm p95 và độ trễ hàng đợi vì 32,5 ms không bao gồm thời gian chờ SHAP.
+
+Sai số cộng tối đa của TreeSHAP là khoảng 4,8 nhân 10 mũ trừ 6 với M0 và 3,8 nhân 10 mũ trừ 6 với M1. Kết quả khớp với results/paper_checks.json. Phép kiểm tra này chỉ xác nhận tính cộng của phép tính. Nó không xác nhận giải thích có ý nghĩa hoặc trung thực về nhân quả.
+
+Kết quả LIME trên 313 luồng thật có tệp trong thư mục results/lab_m1. Kết luận chỉ áp dụng cho kernel, số mẫu, background và cổng R bình phương đã dùng.
+
+4. Những câu cần sửa vì mạnh hơn bằng chứng
+
+4.1. Nguyên nhân trình trích xuất kết thúc luồng tại FIN đầu tiên
+
+Bài có bằng chứng gián tiếp mạnh nhưng không có PCAP gốc để chạy lại trình trích xuất. Cách viết phù hợp là kết quả phù hợp với giả thuyết rằng trình trích xuất cũ kết thúc luồng tại gói FIN đầu tiên. Nghiên cứu trước và tài liệu corrected dataset cũng mô tả cơ chế tương tự. Do không có PCAP gốc, nghiên cứu này chưa xác minh trực tiếp nguyên nhân đó.
+
+Không nên viết rằng nghiên cứu đã tìm thấy trình trích xuất cắt luồng tại FIN đầu tiên hoặc trình trích xuất đã gây ra shortcut. Cần dùng từ hạn định như likely, consistent with hoặc supports the hypothesis.
+
+4.2. M1 là mô hình đã sửa lỗi
+
+Việc M1 không cảnh báo trên 784 luồng benign cho thấy lỗi cụ thể đã giảm trong mẫu kiểm tra. Nó không chứng minh M1 tổng quát tốt ngoài thực tế vì chưa có tập tấn công độc lập được thu trực tiếp và nhãn 784 luồng còn yếu. Nên gọi M1 là mô hình được huấn luyện trên dữ liệu tái tạo hoặc corrected dataset. Không nên gọi M1 là mô hình sản xuất đã được xác nhận.
+
+4.3. Can thiệp một đặc trưng
+
+Đặt FIN Flag Cnt bằng 0 trong khi giữ nguyên mọi đặc trưng khác có thể tạo vector không thể xuất hiện từ một luồng mạng thật. Kết quả chỉ chứng minh độ nhạy quyết định của mô hình đối với tọa độ đó. Không nên gọi đây là bằng chứng nhân quả về dữ liệu hoặc mạng.
+
+4.4. LIME và TreeSHAP
+
+Câu “LIME failed” phải kèm phạm vi. LIME không đạt cổng chất lượng trong cấu hình đã thử. Bài chưa khảo sát kernel width, số mẫu, phương pháp sinh nhiễu và background khác.
+
+Câu “TreeSHAP was valid” nên đổi thành “TreeSHAP satisfied the additivity check on all evaluated flows”. Additivity không chứng minh giải thích đúng về mặt ngữ nghĩa, hữu ích với chuyên gia hoặc ổn định trước thay đổi nhỏ.
+
+4.5. Khái niệm thời gian thực
+
+Thời gian suy luận trung vị thấp, nhưng cảnh báo chỉ xuất hiện sau khi luồng kết thúc hoặc timeout. Hàng đợi SHAP có trung vị khoảng 2,2 giây trong đợt tải dồn. Bài nên dùng “online flow-based IDS” và báo cáo cả p95, p99, thời gian chờ hàng đợi và độ trễ hoàn tất luồng. Chỉ dùng “real-time” nếu bài định nghĩa ngưỡng thời gian và chứng minh hệ thống đáp ứng ngưỡng đó.
+
+5. Chỗ có nguy cơ khiến người phản biện nghi ngờ
+
+1) Bài ghi 784 luồng confirmed benign, nhưng xác nhận chỉ bằng lời và không có activity log. Đây là hạn chế lớn nhất của đánh giá ngoài benchmark.
+
+2) Bài dùng corrected dataset như nguồn ngoài để so sánh, nhưng hai phiên bản khác nhau về cách dựng luồng và nhãn. So sánh phải được mô tả là so sánh hai pipeline dữ liệu, không chỉ là nhãn cũ và nhãn mới.
+
+3) M0 và M1 không chuyển giao tốt giữa hai test set. Điều này ủng hộ dataset shift, nhưng không cho phép kết luận rằng chỉ sửa nhãn là đủ.
+
+4) Accuracy 99,996 phần trăm của M1 rất cao. Bài đã có kiểm tra duplicate và time-block cross-validation, nhưng nên trình bày chúng rõ hơn trong thân bài.
+
+5) Hình SHAP so sánh M0-Hulk với M1-Benign không dùng cùng đầu ra mục tiêu. Chú thích phải nói rõ hai biểu đồ không phải phép so sánh trực tiếp về độ lớn SHAP giữa cùng một lớp.
+
+6. Sửa theo mức ưu tiên
+
+Phải sửa trước khi gửi thầy.
+
+1) Giữ mọi kết luận về FIN ở mức giả thuyết có bằng chứng hỗ trợ, không tuyên bố đã chứng minh nguyên nhân.
+
+2) Nêu rõ giới hạn nhãn của 784 luồng ngay ở Abstract hoặc Method, không chỉ ở phần chi tiết.
+
+3) Thay “TreeSHAP valid” bằng mô tả chính xác về additivity. Giới hạn kết luận LIME vào cấu hình đã thử.
+
+4) Không dùng kết quả 0 trên 784 để kết luận M1 hoạt động tốt ngoài thực tế. Chỉ kết luận lỗi cảnh báo sai cụ thể không tái diễn trên mẫu đó.
+
+5) Thêm bảng so sánh dữ liệu cũ và corrected. Bảng cần có nguồn, trình trích xuất, số lớp, số luồng, phân bố FIN, thành phần vùng FIN, duplicate và khả năng chuyển giao chéo.
+
+Nên sửa.
+
+1) Hoàn thiện BibTeX cho Geirhos, Arp, Ribeiro, Chen, Slack và Marino bằng thông tin phiên bản đã xuất bản.
+
+2) Thêm địa chỉ chính thức của CSE-CIC-IDS2018 và trang corrected dataset của Liu và cộng sự.
+
+3) Đưa kết quả cross-evaluation và blocked time cross-validation vào một bảng chính hoặc phụ lục dễ kiểm tra.
+
+4) Thêm sơ đồ chuỗi bằng chứng, phân biệt quan sát, giải thích mô hình, kiểm tra độ nhạy, đối chiếu dữ liệu, huấn luyện lại và giới hạn kết luận.
+
+7. Phán quyết cuối
+
+Bài không có dấu hiệu tự bịa nguồn hoặc số liệu cốt lõi. Mức độ truy vết kết quả nội bộ khá tốt. Điểm cần chỉnh là ngôn ngữ khoa học. Bài phải phân biệt điều quan sát được, điều được tệp kết quả hỗ trợ, suy luận hợp lý và nguyên nhân chưa được xác minh trực tiếp. Nếu sửa các chỗ trên, câu chuyện của bài vẫn giữ được sức nặng và ít bị phản biện bắt lỗi suy diễn.

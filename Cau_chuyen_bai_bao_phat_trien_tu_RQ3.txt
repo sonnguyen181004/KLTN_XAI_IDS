@@ -1,0 +1,97 @@
+CÂU CHUYỆN BÀI BÁO PHÁT TRIỂN TỪ PHÁT HIỆN Ở RQ3
+
+Tên bài đề xuất
+
+Từ cảnh báo Hulk sai trong hệ thống IDS thực nghiệm đến phát hiện khoảng trống dữ liệu bằng XAI
+
+1. Điểm xuất phát là phát hiện ở RQ3
+
+Trong RQ3, mô hình XGBoost đã được tích hợp vào một hệ thống IDS có thể nhận dữ liệu CSV, PCAP và lưu lượng mạng. Khi thử nghiệm với traffic ngoài tập dữ liệu huấn luyện, hệ thống xuất hiện cảnh báo DoS attacks-Hulk đối với một luồng mạng được biết là bình thường. Xác suất dự đoán Hulk của một trường hợp được ghi nhận ở mức khoảng 93,3%.
+
+Phát hiện này tạo ra mâu thuẫn trực tiếp với kết quả đánh giá trước đó. Trên tập test nội bộ, lớp Hulk có F1-score xấp xỉ 99,997% và toàn bộ mô hình đạt Accuracy 97,91%. Nếu chỉ nhìn vào kết quả cũ, Hulk là một trong những lớp được mô hình nhận diện tốt nhất. Khi chạy với traffic ngoài, chính lớp này lại xuất hiện trong cảnh báo sai.
+
+Bài báo được phát triển từ mâu thuẫn trên, không phải từ mục tiêu xây dựng lại toàn bộ hệ thống IDS.
+
+2. Vấn đề nghiên cứu hình thành từ RQ3
+
+Vấn đề của bài báo là mô hình có hiệu năng nội bộ cao nhưng chưa chứng minh được khả năng khái quát khi nhận dữ liệu được thu trong môi trường khác. Cảnh báo Hulk ở RQ3 đặt ra câu hỏi liệu mô hình đã học đặc trưng của hành vi tấn công hay học một số dấu hiệu riêng của dataset và pipeline trích xuất cũ.
+
+Từ vấn đề này, bài báo đặt câu hỏi trung tâm như sau.
+
+Vì sao mô hình gần như phân loại hoàn hảo lớp Hulk trên tập test cũ nhưng lại gán nhãn Hulk cho lưu lượng Benign ngoài môi trường huấn luyện?
+
+3. Quay lại kết quả cũ để tìm nguyên nhân
+
+Sau khi phát hiện vấn đề ở RQ3, nghiên cứu quay lại kiểm tra dữ liệu và kết quả RQ1. Tập test có 194.149 dòng trùng với tập train, tương ứng khoảng 27,74% tập test. Kết quả này không đủ để phủ nhận toàn bộ mô hình, nhưng cho thấy phép đánh giá nội bộ chưa hoàn toàn độc lập. Accuracy 97,91% và FPR 0,2324% chỉ phản ánh hiệu năng trong miền dữ liệu cũ, chưa đại diện cho traffic triển khai.
+
+Nghiên cứu cũng phát hiện dữ liệu train và dữ liệu do hệ thống RQ3 trích xuất có khác biệt về miền giá trị và ngữ nghĩa của một số đặc trưng. Các cột cờ TCP trong dữ liệu cleaned chỉ có giá trị 0 hoặc 1, trong khi extractor live đếm số gói mang cờ. Sáu cột bulk của dữ liệu train đều bằng 0, nhưng dữ liệu live có thể sinh giá trị khác 0. Dự án chưa có pipeline tiền xử lý gốc, phiên bản extractor lịch sử hoặc cặp PCAP và CSV gốc nên chưa thể xác định chắc chắn nguồn tạo ra khác biệt này.
+
+4. Dùng kết quả RQ2 để giải thích phát hiện RQ3
+
+RQ2 cung cấp SHAP và LIME để giải thích dự đoán. Trong bài báo mới, hai phương pháp không còn là đối tượng so sánh độc lập. Chúng được dùng để điều tra nguyên nhân cảnh báo sai đã xuất hiện ở RQ3.
+
+Trên toàn bộ lớp Hulk của tập test cũ, Fwd Seg Size Min là đặc trưng quan trọng nhất theo SHAP, với mean absolute SHAP khoảng 6,49. Đối với một cảnh báo Hulk sai trong traffic live, FIN Flag Cnt lại có đóng góp SHAP nổi bật, khoảng 5,87. Sự khác biệt này cho thấy đặc trưng quan trọng toàn cục của một lớp không nhất thiết là đặc trưng quyết định trong từng ca lỗi cụ thể.
+
+LIME không tạo được neighborhood hữu hiệu cho cả tám cảnh báo Hulk trong hai tệp PCAP đã kiểm tra. Vì vậy, bài báo không dùng hệ số LIME của các trường hợp này để giải thích nguyên nhân. Sự thất bại của LIME được trình bày như một kết quả về giới hạn của phương pháp giải thích khi mẫu triển khai nằm xa dữ liệu nền.
+
+5. Truy từ lời giải thích về lại dữ liệu huấn luyện
+
+Nghiên cứu không dừng ở biểu đồ SHAP. Đường đi của một cảnh báo Hulk được truy trực tiếp trong các cây XGBoost. Cây có Gain cao nhất sử dụng tổ hợp ba điều kiện gồm Fwd Seg Size Min nhỏ hơn 32, FIN Flag Cnt lớn hơn hoặc bằng 1 và Fwd Pkt Len Max lớn hơn hoặc bằng 66.
+
+Khi lọc toàn bộ 2,8 triệu dòng train theo đúng ba điều kiện này, có 445 dòng thỏa mãn. Cả 445 dòng đều mang nhãn Hulk và không có dòng Benign. Kết quả này giải thích vì sao mô hình gán nhãn Hulk cho luồng live. Trong vùng đặc trưng mà luồng này rơi vào, mô hình chỉ từng được quan sát mẫu Hulk.
+
+Kết quả không chứng minh riêng FIN Flag Cnt là nguyên nhân của cảnh báo sai. Tập train vẫn có 9.815 flow Benign mang FIN khác 0. Phát hiện có ý nghĩa nằm ở tổ hợp ba đặc trưng và sự vắng mặt của Benign trong vùng kết hợp đó.
+
+6. Giả thuyết mới được tạo ra từ phát hiện RQ3
+
+Từ chuỗi bằng chứng trên, bài báo hình thành giả thuyết rằng cảnh báo Hulk sai liên quan đến khoảng trống đại diện của dữ liệu huấn luyện. Dataset cũ chưa cung cấp đủ các kết nối Benign có tổ hợp đặc trưng tương tự traffic triển khai.
+
+Đây mới là giả thuyết nghiên cứu. Bằng chứng 445 mẫu chỉ cho thấy một vùng dữ liệu thiếu Benign, chưa chứng minh việc bổ sung Benign chắc chắn sửa được mô hình. Cần kiểm thử độc lập và huấn luyện lại để xác nhận.
+
+7. Mục đích của bài báo mới
+
+Bài báo nhằm kiểm chứng liệu khoảng trống dữ liệu được phát hiện từ RQ3 có phải là nguyên nhân làm mô hình báo Hulk sai hay không. Nghiên cứu sử dụng một bộ dữ liệu độc lập có ground truth, sau đó so sánh mô hình hiện tại với các mô hình được huấn luyện lại.
+
+8. Các câu hỏi nghiên cứu mới
+
+RQ mới 1. Mô hình hiện tại có duy trì được FPR và recall Hulk khi đánh giá trên dữ liệu độc lập có ground truth hay không?
+
+RQ mới 2. Các false positive Hulk trên dữ liệu độc lập có tập trung trong những vùng đặc trưng thiếu mẫu Benign ở tập train hay không?
+
+RQ mới 3. Bổ sung mẫu Benign vào các vùng còn thiếu có làm giảm false positive Hulk mà không làm giảm đáng kể recall Hulk hay không?
+
+RQ mới 4. Mô hình huấn luyện bằng nhóm đặc trưng ít phụ thuộc môi trường có khái quát tốt hơn mô hình hiện tại hay không?
+
+9. Thí nghiệm phát triển từ phát hiện RQ3
+
+Thí nghiệm đầu tiên thu thập hoặc lựa chọn dữ liệu độc lập gồm Benign và Hulk có ground truth. Bộ dữ liệu này được khóa trước khi huấn luyện lại và không được dùng để chọn siêu tham số.
+
+Thí nghiệm tiếp theo chạy mô hình hiện tại trên bộ độc lập để xác nhận mức độ của vấn đề. Kết quả cần báo cáo FPR trên Benign, recall Hulk, Macro F1 và ma trận nhầm lẫn.
+
+Sau đó, các false positive Hulk được phân tích bằng SHAP, đường đi trong cây và mật độ mẫu train. Mục tiêu là kiểm tra hiện tượng 445 mẫu Hulk và không có Benign có lặp lại trên các ca lỗi khác hay chỉ là một trường hợp riêng.
+
+Cuối cùng, nghiên cứu huấn luyện và so sánh ba mô hình. Mô hình A là baseline hiện tại. Mô hình B được bổ sung các mẫu Benign thuộc vùng gây nhầm. Mô hình C giảm phụ thuộc vào nhóm đặc trưng có dấu hiệu gắn với môi trường hoặc pipeline. Cả ba mô hình được đánh giá trên cùng bộ dữ liệu độc lập đã khóa.
+
+10. Trình tự kể toàn bài
+
+Bài báo mở đầu bằng cảnh báo Hulk sai được phát hiện khi triển khai RQ3. Phần tiếp theo trình bày sự mâu thuẫn với kết quả nội bộ của RQ1. Sau đó, bài sử dụng XAI từ RQ2 để xác định đặc trưng liên quan, truy đường đi trong cây và kiểm tra lại tập train. Phân tích này dẫn đến giả thuyết dataset thiếu mẫu Benign ở một vùng đặc trưng. Từ giả thuyết đó, nhóm thiết kế kiểm thử độc lập và huấn luyện lại mô hình. Kết quả so sánh cuối cùng mới được dùng để kết luận nguyên nhân và hiệu quả của phương án xử lý.
+
+11. Kết luận hiện có và kết luận còn thiếu
+
+Kết luận đã có là một cảnh báo Hulk sai trong RQ3 rơi vào vùng mà tập train chỉ có 445 mẫu Hulk và không có mẫu Benign. SHAP cùng cấu trúc cây giúp truy ra vùng này. Tám cảnh báo Hulk trên hai PCAP cũng cho thấy LIME hiện tại không tạo được neighborhood phù hợp, nhưng các PCAP chưa có đủ ground truth để tính FPR.
+
+Kết luận còn thiếu là mức độ phổ biến của hiện tượng trên dữ liệu độc lập và hiệu quả của mô hình huấn luyện lại. Hai kết luận này chỉ được viết sau khi hoàn thành thí nghiệm mới.
+
+12. Thông điệp chính
+
+Phát hiện ở RQ3 cho thấy một mô hình đạt điểm số cao vẫn có thể thất bại khi đi ra ngoài miền dữ liệu cũ. XAI có giá trị khi nó giúp lần ngược từ một cảnh báo cụ thể đến vùng quyết định và khoảng trống trong dữ liệu huấn luyện. Giá trị của phát hiện đó phải được xác nhận bằng dữ liệu độc lập và phép so sánh mô hình có kiểm soát.
+
+NGUỒN BẰNG CHỨNG NỘI BỘ
+
+Kết quả RQ1 nằm trong RQ1_Model_Training_xboost/results/bang_2_ket_qua_chinh_thuc_rq1.csv và bang_chi_tiet_15_lop_tan_cong.csv.
+
+Kết quả kiểm tra trùng lặp và đánh giá SHAP, LIME nằm trong RQ2/runs/20261009/gd13_report/rq2_master_summary.json.
+
+Kết quả cảnh báo PCAP và giới hạn của LIME nằm trong RQ3_IDS_System/docs/xai_validation.md.
+
+Kết quả truy cây, vùng 445 mẫu và khác biệt đặc trưng nằm trong RQ3_IDS_System/docs/feature_compatibility.md, mục HT2.5 và mục Dữ liệu train khác PCAP ở đâu.

@@ -1,0 +1,9 @@
+# Netlify configuration file for DDoS Learning Hub
+
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

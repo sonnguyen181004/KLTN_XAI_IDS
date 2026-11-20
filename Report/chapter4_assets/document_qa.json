@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-28",
+  "revision": "RF comparison, RQ2 metrics, CSV PCAP realtime tests, plain-language LIME, no domain-knowledge evaluation",
+  "pages_rendered_and_visually_reviewed": 22,
+  "tables": 20,
+  "figures": 7,
+  "vietnamese_lint_errors": 0,
+  "lint_warning_review": "Dates, file paths, URLs, numeric ratios and one causal transition retained",
+  "rq2_stability_noise_convergence_max_saved_difference": 0,
+  "realtime_seconds": 30.009,
+  "realtime_csv_api_flows": 70,
+  "rf_source": "Original project reports, no retraining or RF inference",
+  "docx_sha256": "8dd57d8102c1d65eb018921270b55ffeadf83962f60ad609a5285960b90b811e"
+}
