@@ -1,0 +1,3 @@
+run_id,pcap_file,type,tool_and_command,start_kali_date_Is,end_kali_date_Is,kali_ip,ubuntu_ip,target_port,server_reachable_after,kali_log,ubuntu_logs,notes
+ssh_hydra_2,ssh-hydra-200-YYYYMMDD-HHMMSS.pcapng,attack SSH-Bruteforce,"hydra -l ids_demo -P passwords200.txt -t 4 -V",,,192.168.11.133,192.168.11.134,22,,,,
+benign_web_script_1,benign-web-curl-YYYYMMDD-HHMMSS.pcapng,benign,curl loop 1200 s,,,192.168.11.133,192.168.11.134,80,,,,
